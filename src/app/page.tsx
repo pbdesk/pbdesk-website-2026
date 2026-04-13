@@ -6,11 +6,11 @@ export default function Home() {
       <main className="flex w-full max-w-3xl flex-1 flex-col items-center justify-between bg-white px-16 py-32 sm:items-start dark:bg-black">
         <Image
           alt="Next.js logo"
-          className="dark:invert"
-          height={20}
+          // className="dark:invert"
+          height={60}
           priority
-          src="/next.svg"
-          width={100}
+          src="/pb/pb-logo-2.png"
+          width={200}
         />
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
           <h1 className="max-w-xs font-semibold text-3xl text-black leading-10 tracking-tight dark:text-zinc-50">
@@ -45,7 +45,7 @@ export default function Home() {
               alt="Vercel logomark"
               className="dark:invert"
               height={16}
-              src="/vercel.svg"
+              src="/pb/pb.svg"
               width={16}
             />
             Deploy Now
