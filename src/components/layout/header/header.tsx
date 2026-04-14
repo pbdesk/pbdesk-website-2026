@@ -26,16 +26,16 @@ export default function Header() {
                 alt="AiStarterKit Logo"
                 className="block dark:hidden"
                 height={60}
-                src="/pb/pb-logo-1.png"
-                width={200}
+                src="/pb/PBDesk-logo-light.png"
+                width={210}
               />
 
               <Image
                 alt="AiStarterKit Logo"
                 className="hidden dark:block"
                 height={60}
-                src="/pb/pb-logo-1.png"
-                width={200}
+                src="/pb/PBDesk-logo-dark.png"
+                width={210}
               />
             </Link>
           </div>

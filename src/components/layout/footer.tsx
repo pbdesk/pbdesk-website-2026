@@ -49,17 +49,17 @@ export default function Footer() {
                 <Link className="mb-6 block" href="/">
                   <Image
                     alt="logo"
-                    height={32}
-                    src="/images/logo-white.svg"
-                    width={128}
+                    height={60}
+                    src="/pb/PBDesk-logo-dark.png"
+                    width={210}
                   />
                 </Link>
                 <p className="mb-9 block text-gray-400 text-sm">
-                  A self-hosted AI starter kit built with Next.js, Tailwind CSS,
-                  and OpenAI integrations. Perfect for developers and startups
-                  to quickly build, deploy, and scale AI-powered SaaS products.
+                  Bits & Bites - Developer's Life.
+                  <br />
+                  Learning Endeavor Forever...from the desk of Pinal Bhatt
                 </p>
-                <div className="flex">
+                <div className="center flex" id="social">
                   <a
                     className="size-10 text-gray-400 hover:text-white/80"
                     href="https://www.linkedin.com/company/pimjo/posts/?feedView=all"
@@ -68,14 +68,14 @@ export default function Footer() {
                   >
                     <svg
                       fill="none"
-                      height="17"
+                      height="20"
                       viewBox="0 0 16 17"
-                      width="16"
+                      width="20"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <g clipPath="url(#clip0_11105_879)">
                         <path
-                          d="M13.5447 3.68965C12.5249 3.22173 11.4313 2.87699 10.2879 2.67954C10.2671 2.67573 10.2463 2.68525 10.2356 2.7043C10.0949 2.95444 9.93915 3.28077 9.83006 3.53727C8.60027 3.35316 7.37679 3.35316 6.17221 3.53727C6.0631 3.27507 5.90166 2.95444 5.76038 2.7043C5.74966 2.68589 5.72886 2.67636 5.70803 2.67954C4.56527 2.87636 3.47171 3.2211 2.45129 3.68965C2.44246 3.69346 2.43488 3.69982 2.42986 3.70806C0.355594 6.80697 -0.212634 9.82971 0.0661201 12.815C0.0673814 12.8296 0.0755799 12.8435 0.086932 12.8524C1.45547 13.8574 2.78114 14.4676 4.08219 14.872C4.10301 14.8784 4.12507 14.8707 4.13832 14.8536C4.44608 14.4333 4.72043 13.9902 4.95565 13.5241C4.96953 13.4968 4.95628 13.4645 4.92791 13.4537C4.49275 13.2886 4.0784 13.0873 3.67982 12.8588C3.64829 12.8404 3.64577 12.7953 3.67477 12.7737C3.75865 12.7108 3.84255 12.6454 3.92264 12.5794C3.93713 12.5674 3.95732 12.5648 3.97435 12.5724C6.59286 13.7679 9.4277 13.7679 12.0153 12.5724C12.0323 12.5642 12.0525 12.5667 12.0677 12.5788C12.1478 12.6448 12.2316 12.7108 12.3161 12.7737C12.3451 12.7953 12.3433 12.8404 12.3117 12.8588C11.9131 13.0918 11.4988 13.2886 11.063 13.453C11.0346 13.4638 11.022 13.4968 11.0359 13.5241C11.2762 13.9895 11.5505 14.4327 11.8526 14.853C11.8652 14.8707 11.8879 14.8784 11.9087 14.872C13.2161 14.4676 14.5417 13.8574 15.9103 12.8524C15.9223 12.8435 15.9298 12.8302 15.9311 12.8156C16.2647 9.36431 15.3723 6.36636 13.5655 3.7087C13.5611 3.69982 13.5535 3.69346 13.5447 3.68965ZM5.34668 10.9973C4.55833 10.9973 3.90876 10.2735 3.90876 9.38464C3.90876 8.49578 4.54574 7.77202 5.34668 7.77202C6.15392 7.77202 6.79721 8.50214 6.78459 9.38464C6.78459 10.2735 6.14761 10.9973 5.34668 10.9973ZM10.6632 10.9973C9.87484 10.9973 9.22526 10.2735 9.22526 9.38464C9.22526 8.49578 9.86222 7.77202 10.6632 7.77202C11.4704 7.77202 12.1137 8.50214 12.1011 9.38464C12.1011 10.2735 11.4704 10.9973 10.6632 10.9973Z"
+                          d="M3.58 6.169H1.18v7.225h2.4V6.169zM2.38 5.17c.837 0 1.358-.554 1.358-1.248C3.723 3.213 3.217 2.67 2.396 2.67c-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zM8.71 13.394V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.4V9.25c0-2.22-1.183-3.252-2.763-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169H6.31c.03.678 0 7.225 0 7.225h2.4z"
                           fill="currentColor"
                           fillOpacity="0.8"
                         />
@@ -172,170 +172,52 @@ export default function Footer() {
                       </defs>
                     </svg>
                   </a>
-                  <a
-                    className="size-10 text-gray-400 hover:text-white/80"
-                    href="https://www.facebook.com/PimjoHQ"
-                    rel="noopener"
-                    target="_blank"
-                  >
-                    <svg
-                      fill="none"
-                      height="19"
-                      viewBox="0 0 18 19"
-                      width="18"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g clipPath="url(#clip0_11105_895)">
-                        <path
-                          d="M10.5 11.0444H12.375L13.125 8.04443H10.5V6.54443C10.5 5.7724 10.5 5.04443 12 5.04443H13.125V2.52451C12.8807 2.49207 11.9573 2.41943 10.9822 2.41943C8.9463 2.41943 7.5 3.66208 7.5 5.94422V8.04443H5.25V11.0444H7.5V17.4194H10.5V11.0444Z"
-                          fill="currentColor"
-                        />
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_11105_895">
-                          <rect
-                            fill="currentColor"
-                            height="18"
-                            transform="translate(0 0.919434)"
-                            width="18"
-                          />
-                        </clipPath>
-                      </defs>
-                    </svg>
-                  </a>
                 </div>
               </div>
             </div>
             <div className="lg:col-span-6 xl:col-span-5">
-              <div className="grid gap-7 sm:grid-cols-3">
-                <div>
-                  <span className="mb-6 block text-gray-400 text-sm">
-                    Services
-                  </span>
-                  <nav className="flex flex-col space-y-3">
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/"
-                    >
-                      Status
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/pricing"
-                    >
-                      Pricing
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/pricing#faq"
-                    >
-                      FAQ
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/contact"
-                    >
-                      Help Docs
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/privacy"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </nav>
-                </div>
-                <div>
-                  <span className="mb-6 block text-gray-400 text-sm">
-                    Features
-                  </span>
-                  <nav className="flex flex-col space-y-3">
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/"
-                    >
-                      HTML File Upload
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/"
-                    >
-                      HTML website hosting
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/"
-                    >
-                      Free Image Hosting
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/"
-                    >
-                      Upload PDF Online
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/"
-                    >
-                      Free Zip file hosting
-                    </Link>
-                  </nav>
-                </div>
-                <div>
-                  <span className="relative mb-6 block text-gray-400 text-sm">
-                    Account
-                  </span>
-                  <nav className="flex flex-col space-y-3">
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/signin"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/signup"
-                    >
-                      Sign Up
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/reset-password"
-                    >
-                      Reset Password
-                    </Link>
-                    <Link
-                      className="font-normal text-gray-400 text-sm transition hover:text-white"
-                      href="/contact"
-                    >
-                      Support
-                    </Link>
-                  </nav>
-                </div>
-              </div>
+              <div className="grid gap-7 sm:grid-cols-3" />
             </div>
             <div className="lg:col-span-3">
               <div>
-                <span className="mb-6 block text-gray-400 text-sm">
-                  Stay In Touch
-                </span>
-                <p className="mb-5 block text-gray-400 text-sm">
-                  Subscribe now for exclusive insights and offers!
-                </p>
-                <form>
-                  <div className="flex w-full flex-col items-center gap-2 sm:max-w-64">
-                    <input
-                      className="h-12 w-full rounded-full border border-gray-700 p-4 text-center text-sm text-white placeholder:text-center placeholder:font-normal placeholder:text-gray-400 placeholder:text-sm focus:outline-0"
-                      placeholder="Enter your email"
-                      required
-                      type="email"
-                    />
-                    <button className="w-full cursor-pointer rounded-full bg-primary-500 px-6 py-3 font-medium text-sm text-white transition hover:bg-primary-600">
-                      Subscribe Now
-                    </button>
-                  </div>
-                </form>
+                <nav className="flex flex-col space-y-3">
+                  <Link
+                    className="font-normal text-gray-400 text-sm transition hover:text-white"
+                    href="/signin"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    className="font-normal text-gray-400 text-sm transition hover:text-white"
+                    href="/signup"
+                  >
+                    Bits
+                  </Link>
+                  <Link
+                    className="font-normal text-gray-400 text-sm transition hover:text-white"
+                    href="/reset-password"
+                  >
+                    Bites
+                  </Link>
+                  <Link
+                    className="font-normal text-gray-400 text-sm transition hover:text-white"
+                    href="/contact"
+                  >
+                    Blog
+                  </Link>
+                  <Link
+                    className="font-normal text-gray-400 text-sm transition hover:text-white"
+                    href="/contact"
+                  >
+                    About Me
+                  </Link>
+                  <Link
+                    className="font-normal text-gray-400 text-sm transition hover:text-white"
+                    href="/contact"
+                  >
+                    Disclaimer
+                  </Link>
+                </nav>
               </div>
             </div>
           </div>
@@ -345,7 +227,7 @@ export default function Footer() {
         <div className="container relative z-10 mx-auto px-5 sm:px-7">
           <div className="py-5 text-center">
             <p className="text-gray-500 text-sm">
-              &copy; {getCurrentYear()} AiStarterKit - All Rights Reserved.
+              &copy; {getCurrentYear()} PBDesk - All Rights Reserved.
             </p>
           </div>
         </div>
