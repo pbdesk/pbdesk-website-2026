@@ -99,7 +99,7 @@ export default function MainMobileNav({ isOpen }: MobileMenuProps) {
           </div>
         </div>
 
-        <div className="flex flex-col space-y-3 px-8 pt-2 pb-3">
+        {/* <div className="flex flex-col space-y-3 px-8 pt-2 pb-3">
           <Link
             className="block h-11 w-full rounded-full border border-gray-200 px-5 py-3 text-center font-medium text-gray-700 text-sm hover:text-primary-500 dark:text-gray-400"
             href="/signin"
@@ -113,7 +113,7 @@ export default function MainMobileNav({ isOpen }: MobileMenuProps) {
           >
             Get Started Free
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

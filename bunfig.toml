@@ -1,0 +1,6 @@
+[install]
+exact = true
+auto = "auto"
+
+[install.security]
+scanner = "@socketsecurity/bun-security-scanner"

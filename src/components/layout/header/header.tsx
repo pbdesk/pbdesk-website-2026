@@ -25,17 +25,17 @@ export default function Header() {
               <Image
                 alt="AiStarterKit Logo"
                 className="block dark:hidden"
-                height={60}
+                height={80}
                 src="/pb/PBDesk-logo-light.png"
-                width={210}
+                width={294}
               />
 
               <Image
                 alt="AiStarterKit Logo"
                 className="hidden dark:block"
-                height={60}
+                height={80}
                 src="/pb/PBDesk-logo-dark.png"
-                width={210}
+                width={294}
               />
             </Link>
           </div>
@@ -56,7 +56,7 @@ export default function Header() {
               {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
 
-            <Link
+            {/* <Link
               className="hidden font-medium text-gray-700 text-sm hover:text-primary-500 lg:block dark:text-gray-400"
               href="/signin"
             >
@@ -68,7 +68,7 @@ export default function Header() {
               href="/signup"
             >
               Get Started Free
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

@@ -6,29 +6,34 @@ export const navItems = [
   },
   {
     type: "link",
-    label: "Chat",
+    label: "Bits",
     href: "/text-generator",
   },
   {
     type: "link",
-    label: "Pricing",
+    label: "Bites",
     href: "/pricing",
   },
   {
     type: "link",
-    label: "Contact",
-    href: "/contact",
+    label: "Blog",
+    href: "/blog",
   },
   {
-    type: "dropdown",
-    label: "Pages",
-    items: [
-      { href: "/signin", label: "Sign In" },
-      { href: "/signup", label: "Sign Up" },
-      { href: "/reset-password", label: "Reset Password" },
-      { href: "/not-found", label: "404 Error" },
-    ],
+    type: "link",
+    label: "About Me",
+    href: "/contact",
   },
+  // {
+  //   type: "dropdown",
+  //   label: "Pages",
+  //   items: [
+  //     { href: "/signin", label: "Sign In" },
+  //     { href: "/signup", label: "Sign Up" },
+  //     { href: "/reset-password", label: "Reset Password" },
+  //     { href: "/not-found", label: "404 Error" },
+  //   ],
+  // },
 ] satisfies NavItem[];
 
 type NavItem = Record<string, string | unknown> &
