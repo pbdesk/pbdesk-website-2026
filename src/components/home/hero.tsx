@@ -2,7 +2,6 @@ import {
   IconBrandGithubFilled,
   IconBrandLinkedinFilled,
   IconBrandX,
-  IconPlayerPlayFilled,
 } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -90,25 +89,6 @@ export default function Hero() {
               Explore the Blog
               <span aria-hidden="true">→</span>
             </Link>
-            <button
-              className="inline-flex h-12 items-center gap-2.5 rounded-full px-6 font-semibold text-sm transition-colors"
-              style={{ color: "var(--fg-primary)" }}
-              type="button"
-            >
-              <span
-                className="flex h-9 w-9 items-center justify-center rounded-full"
-                style={{
-                  background: "var(--bg-elevated)",
-                  border: "1px solid var(--border-subtle)",
-                }}
-              >
-                <IconPlayerPlayFilled
-                  size={14}
-                  style={{ color: "var(--fg-primary)" }}
-                />
-              </span>
-              Watch Intro
-            </button>
           </div>
 
           {/* Social row */}

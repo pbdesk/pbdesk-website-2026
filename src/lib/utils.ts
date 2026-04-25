@@ -1,4 +1,3 @@
-// import type { UIMessage } from 'ai';
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -7,11 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getCurrentYear = (): number => new Date().getFullYear();
-
-// export function getMostRecentUserMessage(messages: Array<UIMessage>) {
-//   const userMessages = messages.filter((message) => message.role === 'user');
-//   return userMessages.at(-1);
-// }
 
 export function errorHandler(error: unknown) {
   if (error == null) {
@@ -27,8 +21,4 @@ export function errorHandler(error: unknown) {
   }
 
   return JSON.stringify(error);
-}
-
-export function getScrollBarWidth() {
-  return window.innerWidth - document.documentElement.clientWidth;
 }

@@ -153,6 +153,7 @@ export default function SectionLanding({
                 style={{ color: "var(--fg-muted)" }}
               />
               <input
+                aria-label="Search posts"
                 className="w-full bg-transparent text-sm focus:outline-none"
                 placeholder="Search posts..."
                 style={{ color: "var(--fg-primary)" }}
