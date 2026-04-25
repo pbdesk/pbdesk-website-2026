@@ -6,15 +6,16 @@ import { ToasterProvider } from "@/lib/providers/toaster";
 
 const onest = Onest({
   subsets: ["latin"],
+  variable: "--font-onest",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Demo AIStarterKit OSS - Next.js AI Starter Kit Demo",
-    template: "%s | AIStarterKit OSS Demo",
+    default: "PBDesk — Bits, Bites & Blog",
+    template: "%s | PBDesk",
   },
   description:
-    "Demo website of AIStarterKit OSS boilerplate. Built using Next.js, Tailwind CSS, Drizzle ORM, and PostgreSQL.",
+    "From the desk of Pinal Bhatt — a space where code meets wellness. Bits (dev & AI), Bites (fitness & mindfulness), Blog (long-form reflections).",
 };
 
 export default function RootLayout({
@@ -24,9 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`flex min-h-screen flex-col bg-gray-50 dark:bg-dark-secondary ${onest.className}`}
-      >
+      <body className={`flex min-h-screen flex-col ${onest.variable}`}>
         <ThemeProvider disableTransitionOnChange>
           {/* ToasterProvider must render before the children components */}
           {/* https://github.com/emilkowalski/sonner/issues/168#issuecomment-1773734618 */}

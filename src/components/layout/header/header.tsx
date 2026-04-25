@@ -1,12 +1,37 @@
 "use client";
+import {
+  IconBrandGithubFilled,
+  IconBrandLinkedinFilled,
+  IconBrandX,
+} from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CloseIcon, MenuIcon } from "@/icons/icons";
-import DesktopNav from "./desktop-nav";
-import MainMobileNav from "./main-mobile-nav";
 import ThemeToggle from "./theme-toggle";
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Bits", href: "/bits" },
+  { label: "Bites", href: "/bites" },
+  { label: "Blog", href: "/blog" },
+  { label: "About", href: "/about" },
+];
+
+const socials = [
+  {
+    label: "GitHub",
+    href: "https://github.com/pinalbhatt",
+    icon: IconBrandGithubFilled,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/pinalbhatt",
+    icon: IconBrandLinkedinFilled,
+  },
+  { label: "X", href: "https://x.com/pbdesk", icon: IconBrandX },
+];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,63 +42,150 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 border-gray-100 border-b bg-white py-2 lg:py-4 dark:border-gray-800 dark:bg-dark-primary">
-      <div className="px-4 sm:px-6 lg:px-7">
-        <div className="grid grid-cols-2 items-center lg:grid-cols-[1fr_auto_1fr]">
-          <div className="flex items-center">
-            <Link className="flex items-end gap-2" href="/">
-              <Image
-                alt="AiStarterKit Logo"
-                className="block dark:hidden"
-                height={80}
-                src="/pb/PBDesk-logo-light.png"
-                width={294}
-              />
+    <header
+      className="header-bg sticky top-0 z-50 border-b backdrop-blur-md"
+      style={{ borderColor: "var(--border-subtle)" }}
+    >
+      <div className="mx-auto max-w-7xl px-5 sm:px-7">
+        <div className="flex h-20 items-center justify-between gap-6">
+          {/* Logo + wordmark */}
+          <Link className="flex items-center gap-3" href="/">
+            <Image
+              alt="Pinal Bhatt"
+              className="rounded-full"
+              height={44}
+              src="/pb/pb1.jpg"
+              width={44}
+            />
+            <div className="flex flex-col">
+              <span className="brand-wordmark">
+                <span className="pb-mark">PB</span>
+                <span style={{ color: "var(--fg-primary)" }}>Desk</span>
+              </span>
+              <span className="brand-tagline">
+                from the desk of Pinal Bhatt
+              </span>
+            </div>
+          </Link>
 
-              <Image
-                alt="AiStarterKit Logo"
-                className="hidden dark:block"
-                height={80}
-                src="/pb/PBDesk-logo-dark.png"
-                width={294}
-              />
-            </Link>
-          </div>
+          {/* Center nav (desktop) */}
+          <nav className="hidden items-center gap-8 lg:flex">
+            {navItems.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
+              return (
+                <Link
+                  className="relative py-2 font-medium text-sm transition-colors"
+                  href={item.href}
+                  key={item.href}
+                  style={{
+                    color: isActive
+                      ? "var(--fg-primary)"
+                      : "var(--fg-secondary)",
+                  }}
+                >
+                  {item.label}
+                  {isActive ? (
+                    <span
+                      className="absolute right-0 bottom-0 left-0 h-0.5 rounded-full"
+                      style={{ background: "var(--fg-brand)" }}
+                    />
+                  ) : null}
+                </Link>
+              );
+            })}
+          </nav>
 
-          <DesktopNav />
+          {/* Right: socials + theme toggle */}
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-1 md:flex">
+              {socials.map(({ label, href, icon: Icon }) => (
+                <a
+                  className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  href={href}
+                  key={label}
+                  rel="noopener"
+                  style={{ color: "var(--fg-secondary)" }}
+                  target="_blank"
+                >
+                  <Icon size={18} />
+                  <span className="sr-only">{label}</span>
+                </a>
+              ))}
+            </div>
 
-          <div className="flex items-center gap-4 justify-self-end">
             <ThemeToggle />
 
             <button
-              className="order-last inline-flex shrink-0 items-center justify-center rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset lg:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+              aria-label="Toggle menu"
+              className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-full lg:hidden"
               onClick={(e) => {
                 e.stopPropagation();
                 setMobileMenuOpen(!mobileMenuOpen);
               }}
+              style={{ color: "var(--fg-secondary)" }}
               type="button"
             >
               {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
             </button>
-
-            {/* <Link
-              className="hidden font-medium text-gray-700 text-sm hover:text-primary-500 lg:block dark:text-gray-400"
-              href="/signin"
-            >
-              Sign In
-            </Link>
-
-            <Link
-              className="gradient-btn button-bg hidden h-11 items-center rounded-full px-5 py-3 text-sm text-white lg:inline-flex"
-              href="/signup"
-            >
-              Get Started Free
-            </Link> */}
           </div>
         </div>
       </div>
 
-      <MainMobileNav isOpen={mobileMenuOpen} />
+      {/* Mobile nav */}
+      {mobileMenuOpen ? (
+        <nav
+          className="border-t lg:hidden"
+          style={{
+            background: "var(--bg-page)",
+            borderColor: "var(--border-subtle)",
+          }}
+        >
+          <div className="mx-auto max-w-7xl px-5 py-4 sm:px-7">
+            <div className="flex flex-col gap-1">
+              {navItems.map((item) => {
+                const isActive =
+                  item.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(item.href);
+                return (
+                  <Link
+                    className="rounded-md px-3 py-2 font-medium text-sm transition-colors"
+                    href={item.href}
+                    key={item.href}
+                    style={{
+                      background: isActive ? "var(--bg-subtle)" : "transparent",
+                      color: isActive ? "var(--fg-brand)" : "var(--fg-primary)",
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+            <div
+              className="mt-4 flex items-center gap-2 border-t pt-4"
+              style={{ borderColor: "var(--border-subtle)" }}
+            >
+              {socials.map(({ label, href, icon: Icon }) => (
+                <a
+                  className="flex h-9 w-9 items-center justify-center rounded-full"
+                  href={href}
+                  key={label}
+                  rel="noopener"
+                  style={{ color: "var(--fg-secondary)" }}
+                  target="_blank"
+                >
+                  <Icon size={18} />
+                  <span className="sr-only">{label}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </nav>
+      ) : null}
     </header>
   );
 }
