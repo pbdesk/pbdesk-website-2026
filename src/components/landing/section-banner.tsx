@@ -30,22 +30,18 @@ export default function SectionBanner({
           {/* Left: title + subtitle + bar + pill */}
           <div>
             <h1
-              className="font-bold"
+              className="font-bold text-[var(--fg-primary)]"
               style={{
                 fontSize: "clamp(72px, 10vw, 144px)",
                 lineHeight: 0.95,
                 letterSpacing: "-0.04em",
-                color: "var(--fg-primary)",
               }}
             >
               {title}
             </h1>
             <p
-              className="mt-4 text-lg sm:text-xl"
-              style={{
-                color: "var(--fg-secondary)",
-                letterSpacing: "0.02em",
-              }}
+              className="mt-4 text-[var(--fg-secondary)] text-lg sm:text-xl"
+              style={{ letterSpacing: "0.02em" }}
             >
               {subtitle}
             </p>
@@ -65,12 +61,10 @@ export default function SectionBanner({
             {/* Pill */}
             <div className="mt-8">
               <span
-                className="inline-flex items-center gap-2 rounded-full px-4 py-2 font-semibold text-sm"
+                className="inline-flex items-center gap-2 rounded-full bg-[var(--bg-elevated)] px-4 py-2 font-semibold text-sm shadow-[var(--shadow-sm)]"
                 style={{
-                  background: "var(--bg-elevated)",
                   color: accentColor,
                   border: `1px solid ${accentColor}33`,
-                  boxShadow: "var(--shadow-sm)",
                 }}
               >
                 {pillIcon}
@@ -82,21 +76,13 @@ export default function SectionBanner({
           {/* Right: big icon tile */}
           <div className="relative flex items-center justify-center">
             <div
-              className={`${tileGradient} relative flex h-44 w-44 items-center justify-center rounded-3xl sm:h-56 sm:w-56`}
-              style={{ boxShadow: "var(--shadow-xl)" }}
+              className={`${tileGradient} relative flex h-44 w-44 items-center justify-center rounded-3xl shadow-[var(--shadow-xl)] sm:h-56 sm:w-56`}
             >
               <div className="text-white">{bigIcon}</div>
             </div>
 
             {/* Tag */}
-            <span
-              className="absolute top-1/2 right-0 hidden -translate-y-1/2 rounded-full border bg-white px-3 py-1 font-semibold text-xs lg:inline-flex dark:bg-zinc-900"
-              style={{
-                borderColor: "var(--border-subtle)",
-                color: "var(--fg-primary)",
-                boxShadow: "var(--shadow-md)",
-              }}
-            >
+            <span className="absolute top-1/2 right-0 hidden -translate-y-1/2 rounded-full border border-[var(--border-subtle)] bg-white px-3 py-1 font-semibold text-[var(--fg-primary)] text-xs shadow-[var(--shadow-md)] lg:inline-flex dark:bg-zinc-900">
               {bannerLabel}
             </span>
           </div>

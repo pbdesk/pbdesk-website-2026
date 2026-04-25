@@ -17,14 +17,7 @@ interface PostCardProps {
 
 export default function PostCard({ post, accentColor }: PostCardProps) {
   return (
-    <article
-      className="overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
-      style={{
-        background: "var(--bg-elevated)",
-        borderColor: "var(--border-subtle)",
-        boxShadow: "var(--shadow-sm)",
-      }}
-    >
+    <article className="overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
       {/* Banner */}
       <div
         className={`${post.gradient} relative flex items-center justify-center px-6 py-12`}
@@ -53,24 +46,20 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
           >
             {post.category}
           </span>
-          <span style={{ color: "var(--fg-muted)" }}>·</span>
-          <span style={{ color: "var(--fg-muted)" }}>
+          <span className="text-[var(--fg-muted)]">·</span>
+          <span className="text-[var(--fg-muted)]">
             {post.tags.map((t) => `#${t}`).join(" ")}
           </span>
         </div>
         <h4
-          className="mb-3 font-bold text-lg"
-          style={{
-            color: "var(--fg-primary)",
-            lineHeight: 1.25,
-            letterSpacing: "-0.01em",
-          }}
+          className="mb-3 font-bold text-[var(--fg-primary)] text-lg"
+          style={{ lineHeight: 1.25, letterSpacing: "-0.01em" }}
         >
           {post.title}
         </h4>
         <p
-          className="mb-5 text-sm"
-          style={{ color: "var(--fg-secondary)", lineHeight: 1.6 }}
+          className="mb-5 text-[var(--fg-secondary)] text-sm"
+          style={{ lineHeight: 1.6 }}
         >
           {post.description}
         </p>
@@ -82,10 +71,7 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
           >
             Read More <span aria-hidden="true">→</span>
           </a>
-          <span
-            className="inline-flex items-center gap-1 text-xs"
-            style={{ color: "var(--fg-muted)" }}
-          >
+          <span className="inline-flex items-center gap-1 text-[var(--fg-muted)] text-xs">
             <IconClock size={12} stroke={2} />
             {post.readTime}
           </span>
