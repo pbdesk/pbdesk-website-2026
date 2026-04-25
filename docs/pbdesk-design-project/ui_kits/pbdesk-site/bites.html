@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bites — PBDesk | Wellness, Fitness &amp; Holistic Health</title>
+  <meta name="description" content="Thoughts, articles, and resources on fitness, mental well-being, and holistic health — from the desk of Pinal Bhatt." />
+  <link rel="icon" href="../../assets/favicon-32.png" />
+  <link rel="stylesheet" href="../../colors_and_type.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="section.css?v=2" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="../../tweaks-panel.jsx"></script>
+  <script type="text/babel" src="section-chrome.jsx"></script>
+  <script type="text/babel">
+    const { useState, useMemo, useEffect } = React;
+
+    const BITES_POSTS = [
+      { cat: 'Wellness', labels: ['Health'], date: 'Apr 20, 2025', time: '6 min read',
+        title: 'My Wellness Guru — Luke Coutinho',
+        dek: 'Luke Coutinho is an Indian wellness expert, author, and entrepreneur known for his work in holistic healing, nutrition, and lifestyle coaching.',
+        thumb: { bg: 'linear-gradient(135deg,#065F46 0%,#10B981 60%,#34D399 100%)', label: 'Luke Coutinho' } },
+      { cat: 'Health', labels: ['Yoga'], date: 'Apr 12, 2025', time: '5 min read',
+        title: 'My Wellness Guru — Saurabh Bothra',
+        dek: 'Saurabh Bothra, founder of Habuild.in, is a habit-building yoga trainer and wellness guru dedicated to transforming lives through daily practice.',
+        thumb: { bg: 'linear-gradient(135deg,#7C2D12 0%,#EA580C 60%,#F59E0B 100%)', label: 'Saurabh Bothra' } },
+      { cat: 'Fitness', labels: ['Exercise'], date: 'Apr 04, 2025', time: '4 min read',
+        title: '30 Minute Walking Exercise',
+        dek: '30 Minute Walking Exercise from Walk At Home, a leading fitness walking program created by Leslie Sansone.',
+        thumb: { bg: 'linear-gradient(135deg,#0EA5E9 0%,#0369A1 60%,#1E3A8A 100%)', label: '30 Min Walk' } },
+      { cat: 'Wellness', labels: ['Nutrition'], date: 'Mar 26, 2025', time: '7 min read',
+        title: 'Cellular Nutrition 101',
+        dek: 'Why nourishing the body at the cellular level is the quiet superpower behind lasting energy.',
+        thumb: { bg: 'linear-gradient(135deg,#14532D 0%,#65A30D 60%,#A3E635 100%)', label: 'Cellular Nutrition' } },
+      { cat: 'Health', labels: ['Sleep'], date: 'Mar 18, 2025', time: '5 min read',
+        title: 'Quality Sleep — The Repair Window',
+        dek: 'Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity, every night.',
+        thumb: { bg: 'linear-gradient(135deg,#1E1B4B 0%,#4338CA 60%,#818CF8 100%)', label: 'Quality Sleep' } },
+      { cat: 'Fitness', labels: ['Yoga'], date: 'Mar 10, 2025', time: '4 min read',
+        title: 'Surya Namaskar — A Daily Practice',
+        dek: 'Twelve postures, one flow. The full-body warm-up that has stood the test of millennia.',
+        thumb: { bg: 'linear-gradient(135deg,#B45309 0%,#F59E0B 60%,#FBBF24 100%)', label: 'Surya Namaskar' } },
+      { cat: 'Wellness', labels: ['Mind'], date: 'Mar 02, 2025', time: '6 min read',
+        title: 'Emotional Wellness for Developers',
+        dek: 'Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, and the occasional emotional detox.',
+        thumb: { bg: 'linear-gradient(135deg,#581C87 0%,#7C3AED 60%,#A78BFA 100%)', label: 'Emotional Wellness' } },
+    ];
+
+    function BitesApp() {
+      const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+        "dark": false,
+        "accent": "emerald"
+      }/*EDITMODE-END*/;
+      const [tweaks, setKey] = useTweaks(TWEAK_DEFAULTS);
+      const [filter, setFilter] = useState('All');
+      const [query, setQuery] = useState('');
+
+      useEffect(() => {
+        document.documentElement.classList.toggle('dark', !!tweaks.dark);
+      }, [tweaks.dark]);
+
+      useEffect(() => {
+        const a = ACCENTS[tweaks.accent] || ACCENTS.emerald;
+        const r = document.documentElement.style;
+        r.setProperty('--brand-600', a.b6);
+        r.setProperty('--brand-700', a.b7);
+        r.setProperty('--brand-400', a.b4);
+        r.setProperty('--accent-500', a.a5);
+      }, [tweaks.accent]);
+
+      const filters = useMemo(() => {
+        const counts = { All: BITES_POSTS.length };
+        BITES_POSTS.forEach(p => { counts[p.cat] = (counts[p.cat] || 0) + 1; });
+        return Object.entries(counts).map(([k, v]) => ({ label: k, value: k, count: v }));
+      }, []);
+
+      const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        return BITES_POSTS.filter(p =>
+          (filter === 'All' || p.cat === filter) &&
+          (!q || p.title.toLowerCase().includes(q) || p.dek.toLowerCase().includes(q) ||
+            (p.labels || []).some(l => l.toLowerCase().includes(q)))
+        );
+      }, [filter, query]);
+
+      return (
+        <>
+          <Nav active="bites" dark={tweaks.dark} />
+          <main>
+            <section className="sec-hero">
+              <div className="container">
+                <div className="sec-hero-banner">
+                  <img className="light-only" src="../../assets/bites-banner-light.png?v=2" alt="Bites — Wellness · Fitness · Mind · Food" />
+                  <img className="dark-only" src="../../assets/bites-banner-dark.png?v=2" alt="Bites — Wellness · Fitness · Mind · Food" />
+                </div>
+                <div className="sec-intro">
+                  <div className="breadcrumb">
+                    <a href="../../index.html">PBDesk</a>
+                    <span className="sep">/</span>
+                    <span>Bites</span>
+                  </div>
+                  <h1>My <span className="accent">Bites</span></h1>
+                  <p>
+                    A healthy, active life is the greatest gift we can give ourselves — and our loved ones.
+                    In this space, I share thoughts, articles, and resources on fitness, mental well-being,
+                    and holistic health. From effective workout routines and nutrition tips to mindfulness
+                    practices and the science of longevity, I explore how small, consistent choices lead to
+                    lasting vitality. Because when we take care of our bodies and minds, we show up stronger.
+                  </p>
+                  <div className="sec-meta-row">
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Stack size={16} /></span>
+                      <span><strong>{BITES_POSTS.length}</strong> posts</span>
+                    </span>
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Tag size={16} /></span>
+                      <span><strong>{filters.length - 1}</strong> categories</span>
+                    </span>
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Sparkles size={16} /></span>
+                      <span>Updated <strong>weekly</strong></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="section-posts">
+              <div className="container">
+                <FilterBar
+                  filters={filters}
+                  active={filter}
+                  onChange={setFilter}
+                  query={query}
+                  setQuery={setQuery}
+                />
+                <div className={`posts-grid ${filter === 'All' && !query ? 'featured-first' : ''}`}>
+                  {filtered.map((p, i) => <PostCard key={i} post={p} />)}
+                </div>
+                {filtered.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '64px 0', color: 'var(--fg-muted)' }}>
+                    No posts match your search. Try a different keyword.
+                  </div>
+                )}
+                <div className="section-loadmore">
+                  <button className="btn btn-secondary btn-lg">View All Bites <SI.ArrowRight size={16} /></button>
+                </div>
+              </div>
+            </section>
+
+            <Newsletter section="Bites" />
+          </main>
+          <Footer dark={tweaks.dark} />
+          <TweaksPanel>
+            <TweakSection title="Theme">
+              <TweakToggle label="Dark mode" value={tweaks.dark} onChange={v => setKey('dark', v)} />
+            </TweakSection>
+            <TweakSection title="Brand accent">
+              <TweakRadio value={tweaks.accent} onChange={v => setKey('accent', v)}
+                options={[
+                  { label: 'Emerald (default)', value: 'emerald' },
+                  { label: 'Indigo',             value: 'violet' },
+                  { label: 'Cyan',               value: 'cyan' },
+                  { label: 'Rose',               value: 'rose' },
+                ]}/>
+            </TweakSection>
+          </TweaksPanel>
+        </>
+      );
+    }
+
+    const ACCENTS = {
+      violet:  { b6:'#2563EB', b7:'#1D4ED8', b4:'#60A5FA', a5:'#0EA5E9' },
+      cyan:    { b6:'#0891B2', b7:'#0E7490', b4:'#22D3EE', a5:'#3B82F6' },
+      emerald: { b6:'#059669', b7:'#047857', b4:'#34D399', a5:'#0EA5E9' },
+      rose:    { b6:'#E11D48', b7:'#BE123C', b4:'#FB7185', a5:'#F59E0B' },
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<BitesApp />);
+  </script>
+</body>
+</html>

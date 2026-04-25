@@ -8,14 +8,7 @@ interface FeaturedPostProps {
 
 export default function FeaturedPost({ post, accentColor }: FeaturedPostProps) {
   return (
-    <article
-      className="flex h-full flex-col overflow-hidden rounded-2xl border"
-      style={{
-        background: "var(--bg-elevated)",
-        borderColor: "var(--border-subtle)",
-        boxShadow: "var(--shadow-sm)",
-      }}
-    >
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)]">
       <div
         className={`${post.gradient} relative flex flex-1 items-center justify-center px-8 py-24 sm:py-32`}
       >
@@ -40,24 +33,20 @@ export default function FeaturedPost({ post, accentColor }: FeaturedPostProps) {
           >
             {post.category}
           </span>
-          <span style={{ color: "var(--fg-muted)" }}>·</span>
-          <span style={{ color: "var(--fg-muted)" }}>
+          <span className="text-[var(--fg-muted)]">·</span>
+          <span className="text-[var(--fg-muted)]">
             {post.tags.map((t) => `#${t}`).join(" ")}
           </span>
         </div>
         <h3
-          className="mb-3 font-bold text-2xl"
-          style={{
-            color: "var(--fg-primary)",
-            lineHeight: 1.2,
-            letterSpacing: "-0.01em",
-          }}
+          className="mb-3 font-bold text-2xl text-[var(--fg-primary)]"
+          style={{ lineHeight: 1.2, letterSpacing: "-0.01em" }}
         >
           {post.title}
         </h3>
         <p
-          className="mb-5 text-base"
-          style={{ color: "var(--fg-secondary)", lineHeight: 1.65 }}
+          className="mb-5 text-[var(--fg-secondary)] text-base"
+          style={{ lineHeight: 1.65 }}
         >
           {post.description}
         </p>
@@ -69,10 +58,7 @@ export default function FeaturedPost({ post, accentColor }: FeaturedPostProps) {
           >
             Read More <span aria-hidden="true">→</span>
           </a>
-          <span
-            className="inline-flex items-center gap-1 text-xs"
-            style={{ color: "var(--fg-muted)" }}
-          >
+          <span className="inline-flex items-center gap-1 text-[var(--fg-muted)] text-xs">
             <IconClock size={12} stroke={2} />
             {post.readTime}
           </span>

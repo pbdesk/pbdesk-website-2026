@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const pillars = [
   {
@@ -35,19 +36,13 @@ export default function Pillars() {
     <section className="py-20 sm:py-24">
       <div className="wrapper">
         <div className="mb-14 text-center">
-          <p
-            className="mb-3 font-semibold text-xs uppercase tracking-widest"
-            style={{ color: "var(--fg-brand)" }}
-          >
-            What I write about
-          </p>
+          <Eyebrow className="mb-3 block">What I write about</Eyebrow>
           <h2
-            className="font-bold"
+            className="font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(32px, 4vw, 52px)",
               lineHeight: 1.1,
               letterSpacing: "-0.025em",
-              color: "var(--fg-primary)",
             }}
           >
             Three lanes, one desk.
@@ -57,39 +52,25 @@ export default function Pillars() {
         <div className="grid gap-6 lg:grid-cols-3">
           {pillars.map((pillar) => (
             <Link
-              className="group flex flex-col overflow-hidden rounded-2xl border transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+              className="group flex flex-col overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
               href={pillar.href}
               key={pillar.name}
-              style={{
-                background: "var(--bg-elevated)",
-                borderColor: "var(--border-subtle)",
-                boxShadow: "var(--shadow-sm)",
-              }}
             >
               <div
                 aria-hidden="true"
                 className={`${pillar.gradient} h-44 w-full`}
               />
               <div className="flex flex-1 flex-col p-7">
-                <h3
-                  className="mb-3 font-bold text-xl"
-                  style={{ color: "var(--fg-primary)" }}
-                >
+                <h3 className="mb-3 font-bold text-[var(--fg-primary)] text-xl">
                   {pillar.title}
                 </h3>
                 <p
-                  className="mb-6 flex-1 text-sm"
-                  style={{
-                    color: "var(--fg-secondary)",
-                    lineHeight: 1.65,
-                  }}
+                  className="mb-6 flex-1 text-[var(--fg-secondary)] text-sm"
+                  style={{ lineHeight: 1.65 }}
                 >
                   {pillar.description}
                 </p>
-                <span
-                  className="inline-flex items-center gap-1.5 font-semibold text-sm"
-                  style={{ color: "var(--fg-brand)" }}
-                >
+                <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--fg-brand)] text-sm">
                   {pillar.cta} <span aria-hidden="true">→</span>
                 </span>
               </div>

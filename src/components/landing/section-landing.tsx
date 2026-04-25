@@ -64,39 +64,32 @@ export default function SectionLanding({
       {/* Breadcrumb + intro */}
       <section className="py-12">
         <div className="wrapper">
-          <nav
-            className="mb-5 flex items-center justify-center gap-2 text-sm"
-            style={{ color: "var(--fg-muted)" }}
-          >
-            <span style={{ color: "var(--fg-secondary)" }}>PBDesk</span>
+          <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
+            <span className="text-[var(--fg-secondary)]">PBDesk</span>
             <span>/</span>
-            <span style={{ color: "var(--fg-primary)" }}>{title}</span>
+            <span className="text-[var(--fg-primary)]">{title}</span>
           </nav>
 
           <h2
-            className="mb-8 text-center font-bold"
+            className="mb-8 text-center font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(48px, 6vw, 80px)",
               lineHeight: 1.05,
               letterSpacing: "-0.03em",
-              color: "var(--fg-primary)",
             }}
           >
             My <span style={{ color: accentColor }}>{title}</span>
           </h2>
 
           <p
-            className="mx-auto max-w-3xl text-center text-base sm:text-lg"
-            style={{ color: "var(--fg-secondary)", lineHeight: 1.7 }}
+            className="mx-auto max-w-3xl text-center text-[var(--fg-secondary)] text-base sm:text-lg"
+            style={{ lineHeight: 1.7 }}
           >
             {description}
           </p>
 
           {/* Meta row */}
-          <div
-            className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-t pt-10"
-            style={{ borderColor: "var(--border-subtle)" }}
-          >
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10">
             <MetaItem
               accentColor={accentColor}
               icon={<IconLayersIntersect size={18} stroke={1.75} />}
@@ -140,22 +133,16 @@ export default function SectionLanding({
                 />
               ))}
             </div>
-            <div
-              className="flex items-center gap-2 rounded-full border px-4 py-2 sm:w-72"
-              style={{
-                background: "var(--bg-elevated)",
-                borderColor: "var(--border-subtle)",
-              }}
-            >
+            <div className="flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 py-2 sm:w-72">
               <IconSearch
+                className="text-[var(--fg-muted)]"
                 size={16}
                 stroke={2}
-                style={{ color: "var(--fg-muted)" }}
               />
               <input
-                className="w-full bg-transparent text-sm focus:outline-none"
+                aria-label="Search posts"
+                className="w-full bg-transparent text-[var(--fg-primary)] text-sm focus:outline-none"
                 placeholder="Search posts..."
-                style={{ color: "var(--fg-primary)" }}
                 type="search"
               />
             </div>
@@ -216,22 +203,19 @@ function MetaItem({
     <div className="flex items-center gap-3">
       <span
         className="flex h-9 w-9 items-center justify-center rounded-lg"
-        style={{
-          background: `${accentColor}1a`,
-          color: accentColor,
-        }}
+        style={{ background: `${accentColor}1a`, color: accentColor }}
       >
         {icon}
       </span>
-      <span className="text-sm" style={{ color: "var(--fg-secondary)" }}>
+      <span className="text-[var(--fg-secondary)] text-sm">
         {reverse ? (
           <>
             {value}{" "}
-            <strong style={{ color: "var(--fg-primary)" }}>{label}</strong>
+            <strong className="text-[var(--fg-primary)]">{label}</strong>
           </>
         ) : (
           <>
-            <strong style={{ color: "var(--fg-primary)" }}>{value}</strong>{" "}
+            <strong className="text-[var(--fg-primary)]">{value}</strong>{" "}
             {label}
           </>
         )}
@@ -262,9 +246,7 @@ function FilterChip({
       type="button"
     >
       {label}
-      <span className="text-xs" style={{ opacity: 0.75 }}>
-        {count}
-      </span>
+      <span className="text-xs opacity-75">{count}</span>
     </button>
   );
 }

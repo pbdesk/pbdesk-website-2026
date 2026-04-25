@@ -1,4 +1,6 @@
 import { IconBolt, IconHeart, IconPencil } from "@tabler/icons-react";
+import { Card } from "@/components/ui/card";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 const realms = [
   {
@@ -59,25 +61,16 @@ const tags = [
 
 export default function MyRealm() {
   return (
-    <section
-      className="py-20 sm:py-24"
-      style={{ background: "var(--bg-subtle)" }}
-    >
+    <section className="bg-[var(--bg-subtle)] py-20 sm:py-24">
       <div className="wrapper">
         <div className="mb-14 text-center">
-          <p
-            className="mb-3 font-semibold text-xs uppercase tracking-widest"
-            style={{ color: "var(--fg-brand)" }}
-          >
-            My realm
-          </p>
+          <Eyebrow className="mb-3 block">My realm</Eyebrow>
           <h2
-            className="mb-5 font-bold"
+            className="mb-5 font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(32px, 4vw, 52px)",
               lineHeight: 1.1,
               letterSpacing: "-0.025em",
-              color: "var(--fg-primary)",
             }}
           >
             Health, family, wellness,
@@ -85,8 +78,8 @@ export default function MyRealm() {
             and technology.
           </h2>
           <p
-            className="mx-auto max-w-2xl text-base"
-            style={{ color: "var(--fg-secondary)", lineHeight: 1.7 }}
+            className="mx-auto max-w-2xl text-[var(--fg-secondary)] text-base"
+            style={{ lineHeight: 1.7 }}
           >
             The four threads I weave through everything I write. Never one
             without the others.
@@ -96,30 +89,17 @@ export default function MyRealm() {
         {/* 4 realm cards */}
         <div className="mb-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {realms.map((realm) => (
-            <div
-              className="rounded-xl border p-6"
-              key={realm.title}
-              style={{
-                background: "var(--bg-elevated)",
-                borderColor: "var(--border-subtle)",
-              }}
-            >
-              <h3
-                className="mb-3 font-semibold text-base"
-                style={{ color: "var(--fg-primary)" }}
-              >
+            <Card className="rounded-xl p-6 shadow-none" key={realm.title}>
+              <h3 className="mb-3 font-semibold text-[var(--fg-primary)] text-base">
                 {realm.title}
               </h3>
               <p
-                className="text-sm"
-                style={{
-                  color: "var(--fg-secondary)",
-                  lineHeight: 1.65,
-                }}
+                className="text-[var(--fg-secondary)] text-sm"
+                style={{ lineHeight: 1.65 }}
               >
                 {realm.description}
               </p>
-            </div>
+            </Card>
           ))}
         </div>
 
@@ -128,39 +108,20 @@ export default function MyRealm() {
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
-              <div
-                className="rounded-xl border p-7"
-                key={feature.title}
-                style={{
-                  background: "var(--bg-elevated)",
-                  borderColor: "var(--border-subtle)",
-                }}
-              >
-                <div
-                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl"
-                  style={{
-                    background: "var(--color-brand-50)",
-                    color: "var(--fg-brand)",
-                  }}
-                >
+              <Card className="rounded-xl p-7 shadow-none" key={feature.title}>
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--fg-brand)]">
                   <Icon size={22} stroke={1.75} />
                 </div>
-                <h3
-                  className="mb-3 font-semibold text-lg"
-                  style={{ color: "var(--fg-primary)" }}
-                >
+                <h3 className="mb-3 font-semibold text-[var(--fg-primary)] text-lg">
                   {feature.title}
                 </h3>
                 <p
-                  className="text-sm"
-                  style={{
-                    color: "var(--fg-secondary)",
-                    lineHeight: 1.65,
-                  }}
+                  className="text-[var(--fg-secondary)] text-sm"
+                  style={{ lineHeight: 1.65 }}
                 >
                   {feature.description}
                 </p>
-              </div>
+              </Card>
             );
           })}
         </div>
@@ -169,18 +130,10 @@ export default function MyRealm() {
         <div className="flex flex-wrap items-center justify-center gap-3">
           {tags.map((tag) => (
             <span
-              className="inline-flex items-center gap-2 rounded-full border px-4 py-2 font-medium text-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 py-2 font-medium text-[var(--fg-secondary)] text-sm"
               key={tag}
-              style={{
-                background: "var(--bg-elevated)",
-                borderColor: "var(--border-subtle)",
-                color: "var(--fg-secondary)",
-              }}
             >
-              <span
-                className="h-1.5 w-1.5 rounded-full"
-                style={{ background: "var(--fg-brand)" }}
-              />
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--fg-brand)]" />
               {tag}
             </span>
           ))}

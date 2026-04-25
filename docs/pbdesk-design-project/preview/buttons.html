@@ -1,0 +1,79 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css?v=7">
+<style>
+body{margin:0;padding:28px;background:var(--bg-page);font-family:var(--font-sans);}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px;}
+.label{font-size:11px;color:var(--fg-muted);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:0 20px;height:44px;border-radius:9999px;
+  font-size:15px;font-weight:600;font-family:inherit;
+  cursor:pointer;border:1px solid transparent;
+  transition:all 180ms cubic-bezier(0.16,1,0.3,1);
+  white-space:nowrap;
+}
+.btn:active{transform:scale(0.97);}
+.btn-sm{height:36px;padding:0 14px;font-size:14px;}
+.btn-lg{height:52px;padding:0 26px;font-size:16px;}
+
+/* Primary — solid blue */
+.btn-primary{
+  background:var(--brand-600);color:white;
+  box-shadow:0 1px 2px rgb(37 99 235 / 0.25), inset 0 1px 0 rgb(255 255 255 / 0.15);
+}
+.btn-primary:hover{
+  background:var(--brand-700);
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgb(37 99 235 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.15);
+}
+
+/* Secondary — blue outlined, fills on hover */
+.btn-secondary{
+  background:transparent;color:var(--brand-600);
+  border-color:var(--brand-600);
+}
+.btn-secondary:hover{
+  background:var(--brand-600);color:white;
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgb(37 99 235 / 0.25);
+}
+
+/* Ghost — neutral */
+.btn-ghost{
+  background:transparent;color:var(--fg-primary);
+  border-color:var(--border-strong);
+}
+.btn-ghost:hover{
+  background:var(--bg-subtle);border-color:var(--fg-primary);
+  transform:translateY(-1px);
+}
+
+.arr{transition:transform 180ms ease;}
+.btn:hover .arr{transform:translateX(3px);}
+</style></head><body>
+
+<div class="label">Primary — hover lifts + glows</div>
+<div class="row">
+  <button class="btn btn-primary btn-sm">Subscribe <span class="arr">→</span></button>
+  <button class="btn btn-primary">Explore the Blog <span class="arr">→</span></button>
+  <button class="btn btn-primary btn-lg">Get Started Free</button>
+</div>
+
+<div class="label">Secondary — outlined, fills on hover</div>
+<div class="row">
+  <button class="btn btn-secondary btn-sm">Learn more</button>
+  <button class="btn btn-secondary">View all Bits <span class="arr">→</span></button>
+  <button class="btn btn-secondary btn-lg">Read Latest</button>
+</div>
+
+<div class="label">Ghost — neutral</div>
+<div class="row">
+  <button class="btn btn-ghost btn-sm">Cancel</button>
+  <button class="btn btn-ghost">Sign in</button>
+</div>
+
+<div class="label" style="margin-top:8px;color:var(--fg-secondary);text-transform:none;letter-spacing:0;font-family:inherit;">
+  Hover any button to see the transition: translateY(-1px), shadow deepens, arrow shifts 3px right.
+</div>
+
+</body></html>

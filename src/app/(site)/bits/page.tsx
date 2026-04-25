@@ -1,6 +1,7 @@
 import { IconCode, IconCodeDots } from "@tabler/icons-react";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
+import { pillarAccents } from "@/lib/pillars";
 
 const posts: Post[] = [
   {
@@ -89,8 +90,8 @@ const posts: Post[] = [
 export default function BitsPage() {
   return (
     <SectionLanding
-      accentColor="#4f46e5"
-      accentColor2="#0ea5e9"
+      accentColor={pillarAccents.bits.primary}
+      accentColor2={pillarAccents.bits.secondary}
       bannerLabel="Development"
       bigIcon={<IconCode size={88} stroke={1.5} />}
       cadence="weekly"

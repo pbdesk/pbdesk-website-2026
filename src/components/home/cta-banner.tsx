@@ -4,10 +4,7 @@ export default function CtaBanner() {
   return (
     <section className="py-12 sm:py-16">
       <div className="wrapper">
-        <div
-          className="newsletter-gradient relative overflow-hidden rounded-3xl px-8 py-16 text-center sm:px-12 sm:py-20"
-          style={{ boxShadow: "var(--shadow-xl)" }}
-        >
+        <div className="newsletter-gradient relative overflow-hidden rounded-3xl px-8 py-16 text-center shadow-[var(--shadow-xl)] sm:px-12 sm:py-20">
           <h2
             className="mb-5 font-bold text-white"
             style={{
@@ -20,11 +17,8 @@ export default function CtaBanner() {
           </h2>
 
           <p
-            className="mx-auto mb-10 max-w-xl text-base"
-            style={{
-              color: "rgb(199 210 254)",
-              lineHeight: 1.7,
-            }}
+            className="mx-auto mb-10 max-w-xl text-base text-indigo-200"
+            style={{ lineHeight: 1.7 }}
           >
             One email when something new lands on Bits, Bites, or Blog. No
             noise, no spam — just signal from my desk to yours.
@@ -40,8 +34,7 @@ export default function CtaBanner() {
               type="email"
             />
             <button
-              className="rounded-full px-6 py-3 font-semibold text-sm text-white transition-transform hover:-translate-y-0.5"
-              style={{ background: "var(--fg-brand)" }}
+              className="rounded-full bg-[var(--fg-brand)] px-6 py-3 font-semibold text-sm text-white transition-transform hover:-translate-y-0.5"
               type="submit"
             >
               Subscribe

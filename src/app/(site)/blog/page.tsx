@@ -1,6 +1,7 @@
 import { IconBook2, IconNotebook } from "@tabler/icons-react";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
+import { pillarAccents } from "@/lib/pillars";
 
 const posts: Post[] = [
   {
@@ -63,8 +64,8 @@ const posts: Post[] = [
 export default function BlogPage() {
   return (
     <SectionLanding
-      accentColor="#7c3aed"
-      accentColor2="#10b981"
+      accentColor={pillarAccents.blog.primary}
+      accentColor2={pillarAccents.blog.secondary}
       bannerLabel="Wellness"
       bigIcon={<IconBook2 size={88} stroke={1.5} />}
       cadence="weekly"

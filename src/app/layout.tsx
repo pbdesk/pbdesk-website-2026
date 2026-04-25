@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Onest } from "next/font/google";
+import { JetBrains_Mono, Onest } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { ToasterProvider } from "@/lib/providers/toaster";
@@ -7,6 +7,11 @@ import { ToasterProvider } from "@/lib/providers/toaster";
 const onest = Onest({
   subsets: ["latin"],
   variable: "--font-onest",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
@@ -25,8 +30,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`flex min-h-screen flex-col ${onest.variable}`}>
-        <ThemeProvider disableTransitionOnChange>
+      <body
+        className={`flex min-h-screen flex-col ${onest.variable} ${jetbrainsMono.variable}`}
+      >
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="system"
+          disableTransitionOnChange
+          enableSystem
+        >
           {/* ToasterProvider must render before the children components */}
           {/* https://github.com/emilkowalski/sonner/issues/168#issuecomment-1773734618 */}
           <ToasterProvider />

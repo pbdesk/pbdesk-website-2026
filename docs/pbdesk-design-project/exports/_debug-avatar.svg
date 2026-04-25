@@ -1,0 +1,137 @@
+<svg class="art" id="svg-bits-avatar" width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><defs>
+
+    
+    <pattern id="grid-light" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1.2" cy="1.2" r="1.2" fill="#D4D4D8"></circle>
+    </pattern>
+    <pattern id="grid-dark" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1.2" cy="1.2" r="1.2" fill="#27272A"></circle>
+    </pattern>
+
+    
+    <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35"></stop>
+      <stop offset="60%" stop-color="#3B82F6" stop-opacity="0.08"></stop>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"></stop>
+    </radialGradient>
+    <radialGradient id="glow-emerald" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.35"></stop>
+      <stop offset="60%" stop-color="#10B981" stop-opacity="0.08"></stop>
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0"></stop>
+    </radialGradient>
+    <radialGradient id="glow-violet" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.4"></stop>
+      <stop offset="60%" stop-color="#7C3AED" stop-opacity="0.08"></stop>
+      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"></stop>
+    </radialGradient>
+
+    
+    <linearGradient id="tile-blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"></stop>
+      <stop offset="100%" stop-color="#1D4ED8"></stop>
+    </linearGradient>
+    <linearGradient id="tile-emerald" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#34D399"></stop>
+      <stop offset="100%" stop-color="#059669"></stop>
+    </linearGradient>
+    <linearGradient id="tile-violet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8B5CF6"></stop>
+      <stop offset="100%" stop-color="#2563EB"></stop>
+    </linearGradient>
+
+    
+    <symbol id="bits-glyph" viewBox="-100 -100 200 200">
+      
+      <rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-blue)"></rect>
+      <rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"></rect>
+      
+      <g opacity="0.18" stroke="#fff" stroke-width="1">
+        <line x1="-90" y1="-30" x2="90" y2="-30"></line>
+        <line x1="-90" y1="30" x2="90" y2="30"></line>
+        <line x1="-30" y1="-90" x2="-30" y2="90"></line>
+        <line x1="30" y1="-90" x2="30" y2="90"></line>
+      </g>
+      
+      <g fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="-36,-26 -58,0 -36,26"></polyline>
+        <polyline points="36,-26 58,0 36,26"></polyline>
+        <line x1="14" y1="-30" x2="-14" y2="30"></line>
+      </g>
+      
+      <g transform="translate(52,-52)" fill="#FDE68A">
+        <path d="M0 -16 L4 -4 L16 0 L4 4 L0 16 L-4 4 L-16 0 L-4 -4 Z"></path>
+      </g>
+      <g transform="translate(-58,58)" fill="#7DD3FC">
+        <path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z"></path>
+      </g>
+    </symbol>
+
+    
+    <symbol id="bites-glyph" viewBox="-100 -100 200 200">
+      <rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-emerald)"></rect>
+      <rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"></rect>
+      
+      <g transform="translate(-6,-10)">
+        <path d="M-40 30 C -40 -20, 0 -50, 44 -44 C 48 0, 18 40, -34 38 Z" fill="#ECFDF5" opacity="0.95"></path>
+        <path d="M-34 30 C -10 -6, 18 -30, 42 -42" stroke="#059669" stroke-width="4" fill="none" stroke-linecap="round"></path>
+        <path d="M-18 18 L -6 6 M -2 22 L 10 10 M 14 26 L 24 16" stroke="#059669" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"></path>
+      </g>
+      
+      <g transform="translate(42,44)">
+        <circle r="14" fill="#F43F5E"></circle>
+        <path d="M-6 -1 L-2 -1 L0 -5 L3 4 L5 -1 L8 -1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+      </g>
+      
+      <circle cx="-58" cy="-52" r="5" fill="#FDE68A"></circle>
+      <circle cx="56" cy="-54" r="4" fill="#7DD3FC"></circle>
+    </symbol>
+
+    
+    <symbol id="blog-glyph" viewBox="-100 -100 200 200">
+      <rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-violet)"></rect>
+      <rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"></rect>
+      
+      <g transform="translate(0,6)">
+        
+        <path d="M-60 -30 C -44 -36, -8 -36, 0 -26 L 0 34 C -8 24, -44 24, -60 30 Z" fill="#F5F3FF" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"></path>
+        
+        <path d="M60 -30 C 44 -36, 8 -36, 0 -26 L 0 34 C 8 24, 44 24, 60 30 Z" fill="#EDE9FE" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"></path>
+        
+        <g stroke="#7C3AED" stroke-width="2.4" stroke-linecap="round" opacity="0.75">
+          <line x1="-50" y1="-18" x2="-14" y2="-18"></line>
+          <line x1="-50" y1="-8" x2="-20" y2="-8"></line>
+          <line x1="-50" y1="2" x2="-16" y2="2"></line>
+          <line x1="-50" y1="12" x2="-26" y2="12"></line>
+          <line x1="14" y1="-18" x2="50" y2="-18"></line>
+          <line x1="14" y1="-8" x2="44" y2="-8"></line>
+          <line x1="14" y1="2" x2="50" y2="2"></line>
+          <line x1="14" y1="12" x2="38" y2="12"></line>
+        </g>
+      </g>
+      
+      <path d="M-72 -60 Q 0 -88, 72 -60" fill="none" stroke="#FDE68A" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 8"></path>
+      
+      <g transform="translate(-72,-60)">
+        <circle r="9" fill="#60A5FA"></circle>
+        <text y="3" text-anchor="middle" font-family="JetBrains Mono" font-size="9" font-weight="700" fill="#0B0F17">&lt;/&gt;</text>
+      </g>
+      <g transform="translate(72,-60)">
+        <circle r="9" fill="#34D399"></circle>
+        <path d="M-4 2 C -4 -3, 0 -6, 4 -5 C 5 -1, 2 3, -3 3 Z" fill="#065F46"></path>
+      </g>
+    </symbol>
+
+    
+
+  </defs>
+      <defs>
+        <clipPath id="clip-bits-av"><circle cx="256" cy="256" r="256"></circle></clipPath>
+      </defs>
+      <g clip-path="url(#clip-bits-av)">
+        <rect width="512" height="512" fill="#0B0F17"></rect>
+        <rect width="512" height="512" fill="url(#grid-dark)"></rect>
+        <circle cx="256" cy="256" r="280" fill="url(#glow-blue)"></circle>
+        <g transform="translate(256,256) scale(2.0)"><use href="#bits-glyph"></use></g>
+      </g>
+      <circle cx="256" cy="256" r="254" fill="none" stroke="#2563EB" stroke-width="4"></circle>
+    </svg>

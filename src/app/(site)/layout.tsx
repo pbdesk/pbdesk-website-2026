@@ -7,7 +7,7 @@ export default function SiteLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-1 flex-col bg-[var(--bg-page)]">
+    <div className="flex flex-1 flex-col">
       <Header />
       <div className="isolate flex flex-1 flex-col">{children}</div>
       <Footer />
