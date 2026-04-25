@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bits — PBDesk | AI, Programming &amp; Software Development</title>
+  <meta name="description" content="Insights on AI, programming, and software development — from the desk of Pinal Bhatt." />
+  <link rel="icon" href="../../assets/favicon-32.png" />
+  <link rel="stylesheet" href="../../colors_and_type.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="section.css?v=2" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="../../tweaks-panel.jsx"></script>
+  <script type="text/babel" src="section-chrome.jsx"></script>
+  <script type="text/babel">
+    /* Bits landing page */
+    const { useState, useMemo, useEffect } = React;
+
+    const BITS_POSTS = [
+      { cat: 'Tool', labels: ['Browser'], date: 'Apr 22, 2025', time: '4 min read',
+        title: 'Arc Browser',
+        dek: 'Arc is a stunningly modern browser — fast, creative, and built to supercharge your productivity.',
+        thumb: { bg: 'linear-gradient(135deg,#0F172A 0%,#1E3A8A 60%,#3B82F6 100%)', label: 'Arc Browser' } },
+      { cat: 'Tool', labels: ['Browser'], date: 'Apr 18, 2025', time: '5 min read',
+        title: 'Microsoft Edge',
+        dek: 'Blazing fast, ultra-secure, and powered by AI — Microsoft Edge redefines the modern web experience.',
+        thumb: { bg: 'linear-gradient(135deg,#0EA5E9 0%,#0369A1 60%,#1E40AF 100%)', label: 'Microsoft Edge' } },
+      { cat: 'AI', labels: ['AIAgent'], date: 'Apr 14, 2025', time: '7 min read',
+        title: 'OpenAI ChatGPT: Key Milestones',
+        dek: 'Chronological overview of the significant releases and advancements in the ChatGPT series.',
+        thumb: { bg: 'linear-gradient(135deg,#10B981 0%,#047857 60%,#064E3B 100%)', label: 'ChatGPT Milestones' } },
+      { cat: 'Tool', labels: ['Extension', 'VSCode'], date: 'Apr 10, 2025', time: '4 min read',
+        title: 'VS Code Extension: GistPad',
+        dek: 'Manage your code snippets and developer notes using GitHub Gists and repositories.',
+        thumb: { bg: 'linear-gradient(135deg,#312E81 0%,#4F46E5 100%)', label: 'GistPad' } },
+      { cat: 'AI', labels: ['VibeCoding', 'VSCode'], date: 'Apr 06, 2025', time: '6 min read',
+        title: 'Which AI model to use with GitHub Copilot?',
+        dek: "Ever wondered which AI model is the best fit for your project? Here are some things to consider.",
+        thumb: { bg: 'linear-gradient(135deg,#7C3AED 0%,#A855F7 60%,#EC4899 100%)', label: 'Copilot Models' } },
+      { cat: 'AI', labels: ['WebApp', 'FullStack'], date: 'Apr 02, 2025', time: '5 min read',
+        title: 'Firebase Studio',
+        dek: 'Accelerate development lifecycle with AI agents. Build fullstack & mobile apps all in one place.',
+        thumb: { bg: 'linear-gradient(135deg,#B45309 0%,#F59E0B 100%)', label: 'Firebase Studio' } },
+      { cat: 'Tool', labels: ['VSCode', 'Extension'], date: 'Mar 28, 2025', time: '3 min read',
+        title: 'VS Code Extension: Swissknife',
+        dek: 'The developers swissknife. Do conversions and generations right out of VS Code.',
+        thumb: { bg: 'linear-gradient(135deg,#DC2626 0%,#991B1B 100%)', label: 'Swissknife' } },
+      { cat: 'AI', labels: ['AIAgent', 'VibeCoding'], date: 'Mar 24, 2025', time: '5 min read',
+        title: 'Build with bolt.new AI Agent',
+        dek: 'Unleash next-gen coding power with Bolt.new — your AI-infused, vibe-rich coding companion!',
+        thumb: { bg: 'linear-gradient(135deg,#0F172A 0%,#1E40AF 60%,#06B6D4 100%)', label: 'Bolt.new' } },
+      { cat: 'AI', labels: ['WebApp', 'VibeCoding'], date: 'Mar 20, 2025', time: '4 min read',
+        title: 'Great for AI vibe coding — lovable.dev',
+        dek: 'Lovable is your superhuman full stack engineer.',
+        thumb: { bg: 'linear-gradient(135deg,#EC4899 0%,#F43F5E 100%)', label: 'Lovable.dev' } },
+      { cat: 'Tutorial', labels: ['CSS', 'Frontend'], date: 'Mar 16, 2025', time: '6 min read',
+        title: 'Flexbox Froggy',
+        dek: 'A game for learning CSS flexbox. Fun and engaging way to master Flexbox.',
+        thumb: { bg: 'linear-gradient(135deg,#65A30D 0%,#16A34A 60%,#10B981 100%)', label: 'Flexbox Froggy' } },
+      { cat: 'Util', labels: ['Extension', 'VSCode'], date: 'Mar 12, 2025', time: '3 min read',
+        title: 'Peacock VS Code Extension',
+        dek: 'Peacock colors VS Code workspaces to help identify and distinguish them quickly and easily.',
+        thumb: { bg: 'linear-gradient(135deg,#0891B2 0%,#0E7490 60%,#155E75 100%)', label: 'Peacock' } },
+      { cat: 'Framework', labels: ['CSS', 'Tailwind'], date: 'Mar 08, 2025', time: '5 min read',
+        title: 'Tailwind CSS',
+        dek: 'Effortless styling, responsive, utility-first — Tailwind CSS turns your HTML into design magic.',
+        thumb: { bg: 'linear-gradient(135deg,#06B6D4 0%,#0891B2 60%,#0E7490 100%)', label: 'Tailwind CSS' } },
+      { cat: 'Util', labels: ['CSS', 'Tailwind'], date: 'Mar 04, 2025', time: '3 min read',
+        title: 'Tailwind Playground',
+        dek: "Online playground for Tailwind CSS that lets you use all its features directly in the browser.",
+        thumb: { bg: 'linear-gradient(135deg,#0EA5E9 0%,#06B6D4 100%)', label: 'TW Playground' } },
+      { cat: 'AI', labels: ['AIAgent'], date: 'Feb 28, 2025', time: '6 min read',
+        title: 'Introducing Jules: An Async Development Agent from Google',
+        dek: 'Meet Jules, a new AI agent from Google designed to help with software development tasks asynchronously.',
+        thumb: { bg: 'linear-gradient(135deg,#7C2D12 0%,#EA580C 60%,#F59E0B 100%)', label: 'Jules' } },
+    ];
+
+    function BitsApp() {
+      const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+        "dark": false,
+        "accent": "violet"
+      }/*EDITMODE-END*/;
+      const [tweaks, setKey] = useTweaks(TWEAK_DEFAULTS);
+      const [filter, setFilter] = useState('All');
+      const [query, setQuery] = useState('');
+
+      useEffect(() => {
+        document.documentElement.classList.toggle('dark', !!tweaks.dark);
+      }, [tweaks.dark]);
+
+      const filters = useMemo(() => {
+        const counts = { All: BITS_POSTS.length };
+        BITS_POSTS.forEach(p => { counts[p.cat] = (counts[p.cat] || 0) + 1; });
+        return Object.entries(counts).map(([k, v]) => ({ label: k, value: k, count: v }));
+      }, []);
+
+      const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        return BITS_POSTS.filter(p =>
+          (filter === 'All' || p.cat === filter) &&
+          (!q || p.title.toLowerCase().includes(q) || p.dek.toLowerCase().includes(q) ||
+            (p.labels || []).some(l => l.toLowerCase().includes(q)))
+        );
+      }, [filter, query]);
+
+      return (
+        <>
+          <Nav active="bits" dark={tweaks.dark} />
+          <main>
+            <section className="sec-hero">
+              <div className="container">
+                <div className="sec-hero-banner">
+                  <img className="light-only" src="../../assets/bits-banner-light.png?v=2" alt="Bits — AI · Code · Tools · Dev-life" />
+                  <img className="dark-only" src="../../assets/bits-banner-dark.png?v=2" alt="Bits — AI · Code · Tools · Dev-life" />
+                </div>
+                <div className="sec-intro">
+                  <div className="breadcrumb">
+                    <a href="../../index.html">PBDesk</a>
+                    <span className="sep">/</span>
+                    <span>Bits</span>
+                  </div>
+                  <h1>My <span className="accent">Bits</span></h1>
+                  <p>
+                    Welcome to my digital corner, where I share insights on the ever-evolving world of AI,
+                    programming, and software development. From the latest advancements in generative AI to
+                    cutting-edge developer tools and web design trends, I explore how technology shapes our
+                    digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing
+                    productivity hacks for coders — let's build, learn, and innovate together.
+                  </p>
+                  <div className="sec-meta-row">
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Stack size={16} /></span>
+                      <span><strong>{BITS_POSTS.length}</strong> posts</span>
+                    </span>
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Tag size={16} /></span>
+                      <span><strong>{filters.length - 1}</strong> categories</span>
+                    </span>
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Sparkles size={16} /></span>
+                      <span>Updated <strong>weekly</strong></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="section-posts">
+              <div className="container">
+                <FilterBar
+                  filters={filters}
+                  active={filter}
+                  onChange={setFilter}
+                  query={query}
+                  setQuery={setQuery}
+                />
+                <div className={`posts-grid ${filter === 'All' && !query ? 'featured-first' : ''}`}>
+                  {filtered.map((p, i) => <PostCard key={i} post={p} />)}
+                </div>
+                {filtered.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '64px 0', color: 'var(--fg-muted)' }}>
+                    No posts match your search. Try a different keyword.
+                  </div>
+                )}
+                <div className="section-loadmore">
+                  <button className="btn btn-secondary btn-lg">View All Bits <SI.ArrowRight size={16} /></button>
+                </div>
+              </div>
+            </section>
+
+            <Newsletter section="Bits" />
+          </main>
+          <Footer dark={tweaks.dark} />
+          <TweaksPanel>
+            <TweakSection title="Theme">
+              <TweakToggle label="Dark mode" value={tweaks.dark} onChange={v => setKey('dark', v)} />
+            </TweakSection>
+            <TweakSection title="Brand accent">
+              <TweakRadio value={tweaks.accent} onChange={v => setKey('accent', v)}
+                options={[
+                  { label: 'Indigo (default)', value: 'violet' },
+                  { label: 'Cyan',              value: 'cyan' },
+                  { label: 'Emerald',           value: 'emerald' },
+                  { label: 'Rose',              value: 'rose' },
+                ]}/>
+            </TweakSection>
+          </TweaksPanel>
+        </>
+      );
+    }
+
+    const ACCENTS = {
+      violet:  { b6:'#2563EB', b7:'#1D4ED8', b4:'#60A5FA', a5:'#0EA5E9' },
+      cyan:    { b6:'#0891B2', b7:'#0E7490', b4:'#22D3EE', a5:'#3B82F6' },
+      emerald: { b6:'#059669', b7:'#047857', b4:'#34D399', a5:'#0EA5E9' },
+      rose:    { b6:'#E11D48', b7:'#BE123C', b4:'#FB7185', a5:'#F59E0B' },
+    };
+    function ApplyAccent({ accent }) {
+      useEffect(() => {
+        const a = ACCENTS[accent] || ACCENTS.violet;
+        const r = document.documentElement.style;
+        r.setProperty('--brand-600', a.b6);
+        r.setProperty('--brand-700', a.b7);
+        r.setProperty('--brand-400', a.b4);
+        r.setProperty('--accent-500', a.a5);
+      }, [accent]);
+      return null;
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<BitsApp />);
+  </script>
+</body>
+</html>

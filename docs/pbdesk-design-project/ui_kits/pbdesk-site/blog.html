@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — PBDesk | Where Tech &amp; Wellness Meet</title>
+  <meta name="description" content="Reflections on technology, creativity, and well-being — from the desk of Pinal Bhatt." />
+  <link rel="icon" href="../../assets/favicon-32.png" />
+  <link rel="stylesheet" href="../../colors_and_type.css?v=7" />
+  <link rel="stylesheet" href="styles.css?v=7" />
+  <link rel="stylesheet" href="section.css?v=2" />
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="../../tweaks-panel.jsx"></script>
+  <script type="text/babel" src="section-chrome.jsx"></script>
+  <script type="text/babel">
+    const { useState, useMemo, useEffect } = React;
+
+    const BLOG_POSTS = [
+      { cat: 'Programming', labels: ['TypeScript'], date: 'Apr 22, 2025', time: '8 min read',
+        title: 'TypeScript: From JavaScript Superset to Go-Powered Powerhouse',
+        dek: 'Discover how TypeScript evolved from a JavaScript superset to a blazing-fast, Go-powered compiler shaping modern web development.',
+        thumb: { bg: 'linear-gradient(135deg,#1E40AF 0%,#3B82F6 60%,#60A5FA 100%)', label: 'TypeScript × Go' } },
+      { cat: 'Wellness', labels: ['Health'], date: 'Apr 14, 2025', time: '7 min read',
+        title: 'My Wellness Gurus',
+        dek: 'My two wellness gurus whom I follow — Saurabh Bothra & Luke Coutinho. What they taught me about showing up every day.',
+        thumb: { bg: 'linear-gradient(135deg,#581C87 0%,#7C3AED 60%,#D946EF 100%)', label: 'Wellness Gurus' } },
+      { cat: 'Article', labels: ['Family', 'Health'], date: 'Apr 02, 2025', time: '6 min read',
+        title: 'The best gift you can give your loved ones is by existing in good health!',
+        dek: 'The greatest gift to your loved ones is your good health — live fully, stay strong, and inspire others with your energy and happiness.',
+        thumb: { bg: 'linear-gradient(135deg,#9F1239 0%,#E11D48 60%,#FB7185 100%)', label: 'Good Health' } },
+      { cat: 'Tool', labels: ['VSCode', 'Extension'], date: 'Mar 22, 2025', time: '9 min read',
+        title: 'VS Code Extensions, I Use!',
+        dek: 'VS Code extensions enhance functionality, language support, and tools for better development. Here are the ones I reach for daily.',
+        thumb: { bg: 'linear-gradient(135deg,#0C4A6E 0%,#0EA5E9 60%,#38BDF8 100%)', label: 'VS Code Extensions' } },
+      { cat: 'Article', labels: ['Productivity'], date: 'Mar 08, 2025', time: '5 min read',
+        title: 'Balancing Tech Life with Physical Wellness',
+        dek: 'Twelve hours at a screen will not earn you the next decade. Small habits that protect your energy for the long run.',
+        thumb: { bg: 'linear-gradient(135deg,#065F46 0%,#10B981 60%,#34D399 100%)', label: 'Tech × Wellness' } },
+      { cat: 'Programming', labels: ['AI', 'WebApp'], date: 'Feb 24, 2025', time: '7 min read',
+        title: 'The AI-Augmented Engineer',
+        dek: 'How my workflow shifted in twelve months — what I delegate to AI, and what I still want to type with my own hands.',
+        thumb: { bg: 'linear-gradient(135deg,#312E81 0%,#6366F1 60%,#A855F7 100%)', label: 'AI-Augmented' } },
+    ];
+
+    function BlogApp() {
+      const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+        "dark": false,
+        "accent": "violet"
+      }/*EDITMODE-END*/;
+      const [tweaks, setKey] = useTweaks(TWEAK_DEFAULTS);
+      const [filter, setFilter] = useState('All');
+      const [query, setQuery] = useState('');
+
+      useEffect(() => {
+        document.documentElement.classList.toggle('dark', !!tweaks.dark);
+      }, [tweaks.dark]);
+
+      useEffect(() => {
+        const a = ACCENTS[tweaks.accent] || ACCENTS.violet;
+        const r = document.documentElement.style;
+        r.setProperty('--brand-600', a.b6);
+        r.setProperty('--brand-700', a.b7);
+        r.setProperty('--brand-400', a.b4);
+        r.setProperty('--accent-500', a.a5);
+      }, [tweaks.accent]);
+
+      const filters = useMemo(() => {
+        const counts = { All: BLOG_POSTS.length };
+        BLOG_POSTS.forEach(p => { counts[p.cat] = (counts[p.cat] || 0) + 1; });
+        return Object.entries(counts).map(([k, v]) => ({ label: k, value: k, count: v }));
+      }, []);
+
+      const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        return BLOG_POSTS.filter(p =>
+          (filter === 'All' || p.cat === filter) &&
+          (!q || p.title.toLowerCase().includes(q) || p.dek.toLowerCase().includes(q) ||
+            (p.labels || []).some(l => l.toLowerCase().includes(q)))
+        );
+      }, [filter, query]);
+
+      return (
+        <>
+          <Nav active="blog" dark={tweaks.dark} />
+          <main>
+            <section className="sec-hero">
+              <div className="container">
+                <div className="sec-hero-banner">
+                  <img className="light-only" src="../../assets/blog-banner-light.png?v=2" alt="Blog — Reflections · Tech × Wellness" />
+                  <img className="dark-only" src="../../assets/blog-banner-dark.png?v=2" alt="Blog — Reflections · Tech × Wellness" />
+                </div>
+                <div className="sec-intro">
+                  <div className="breadcrumb">
+                    <a href="../../index.html">PBDesk</a>
+                    <span className="sep">/</span>
+                    <span>Blog</span>
+                  </div>
+                  <h1>My <span className="accent">Blog</span></h1>
+                  <p>
+                    Welcome to my blog — a space where technology, creativity, and well-being connect.
+                    I share insights on software development, programming, AI, and the latest in tech,
+                    along with thoughts on health, wellness, fitness, and living a balanced life. From
+                    coding tips and emerging tech trends to mindfulness, movement, and personal growth,
+                    I explore how small choices shape both our digital and real worlds.
+                  </p>
+                  <div className="sec-meta-row">
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Stack size={16} /></span>
+                      <span><strong>{BLOG_POSTS.length}</strong> posts</span>
+                    </span>
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Tag size={16} /></span>
+                      <span><strong>{filters.length - 1}</strong> categories</span>
+                    </span>
+                    <span className="sec-meta">
+                      <span className="sec-meta-icon"><SI.Sparkles size={16} /></span>
+                      <span>Long-form, <strong>monthly</strong></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="section-posts">
+              <div className="container">
+                <FilterBar
+                  filters={filters}
+                  active={filter}
+                  onChange={setFilter}
+                  query={query}
+                  setQuery={setQuery}
+                />
+                <div className={`posts-grid ${filter === 'All' && !query ? 'featured-first' : ''}`}>
+                  {filtered.map((p, i) => <PostCard key={i} post={p} />)}
+                </div>
+                {filtered.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: '64px 0', color: 'var(--fg-muted)' }}>
+                    No posts match your search. Try a different keyword.
+                  </div>
+                )}
+                <div className="section-loadmore">
+                  <button className="btn btn-secondary btn-lg">View All Blog <SI.ArrowRight size={16} /></button>
+                </div>
+              </div>
+            </section>
+
+            <Newsletter section="Blog" />
+          </main>
+          <Footer dark={tweaks.dark} />
+          <TweaksPanel>
+            <TweakSection title="Theme">
+              <TweakToggle label="Dark mode" value={tweaks.dark} onChange={v => setKey('dark', v)} />
+            </TweakSection>
+            <TweakSection title="Brand accent">
+              <TweakRadio value={tweaks.accent} onChange={v => setKey('accent', v)}
+                options={[
+                  { label: 'Indigo (default)', value: 'violet' },
+                  { label: 'Cyan',              value: 'cyan' },
+                  { label: 'Emerald',           value: 'emerald' },
+                  { label: 'Rose',              value: 'rose' },
+                ]}/>
+            </TweakSection>
+          </TweaksPanel>
+        </>
+      );
+    }
+
+    const ACCENTS = {
+      violet:  { b6:'#2563EB', b7:'#1D4ED8', b4:'#60A5FA', a5:'#0EA5E9' },
+      cyan:    { b6:'#0891B2', b7:'#0E7490', b4:'#22D3EE', a5:'#3B82F6' },
+      emerald: { b6:'#059669', b7:'#047857', b4:'#34D399', a5:'#0EA5E9' },
+      rose:    { b6:'#E11D48', b7:'#BE123C', b4:'#FB7185', a5:'#F59E0B' },
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<BlogApp />);
+  </script>
+</body>
+</html>

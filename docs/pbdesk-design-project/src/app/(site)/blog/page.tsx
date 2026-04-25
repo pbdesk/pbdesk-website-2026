@@ -1,0 +1,87 @@
+import { IconBook2, IconNotebook } from "@tabler/icons-react";
+import type { Post } from "@/components/landing/post-card";
+import SectionLanding from "@/components/landing/section-landing";
+
+const posts: Post[] = [
+  {
+    title: "When Code Meets Calm",
+    category: "Reflections",
+    tags: ["Tech", "Wellness"],
+    description:
+      "A long-form essay on the surprising overlap between deep work, deep breathing, and shipping software that lasts.",
+    readTime: "8 min read",
+    gradient: "post-grad-violet",
+    featured: true,
+  },
+  {
+    title: "Three Pillars of a Sustainable Dev Life",
+    category: "Article",
+    tags: ["Career"],
+    description:
+      "How to build a software career that compounds — without burning out the body that powers it.",
+    readTime: "6 min read",
+    gradient: "post-grad-indigo",
+  },
+  {
+    title: "Why I Write",
+    category: "Reflections",
+    tags: ["Writing"],
+    description:
+      "On the practice of putting thoughts into the world — and why it makes me a better engineer.",
+    readTime: "4 min read",
+    gradient: "post-grad-rose",
+  },
+  {
+    title: "AI Tools I Actually Use Daily",
+    category: "Tool",
+    tags: ["AI", "Productivity"],
+    description:
+      "A curated rotation of AI tools that earn their place in my workflow, plus the ones I dropped.",
+    readTime: "7 min read",
+    gradient: "post-grad-blue",
+  },
+  {
+    title: "The Yoga of Debugging",
+    category: "Wellness",
+    tags: ["Mindfulness"],
+    description:
+      "Patience, breath, and beginner's mind — debugging hard problems with a wellness lens.",
+    readTime: "5 min read",
+    gradient: "post-grad-emerald",
+  },
+  {
+    title: "Programming Habits Worth Building",
+    category: "Programming",
+    tags: ["Habits"],
+    description:
+      "Tiny daily rituals — naming, testing, journaling — that compound into compound interest for your career.",
+    readTime: "6 min read",
+    gradient: "post-grad-amber",
+  },
+];
+
+export default function BlogPage() {
+  return (
+    <SectionLanding
+      accentColor="#7c3aed"
+      accentColor2="#10b981"
+      bannerLabel="Wellness"
+      bigIcon={<IconBook2 size={88} stroke={1.5} />}
+      cadence="weekly"
+      description="Welcome to my blog — a space where technology, creativity, and well-being connect. I share insights on software development, programming, AI, and the latest in tech, along with thoughts on health, wellness, fitness, and living a balanced life. From coding tips and emerging tech trends to mindfulness, movement, and personal growth, I explore how small choices shape both our digital and real worlds."
+      filters={[
+        { label: "Reflections", count: 2 },
+        { label: "Article", count: 1 },
+        { label: "Tool", count: 1 },
+        { label: "Wellness", count: 1 },
+        { label: "Programming", count: 1 },
+      ]}
+      pill="Reflections"
+      pillIcon={<IconNotebook size={14} stroke={2} />}
+      posts={posts}
+      subtitle="Reflections · Tech × Wellness"
+      tileGradient="post-grad-violet"
+      title="Blog"
+    />
+  );
+}

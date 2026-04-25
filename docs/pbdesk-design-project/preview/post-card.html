@@ -1,0 +1,145 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css?v=7">
+<style>
+body{margin:0;padding:32px;background:var(--bg-page);font-family:var(--font-sans);}
+.wrap{max-width:1400px;margin:0 auto;}
+.section-label{font-size:11px;color:var(--fg-muted);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.08em;margin:28px 0 14px;}
+.section-label:first-child{margin-top:0;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+
+/* ── Base card ───────────────────────────────────────── */
+.card{
+  border-radius:16px;
+  border:1px solid var(--border-subtle);
+  background:var(--bg-elevated);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  transition:transform 200ms cubic-bezier(0.16,1,0.3,1), box-shadow 200ms ease;
+  display:flex;flex-direction:column;
+}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.thumb{
+  aspect-ratio:16/10;
+  display:flex;align-items:center;justify-content:center;
+  color:white;font-weight:700;font-size:17px;letter-spacing:-0.01em;
+  position:relative;overflow:hidden;
+}
+.thumb::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.2), transparent 60%);
+  pointer-events:none;
+}
+.body{padding:18px 20px 20px;flex:1;display:flex;flex-direction:column;}
+.meta{
+  font-size:11px;font-weight:600;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--brand-600);margin-bottom:10px;
+}
+h3{font-size:16px;margin:0 0 8px;line-height:1.35;color:var(--fg-primary);}
+p{font-size:13px;line-height:1.55;color:var(--fg-secondary);margin:0 0 14px;}
+.foot{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;padding-top:12px;
+  border-top:1px solid var(--border-subtle);
+  font-size:12px;color:var(--fg-muted);font-family:var(--font-mono);
+}
+.foot .read{color:var(--brand-600);font-weight:600;font-family:var(--font-sans);}
+
+/* ── Thumb palettes (sober → vibrant) ───────────────── */
+/* Sober neutrals */
+.t-slate{background:linear-gradient(135deg,#475569,#1E293B);}
+.t-zinc{background:linear-gradient(135deg,#52525B,#18181B);}
+.t-stone{background:linear-gradient(135deg,#57534E,#292524);}
+.t-graphite{background:linear-gradient(160deg,#3F3F46,#09090B);}
+
+/* Muted brand tints */
+.t-navy{background:linear-gradient(135deg,#1E3A8A,#0B1437);}
+.t-deep-blue{background:linear-gradient(135deg,#1D4ED8,#1E3A8A);}
+.t-teal{background:linear-gradient(135deg,#0F766E,#134E4A);}
+.t-forest{background:linear-gradient(135deg,#166534,#14532D);}
+.t-plum{background:linear-gradient(135deg,#6B21A8,#3B0764);}
+.t-wine{background:linear-gradient(135deg,#881337,#4C0519);}
+
+/* Balanced mid-tones */
+.t-sky{background:linear-gradient(135deg,#0EA5E9,#0369A1);}
+.t-emerald{background:linear-gradient(135deg,#10B981,#047857);}
+.t-indigo{background:linear-gradient(135deg,#6366F1,#3730A3);}
+.t-violet{background:linear-gradient(135deg,#8B5CF6,#5B21B6);}
+.t-rose{background:linear-gradient(135deg,#F43F5E,#9F1239);}
+.t-amber{background:linear-gradient(135deg,#F59E0B,#B45309);}
+
+/* Vibrant / duotone */
+.t-sunset{background:linear-gradient(135deg,#F97316,#DB2777);}
+.t-aurora{background:linear-gradient(135deg,#06B6D4,#8B5CF6 60%,#EC4899);}
+.t-lime{background:linear-gradient(135deg,#84CC16,#15803D);}
+.t-coral{background:linear-gradient(135deg,#FB7185,#F97316);}
+.t-magenta{background:linear-gradient(135deg,#EC4899,#7E22CE);}
+
+/* Subtle "in-brand" light tints for specific variants */
+.card.tint-brand{border-color:rgb(37 99 235 / 0.25);}
+.card.tint-brand .meta{color:var(--brand-600);}
+.card.ghost{
+  background:linear-gradient(180deg,rgb(37 99 235 / 0.04),transparent 60%),var(--bg-elevated);
+}
+
+/* Featured / accent styles */
+.card.featured{
+  border:1px solid rgb(37 99 235 / 0.35);
+  box-shadow:0 0 0 3px rgb(37 99 235 / 0.08), var(--shadow-md);
+}
+.card.dark-card{
+  background:#0B0F17;border-color:#1F2937;color:#F4F4F5;
+}
+.card.dark-card h3{color:#F4F4F5;}
+.card.dark-card p{color:#A1A1AA;}
+.card.dark-card .foot{border-top-color:#1F2937;color:#71717A;}
+.card.dark-card .meta{color:#60A5FA;}
+
+.pill{
+  position:absolute;top:12px;left:12px;
+  padding:4px 10px;border-radius:9999px;
+  background:rgb(255 255 255 / 0.2);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  color:white;font-size:11px;font-weight:600;
+  border:1px solid rgb(255 255 255 / 0.3);
+}
+</style></head><body>
+<div class="wrap">
+
+<div class="section-label">Sober · neutral</div>
+<div class="grid">
+  <article class="card"><div class="thumb t-slate">Clean Code</div><div class="body"><div class="meta">Bits / Engineering</div><h3>Writing code that reads like prose</h3><p>Small refactors, big clarity. A few habits that make codebases feel calm.</p><div class="foot"><span>4 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-zinc">Zero Config</div><div class="body"><div class="meta">Bits / Tooling</div><h3>The case for zero-config tooling</h3><p>How Next.js and Vite turn setup into a non-event.</p><div class="foot"><span>6 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-stone">Desk Notes</div><div class="body"><div class="meta">Blog / Life</div><h3>Notes from a quiet desk</h3><p>Why a clean desk beats a productivity app, most days.</p><div class="foot"><span>3 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-graphite">Review</div><div class="body"><div class="meta">Bites / Books</div><h3>Deep Work, ten years later</h3><p>Revisiting Cal Newport's classic in the age of ambient AI.</p><div class="foot"><span>5 min read</span><span class="read">Read →</span></div></div></article>
+</div>
+
+<div class="section-label">Muted · on-brand</div>
+<div class="grid">
+  <article class="card tint-brand"><div class="thumb t-navy"><span class="pill">Featured</span>Copilot Models</div><div class="body"><div class="meta">Bits / AI</div><h3>Which AI model to use with Copilot?</h3><p>Ever wondered which model best fits your project? Here's what to consider.</p><div class="foot"><span>7 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card ghost"><div class="thumb t-deep-blue">Next 16</div><div class="body"><div class="meta">Bits / Framework</div><h3>Everything new in Next.js 16</h3><p>Server Components, Cache Components, and what it means for DX.</p><div class="foot"><span>8 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-teal">Ayurveda</div><div class="body"><div class="meta">Bites / Wellness</div><h3>The Ayurvedic take on rest</h3><p>Ancient wisdom meets modern calendars — making sleep sacred.</p><div class="foot"><span>4 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-forest">Mornings</div><div class="body"><div class="meta">Bites / Routine</div><h3>A morning routine that sticks</h3><p>Forget the 5am club. Here's what actually survives real life.</p><div class="foot"><span>6 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-plum">Stoicism</div><div class="body"><div class="meta">Blog / Philosophy</div><h3>The stoic's stack overflow</h3><p>What Marcus Aurelius would've tweeted at 2am.</p><div class="foot"><span>5 min read</span><span class="read">Read →</span></div></article></article>
+  <article class="card"><div class="thumb t-wine">Memoir</div><div class="body"><div class="meta">Blog / Personal</div><h3>Twenty years at the desk</h3><p>What two decades of shipping has taught me about patience.</p><div class="foot"><span>9 min read</span><span class="read">Read →</span></div></div></article>
+</div>
+
+<div class="section-label">Mid-tone · balanced</div>
+<div class="grid">
+  <article class="card featured"><div class="thumb t-sky"><span class="pill">Latest</span>Agents</div><div class="body"><div class="meta">Bits / AI</div><h3>Agents are the new scripts</h3><p>When function-calling becomes the new bash.</p><div class="foot"><span>6 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-emerald">Movement</div><div class="body"><div class="meta">Bites / Exercise</div><h3>Walk your meetings</h3><p>Why 10k steps beats 3 meetings in a conference room.</p><div class="foot"><span>3 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-indigo">TypeScript</div><div class="body"><div class="meta">Bits / Language</div><h3>The TS features I actually use</h3><p>Generics, guards, and a handful of utility types — that's 95%.</p><div class="foot"><span>7 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-violet">Shadcn</div><div class="body"><div class="meta">Bits / UI</div><h3>Why I stopped fighting Radix</h3><p>Primitives + your own styles. The sweet spot of UI work.</p><div class="foot"><span>5 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-rose">Food</div><div class="body"><div class="meta">Bites / Nutrition</div><h3>The boring plate that works</h3><p>Protein, fiber, color. The rest is noise.</p><div class="foot"><span>4 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-amber">Focus</div><div class="body"><div class="meta">Bites / Mind</div><h3>Single-tasking in 2026</h3><p>It's a superpower now. Here's how I protect it.</p><div class="foot"><span>5 min read</span><span class="read">Read →</span></div></div></article>
+</div>
+
+<div class="section-label">Vibrant · expressive</div>
+<div class="grid">
+  <article class="card"><div class="thumb t-sunset"><span class="pill">Hot</span>Launch</div><div class="body"><div class="meta">Blog / Product</div><h3>Shipping on a Friday (again)</h3><p>Why small teams should stop being precious about deploys.</p><div class="foot"><span>4 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-aurora">AI × Design</div><div class="body"><div class="meta">Bits / Craft</div><h3>When design systems meet LLMs</h3><p>Tokens, components, and why AI needs structure to help.</p><div class="foot"><span>8 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card"><div class="thumb t-lime">Greens</div><div class="body"><div class="meta">Bites / Garden</div><h3>The kitchen-garden manifesto</h3><p>Ten square feet, and most of your salad is done.</p><div class="foot"><span>5 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card dark-card"><div class="thumb t-coral">Side Project</div><div class="body"><div class="meta">Blog / Making</div><h3>The side project that stuck</h3><p>Why the best projects are the ones you'd do for free.</p><div class="foot"><span>7 min read</span><span class="read">Read →</span></div></div></article>
+  <article class="card dark-card"><div class="thumb t-magenta"><span class="pill">Bold</span>Manifesto</div><div class="body"><div class="meta">Blog / Opinion</div><h3>Stop building for engagement</h3><p>Start building for completion. Your users will thank you.</p><div class="foot"><span>6 min read</span><span class="read">Read →</span></div></div></article>
+</div>
+
+</div></body></html>

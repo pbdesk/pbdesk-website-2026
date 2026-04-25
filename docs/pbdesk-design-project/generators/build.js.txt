@@ -1,0 +1,313 @@
+// Generator: produce all 9 pillar images as standalone self-contained SVGs
+// and rasterize to PNGs. Each SVG is built inline (no cross-SVG <use> refs).
+
+async function build() {
+  const fontBlob = await readFileBinary('fonts/Onest-VariableFont_wght.ttf');
+  const fontBuf = await fontBlob.arrayBuffer();
+  function toB64(buf) {
+    const bytes = new Uint8Array(buf);
+    let bin = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(bin);
+  }
+  const fontB64 = toB64(fontBuf);
+
+  // Style + shared defs (no <use>; patterns/gradients stay local to each SVG)
+  const sharedDefs = (mode) => `
+<defs>
+  <style>
+    @font-face{font-family:'Onest';src:url(data:font/ttf;base64,${fontB64}) format('truetype');font-weight:100 900;font-style:normal;}
+    text{font-family:'Onest','Helvetica Neue',Arial,sans-serif}
+  </style>
+  <pattern id="grid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+    <circle cx="1.2" cy="1.2" r="1.2" fill="${mode==='dark'?'#27272A':'#D4D4D8'}"/>
+  </pattern>
+  <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35"/>
+    <stop offset="60%" stop-color="#3B82F6" stop-opacity="0.08"/>
+    <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="glow-emerald" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#10B981" stop-opacity="0.35"/>
+    <stop offset="60%" stop-color="#10B981" stop-opacity="0.08"/>
+    <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="glow-violet" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.4"/>
+    <stop offset="60%" stop-color="#7C3AED" stop-opacity="0.08"/>
+    <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="tile-blue" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#3B82F6"/><stop offset="100%" stop-color="#1D4ED8"/>
+  </linearGradient>
+  <linearGradient id="tile-emerald" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#34D399"/><stop offset="100%" stop-color="#059669"/>
+  </linearGradient>
+  <linearGradient id="tile-violet" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/>
+  </linearGradient>
+</defs>`;
+
+  // -------- glyph builders (inline SVG strings, centered at 0,0 in a 200x200 box) --------
+  const BITS_GLYPH = `
+<g>
+  <rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-blue)"/>
+  <rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"/>
+  <g opacity="0.18" stroke="#fff" stroke-width="1">
+    <line x1="-90" y1="-30" x2="90" y2="-30"/><line x1="-90" y1="30" x2="90" y2="30"/>
+    <line x1="-30" y1="-90" x2="-30" y2="90"/><line x1="30" y1="-90" x2="30" y2="90"/>
+  </g>
+  <g fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="-36,-26 -58,0 -36,26"/>
+    <polyline points="36,-26 58,0 36,26"/>
+    <line x1="14" y1="-30" x2="-14" y2="30"/>
+  </g>
+  <g transform="translate(52,-52)" fill="#FDE68A">
+    <path d="M0 -16 L4 -4 L16 0 L4 4 L0 16 L-4 4 L-16 0 L-4 -4 Z"/>
+  </g>
+  <g transform="translate(-58,58)" fill="#7DD3FC">
+    <path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z"/>
+  </g>
+</g>`;
+
+  const BITES_GLYPH = `
+<g>
+  <rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-emerald)"/>
+  <rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"/>
+  <g transform="translate(-6,-10)">
+    <path d="M-40 30 C -40 -20, 0 -50, 44 -44 C 48 0, 18 40, -34 38 Z" fill="#ECFDF5" opacity="0.95"/>
+    <path d="M-34 30 C -10 -6, 18 -30, 42 -42" stroke="#059669" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M-18 18 L -6 6 M -2 22 L 10 10 M 14 26 L 24 16" stroke="#059669" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+  </g>
+  <g transform="translate(42,44)">
+    <circle r="14" fill="#F43F5E"/>
+    <path d="M-6 -1 L-2 -1 L0 -5 L3 4 L5 -1 L8 -1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <circle cx="-58" cy="-52" r="5" fill="#FDE68A"/>
+  <circle cx="56" cy="-54" r="4" fill="#7DD3FC"/>
+</g>`;
+
+  const BLOG_GLYPH = `
+<g>
+  <rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-violet)"/>
+  <rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"/>
+  <g transform="translate(0,6)">
+    <path d="M-60 -30 C -44 -36, -8 -36, 0 -26 L 0 34 C -8 24, -44 24, -60 30 Z" fill="#F5F3FF" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M60 -30 C 44 -36, 8 -36, 0 -26 L 0 34 C 8 24, 44 24, 60 30 Z" fill="#EDE9FE" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"/>
+    <g stroke="#7C3AED" stroke-width="2.4" stroke-linecap="round" opacity="0.75">
+      <line x1="-50" y1="-18" x2="-14" y2="-18"/><line x1="-50" y1="-8" x2="-20" y2="-8"/>
+      <line x1="-50" y1="2" x2="-16" y2="2"/><line x1="-50" y1="12" x2="-26" y2="12"/>
+      <line x1="14" y1="-18" x2="50" y2="-18"/><line x1="14" y1="-8" x2="44" y2="-8"/>
+      <line x1="14" y1="2" x2="50" y2="2"/><line x1="14" y1="12" x2="38" y2="12"/>
+    </g>
+  </g>
+  <path d="M-72 -60 Q 0 -88, 72 -60" fill="none" stroke="#FDE68A" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 8"/>
+  <g transform="translate(-72,-60)">
+    <circle r="9" fill="#60A5FA"/>
+    <text y="3" text-anchor="middle" font-family="monospace" font-size="9" font-weight="700" fill="#0B0F17">&lt;/&gt;</text>
+  </g>
+  <g transform="translate(72,-60)">
+    <circle r="9" fill="#34D399"/>
+    <path d="M-4 2 C -4 -3, 0 -6, 4 -5 C 5 -1, 2 3, -3 3 Z" fill="#065F46"/>
+  </g>
+</g>`;
+
+  // -------- templates --------
+
+  function banner({ pillar, mode, title, tagline, glyph, glowId, accent1, accent2, chip1, chip2, chip3, chipColors, extras, sparkles }) {
+    const bg = mode==='dark' ? '#0B0F17' : '#FAFAFA';
+    const fg = mode==='dark' ? '#FAFAFA' : '#0B0F17';
+    const sub = mode==='dark' ? '#A1A1AA' : '#52525B';
+    const chipFill = mode==='dark' ? '#18181B' : '#FFFFFF';
+    const chipStroke = mode==='dark' ? '#27272A' : '#E4E4E7';
+    const glowOpacity = mode==='dark' ? '1' : '0.6';
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="640" viewBox="0 0 1920 640">
+${sharedDefs(mode)}
+<rect width="1920" height="640" fill="${bg}"/>
+<rect width="1920" height="640" fill="url(#grid)"/>
+<circle cx="1400" cy="340" r="520" fill="url(#${glowId})" opacity="${glowOpacity}"/>
+${extras||''}
+<g font-size="22" font-weight="600">
+  <g transform="translate(180,120)">
+    <rect x="-80" y="-22" width="160" height="44" rx="22" fill="${chipFill}" stroke="${chipStroke}"/>
+    <text text-anchor="middle" dy="7" fill="${chipColors[0]}">${chip1}</text>
+  </g>
+  <g transform="translate(1620,160)">
+    <rect x="-80" y="-22" width="160" height="44" rx="22" fill="${chipFill}" stroke="${chipStroke}"/>
+    <text text-anchor="middle" dy="7" fill="${chipColors[1]}">${chip2}</text>
+  </g>
+  <g transform="translate(220,500)">
+    <rect x="-90" y="-22" width="180" height="44" rx="22" fill="${chipFill}" stroke="${chipStroke}"/>
+    <text text-anchor="middle" dy="7" fill="${chipColors[2]}">${chip3}</text>
+  </g>
+</g>
+${sparkles||''}
+<g transform="translate(1280,320) scale(1.6)">${glyph}</g>
+<g transform="translate(160,230)">
+  <text font-weight="800" font-size="220" letter-spacing="-6.6" fill="${fg}">${title}</text>
+  <text y="84" font-weight="500" font-size="34" fill="${sub}">${tagline}</text>
+  <g transform="translate(0,130)">
+    <rect x="0" y="0" width="220" height="10" rx="5" fill="${accent1}"/>
+    <rect x="232" y="0" width="60" height="10" rx="5" fill="${accent2}"/>
+  </g>
+</g>
+</svg>`;
+  }
+
+  function square({ title, tagline, glyph, glowId, extras, sparkles, accentLabel }) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+${sharedDefs('dark')}
+<rect width="1200" height="1200" fill="#0B0F17"/>
+<rect width="1200" height="1200" fill="url(#grid)"/>
+<circle cx="600" cy="420" r="520" fill="url(#${glowId})"/>
+${extras||''}
+<g transform="translate(600,480) scale(2.8)">${glyph}</g>
+${sparkles||''}
+<g transform="translate(600,980)" text-anchor="middle">
+  <text font-weight="800" font-size="150" letter-spacing="-4.5" fill="#FAFAFA">${title}</text>
+  <text y="70" font-weight="500" font-size="32" fill="#A1A1AA">${tagline}</text>
+  <text y="135" font-family="monospace" font-size="22" font-weight="600" fill="${accentLabel}" letter-spacing="1.76">PBDESK .</text>
+</g>
+</svg>`;
+  }
+
+  function avatar({ glyph, glowId, ringColor }) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+${sharedDefs('dark')}
+<clipPath id="clip-av"><circle cx="256" cy="256" r="256"/></clipPath>
+<g clip-path="url(#clip-av)">
+  <rect width="512" height="512" fill="#0B0F17"/>
+  <rect width="512" height="512" fill="url(#grid)"/>
+  <circle cx="256" cy="256" r="280" fill="url(#${glowId})"/>
+  <g transform="translate(256,256) scale(2.0)">${glyph}</g>
+</g>
+<circle cx="256" cy="256" r="254" fill="none" stroke="${ringColor}" stroke-width="4"/>
+</svg>`;
+  }
+
+  const sparkBlue = `<g opacity="0.9"><path d="M1680 480 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z" fill="#7DD3FC"/><path d="M260 300 l3 -10 l3 10 l10 3 l-10 3 l-3 10 l-3 -10 l-10 -3 z" fill="#7DD3FC" opacity="0.7"/></g>`;
+  const sparkEmerald = `<g opacity="0.9"><path d="M1680 480 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z" fill="#6EE7B7"/><path d="M260 300 l3 -10 l3 10 l10 3 l-10 3 l-3 10 l-3 -10 l-10 -3 z" fill="#6EE7B7" opacity="0.7"/></g>`;
+  const sparkViolet = `<g opacity="0.9"><path d="M1680 120 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z" fill="#C4B5FD"/><path d="M260 180 l3 -10 l3 10 l10 3 l-10 3 l-3 10 l-3 -10 l-10 -3 z" fill="#C4B5FD" opacity="0.7"/></g>`;
+
+  const pulseLine = `<g stroke="#10B981" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="880,340 960,340 990,300 1020,380 1050,260 1080,400 1110,340 1200,340"/></g>`;
+
+  const blogBridge = (mode) => `
+<path d="M200 480 C 600 240, 1200 240, 1700 460" stroke="#7C3AED" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="2 12" opacity="${mode==='dark'?'0.55':'0.6'}"/>
+<g transform="translate(200,480)">
+  <circle r="26" fill="#2563EB"/>
+  <text text-anchor="middle" dy="6" font-family="monospace" font-size="18" font-weight="700" fill="#fff">&lt;/&gt;</text>
+</g>
+<g transform="translate(1700,460)">
+  <circle r="26" fill="#10B981"/>
+  <path d="M-10 4 C -10 -6, -2 -14, 8 -10 C 10 -2, 4 8, -6 8 Z" fill="#064E3B"/>
+</g>`;
+
+  // ---- assemble 12 outputs ----
+  const outputs = {};
+
+  for (const mode of ['dark','light']) {
+    outputs[`bits-banner-${mode}`] = banner({
+      mode, title:'Bits', tagline:'AI · Code · Tools · Dev-life',
+      glyph: BITS_GLYPH, glowId:'glow-blue',
+      accent1:'#2563EB', accent2:'#0EA5E9',
+      chip1:'npm run dev', chip2:'AI · 2026', chip3:'{ code }',
+      chipColors: mode==='dark' ? ['#60A5FA','#34D399','#FDE68A'] : ['#2563EB','#059669','#B45309'],
+      sparkles: sparkBlue,
+    });
+    outputs[`bites-banner-${mode}`] = banner({
+      mode, title:'Bites', tagline:'Wellness · Fitness · Mind · Food',
+      glyph: BITES_GLYPH, glowId:'glow-emerald',
+      accent1:'#10B981', accent2:'#2563EB',
+      chip1:'Nutrition', chip2:'Movement', chip3:'Mindfulness',
+      chipColors: mode==='dark' ? ['#34D399','#FDE68A','#F87171'] : ['#059669','#B45309','#BE123C'],
+      extras: pulseLine, sparkles: sparkEmerald,
+    });
+    outputs[`blog-banner-${mode}`] = banner({
+      mode, title:'Blog', tagline:'Reflections · Tech × Wellness',
+      glyph: BLOG_GLYPH, glowId:'glow-violet',
+      accent1:'#7C3AED', accent2:'#2563EB',
+      chip1:'Tech', chip2:'Wellness', chip3:'Reflections',
+      chipColors: mode==='dark' ? ['#C4B5FD','#34D399','#FDE68A'] : ['#7C3AED','#059669','#B45309'],
+      extras: blogBridge(mode), sparkles: sparkViolet,
+    });
+  }
+
+  outputs['bits-square'] = square({
+    title:'Bits', tagline:'AI · Code · Tools · Dev-life',
+    glyph: BITS_GLYPH, glowId:'glow-blue',
+    sparkles:`<g fill="#60A5FA" opacity="0.9">
+      <path d="M180 220 l5 -16 l5 16 l16 5 l-16 5 l-5 16 l-5 -16 l-16 -5 z"/>
+      <path d="M1000 260 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"/>
+      <path d="M220 980 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"/>
+    </g>`,
+    accentLabel:'#60A5FA'
+  });
+  outputs['bites-square'] = square({
+    title:'Bites', tagline:'Wellness · Fitness · Mind · Food',
+    glyph: BITES_GLYPH, glowId:'glow-emerald',
+    extras: `<g stroke="#10B981" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"><polyline points="180,720 320,720 360,660 400,780 440,600 480,820 520,720 1020,720"/></g>`,
+    sparkles:`<g fill="#34D399" opacity="0.9">
+      <path d="M180 220 l5 -16 l5 16 l16 5 l-16 5 l-5 16 l-5 -16 l-16 -5 z"/>
+      <path d="M1000 260 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"/>
+      <path d="M960 980 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"/>
+    </g>`,
+    accentLabel:'#34D399'
+  });
+  outputs['blog-square'] = square({
+    title:'Blog', tagline:'Reflections · Tech × Wellness',
+    glyph: BLOG_GLYPH, glowId:'glow-violet',
+    extras: `<path d="M160 820 C 400 620, 800 620, 1040 820" stroke="#C4B5FD" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="2 12" opacity="0.5"/>
+      <g transform="translate(160,820)"><circle r="22" fill="#2563EB"/><text text-anchor="middle" dy="5" font-family="monospace" font-size="15" font-weight="700" fill="#fff">&lt;/&gt;</text></g>
+      <g transform="translate(1040,820)"><circle r="22" fill="#10B981"/><path d="M-8 3 C -8 -4, -2 -11, 6 -8 C 8 -2, 3 6, -5 6 Z" fill="#064E3B"/></g>`,
+    sparkles:`<g fill="#C4B5FD" opacity="0.9">
+      <path d="M180 220 l5 -16 l5 16 l16 5 l-16 5 l-5 16 l-5 -16 l-16 -5 z"/>
+      <path d="M1000 260 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"/>
+    </g>`,
+    accentLabel:'#C4B5FD'
+  });
+
+  outputs['bits-avatar']  = avatar({ glyph: BITS_GLYPH, glowId:'glow-blue',    ringColor:'#2563EB' });
+  outputs['bites-avatar'] = avatar({ glyph: BITES_GLYPH, glowId:'glow-emerald', ringColor:'#10B981' });
+  outputs['blog-avatar']  = avatar({ glyph: BLOG_GLYPH, glowId:'glow-violet',   ringColor:'#7C3AED' });
+
+  // Save SVGs + rasterize each to PNG
+  async function svgToCanvas(svgString, w, h) {
+    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    await new Promise((res, rej) => {
+      img.onload = res;
+      img.onerror = (e) => rej(new Error('img load fail'));
+      img.src = url;
+    });
+    const canvas = createCanvas(w, h);
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    URL.revokeObjectURL(url);
+    return canvas;
+  }
+
+  const sizes = {
+    'bits-banner-dark':[1920,640],'bites-banner-dark':[1920,640],'blog-banner-dark':[1920,640],
+    'bits-banner-light':[1920,640],'bites-banner-light':[1920,640],'blog-banner-light':[1920,640],
+    'bits-square':[1200,1200],'bites-square':[1200,1200],'blog-square':[1200,1200],
+    'bits-avatar':[512,512],'bites-avatar':[512,512],'blog-avatar':[512,512],
+  };
+
+  for (const name of Object.keys(outputs)) {
+    const [w,h] = sizes[name];
+    await saveFile(`exports/${name}.svg`, outputs[name]);
+    try {
+      const canvas = await svgToCanvas(outputs[name], w, h);
+      await saveFile(`exports/${name}.png`, canvas);
+      log('✓ ' + name);
+    } catch(e) {
+      log('✗ ' + name + ' : ' + e.message);
+    }
+  }
+  log('DONE');
+}
+build().catch(e=>log('fatal '+e.message));

@@ -1,0 +1,221 @@
+/* PBDesk 2026 — Colors & Type Tokens
+   AIStarterKit-style template, dark + light mode.
+   Inter + JetBrains Mono via Google Fonts.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@font-face {
+  font-family: 'Onest';
+  src: url('fonts/Onest-VariableFont_wght.ttf') format('truetype-variations'),
+       url('fonts/Onest-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Brand */
+  --brand-50:  #EFF6FF;
+  --brand-100: #DBEAFE;
+  --brand-200: #BFDBFE;
+  --brand-300: #93C5FD;
+  --brand-400: #60A5FA;
+  --brand-500: #3B82F6;
+  --brand-600: #2563EB;  /* PRIMARY — blue */
+  --brand-700: #1D4ED8;
+  --brand-800: #1E40AF;
+  --brand-900: #1E3A8A;
+
+  /* Accent (links, progress, highlight rings) */
+  --accent-500: #0EA5E9;  /* sky */
+  --accent-600: #0284C7;
+
+  /* Semantic */
+  --success-500: #10B981;
+  --warning-500: #F59E0B;
+  --danger-500:  #EF4444;
+
+  /* Neutrals (zinc scale) */
+  --zinc-0:   #FFFFFF;
+  --zinc-50:  #FAFAFA;
+  --zinc-100: #F4F4F5;
+  --zinc-200: #E4E4E7;
+  --zinc-300: #D4D4D8;
+  --zinc-400: #A1A1AA;
+  --zinc-500: #71717A;
+  --zinc-600: #52525B;
+  --zinc-700: #3F3F46;
+  --zinc-800: #27272A;
+  --zinc-900: #18181B;
+  --zinc-950: #0B0F17;
+
+  /* --- Semantic surface / text (LIGHT MODE default) --- */
+  --bg-page:     var(--zinc-0);
+  --bg-subtle:   var(--zinc-50);
+  --bg-elevated: var(--zinc-0);
+  --bg-inverse:  var(--zinc-950);
+
+  --fg-primary:   var(--zinc-900);
+  --fg-secondary: var(--zinc-600);
+  --fg-muted:     var(--zinc-500);
+  --fg-inverse:   var(--zinc-0);
+  --fg-brand:     var(--brand-600);
+
+  --border-subtle: var(--zinc-200);
+  --border-strong: var(--zinc-300);
+  --border-brand:  var(--brand-600);
+
+  --ring: rgb(37 99 235 / 0.35);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04), 0 1px 3px rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.10), 0 8px 10px -6px rgb(0 0 0 / 0.06);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Spacing (4px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* Type families */
+  --font-sans: 'Onest', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* Type scale */
+  --text-xs:   12px;
+  --text-sm:   14px;
+  --text-base: 16px;
+  --text-lg:   18px;
+  --text-xl:   20px;
+  --text-2xl:  24px;
+  --text-3xl:  30px;
+  --text-4xl:  36px;
+  --text-5xl:  48px;
+  --text-6xl:  60px;
+  --text-7xl:  72px;
+
+  --leading-tight:  1.15;
+  --leading-snug:   1.35;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight: -0.025em;
+  --tracking-snug:  -0.015em;
+  --tracking-normal: 0em;
+  --tracking-wide:  0.08em;
+}
+
+/* Dark mode — class-based so we can toggle independent of OS setting */
+.dark {
+  --bg-page:     var(--zinc-950);
+  --bg-subtle:   #0F1420;
+  --bg-elevated: var(--zinc-900);
+  --bg-inverse:  var(--zinc-0);
+
+  --fg-primary:   var(--zinc-50);
+  --fg-secondary: var(--zinc-300);
+  --fg-muted:     var(--zinc-400);
+  --fg-inverse:   var(--zinc-900);
+  --fg-brand:     var(--brand-400);
+
+  --border-subtle: #1F2633;
+  --border-strong: var(--zinc-700);
+  --border-brand:  var(--brand-500);
+
+  --ring: rgb(96 165 250 / 0.40);
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.30), inset 0 1px 0 rgb(255 255 255 / 0.03);
+  --shadow-md: 0 4px 10px rgb(0 0 0 / 0.40), inset 0 1px 0 rgb(255 255 255 / 0.04);
+  --shadow-lg: 0 12px 30px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(255 255 255 / 0.05);
+  --shadow-xl: 0 24px 50px rgb(0 0 0 / 0.65), inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+/* --- Semantic element styling --- */
+
+html, body {
+  background: var(--bg-page);
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01';
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, .h1 {
+  font-size: clamp(40px, 5.5vw, 72px);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 700;
+  color: var(--fg-primary);
+}
+
+h2, .h2 {
+  font-size: clamp(30px, 3.5vw, 48px);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 700;
+}
+
+h3, .h3 {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+  font-weight: 600;
+}
+
+h4, .h4 {
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  font-weight: 600;
+}
+
+p, .p {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--fg-secondary);
+}
+
+.lede {
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--fg-secondary);
+}
+
+.eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-brand);
+}
+
+code, .mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+a {
+  color: var(--fg-primary);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+a:hover { color: var(--fg-brand); }
