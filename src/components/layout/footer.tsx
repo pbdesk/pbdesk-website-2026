@@ -7,148 +7,155 @@ import Image from "next/image";
 import Link from "next/link";
 import { getCurrentYear } from "@/lib/utils";
 
+const explore = [
+  { label: "Bits", href: "/bits" },
+  { label: "Bites", href: "/bites" },
+  { label: "Blog", href: "/blog" },
+  { label: "About Me", href: "/about" },
+];
+
+const topics = [
+  { label: "AI & ML", href: "/topics/ai" },
+  { label: "Web Dev", href: "/topics/web-dev" },
+  { label: "Tools", href: "/topics/tools" },
+  { label: "Wellness", href: "/topics/wellness" },
+];
+
+const more = [
+  { label: "RSS Feed", href: "/rss.xml" },
+  { label: "Categories", href: "/categories" },
+  { label: "Archive", href: "/archive" },
+  { label: "Privacy", href: "/privacy" },
+];
+
+const socials = [
+  {
+    label: "GitHub",
+    href: "https://github.com/pinalbhatt",
+    icon: IconBrandGithubFilled,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/pinalbhatt",
+    icon: IconBrandLinkedinFilled,
+  },
+  { label: "X", href: "https://x.com/pbdesk", icon: IconBrandX },
+];
+
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-gray-900">
-      <span className="absolute top-0 left-1/2 -translate-x-1/2">
-        <svg
-          fill="none"
-          height="457"
-          viewBox="0 0 1260 457"
-          width="1260"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g filter="url(#filter0_f_11105_867)">
-            <circle cx="630" cy="-173.299" fill="#3B2EFF" r="230" />
-          </g>
-          <defs>
-            <filter
-              colorInterpolationFilters="sRGB"
-              filterUnits="userSpaceOnUse"
-              height="1260"
-              id="filter0_f_11105_867"
-              width="1260"
-              x="0"
-              y="-803.299"
+    <footer
+      className="border-t"
+      style={{
+        background: "var(--bg-page)",
+        borderColor: "var(--border-subtle)",
+      }}
+    >
+      <div className="wrapper py-16">
+        <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+          {/* Brand column */}
+          <div>
+            <Link className="mb-5 flex items-center gap-3" href="/">
+              <Image
+                alt="Pinal Bhatt"
+                className="rounded-full"
+                height={44}
+                src="/pb/pb1.jpg"
+                width={44}
+              />
+              <div className="flex flex-col">
+                <span className="brand-wordmark">
+                  <span className="pb-mark">PB</span>
+                  <span style={{ color: "var(--fg-primary)" }}>Desk</span>
+                </span>
+                <span className="brand-tagline">
+                  from the desk of Pinal Bhatt
+                </span>
+              </div>
+            </Link>
+            <p
+              className="mb-6 max-w-sm text-sm"
+              style={{
+                color: "var(--fg-secondary)",
+                lineHeight: 1.65,
+              }}
             >
-              <feFlood floodOpacity="0" result="BackgroundImageFix" />
-              <feBlend
-                in="SourceGraphic"
-                in2="BackgroundImageFix"
-                mode="normal"
-                result="shape"
-              />
-              <feGaussianBlur
-                result="effect1_foregroundBlur_11105_867"
-                stdDeviation="200"
-              />
-            </filter>
-          </defs>
-        </svg>
-      </span>
-      <div className="relative z-10 py-16 xl:py-24">
-        <div className="container mx-auto px-5 sm:px-7">
-          <div className="grid gap-x-6 gap-y-8 lg:grid-cols-12">
-            <div className="lg:col-span-3 xl:col-span-4">
-              <div>
-                <Link className="mb-6 block" href="/">
-                  <Image
-                    alt="logo"
-                    height={60}
-                    src="/pb/PBDesk-logo-dark.png"
-                    width={210}
-                  />
-                </Link>
-                <p className="mb-9 block text-gray-400 text-sm">
-                  Bits & Bites - Developer's Life.
-                  <br />
-                  Learning Endeavor Forever...from the desk of Pinal Bhatt
-                </p>
-                <div className="center flex" id="social">
-                  <a
-                    className="size-10 text-gray-400 hover:text-white/80"
-                    href="https://www.linkedin.com/in/pinalbhatt"
-                    rel="noopener"
-                    target="_blank"
-                  >
-                    <IconBrandLinkedinFilled />
-                  </a>
-                  <a
-                    className="size-10 text-gray-400 hover:text-white/80"
-                    href="https://github.com/pinalbhatt"
-                    rel="noopener"
-                    target="_blank"
-                  >
-                    <IconBrandGithubFilled />
-                  </a>
-                  <a
-                    className="size-10 text-gray-400 hover:text-white/80"
-                    href="https://x.com/pbdesk"
-                    rel="noopener"
-                    target="_blank"
-                  >
-                    <IconBrandX stroke={2} />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="lg:col-span-6 xl:col-span-5">
-              <div className="grid gap-7 sm:grid-cols-3" />
-            </div>
-            <div className="lg:col-span-3">
-              <div>
-                <nav className="flex flex-col space-y-3">
-                  <Link
-                    className="font-normal text-gray-400 text-sm transition hover:text-white"
-                    href="/signin"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    className="font-normal text-gray-400 text-sm transition hover:text-white"
-                    href="/signup"
-                  >
-                    Bits
-                  </Link>
-                  <Link
-                    className="font-normal text-gray-400 text-sm transition hover:text-white"
-                    href="/reset-password"
-                  >
-                    Bites
-                  </Link>
-                  <Link
-                    className="font-normal text-gray-400 text-sm transition hover:text-white"
-                    href="/contact"
-                  >
-                    Blog
-                  </Link>
-                  <Link
-                    className="font-normal text-gray-400 text-sm transition hover:text-white"
-                    href="/contact"
-                  >
-                    About Me
-                  </Link>
-                  <Link
-                    className="font-normal text-gray-400 text-sm transition hover:text-white"
-                    href="/contact"
-                  >
-                    Disclaimer
-                  </Link>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="border-gray-800 border-t">
-        <div className="container relative z-10 mx-auto px-5 sm:px-7">
-          <div className="py-5 text-center">
-            <p className="text-gray-500 text-sm">
-              &copy; {getCurrentYear()} PBDesk - All Rights Reserved.
+              Bits &amp; Bites — Developer&apos;s Life. Learning Endeavor
+              Forever, from the desk of Pinal Bhatt.
             </p>
+            <div className="flex items-center gap-1">
+              {socials.map(({ label, href, icon: Icon }) => (
+                <a
+                  className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  href={href}
+                  key={label}
+                  rel="noopener"
+                  style={{ color: "var(--fg-muted)" }}
+                  target="_blank"
+                >
+                  <Icon size={18} />
+                  <span className="sr-only">{label}</span>
+                </a>
+              ))}
+            </div>
           </div>
+
+          {/* Explore column */}
+          <FooterColumn heading="Explore" items={explore} />
+          <FooterColumn heading="Topics" items={topics} />
+          <FooterColumn heading="More" items={more} />
+        </div>
+
+        {/* Bottom bar */}
+        <div
+          className="mt-14 flex flex-col items-start justify-between gap-3 border-t pt-6 sm:flex-row sm:items-center"
+          style={{ borderColor: "var(--border-subtle)" }}
+        >
+          <p className="text-sm" style={{ color: "var(--fg-muted)" }}>
+            &copy; {getCurrentYear()} PBDesk. Built with Next.js 16 + Tailwind
+            4.
+          </p>
+          <p className="text-sm" style={{ color: "var(--fg-muted)" }}>
+            Made with{" "}
+            <span aria-hidden="true" style={{ color: "var(--fg-brand)" }}>
+              ♥
+            </span>{" "}
+            by Pinal Bhatt
+          </p>
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterColumn({
+  heading,
+  items,
+}: {
+  heading: string;
+  items: { label: string; href: string }[];
+}) {
+  return (
+    <div>
+      <h3
+        className="mb-5 font-semibold text-xs uppercase tracking-widest"
+        style={{ color: "var(--fg-brand)" }}
+      >
+        {heading}
+      </h3>
+      <ul className="flex flex-col gap-3">
+        {items.map((item) => (
+          <li key={item.href}>
+            <Link
+              className="text-sm transition-colors hover:underline"
+              href={item.href}
+              style={{ color: "var(--fg-secondary)" }}
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
