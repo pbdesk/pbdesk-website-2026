@@ -1,6 +1,7 @@
 import { IconHeartbeat, IconLeaf } from "@tabler/icons-react";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
+import { pillarAccents } from "@/lib/pillars";
 
 const posts: Post[] = [
   {
@@ -72,8 +73,8 @@ const posts: Post[] = [
 export default function BitesPage() {
   return (
     <SectionLanding
-      accentColor="#10b981"
-      accentColor2="#3b82f6"
+      accentColor={pillarAccents.bites.primary}
+      accentColor2={pillarAccents.bites.secondary}
       bannerLabel="Movement"
       bigIcon={<IconLeaf size={88} stroke={1.5} />}
       cadence="weekly"
