@@ -34,15 +34,16 @@ export const navItems = [
   //     { href: "/not-found", label: "404 Error" },
   //   ],
   // },
-] satisfies NavItem[];
+] as NavItem[];
 
-type NavItem = Record<string, string | unknown> &
-  (
-    | {
-        type: "link";
-        href: string;
-      }
-    | {
-        type: "dropdown";
-      }
-  );
+type NavItem =
+  | {
+      type: "link";
+      href: string;
+      label: string;
+    }
+  | {
+      type: "dropdown";
+      label: string;
+      items: { href: string; label: string }[];
+    };

@@ -1,6 +1,10 @@
+import {
+  IconBrandGithubFilled,
+  IconBrandLinkedinFilled,
+  IconBrandX,
+} from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { IconBrandLinkedinFilled, IconBrandGithubFilled, IconBrandX } from '@tabler/icons-react';
 import { getCurrentYear } from "@/lib/utils";
 
 export default function Footer() {
@@ -85,7 +89,6 @@ export default function Footer() {
                   >
                     <IconBrandX stroke={2} />
                   </a>
-                  
                 </div>
               </div>
             </div>
