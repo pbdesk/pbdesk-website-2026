@@ -65,7 +65,7 @@ export default function BlogPage() {
     <SectionLanding
       accentColor={pillarAccents.blog.primary}
       cadence="weekly"
-      description="Welcome to my blog — a space where technology, creativity, and well-being connect. I share insights on software development, programming, AI, and the latest in tech, along with thoughts on health, wellness, fitness, and living a balanced life. From coding tips and emerging tech trends to mindfulness, movement, and personal growth, I explore how small choices shape both our digital and real worlds."
+      description="Welcome to my blog, a space where technology, creativity, and well-being connect. I share insights on software development, programming, AI, and the latest in tech, along with thoughts on health, wellness, fitness, and living a balanced life. From coding tips and emerging tech trends to mindfulness, movement, and personal growth, I explore how small choices shape both our digital and real worlds. I also reflect on the importance of friendships, family, and meaningful connections. Whether you're here for tech insights or life inspiration, I'm excited to share this journey with you. Let's build, grow, and thrive together."
       filters={[
         { label: "Reflections", count: 2 },
         { label: "Article", count: 1 },

@@ -992,6 +992,37 @@ body {
   }
 }
 
+.heart-pulse {
+  display: inline-block;
+  transform-origin: center;
+  animation: heart-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes heart-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.2);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.15);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart-pulse {
+    animation: none;
+  }
+}
+
 /* Scroll-triggered reveal — keyframe variants picked at mount */
 .reveal {
   opacity: 0;

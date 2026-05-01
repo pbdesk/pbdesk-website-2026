@@ -91,7 +91,7 @@ export default function BitsPage() {
     <SectionLanding
       accentColor={pillarAccents.bits.primary}
       cadence="weekly"
-      description="Welcome to my digital corner, where I share insights on the ever-evolving world of AI, programming, and software development. From the latest advancements in generative AI to cutting-edge developer tools and web design trends, I explore how technology shapes our digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing productivity hacks for coders — let's build, learn, and innovate together."
+      description="Welcome to my digital corner, where I share insights on the ever-evolving world of AI, programming, and software development. From the latest advancements in generative AI to cutting-edge developer tools and web design trends, I explore how technology shapes our digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing productivity hacks for coders, I aim to bridge knowledge gaps and spark curiosity. Join me as I navigate the fast-paced tech landscape one thought, tutorial, and trend at a time. Let's build, learn, and innovate together."
       filters={[
         { label: "Tool", count: 4 },
         { label: "AI", count: 3 },

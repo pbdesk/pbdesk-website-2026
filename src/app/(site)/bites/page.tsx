@@ -74,7 +74,7 @@ export default function BitesPage() {
     <SectionLanding
       accentColor={pillarAccents.bites.primary}
       cadence="weekly"
-      description="A healthy, active life is the greatest gift we can give ourselves — and our loved ones. Here I share thoughts, articles, and resources on fitness, mental well-being, and holistic health. From effective workout routines and nutrition tips to mindfulness practices and the science of sleep, I explore how small, consistent choices lead to lasting vitality. Because when we take care of our bodies and minds, we show up stronger."
+      description="A healthy, active life is the greatest gift we can give ourselves—and our loved ones. In this space, I share thoughts, articles, and resources on fitness, mental well-being, and holistic health. From effective workout routines and nutrition tips to mindfulness practices and the science of longevity, I explore how small, consistent choices lead to lasting vitality. Whether it’s breaking sedentary habits, finding joy in movement, or balancing tech life with physical wellness, my goal is to inspire and empower. Because when we take care of our bodies and minds, we show up stronger—for life, work, and those who matter most."
       filters={[
         { label: "Wellness", count: 3 },
         { label: "Health", count: 2 },
