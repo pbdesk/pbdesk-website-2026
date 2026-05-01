@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+<defs>
+  
+  <pattern id="grid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+    <circle cx="1.2" cy="1.2" r="1.2" fill="#27272A"></circle>
+  </pattern>
+  <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35"></stop>
+    <stop offset="60%" stop-color="#3B82F6" stop-opacity="0.08"></stop>
+    <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"></stop>
+  </radialGradient>
+  <radialGradient id="glow-emerald" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#10B981" stop-opacity="0.35"></stop>
+    <stop offset="60%" stop-color="#10B981" stop-opacity="0.08"></stop>
+    <stop offset="100%" stop-color="#10B981" stop-opacity="0"></stop>
+  </radialGradient>
+  <radialGradient id="glow-violet" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.4"></stop>
+    <stop offset="60%" stop-color="#7C3AED" stop-opacity="0.08"></stop>
+    <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"></stop>
+  </radialGradient>
+  <linearGradient id="tile-blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3B82F6"></stop><stop offset="100%" stop-color="#1D4ED8"></stop></linearGradient>
+  <linearGradient id="tile-emerald" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#34D399"></stop><stop offset="100%" stop-color="#059669"></stop></linearGradient>
+  <linearGradient id="tile-violet" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8B5CF6"></stop><stop offset="100%" stop-color="#2563EB"></stop></linearGradient>
+</defs><rect width="1200" height="1200" fill="#0B0F17"></rect><rect width="1200" height="1200" fill="url(#grid)"></rect><circle cx="600" cy="420" r="520" fill="url(#glow-violet)"></circle><path d="M160 820 C 400 620, 800 620, 1040 820" stroke="#C4B5FD" stroke-width="4" fill="none" stroke-linecap="round" stroke-dasharray="2 12" opacity="0.5"></path><g transform="translate(160,820)"><circle r="22" fill="#2563EB"></circle><text text-anchor="middle" dy="5" font-family="monospace" font-size="15" font-weight="700" fill="#fff">&lt;/&gt;</text></g><g transform="translate(1040,820)"><circle r="22" fill="#10B981"></circle><path d="M-8 3 C -8 -4, -2 -11, 6 -8 C 8 -2, 3 6, -5 6 Z" fill="#064E3B"></path></g><g transform="translate(600,480) scale(2.8)"><g><rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-violet)"></rect><rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"></rect><g transform="translate(0,6)"><path d="M-60 -30 C -44 -36, -8 -36, 0 -26 L 0 34 C -8 24, -44 24, -60 30 Z" fill="#F5F3FF" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"></path><path d="M60 -30 C 44 -36, 8 -36, 0 -26 L 0 34 C 8 24, 44 24, 60 30 Z" fill="#EDE9FE" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"></path><g stroke="#7C3AED" stroke-width="2.4" stroke-linecap="round" opacity="0.75"><line x1="-50" y1="-18" x2="-14" y2="-18"></line><line x1="-50" y1="-8" x2="-20" y2="-8"></line><line x1="-50" y1="2" x2="-16" y2="2"></line><line x1="-50" y1="12" x2="-26" y2="12"></line><line x1="14" y1="-18" x2="50" y2="-18"></line><line x1="14" y1="-8" x2="44" y2="-8"></line><line x1="14" y1="2" x2="50" y2="2"></line><line x1="14" y1="12" x2="38" y2="12"></line></g></g><path d="M-72 -60 Q 0 -88, 72 -60" fill="none" stroke="#FDE68A" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 8"></path><g transform="translate(-72,-60)"><circle r="9" fill="#60A5FA"></circle><text y="3" text-anchor="middle" font-family="monospace" font-size="9" font-weight="700" fill="#0B0F17">&lt;/&gt;</text></g><g transform="translate(72,-60)"><circle r="9" fill="#34D399"></circle><path d="M-4 2 C -4 -3, 0 -6, 4 -5 C 5 -1, 2 3, -3 3 Z" fill="#065F46"></path></g></g></g><g fill="#C4B5FD" opacity="0.9"><path d="M180 220 l5 -16 l5 16 l16 5 l-16 5 l-5 16 l-5 -16 l-16 -5 z"></path><path d="M1000 260 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"></path></g><g transform="translate(600,980)" text-anchor="middle"><text font-weight="800" font-size="150" letter-spacing="-4.5" fill="#FAFAFA">Blog</text><text y="70" font-weight="500" font-size="32" fill="#A1A1AA">Reflections · Tech × Wellness</text><text y="135" font-family="monospace" font-size="22" font-weight="600" fill="#C4B5FD" letter-spacing="1.76">PBDESK .</text></g></svg>
