@@ -29,22 +29,36 @@ export default function Hero() {
       <div className="wrapper relative z-10">
         <div className="mx-auto max-w-4xl text-center">
           {/* Eyebrow pill */}
-          <Chip className="chip brand">Bits &amp; Bites</Chip>
+          <Chip variant="brand">
+            <span
+              className="h-2 w-2 rounded-full"
+              style={{ background: "var(--fg-brand)" }}
+            />
+            <span>Bits &amp; Bites — Developer&apos;s Life</span>
+          </Chip>
 
           {/* Headline */}
           <h1
-            className="mb-8 font-bold text-[var(--fg-primary)]"
+            className="m-8 font-bold text-[var(--fg-primary)]"
             style={{
-              fontSize: "clamp(44px, 6vw, 84px)",
-              lineHeight: 1.05,
+              fontSize: "clamp(30px, 4vw, 50px)",
+              lineHeight: 1.5,
               letterSpacing: "-0.03em",
             }}
           >
-            Learning Endeavor
+            <span className="text-[var(--fg-brand)]"> Learnig </span>
+            endeavor forever...
             <br />
-            <span className="text-[var(--fg-brand)]">Forever</span>
-            <br />
-            from my desk to yours.
+            <span
+              style={{
+                fontSize: "clamp(20px, 3vw, 40px)",
+              }}
+            >
+              ...from the desk of{" "}
+              <span className="text-[var(--fg-brand)]">
+                <em>Pinal Bhatt</em>
+              </span>
+            </span>
           </h1>
 
           {/* Subheading */}
