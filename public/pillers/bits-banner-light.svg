@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="640" viewBox="0 0 1920 640"><defs><pattern id="grid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r="1.2" fill="#D4D4D8"></circle></pattern><radialGradient id="glow-blue" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35"></stop><stop offset="60%" stop-color="#3B82F6" stop-opacity="0.08"></stop><stop offset="100%" stop-color="#3B82F6" stop-opacity="0"></stop></radialGradient><linearGradient id="tile-blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3B82F6"></stop><stop offset="100%" stop-color="#1D4ED8"></stop></linearGradient></defs>
+<rect width="1920" height="640" fill="#FAFAFA"></rect>
+<rect width="1920" height="640" fill="url(#grid)"></rect>
+<circle cx="1400" cy="340" r="520" fill="url(#glow-blue)" opacity="0.6"></circle>
+<g font-size="22" font-weight="600">
+  <g transform="translate(1620,160)">
+    <rect x="-80" y="-22" width="160" height="44" rx="22" fill="#FFFFFF" stroke="#E4E4E7"></rect>
+    <text text-anchor="middle" dy="7" fill="#059669">Development</text>
+  </g>
+  <g transform="translate(220,520)">
+    <rect x="-90" y="-22" width="180" height="44" rx="22" fill="#FFFFFF" stroke="#E4E4E7"></rect>
+    <text text-anchor="middle" dy="7" fill="#B45309">{ code }</text>
+  </g>
+</g>
+<g opacity="0.9"><path d="M1680 480 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z" fill="#7DD3FC"></path><path d="M260 320 l3 -10 l3 10 l10 3 l-10 3 l-3 10 l-3 -10 l-10 -3 z" fill="#7DD3FC" opacity="0.7"></path></g>
+<g transform="translate(1280,330) scale(1.6)"><g><rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-blue)"></rect><rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"></rect><g opacity="0.18" stroke="#fff" stroke-width="1"><line x1="-90" y1="-30" x2="90" y2="-30"></line><line x1="-90" y1="30" x2="90" y2="30"></line><line x1="-30" y1="-90" x2="-30" y2="90"></line><line x1="30" y1="-90" x2="30" y2="90"></line></g><g fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><polyline points="-36,-26 -58,0 -36,26"></polyline><polyline points="36,-26 58,0 36,26"></polyline><line x1="14" y1="-30" x2="-14" y2="30"></line></g><g transform="translate(52,-52)" fill="#FDE68A"><path d="M0 -16 L4 -4 L16 0 L4 4 L0 16 L-4 4 L-16 0 L-4 -4 Z"></path></g><g transform="translate(-58,58)" fill="#7DD3FC"><path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z"></path></g></g></g>
+<g transform="translate(160,260)">
+  <text font-weight="800" font-size="220" letter-spacing="-6.6" fill="#0B0F17">Bits</text>
+  <text y="84" font-weight="500" font-size="34" fill="#52525B">AI · Code · Tools · Dev-life</text>
+  <g transform="translate(0,130)"><rect x="0" y="0" width="220" height="10" rx="5" fill="#2563EB"></rect><rect x="232" y="0" width="60" height="10" rx="5" fill="#0EA5E9"></rect></g>
+</g>
+</svg>

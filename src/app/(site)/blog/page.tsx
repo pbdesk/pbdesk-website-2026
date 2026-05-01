@@ -1,4 +1,3 @@
-import { IconBook2, IconNotebook } from "@tabler/icons-react";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
 import { pillarAccents } from "@/lib/pillars";
@@ -65,9 +64,6 @@ export default function BlogPage() {
   return (
     <SectionLanding
       accentColor={pillarAccents.blog.primary}
-      accentColor2={pillarAccents.blog.secondary}
-      bannerLabel="Wellness"
-      bigIcon={<IconBook2 size={88} stroke={1.5} />}
       cadence="weekly"
       description="Welcome to my blog — a space where technology, creativity, and well-being connect. I share insights on software development, programming, AI, and the latest in tech, along with thoughts on health, wellness, fitness, and living a balanced life. From coding tips and emerging tech trends to mindfulness, movement, and personal growth, I explore how small choices shape both our digital and real worlds."
       filters={[
@@ -77,11 +73,8 @@ export default function BlogPage() {
         { label: "Wellness", count: 1 },
         { label: "Programming", count: 1 },
       ]}
-      pill="Reflections"
-      pillIcon={<IconNotebook size={14} stroke={2} />}
+      pillar="blog"
       posts={posts}
-      subtitle="Reflections · Tech × Wellness"
-      tileGradient="post-grad-violet"
       title="Blog"
     />
   );
