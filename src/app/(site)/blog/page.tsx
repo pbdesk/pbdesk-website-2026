@@ -1,6 +1,24 @@
+import type { Metadata } from "next";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
 import { pillarAccents } from "@/lib/pillars";
+import { pageMetadata, SITE_AUTHOR, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Blog — Long-form reflections on code, AI & wellness",
+  description:
+    "Long-form essays on software craft, AI, programming habits, and the wellness practices that keep developers building for the long run. Written by Pinal Bhatt.",
+  path: "/blog",
+  keywords: [
+    "developer blog",
+    "tech blog",
+    "software development blog",
+    "AI essays",
+    "programming reflections",
+    "wellness for developers",
+    "Pinal Bhatt blog",
+  ],
+});
 
 const posts: Post[] = [
   {
@@ -60,22 +78,52 @@ const posts: Post[] = [
   },
 ];
 
+const blogJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: `${SITE_NAME} Blog`,
+  url: `${SITE_URL}/blog`,
+  description:
+    "Long-form essays on software craft, AI, programming habits, and developer wellness.",
+  inLanguage: "en",
+  author: {
+    "@type": "Person",
+    name: SITE_AUTHOR,
+    url: SITE_URL,
+  },
+  blogPost: posts.map((post) => ({
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    keywords: post.tags?.join(", "),
+    articleSection: post.category,
+    author: { "@type": "Person", name: SITE_AUTHOR },
+  })),
+};
+
 export default function BlogPage() {
   return (
-    <SectionLanding
-      accentColor={pillarAccents.blog.primary}
-      cadence="weekly"
-      description="Welcome to my blog, a space where technology, creativity, and well-being connect. I share insights on software development, programming, AI, and the latest in tech, along with thoughts on health, wellness, fitness, and living a balanced life. From coding tips and emerging tech trends to mindfulness, movement, and personal growth, I explore how small choices shape both our digital and real worlds. I also reflect on the importance of friendships, family, and meaningful connections. Whether you're here for tech insights or life inspiration, I'm excited to share this journey with you. Let's build, grow, and thrive together."
-      filters={[
-        { label: "Reflections", count: 2 },
-        { label: "Article", count: 1 },
-        { label: "Tool", count: 1 },
-        { label: "Wellness", count: 1 },
-        { label: "Programming", count: 1 },
-      ]}
-      pillar="blog"
-      posts={posts}
-      title="Blog"
-    />
+    <>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
+        type="application/ld+json"
+      />
+      <SectionLanding
+        accentColor={pillarAccents.blog.primary}
+        cadence="weekly"
+        description="Welcome to my blog, a space where technology, creativity, and well-being connect. I share insights on software development, programming, AI, and the latest in tech, along with thoughts on health, wellness, fitness, and living a balanced life. From coding tips and emerging tech trends to mindfulness, movement, and personal growth, I explore how small choices shape both our digital and real worlds. I also reflect on the importance of friendships, family, and meaningful connections. Whether you're here for tech insights or life inspiration, I'm excited to share this journey with you. Let's build, grow, and thrive together."
+        filters={[
+          { label: "Reflections", count: 2 },
+          { label: "Article", count: 1 },
+          { label: "Tool", count: 1 },
+          { label: "Wellness", count: 1 },
+          { label: "Programming", count: 1 },
+        ]}
+        pillar="blog"
+        posts={posts}
+        title="Blog"
+      />
+    </>
   );
 }

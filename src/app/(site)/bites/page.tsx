@@ -1,6 +1,27 @@
+import type { Metadata } from "next";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
 import { pillarAccents } from "@/lib/pillars";
+import { pageMetadata, SITE_AUTHOR, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Bites — Wellness, fitness & mindfulness for a fuller life",
+  description:
+    "Bites of holistic wellness — nutrition, movement, sleep, mindfulness, and the small daily habits that compound into real vitality. From Pinal Bhatt at PBDesk.",
+  path: "/bites",
+  keywords: [
+    "wellness",
+    "fitness",
+    "mindfulness",
+    "nutrition",
+    "yoga",
+    "sleep",
+    "strength training",
+    "holistic health",
+    "developer wellness",
+    "PBDesk Bites",
+  ],
+});
 
 const posts: Post[] = [
   {
@@ -69,20 +90,45 @@ const posts: Post[] = [
   },
 ];
 
+const bitesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `${SITE_NAME} Bites`,
+  url: `${SITE_URL}/bites`,
+  description:
+    "Bites of holistic wellness — nutrition, movement, mindfulness, and sleep — from PBDesk.",
+  inLanguage: "en",
+  author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
+  hasPart: posts.map((post) => ({
+    "@type": "CreativeWork",
+    name: post.title,
+    description: post.description,
+    keywords: post.tags?.join(", "),
+    genre: post.category,
+  })),
+};
+
 export default function BitesPage() {
   return (
-    <SectionLanding
-      accentColor={pillarAccents.bites.primary}
-      cadence="weekly"
-      description="A healthy, active life is the greatest gift we can give ourselves—and our loved ones. In this space, I share thoughts, articles, and resources on fitness, mental well-being, and holistic health. From effective workout routines and nutrition tips to mindfulness practices and the science of longevity, I explore how small, consistent choices lead to lasting vitality. Whether it’s breaking sedentary habits, finding joy in movement, or balancing tech life with physical wellness, my goal is to inspire and empower. Because when we take care of our bodies and minds, we show up stronger—for life, work, and those who matter most."
-      filters={[
-        { label: "Wellness", count: 3 },
-        { label: "Health", count: 2 },
-        { label: "Fitness", count: 2 },
-      ]}
-      pillar="bites"
-      posts={posts}
-      title="Bites"
-    />
+    <>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bitesJsonLd) }}
+        type="application/ld+json"
+      />
+      <SectionLanding
+        accentColor={pillarAccents.bites.primary}
+        cadence="weekly"
+        description="A healthy, active life is the greatest gift we can give ourselves—and our loved ones. In this space, I share thoughts, articles, and resources on fitness, mental well-being, and holistic health. From effective workout routines and nutrition tips to mindfulness practices and the science of longevity, I explore how small, consistent choices lead to lasting vitality. Whether it’s breaking sedentary habits, finding joy in movement, or balancing tech life with physical wellness, my goal is to inspire and empower. Because when we take care of our bodies and minds, we show up stronger—for life, work, and those who matter most."
+        filters={[
+          { label: "Wellness", count: 3 },
+          { label: "Health", count: 2 },
+          { label: "Fitness", count: 2 },
+        ]}
+        pillar="bites"
+        posts={posts}
+        title="Bites"
+      />
+    </>
   );
 }

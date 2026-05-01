@@ -1,6 +1,25 @@
+import type { Metadata } from "next";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
 import { pillarAccents } from "@/lib/pillars";
+import { pageMetadata, SITE_AUTHOR, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Bits — AI tools, dev tools & web tech worth knowing",
+  description:
+    "Curated bits on AI agents, developer tools, browsers, VS Code extensions, and the frameworks shaping modern web development. Notes from Pinal Bhatt's desk.",
+  path: "/bits",
+  keywords: [
+    "AI tools",
+    "developer tools",
+    "VS Code extensions",
+    "AI agents",
+    "vibe coding",
+    "Tailwind CSS",
+    "modern web development",
+    "PBDesk Bits",
+  ],
+});
 
 const posts: Post[] = [
   {
@@ -86,22 +105,47 @@ const posts: Post[] = [
   },
 ];
 
+const bitsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `${SITE_NAME} Bits`,
+  url: `${SITE_URL}/bits`,
+  description:
+    "Curated notes on AI tools, developer tools, and modern web tech — from PBDesk.",
+  inLanguage: "en",
+  author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
+  hasPart: posts.map((post) => ({
+    "@type": "CreativeWork",
+    name: post.title,
+    description: post.description,
+    keywords: post.tags?.join(", "),
+    genre: post.category,
+  })),
+};
+
 export default function BitsPage() {
   return (
-    <SectionLanding
-      accentColor={pillarAccents.bits.primary}
-      cadence="weekly"
-      description="Welcome to my digital corner, where I share insights on the ever-evolving world of AI, programming, and software development. From the latest advancements in generative AI to cutting-edge developer tools and web design trends, I explore how technology shapes our digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing productivity hacks for coders, I aim to bridge knowledge gaps and spark curiosity. Join me as I navigate the fast-paced tech landscape one thought, tutorial, and trend at a time. Let's build, learn, and innovate together."
-      filters={[
-        { label: "Tool", count: 4 },
-        { label: "AI", count: 3 },
-        { label: "Tutorial", count: 1 },
-        { label: "Util", count: 1 },
-        { label: "Framework", count: 1 },
-      ]}
-      pillar="bits"
-      posts={posts}
-      title="Bits"
-    />
+    <>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bitsJsonLd) }}
+        type="application/ld+json"
+      />
+      <SectionLanding
+        accentColor={pillarAccents.bits.primary}
+        cadence="weekly"
+        description="Welcome to my digital corner, where I share insights on the ever-evolving world of AI, programming, and software development. From the latest advancements in generative AI to cutting-edge developer tools and web design trends, I explore how technology shapes our digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing productivity hacks for coders, I aim to bridge knowledge gaps and spark curiosity. Join me as I navigate the fast-paced tech landscape one thought, tutorial, and trend at a time. Let's build, learn, and innovate together."
+        filters={[
+          { label: "Tool", count: 4 },
+          { label: "AI", count: 3 },
+          { label: "Tutorial", count: 1 },
+          { label: "Util", count: 1 },
+          { label: "Framework", count: 1 },
+        ]}
+        pillar="bits"
+        posts={posts}
+        title="Bits"
+      />
+    </>
   );
 }

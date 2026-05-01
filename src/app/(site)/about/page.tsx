@@ -11,11 +11,43 @@ import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/ui/reveal";
+import {
+  pageMetadata,
+  SITE_AUTHOR,
+  SITE_NAME,
+  SITE_URL,
+  SOCIAL,
+} from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About — Pinal Bhatt",
+export const metadata: Metadata = pageMetadata({
+  title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
   description:
-    "Software engineer, AI tinkerer, and wellness enthusiast. Get to know the human behind PBDesk — the work, the writing, and the small habits that fuel both.",
+    "Get to know the human behind PBDesk. Pinal Bhatt is a software engineer exploring AI, web development, and the daily wellness habits that fuel sustainable craft.",
+  path: "/about",
+  ogType: "profile",
+  keywords: [
+    "Pinal Bhatt",
+    "about Pinal Bhatt",
+    "software engineer",
+    "AI engineer",
+    "full stack developer",
+    "wellness enthusiast",
+  ],
+});
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE_AUTHOR,
+  url: `${SITE_URL}/about`,
+  jobTitle: "Software Engineer",
+  worksFor: {
+    "@type": "Organization",
+    name: SITE_NAME,
+  },
+  description:
+    "Software engineer, AI tinkerer, and wellness enthusiast writing at PBDesk.",
+  sameAs: [SOCIAL.github, SOCIAL.linkedin, SOCIAL.x],
 };
 
 const socials = [
@@ -226,6 +258,11 @@ function AboutHero() {
 export default function AboutPage() {
   return (
     <main>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        type="application/ld+json"
+      />
       <Reveal>
         <AboutHero />
       </Reveal>
