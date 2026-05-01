@@ -66,7 +66,7 @@ export default function Pillars() {
               >
                 <Image
                   alt=""
-                  className="h-28 w-28 object-contain"
+                  className="h-28 w-28 object-contain transition-transform duration-200 hover:rotate-[-5deg]"
                   height={120}
                   src={pillar.avatar}
                   width={120}

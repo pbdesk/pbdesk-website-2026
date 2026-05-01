@@ -1,0 +1,88 @@
+import type { Metadata } from "next";
+
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pbdesk.com"
+).replace(/\/$/, "");
+export const SITE_NAME = "PBDesk";
+export const SITE_AUTHOR = "Pinal Bhatt";
+export const SITE_TAGLINE = "Bits, Bites & Blog — from the desk of Pinal Bhatt";
+export const SITE_DEFAULT_TITLE = "PBDesk — Bits, Bites & Blog";
+export const SITE_DEFAULT_DESCRIPTION =
+  "From the desk of Pinal Bhatt — a space where code meets wellness. Bits (dev & AI), Bites (fitness & mindfulness), Blog (long-form reflections).";
+export const DEFAULT_OG_IMAGE = "/pb/pb-sq-no-bg.png";
+
+export const SOCIAL = {
+  twitterHandle: "@pbdesk",
+  github: "https://github.com/pinalbhatt",
+  linkedin: "https://www.linkedin.com/in/pinalbhatt",
+  x: "https://x.com/pbdesk",
+} as const;
+
+export const SITE_KEYWORDS = [
+  "PBDesk",
+  "Pinal Bhatt",
+  "software engineering",
+  "developer blog",
+  "AI",
+  "artificial intelligence",
+  "web development",
+  "wellness",
+  "fitness",
+  "mindfulness",
+  "developer life",
+  "code and wellness",
+];
+
+interface PageMetaInput {
+  description: string;
+  keywords?: string[];
+  ogImage?: string;
+  ogType?: "website" | "article" | "profile";
+  path: string;
+  title: string;
+}
+
+export function pageMetadata({
+  title,
+  description,
+  path,
+  keywords,
+  ogImage = DEFAULT_OG_IMAGE,
+  ogType = "website",
+}: PageMetaInput): Metadata {
+  const url = `${SITE_URL}${path}`;
+  const mergedKeywords = keywords
+    ? Array.from(new Set([...SITE_KEYWORDS, ...keywords]))
+    : SITE_KEYWORDS;
+
+  return {
+    title,
+    description,
+    keywords: mergedKeywords,
+    alternates: {
+      canonical: path,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE_NAME,
+      type: ogType,
+      locale: "en_US",
+      images: [
+        {
+          url: ogImage,
+          alt: `${title} — ${SITE_NAME}`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      creator: SOCIAL.twitterHandle,
+      site: SOCIAL.twitterHandle,
+      images: [ogImage],
+    },
+  };
+}

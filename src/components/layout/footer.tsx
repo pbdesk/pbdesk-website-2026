@@ -113,15 +113,14 @@ export default function Footer() {
           style={{ borderColor: "var(--border-subtle)" }}
         >
           <p className="text-sm" style={{ color: "var(--fg-muted)" }}>
-            &copy; {getCurrentYear()} PBDesk. Built with Next.js 16 + Tailwind
-            4.
+            &copy; {getCurrentYear()} PBDesk.
           </p>
           <p className="text-sm" style={{ color: "var(--fg-muted)" }}>
-            Made with{" "}
+            With{" "}
             <span aria-hidden="true" style={{ color: "var(--fg-brand)" }}>
               ♥
             </span>{" "}
-            by Pinal Bhatt
+            from the desk of Pinal Bhatt
           </p>
         </div>
       </div>
