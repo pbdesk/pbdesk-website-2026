@@ -29,10 +29,7 @@ const socials = [
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden py-24 sm:py-28">
-      <span aria-hidden="true" className="hero-blob-left" />
-      <span aria-hidden="true" className="hero-blob-right" />
-
+    <section className="hero-gradient-bg relative overflow-hidden py-24 sm:py-28">
       <div className="wrapper relative z-10">
         <div className="mx-auto max-w-4xl text-center">
           {/* Eyebrow pill */}

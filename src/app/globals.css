@@ -381,6 +381,75 @@ body {
     linear-gradient(135deg, #312e81 0%, #4338ca 50%, #4f46e5 100%);
 }
 
+/* Hero — sober mesh gradient background (light + dark) */
+.hero-gradient-bg {
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 15% 0%,
+      rgb(199 210 254 / 0.55) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 85% 10%,
+      rgb(233 213 255 / 0.45) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 90% 60% at 50% 100%,
+      rgb(224 231 255 / 0.5) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, #fafaff 0%, #ffffff 60%, #fafbff 100%);
+}
+
+[data-theme="dark"] .hero-gradient-bg {
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 15% 0%,
+      rgb(79 70 229 / 0.22) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 85% 10%,
+      rgb(124 58 237 / 0.18) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 90% 60% at 50% 100%,
+      rgb(49 46 129 / 0.28) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0b0f17 0%, #0d1220 60%, #0b0f17 100%);
+}
+
+/* Soft grain/noise overlay for added depth — optional, very subtle */
+.hero-gradient-bg::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  content: "";
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(0 0 0 / 0.025) 1px,
+    transparent 0
+  );
+  background-size: 22px 22px;
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    #000,
+    transparent 80%
+  );
+}
+
+[data-theme="dark"] .hero-gradient-bg::before {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(255 255 255 / 0.04) 1px,
+    transparent 0
+  );
+}
+
 /* Hero blob backgrounds */
 .hero-blob-left {
   position: absolute;
