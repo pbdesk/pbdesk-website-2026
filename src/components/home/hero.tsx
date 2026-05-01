@@ -37,10 +37,16 @@ export default function Hero() {
         <div className="mx-auto max-w-4xl text-center">
           {/* Eyebrow pill */}
           <Chip variant="brand">
-            <span
-              className="h-2 w-2 rounded-full"
-              style={{ background: "var(--fg-brand)" }}
-            />
+            <span className="relative flex h-2 w-2">
+              <span
+                className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
+                style={{ background: "var(--fg-brand)" }}
+              />
+              <span
+                className="relative inline-flex h-2 w-2 rounded-full"
+                style={{ background: "var(--fg-brand)" }}
+              />
+            </span>
             <span>Bits &amp; Bites — Developer&apos;s Life</span>
           </Chip>
 
