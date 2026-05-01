@@ -12,25 +12,23 @@ const BANNER_HEIGHT = 640;
 
 export default function SectionBanner({ pillar, title }: SectionBannerProps) {
   return (
-    <div className="wrapper py-8">
-      <div className="relative overflow-hidden rounded-3xl">
-        <Image
-          alt={`${title} banner`}
-          className="block h-auto w-full dark:hidden"
-          height={BANNER_HEIGHT}
-          priority
-          src={`/pillers/${pillar}-banner-light.svg`}
-          width={BANNER_WIDTH}
-        />
-        <Image
-          alt=""
-          aria-hidden="true"
-          className="hidden h-auto w-full dark:block"
-          height={BANNER_HEIGHT}
-          src={`/pillers/${pillar}-banner-dark.svg`}
-          width={BANNER_WIDTH}
-        />
-      </div>
+    <div className="relative w-full overflow-hidden">
+      <Image
+        alt={`${title} banner`}
+        className="block h-auto w-full dark:hidden"
+        height={BANNER_HEIGHT}
+        priority
+        src={`/pillers/${pillar}-banner-light.svg`}
+        width={BANNER_WIDTH}
+      />
+      <Image
+        alt=""
+        aria-hidden="true"
+        className="hidden h-auto w-full dark:block"
+        height={BANNER_HEIGHT}
+        src={`/pillers/${pillar}-banner-dark.svg`}
+        width={BANNER_WIDTH}
+      />
     </div>
   );
 }
