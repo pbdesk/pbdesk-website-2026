@@ -1,37 +1,93 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file gives Claude Code the project-specific rules for working in this repository.
+
+## First Rules
+
+- This project uses Bun, not Node package-manager commands. Use `bun run` and `bun x`.
+- This project uses Next.js 16 with breaking changes from older Next.js versions. Before changing framework-specific code, read the relevant guide under `node_modules/next/dist/docs/`.
+- Follow `AGENTS.md` for the full Ultracite/Biome code standards. Do not duplicate or weaken those rules here.
+- Preserve existing user changes. Check `git status --short` before larger edits and do not revert unrelated work.
 
 ## Commands
 
 ```bash
-bun run dev            # Start dev server at http://localhost:3000
-bun run build          # Production build
-bun run start          # Start production server
-bun x ultracite fix    # Auto-fix formatting/lint issues (run before committing)
-bun x ultracite check  # Check for issues without fixing
+bun run dev            # Start local dev server at http://localhost:3000
+bun run build          # Create a production build
+bun run start          # Start the production server
+bun run check          # Run Ultracite checks
+bun run fix            # Auto-fix Ultracite/Biome issues
+bun x ultracite check  # Equivalent direct check command
+bun x ultracite fix    # Equivalent direct fix command; run before committing
 ```
 
-Pre-commit hooks (lefthook) automatically run `bun x ultracite fix` on staged files — do not skip hooks.
+Pre-commit hooks use Lefthook and run `bun x ultracite fix` on staged files. Do not skip hooks.
 
 ## Architecture
 
-**Runtime:** Bun (not Node). Use `bun run` / `bun x` for all commands.
+- Runtime/package manager: Bun.
+- Framework: Next.js 16 App Router with React 19.
+- Styling: Tailwind CSS 4 via `@tailwindcss/postcss`.
+- Path alias: `@/*` resolves to `src/*`.
+- React Compiler is enabled. Avoid manual `useMemo` or `useCallback` unless there is a measured reason.
+- Server Components are the default. Add `"use client"` only for hooks, browser APIs, event handlers, or other client-only behavior.
 
-**Framework:** Next.js 16 App Router with React 19. This version has breaking changes from older Next.js — check `node_modules/next/dist/docs/` before writing Next.js-specific code.
+## Source Layout
 
-**Source layout:**
-- `src/app/(site)/` — route group for all public pages; `layout.tsx` wraps with Header + Footer
-- `src/app/layout.tsx` — root layout: metadata, ThemeProvider, Toaster
-- `src/components/layout/` — Header (client, sticky, mobile-responsive) and Footer (server)
-- `src/lib/providers/` — client-side providers (Toaster via Sonner)
-- `src/lib/utils.ts` — shared utilities (`cn` for class merging, `errorHandler`, etc.)
-- `src/icons/icons.tsx` — custom icon components wrapping @tabler/icons-react
+- `src/app/layout.tsx`: root layout, metadata, providers, global page shell.
+- `src/app/(site)/`: public site route group.
+- `src/app/(site)/layout.tsx`: public route wrapper with header and footer.
+- `src/app/globals.css`: Tailwind import, theme tokens, custom utilities, global styles.
+- `src/components/layout/`: header, theme toggle, and footer.
+- `src/components/home/`: home page sections.
+- `src/components/landing/`: listing and landing page components.
+- `src/components/ui/`: shared presentational primitives.
+- `src/icons/icons.tsx`: project icon wrappers around `@tabler/icons-react`.
+- `src/lib/`: shared utilities, SEO helpers, providers, and content data.
+- `public/`: static assets.
 
-**Styling:** Tailwind CSS 4 via `@tailwindcss/postcss`. Theme variables are defined inline in `src/app/globals.css` (no `tailwind.config.js`). Custom `@utility` rules for `.wrapper`, `.hero-glow-bg`, etc. Dark mode uses `data-theme="dark"` attribute, not Tailwind's `class` strategy.
+## Styling Conventions
 
-**Component model:** Server Components by default. Mark client boundaries with `"use client"` only when needed (hooks, browser APIs, interactivity). React Compiler is enabled — no manual `useMemo`/`useCallback` needed.
+- Tailwind theme variables live in `src/app/globals.css`; there is no `tailwind.config.js`.
+- Dark mode is controlled with the `data-theme="dark"` attribute.
+- Prefer existing UI primitives and utilities such as `cn`, shared buttons, chips, cards, and reveal components.
+- Use semantic HTML and accessible labels. Use Next.js `<Image>` for images.
+- Keep styles consistent with the current site language before introducing new visual patterns.
 
-**Path alias:** `@/*` resolves to `src/*`.
+## Code Standards
 
-**Code standards:** See `AGENTS.md` for the full Ultracite/Biome ruleset (type safety, React 19 patterns, accessibility, security).
+- Run `bun run fix` after meaningful code edits, then `bun run check` when practical.
+- Use TypeScript narrowing instead of assertions when possible.
+- Prefer `unknown` over `any`.
+- Prefer `for...of` loops over `.forEach()` and indexed loops.
+- Keep functions focused; extract complex conditions into named booleans.
+- Remove `console.log`, `debugger`, and `alert` from production code.
+- Add `rel="noopener"` on links with `target="_blank"`.
+- Avoid `dangerouslySetInnerHTML` unless the need is explicit and sanitized.
+
+## Next.js Notes
+
+Use local docs as the source of truth for current APIs:
+
+- App Router docs: `node_modules/next/dist/docs/01-app/`
+- Architecture docs: `node_modules/next/dist/docs/03-architecture/`
+- Supported browser and accessibility docs: `node_modules/next/dist/docs/03-architecture/`
+
+When touching metadata, routing, layouts, dynamic rendering, caching, images, or server actions, consult the matching local docs first.
+
+## Verification
+
+For most changes:
+
+```bash
+bun run fix
+bun run check
+```
+
+For framework, routing, or rendering changes, also run:
+
+```bash
+bun run build
+```
+
+If verification cannot be run, explain why and list the remaining risk.
