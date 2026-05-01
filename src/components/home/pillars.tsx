@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
@@ -8,6 +9,7 @@ const pillars = [
     href: "/bits",
     cta: "Visit My Bits",
     gradient: "pillar-bits-gradient",
+    avatar: "/pillers/bits-avatar.svg",
     description:
       "Insights on AI, programming, and software development — frameworks, dev tools, productivity hacks, and the occasional deep dive.",
   },
@@ -17,6 +19,7 @@ const pillars = [
     href: "/bites",
     cta: "Visit My Bites",
     gradient: "pillar-bites-gradient",
+    avatar: "/pillers/bites-avatar.svg",
     description:
       "A healthy, active life is the greatest gift we can give ourselves. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
   },
@@ -26,6 +29,7 @@ const pillars = [
     href: "/blog",
     cta: "Visit My Blog",
     gradient: "pillar-blog-gradient",
+    avatar: "/pillers/blog-avatar.svg",
     description:
       "Longer-form reflections on balancing tech life with physical wellness, plus friendships, family, and meaningful connections.",
   },
@@ -58,8 +62,16 @@ export default function Pillars() {
             >
               <div
                 aria-hidden="true"
-                className={`${pillar.gradient} h-44 w-full`}
-              />
+                className={`${pillar.gradient} relative flex h-44 w-full items-center justify-center`}
+              >
+                <Image
+                  alt=""
+                  className="h-28 w-28 object-contain"
+                  height={120}
+                  src={pillar.avatar}
+                  width={120}
+                />
+              </div>
               <div className="flex flex-1 flex-col p-7">
                 <h3 className="mb-3 font-bold text-[var(--fg-primary)] text-xl">
                   {pillar.title}
