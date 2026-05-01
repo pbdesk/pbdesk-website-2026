@@ -107,19 +107,19 @@ export default function About() {
           <div className="group relative">
             <div
               aria-hidden="true"
-              className="absolute inset-0 rotate-6 rounded-3xl bg-gradient-to-tr from-[var(--color-brand-500)]/20 to-[var(--color-brand-500)]/5 transition-transform duration-500 ease-out group-hover:rotate-3"
+              className="absolute inset-y-0 left-1/2 w-4/5 -translate-x-1/2 rotate-6 rounded-3xl bg-gradient-to-tr from-[var(--color-brand-500)]/20 to-[var(--color-brand-500)]/5 transition-transform duration-500 ease-out group-hover:rotate-3"
             />
             <div
               aria-hidden="true"
               className="absolute -right-6 -bottom-6 h-32 w-32 rounded-full bg-[var(--color-brand-500)]/20 blur-2xl"
             />
-            <div className="relative aspect-square -rotate-[5deg] overflow-hidden rounded-3xl shadow-[var(--shadow-lg)] transition-transform duration-500 ease-out will-change-transform group-hover:rotate-0 group-hover:scale-[1.03]">
+            <div className="relative mx-auto aspect-square w-4/5 -rotate-[5deg] overflow-hidden rounded-3xl shadow-[var(--shadow-lg)] transition-transform duration-500 ease-out will-change-transform group-hover:rotate-0 group-hover:scale-[1.03]">
               <Image
                 alt="Pinal Bhatt"
                 className="h-full w-full object-cover"
-                height={600}
+                height={320}
                 src="/pb/pb1.jpg"
-                width={600}
+                width={320}
               />
             </div>
 
