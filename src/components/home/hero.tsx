@@ -4,6 +4,7 @@ import {
   IconBrandX,
 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
+import { Chip } from "@/components/ui/chip";
 
 const socials = [
   {
@@ -28,10 +29,7 @@ export default function Hero() {
       <div className="wrapper relative z-10">
         <div className="mx-auto max-w-4xl text-center">
           {/* Eyebrow pill */}
-          <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 py-1.5 font-medium text-[var(--fg-secondary)] text-sm">
-            <span className="h-2 w-2 rounded-full bg-[var(--fg-brand)]" />
-            <span>Bits &amp; Bites — Developer&apos;s Life</span>
-          </div>
+          <Chip className="chip brand">Bits &amp; Bites</Chip>
 
           {/* Headline */}
           <h1
