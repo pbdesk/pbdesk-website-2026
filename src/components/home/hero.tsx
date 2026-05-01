@@ -11,13 +11,20 @@ const socials = [
     label: "GitHub",
     href: "https://github.com/pinalbhatt",
     icon: IconBrandGithubFilled,
+    hoverClass: "hover:text-[#181717] dark:hover:text-white",
   },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/pinalbhatt",
     icon: IconBrandLinkedinFilled,
+    hoverClass: "hover:text-[#0A66C2]",
   },
-  { label: "X", href: "https://x.com/pbdesk", icon: IconBrandX },
+  {
+    label: "X",
+    href: "https://x.com/pbdesk",
+    icon: IconBrandX,
+    hoverClass: "hover:text-black dark:hover:text-white",
+  },
 ];
 
 export default function Hero() {
@@ -62,7 +69,7 @@ export default function Hero() {
           </h1>
 
           {/* Subheading */}
-          <p
+          {/* <p
             className="mx-auto mb-12 max-w-2xl text-[var(--fg-secondary)] text-lg"
             style={{ lineHeight: 1.65 }}
           >
@@ -71,21 +78,21 @@ export default function Hero() {
             software engineer, AI tinkerer, and wellness enthusiast. I write
             about code, tools, and the small habits that keep us building for
             the long run.
-          </p>
+          </p> */}
 
           {/* CTAs */}
           <div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Button href="/blog">
-              Explore the Blog
+            <Button href="/about">
+              About Me
               <span aria-hidden="true">→</span>
             </Button>
           </div>
 
           {/* Social row */}
           <div className="flex items-center justify-center gap-2">
-            {socials.map(({ label, href, icon: Icon }) => (
+            {socials.map(({ label, href, icon: Icon, hoverClass }) => (
               <a
-                className="flex h-10 w-10 items-center justify-center rounded-full text-[var(--fg-muted)] transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                className={`flex h-10 w-10 items-center justify-center rounded-full text-[var(--fg-muted)] transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 ${hoverClass}`}
                 href={href}
                 key={label}
                 rel="noopener"
