@@ -17,10 +17,10 @@ export default function Home() {
         <Pillars />
       </Reveal>
       <Reveal>
-        <MyRealm />
+        <About />
       </Reveal>
       <Reveal>
-        <About />
+        <MyRealm />
       </Reveal>
       <Reveal>
         <MyWellnessThreads />

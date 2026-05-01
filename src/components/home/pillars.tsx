@@ -21,7 +21,7 @@ const pillars = [
     gradient: "pillar-bites-gradient",
     avatar: "/pillers/bites-avatar.svg",
     description:
-      "A healthy, active life is the greatest gift we can give ourselves. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
+      "A healthy, active life is the greatest gift we can give ourselves and our loved ones. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
   },
   {
     name: "Blog",
@@ -31,7 +31,7 @@ const pillars = [
     gradient: "pillar-blog-gradient",
     avatar: "/pillers/blog-avatar.svg",
     description:
-      "Longer-form reflections on balancing tech life with physical wellness, plus friendships, family, and meaningful connections.",
+      "Reflections on balancing tech life with physical and mental wellness, plus friendships, family, meaningful connections and emotions.",
   },
 ];
 
