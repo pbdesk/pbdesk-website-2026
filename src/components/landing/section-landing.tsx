@@ -8,38 +8,26 @@ import type { ReactNode } from "react";
 import CtaBanner from "@/components/home/cta-banner";
 import FeaturedPost from "./featured-post";
 import PostCard, { type Post } from "./post-card";
-import SectionBanner from "./section-banner";
+import SectionBanner, { type PillarKey } from "./section-banner";
 
 export interface SectionLandingProps {
   accentColor: string;
-  accentColor2: string;
-  bannerLabel: string;
-  bigIcon: ReactNode;
   cadence: string;
   description: ReactNode;
   filters: { label: string; count: number }[];
-  pill: string;
-  pillIcon?: ReactNode;
+  pillar: PillarKey;
   posts: Post[];
-  subtitle: string;
-  tileGradient: string;
   title: string;
 }
 
 export default function SectionLanding({
   title,
-  subtitle,
   description,
-  pill,
-  pillIcon,
-  bannerLabel,
   accentColor,
-  accentColor2,
-  bigIcon,
-  tileGradient,
   filters,
   posts,
   cadence,
+  pillar,
 }: SectionLandingProps) {
   const totalPosts = posts.length;
   const categoryCount = new Set(posts.map((p) => p.category)).size;
@@ -49,17 +37,7 @@ export default function SectionLanding({
 
   return (
     <main>
-      <SectionBanner
-        accentColor={accentColor}
-        accentColor2={accentColor2}
-        bannerLabel={bannerLabel}
-        bigIcon={bigIcon}
-        pill={pill}
-        pillIcon={pillIcon}
-        subtitle={subtitle}
-        tileGradient={tileGradient}
-        title={title}
-      />
+      <SectionBanner pillar={pillar} title={title} />
 
       {/* Breadcrumb + intro */}
       <section className="py-12">

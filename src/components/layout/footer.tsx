@@ -58,9 +58,10 @@ export default function Footer() {
             <Link className="mb-5 flex items-center gap-3" href="/">
               <Image
                 alt="Pinal Bhatt"
-                className="rounded-full"
+                className="-translate-y-[5px] rounded-full border"
                 height={44}
-                src="/pb/pb1.jpg"
+                src="/pb/pb-sq-no-bg.png"
+                style={{ borderColor: "var(--fg-brand)" }}
                 width={44}
               />
               <div className="flex flex-col">

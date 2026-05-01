@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+<defs>
+  
+  <pattern id="grid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+    <circle cx="1.2" cy="1.2" r="1.2" fill="#27272A"></circle>
+  </pattern>
+  <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35"></stop>
+    <stop offset="60%" stop-color="#3B82F6" stop-opacity="0.08"></stop>
+    <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"></stop>
+  </radialGradient>
+  <radialGradient id="glow-emerald" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#10B981" stop-opacity="0.35"></stop>
+    <stop offset="60%" stop-color="#10B981" stop-opacity="0.08"></stop>
+    <stop offset="100%" stop-color="#10B981" stop-opacity="0"></stop>
+  </radialGradient>
+  <radialGradient id="glow-violet" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.4"></stop>
+    <stop offset="60%" stop-color="#7C3AED" stop-opacity="0.08"></stop>
+    <stop offset="100%" stop-color="#7C3AED" stop-opacity="0"></stop>
+  </radialGradient>
+  <linearGradient id="tile-blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3B82F6"></stop><stop offset="100%" stop-color="#1D4ED8"></stop></linearGradient>
+  <linearGradient id="tile-emerald" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#34D399"></stop><stop offset="100%" stop-color="#059669"></stop></linearGradient>
+  <linearGradient id="tile-violet" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8B5CF6"></stop><stop offset="100%" stop-color="#2563EB"></stop></linearGradient>
+</defs><rect width="1200" height="1200" fill="#0B0F17"></rect><rect width="1200" height="1200" fill="url(#grid)"></rect><circle cx="600" cy="420" r="520" fill="url(#glow-blue)"></circle><g transform="translate(600,480) scale(2.8)"><g><rect x="-90" y="-90" width="180" height="180" rx="36" fill="url(#tile-blue)"></rect><rect x="-90" y="-90" width="180" height="180" rx="36" fill="none" stroke="#fff" stroke-opacity="0.16"></rect><g opacity="0.18" stroke="#fff" stroke-width="1"><line x1="-90" y1="-30" x2="90" y2="-30"></line><line x1="-90" y1="30" x2="90" y2="30"></line><line x1="-30" y1="-90" x2="-30" y2="90"></line><line x1="30" y1="-90" x2="30" y2="90"></line></g><g fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"><polyline points="-36,-26 -58,0 -36,26"></polyline><polyline points="36,-26 58,0 36,26"></polyline><line x1="14" y1="-30" x2="-14" y2="30"></line></g><g transform="translate(52,-52)" fill="#FDE68A"><path d="M0 -16 L4 -4 L16 0 L4 4 L0 16 L-4 4 L-16 0 L-4 -4 Z"></path></g><g transform="translate(-58,58)" fill="#7DD3FC"><path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z"></path></g></g></g><g fill="#60A5FA" opacity="0.9"><path d="M180 220 l5 -16 l5 16 l16 5 l-16 5 l-5 16 l-5 -16 l-16 -5 z"></path><path d="M1000 260 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"></path><path d="M220 980 l4 -14 l4 14 l14 4 l-14 4 l-4 14 l-4 -14 l-14 -4 z"></path></g><g transform="translate(600,980)" text-anchor="middle"><text font-weight="800" font-size="150" letter-spacing="-4.5" fill="#FAFAFA">Bits</text><text y="70" font-weight="500" font-size="32" fill="#A1A1AA">AI · Code · Tools · Dev-life</text><text y="135" font-family="monospace" font-size="22" font-weight="600" fill="#60A5FA" letter-spacing="1.76">PBDESK .</text></g></svg>

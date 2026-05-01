@@ -1,4 +1,3 @@
-import { IconCode, IconCodeDots } from "@tabler/icons-react";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
 import { pillarAccents } from "@/lib/pillars";
@@ -91,9 +90,6 @@ export default function BitsPage() {
   return (
     <SectionLanding
       accentColor={pillarAccents.bits.primary}
-      accentColor2={pillarAccents.bits.secondary}
-      bannerLabel="Development"
-      bigIcon={<IconCode size={88} stroke={1.5} />}
       cadence="weekly"
       description="Welcome to my digital corner, where I share insights on the ever-evolving world of AI, programming, and software development. From the latest advancements in generative AI to cutting-edge developer tools and web design trends, I explore how technology shapes our digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing productivity hacks for coders — let's build, learn, and innovate together."
       filters={[
@@ -103,11 +99,8 @@ export default function BitsPage() {
         { label: "Util", count: 1 },
         { label: "Framework", count: 1 },
       ]}
-      pill="{ code }"
-      pillIcon={<IconCodeDots size={14} stroke={2} />}
+      pillar="bits"
       posts={posts}
-      subtitle="AI · Code · Tools · Dev-life"
-      tileGradient="post-grad-indigo"
       title="Bits"
     />
   );

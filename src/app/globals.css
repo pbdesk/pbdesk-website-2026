@@ -381,6 +381,75 @@ body {
     linear-gradient(135deg, #312e81 0%, #4338ca 50%, #4f46e5 100%);
 }
 
+/* Hero — sober mesh gradient background (light + dark) */
+.hero-gradient-bg {
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 15% 0%,
+      rgb(199 210 254 / 0.55) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 85% 10%,
+      rgb(233 213 255 / 0.45) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 90% 60% at 50% 100%,
+      rgb(224 231 255 / 0.5) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, #fafaff 0%, #ffffff 60%, #fafbff 100%);
+}
+
+[data-theme="dark"] .hero-gradient-bg {
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 15% 0%,
+      rgb(79 70 229 / 0.22) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 85% 10%,
+      rgb(124 58 237 / 0.18) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 90% 60% at 50% 100%,
+      rgb(49 46 129 / 0.28) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0b0f17 0%, #0d1220 60%, #0b0f17 100%);
+}
+
+/* Soft grain/noise overlay for added depth — optional, very subtle */
+.hero-gradient-bg::before {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  content: "";
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(0 0 0 / 0.025) 1px,
+    transparent 0
+  );
+  background-size: 22px 22px;
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    #000,
+    transparent 80%
+  );
+}
+
+[data-theme="dark"] .hero-gradient-bg::before {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(255 255 255 / 0.04) 1px,
+    transparent 0
+  );
+}
+
 /* Hero blob backgrounds */
 .hero-blob-left {
   position: absolute;
@@ -620,6 +689,236 @@ body {
   display: none !important;
 }
 
+/* ===============================================
+   My Wellness Pillars — section + artwork styles
+   =============================================== */
+
+/* Pillar list rows (right column) */
+.pillar-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 18px 20px;
+  overflow: hidden;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pillar-row::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  content: "";
+  background: var(--pillar-color, var(--brand-600));
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.pillar-row:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--pillar-color, var(--color-brand-600)) 40%,
+    var(--border-subtle)
+  );
+  box-shadow: var(--shadow-md);
+  transform: translateX(2px);
+}
+
+.pillar-row:hover::before {
+  opacity: 1;
+}
+
+.pillar-row-active {
+  border-color: color-mix(
+    in srgb,
+    var(--pillar-color, var(--color-brand-600)) 60%,
+    var(--border-subtle)
+  );
+  box-shadow: var(--shadow-md);
+}
+
+.pillar-row-active::before {
+  opacity: 1;
+}
+
+.pillar-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  color: var(--pillar-color, var(--color-brand-600));
+  background: color-mix(
+    in srgb,
+    var(--pillar-color, var(--color-brand-600)) 12%,
+    transparent
+  );
+  border-radius: 14px;
+}
+
+/* Artwork SVG specifics */
+.pillars-art .orbit-ring {
+  opacity: 0.7;
+  fill: none;
+  stroke: var(--border-subtle);
+  stroke-width: 1.25;
+  stroke-dasharray: 3 5;
+}
+
+[data-theme="dark"] .pillars-art .orbit-ring {
+  opacity: 0.45;
+}
+
+.pillars-art .connector {
+  opacity: 0.45;
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1.25;
+}
+
+[data-theme="dark"] .pillars-art .connector {
+  opacity: 0.35;
+}
+
+.pillars-art .node-bg {
+  fill: var(--bg-elevated);
+  stroke: var(--border-subtle);
+  stroke-width: 1.25;
+}
+
+.pillars-art .node-bg-active {
+  filter: drop-shadow(
+    0 6px 20px
+      color-mix(
+        in srgb,
+        var(--pillar-color, var(--color-brand-600)) 30%,
+        transparent
+      )
+  );
+}
+
+.pillars-art .node-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-anchor: middle;
+  fill: var(--fg-primary);
+}
+
+.pillars-art .node-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-anchor: middle;
+  fill: var(--fg-muted);
+}
+
+.pillars-art .hub-circle {
+  fill: var(--bg-elevated);
+  stroke: var(--color-brand-600);
+  stroke-width: 1.5;
+}
+
+.pillars-art .hub-inner {
+  opacity: 0.08;
+  fill: var(--color-brand-600);
+}
+
+[data-theme="dark"] .pillars-art .hub-inner {
+  opacity: 0.18;
+}
+
+.pillars-art .hub-title {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-anchor: middle;
+  fill: var(--fg-primary);
+}
+
+.pillars-art .hub-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  text-anchor: middle;
+  fill: var(--color-brand-600);
+}
+
+.pillars-art .pip {
+  opacity: 0.7;
+  fill: var(--color-brand-600);
+}
+
+.pillars-art .satellite {
+  fill: color-mix(in srgb, var(--color-brand-600) 12%, transparent);
+  stroke: color-mix(in srgb, var(--color-brand-600) 30%, transparent);
+  stroke-width: 1;
+}
+
+.pillars-art .hub-glow {
+  transform-origin: center;
+  animation: hub-pulse 4s ease-in-out infinite;
+}
+
+@keyframes hub-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
+}
+
+.pillars-art .breath {
+  transform-origin: center;
+  animation: breath 6s ease-in-out infinite;
+}
+
+@keyframes breath {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.pillars-art .float-1 {
+  transform-origin: center;
+  animation: float-y 5s ease-in-out infinite;
+}
+
+.pillars-art .float-2 {
+  transform-origin: center;
+  animation: float-y 7s ease-in-out infinite reverse;
+}
+
+.pillars-art .float-3 {
+  transform-origin: center;
+  animation: float-y 6s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.pillars-art .float-4 {
+  transform-origin: center;
+  animation: float-y 8s ease-in-out infinite reverse;
+  animation-delay: -1s;
+}
+
 /* Animations */
 .floating {
   animation: float 3s ease-in-out infinite;
@@ -690,5 +989,155 @@ body {
   }
   50% {
     transform: translateY(8px);
+  }
+}
+
+/* Scroll-triggered reveal — keyframe variants picked at mount */
+.reveal {
+  opacity: 0;
+  will-change: opacity, transform, filter;
+}
+
+.reveal-visible {
+  animation-duration: 950ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+}
+
+.reveal-visible.reveal-up {
+  animation-name: reveal-up;
+}
+.reveal-visible.reveal-down {
+  animation-name: reveal-down;
+}
+.reveal-visible.reveal-left {
+  animation-name: reveal-left;
+}
+.reveal-visible.reveal-right {
+  animation-name: reveal-right;
+}
+.reveal-visible.reveal-zoom-in {
+  animation-name: reveal-zoom-in;
+}
+.reveal-visible.reveal-zoom-out {
+  animation-name: reveal-zoom-out;
+}
+.reveal-visible.reveal-blur {
+  animation-name: reveal-blur;
+  animation-duration: 1100ms;
+}
+.reveal-visible.reveal-tilt {
+  animation-name: reveal-tilt;
+  animation-duration: 1050ms;
+}
+.reveal-visible.reveal-fade {
+  animation-name: reveal-fade;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 56px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -56px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-left {
+  from {
+    opacity: 0;
+    transform: translate3d(-72px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-right {
+  from {
+    opacity: 0;
+    transform: translate3d(72px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes reveal-zoom-out {
+  from {
+    opacity: 0;
+    transform: scale(1.14);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes reveal-blur {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-tilt {
+  from {
+    opacity: 0;
+    transform: rotate(-2.5deg) translate3d(0, 44px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0deg) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+  }
+  .reveal-visible {
+    animation: none;
   }
 }
