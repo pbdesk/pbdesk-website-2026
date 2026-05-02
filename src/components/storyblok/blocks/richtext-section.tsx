@@ -1,4 +1,4 @@
-import { StoryblokServerRichText } from "@storyblok/react/rsc";
+import { StoryblokRichText } from "@storyblok/react";
 import { editable } from "./editable";
 import type { RichtextSectionBlok } from "./types";
 
@@ -12,11 +12,9 @@ export default function RichtextSection({
       <div className="wrapper">
         <article className="post-prose mx-auto max-w-3xl">
           {blok.content ? (
-            <StoryblokServerRichText
+            <StoryblokRichText
               doc={
-                blok.content as Parameters<
-                  typeof StoryblokServerRichText
-                >[0]["doc"]
+                blok.content as Parameters<typeof StoryblokRichText>[0]["doc"]
               }
             />
           ) : null}

@@ -1,8 +1,12 @@
 import { draftMode } from "next/headers";
-import { redirect } from "next/navigation";
+import { type NextRequest, NextResponse } from "next/server";
+import { PREVIEW_COOKIE } from "../draft/route";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const draft = await draftMode();
   draft.disable();
-  redirect("/");
+
+  const response = NextResponse.redirect(new URL("/", request.nextUrl.origin));
+  response.cookies.delete(PREVIEW_COOKIE);
+  return response;
 }

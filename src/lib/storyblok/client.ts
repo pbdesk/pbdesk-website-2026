@@ -1,5 +1,6 @@
 import { getStoryblokApi } from "@storyblok/react/rsc";
-import { draftMode } from "next/headers";
+import { unstable_noStore as noStore } from "next/cache";
+import { cookies, draftMode, headers } from "next/headers";
 import "./init";
 import { STORYBLOK_CACHE_TAG, storyTag } from "./tags";
 import type {
@@ -17,9 +18,31 @@ interface FetchStoryOptions {
   resolveRelations?: string[];
 }
 
+// Names kept in sync with src/middleware.ts and src/app/api/draft/route.ts
+// (duplicated here to keep the client lib free of server-route imports).
+const PREVIEW_COOKIE = "sb-preview";
+const PREVIEW_HEADER = "x-sb-preview";
+
 async function isDraft(): Promise<boolean> {
-  const { isEnabled } = await draftMode();
-  return isEnabled;
+  // Three signals, any one of them enables draft fetching:
+  //   1. Next's built-in draftMode (top-level navigation through /api/draft)
+  //   2. Our SameSite=None sb-preview cookie (works in the Storyblok iframe
+  //      across navigations, set by /api/draft and by middleware)
+  //   3. The x-sb-preview request header (set by middleware on the *current*
+  //      request when the URL contains _storyblok* query params — this
+  //      handles the very first iframe load before any cookie is set)
+  const [{ isEnabled }, cookieStore, headersList] = await Promise.all([
+    draftMode(),
+    cookies(),
+    headers(),
+  ]);
+  if (isEnabled) {
+    return true;
+  }
+  if (cookieStore.get(PREVIEW_COOKIE)) {
+    return true;
+  }
+  return headersList.get(PREVIEW_HEADER) === "1";
 }
 
 async function fetchStoryRaw<TStory>(
@@ -27,6 +50,13 @@ async function fetchStoryRaw<TStory>(
   options: FetchStoryOptions = {}
 ): Promise<TStory | null> {
   const draft = await isDraft();
+  if (draft) {
+    // Opt this whole request out of Next's data cache so router.refresh()
+    // always pulls fresh draft content. Without this, the underlying fetch
+    // can be served from the Server Component data cache even though our
+    // route is dynamic.
+    noStore();
+  }
   const api = getStoryblokApi();
   try {
     const { data } = await api.get(`cdn/stories/${slug}`, {

@@ -6,13 +6,19 @@ import type { Post } from "@/components/landing/post-card";
 import type { PostWithSlug } from "./adapters";
 import { postStoryToPost } from "./adapters";
 import {
+  fetchAboutStory,
   fetchAllPosts,
+  fetchDisclaimerStory,
+  fetchGlobalConfig,
   fetchHomeStory,
   fetchLandingStory,
   fetchPostStory,
   fetchStoriesByPillar,
 } from "./client";
 import type {
+  AboutPageStory,
+  DisclaimerPageStory,
+  GlobalConfigStory,
   HomePageStory,
   LandingPageStory,
   PillarKey,
@@ -160,6 +166,51 @@ export async function loadHomeStory(): Promise<HomePageStory | null> {
   }
   try {
     return await fetchHomeStory();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the `_global/config` singleton — drives header nav, footer
+ * columns, social links, and brand text. Returns null when Storyblok
+ * isn't configured or the story doesn't exist (layout falls back to
+ * hardcoded values).
+ */
+export async function loadGlobalConfig(): Promise<GlobalConfigStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchGlobalConfig();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the `about` singleton story.
+ */
+export async function loadAboutStory(): Promise<AboutPageStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchAboutStory();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the `disclaimer` singleton story.
+ */
+export async function loadDisclaimerStory(): Promise<DisclaimerPageStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchDisclaimerStory();
   } catch {
     return null;
   }

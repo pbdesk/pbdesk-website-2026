@@ -44,8 +44,12 @@ interface SeedReport {
 
 interface SeedStory {
   content: SbStoryContent;
+  is_startpage?: boolean;
   name: string;
   parent_id?: number;
+  // Storyblok "Real path" override — used so the visual editor opens the
+  // correct route (e.g. `/` for home, not `/home`).
+  path?: string;
   slug: string;
 }
 
@@ -170,6 +174,8 @@ function buildSeedStories(
       name: "Home",
       slug: "home",
       content: swapAssetPlaceholders(homeContent, assetMap),
+      // Visual editor should open `/`, not `/home`.
+      path: "/",
     },
     {
       name: "About",
@@ -192,18 +198,23 @@ function buildSeedStories(
       slug: "index",
       content: bitsLandingContent,
       parent_id: folderIds.get("bits"),
+      // Marks this as the folder's start page so the visual editor opens
+      // `/bits` instead of `/bits/index`.
+      is_startpage: true,
     },
     {
       name: "Bites — index",
       slug: "index",
       content: bitesLandingContent,
       parent_id: folderIds.get("bites"),
+      is_startpage: true,
     },
     {
       name: "Blog — index",
       slug: "index",
       content: blogLandingContent,
       parent_id: folderIds.get("blog"),
+      is_startpage: true,
     },
   ];
 }
@@ -234,6 +245,8 @@ async function publishSeedStories(
       full_slug: fullSlugFor(story, folderIds),
       parent_id: story.parent_id,
       content: story.content,
+      is_startpage: story.is_startpage,
+      path: story.path,
     });
     await sb.publishStory(record.id);
     report.stories.push({ slug: record.full_slug, created, id: record.id });

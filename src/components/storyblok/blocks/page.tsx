@@ -1,6 +1,14 @@
+"use client";
+
 // Generic body[] renderer. Iterates a Storyblok blocks field and dispatches
 // each blok to the matching wrapper component. Unknown components are
 // silently skipped (visible in dev console as a warning).
+//
+// "use client" so the same dispatcher works in both rendering contexts:
+//   - Server: pages still call <Page body={story.content.body} /> directly
+//     and Next.js renders the initial HTML.
+//   - Client: <LivePage> wraps this with useStoryblokState() and re-renders
+//     it on every editor keystroke for true WYSIWYG live edit.
 
 import type { SbBlokBase } from "@/lib/storyblok/types";
 import AboutSection from "./about-section";
