@@ -1,0 +1,166 @@
+---
+type: Bits
+title: 'Starship: Cross-Shell Prompt'
+description: >-
+  Explore Starship — the blazing-fast, customizable, cross-shell prompt that
+  enhances your terminal experience with style and performance.
+image: ../starship-cross-shell-prompt/image.png
+url: https://starship.rs/
+category: Tool
+labels:
+  - Terminal
+draft: false
+pubDate: 2025-05-31
+updatedDate: 2025-05-31
+related:
+  - warp-the-intelligent-terminal
+  - wave-terminal-an-open-source-terminal-with-superpowers
+---
+## Introduction
+
+In the quest for the perfect command-line experience, the prompt often plays a central role. Starship is a modern prompt designed to be minimal, blazing-fast, and infinitely customizable. What truly sets it apart is its seamless compatibility across a multitude of shells and operating systems. If you're looking for a prompt that "just works" everywhere with a single configuration, Starship might be your new best friend.
+
+## What is Starship?
+
+Starship is written in Rust, which contributes to its impressive speed and reliability. It's designed to provide you with the information you need at a glance, without clutter or delay. The project's philosophy is to be:
+
+* **Fast:** Your prompt should render instantly.
+* **Customizable:** Configure every aspect of your prompt.
+* **Universal:** Works on any shell, on any operating system.
+* **Intelligent:** Shows relevant information only when you need it.
+* **Easy:** Quick to install and get started with sensible defaults.
+
+## Key Features
+
+Starship comes packed with features that make it a compelling choice:
+
+* **Cross-Shell Compatibility:** This is Starship's superpower. Configure it once and use it with Bash, Zsh, Fish, PowerShell, Ion, Tcsh, Elvish, Nu, Xonsh, and more.
+* **Blazing Speed:** No one likes a laggy prompt. Starship is optimized for performance.
+* **Rich Configurability:** While it has great defaults, you can customize every detail using a single TOML file (`~/.config/starship.toml`). You can control which modules appear, their order, conditions for display, colors, icons, and more.
+* **Context-Aware Modules:** Starship shows information relevant to your current context. For example:
+  * Git branch and status
+  * Programming language versions (Node.js, Python, Ruby, Rust, Go, etc.)
+  * Package versions
+  * Virtual environment status (Python, Conda)
+  * Cloud provider information (AWS, GCP, Azure)
+  * Container information (Docker, Kubernetes)
+  * And many more!
+* **Nerd Fonts Support:** Easily integrates with Nerd Fonts to display cool icons and glyphs, though it works perfectly fine without them.
+* **Active Community & Development:** Starship is a well-maintained project with a growing community.
+
+## Platform Availability
+
+Starship is truly cross-platform and works on:
+
+* **Windows**
+* **macOS**
+* **Linux**
+* **BSD**
+* **Android (via Termux)**
+
+Essentially, if you can run a shell on it, you can probably run Starship.
+
+## Installation
+
+Starship offers several ways to install, catering to different preferences and platforms.
+
+### Using Package Managers
+
+This is often the easiest way to install and keep Starship updated.
+
+* **Homebrew (macOS or Linux):**
+
+  ```bash
+  brew install starship
+  ```
+* **Winget (Windows):**
+
+  ```bash
+  winget install starship
+  ```
+* **Scoop (Windows):**
+
+  ```bash
+  scoop install starship
+  ```
+* **Cargo (Rust's package manager - any OS):**
+
+  ```bash
+  cargo install starship --locked
+  ```
+* **npm (Node.js package manager - any OS):**
+
+  ```bash
+  npm install -g starship
+  # Note: May require additional setup for shell integration
+  ```
+* **Other Linux Distributions:** Starship is available in many distribution repositories (e.g., Arch Linux, Fedora, Gentoo). Check the [Starship documentation](https://starship.rs/guide/#installation) for specific commands.
+
+### Direct Binary Download
+
+You can download pre-built binaries from the [Starship releases page](https://github.com/starship/starship/releases) on GitHub for your specific architecture.
+
+### Shell Configuration
+
+After installation, you need to tell your shell to use Starship. Add the appropriate line to your shell's configuration file:
+
+* **Bash (`~/.bashrc`):**
+
+  ```bash
+  eval "$(starship init bash)"
+  ```
+* **Zsh (`~/.zshrc`):**
+
+  ```bash
+  eval "$(starship init zsh)"
+  ```
+* **Fish (`~/.config/fish/config.fish`):**
+
+  ```fish
+  starship init fish | source
+  ```
+* **PowerShell (`Microsoft.PowerShell_profile.ps1`):**
+
+  ```powershell
+  Invoke-Expression (&starship init powershell)
+  ```
+
+Refer to the [official Starship documentation](https://starship.rs/guide/#getting-started) for instructions for other shells.
+
+## Customization
+
+To customize Starship, create a `starship.toml` file in `~/.config/` (e.g., `~/.config/starship.toml`). You can find many examples and a full configuration reference on the [Starship website](https://starship.rs/config/).
+
+Example `starship.toml`:
+
+```toml
+# ~/.config/starship.toml
+
+# Inserts a new line between shell prompts
+add_newline = true
+
+# Change the default prompt format
+format = """$os\
+$shell\
+$username\
+$directory\
+$git_branch\
+$git_status\
+$package\
+$nodejs\
+$python\
+$rust\
+$golang\
+$character"""
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = "🌱 "
+```
+
+## Conclusion
+
+Starship is a fantastic choice for anyone looking for a fast, reliable, and highly customizable prompt that works consistently across different shells and operating systems. Its ease of installation, sensible defaults, and powerful configuration options make it a top-tier contender in the world of shell prompts. Give it a try – you might just find it revolutionizes your command-line workflow!

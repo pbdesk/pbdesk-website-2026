@@ -1,3 +1,4 @@
+import type { ISbStoryData } from "@storyblok/react";
 import {
   IconBrandGithubFilled,
   IconBrandLinkedinFilled,
@@ -7,17 +8,20 @@ import type { Metadata } from "next";
 import About from "@/components/home/about";
 import MyPillers from "@/components/home/my-pillers";
 import MyWellnessThreads from "@/components/home/my-wellness-threads";
+import LivePage from "@/components/storyblok/live-page";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import {
+  jsonLdString,
   pageMetadata,
   SITE_AUTHOR,
   SITE_NAME,
   SITE_URL,
   SOCIAL,
 } from "@/lib/seo";
+import { loadAboutStory } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
   title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
@@ -255,12 +259,37 @@ function AboutHero() {
   );
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const story = await loadAboutStory();
+
+  // When Storyblok's `about` story has body blocks, render those — the
+  // hero remains the hardcoded section because it has SEO/CTA copy not
+  // currently exposed in the about_page schema. Body blocks (about_section,
+  // my_pillers, my_wellness_threads, richtext_section) come through the
+  // generic <Page> dispatcher.
+  if (story?.content?.body?.length) {
+    return (
+      <main>
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
+          dangerouslySetInnerHTML={{ __html: jsonLdString(personJsonLd) }}
+          type="application/ld+json"
+        />
+        <Reveal>
+          <AboutHero />
+        </Reveal>
+        <LivePage
+          story={story as unknown as ISbStoryData<Record<string, unknown>>}
+        />
+      </main>
+    );
+  }
+
   return (
     <main>
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(personJsonLd) }}
         type="application/ld+json"
       />
       <Reveal>

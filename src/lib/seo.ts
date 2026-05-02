@@ -86,3 +86,24 @@ export function pageMetadata({
     },
   };
 }
+
+/**
+ * Serialize a JSON-LD payload safely for inline `<script type="application/ld+json">`.
+ * Escapes characters that could prematurely terminate the script tag or
+ * break the JSON parser when the data comes from CMS-controlled fields
+ * (post titles, excerpts, labels). Use everywhere we feed dangerouslySetInnerHTML
+ * with structured data.
+ */
+// Built via RegExp constructor (not literal) because the formatter
+// rewrites U+2028 / U+2029 codepoints into whitespace inside source.
+const LINE_SEP_RE = /\u2028/g;
+const PARA_SEP_RE = /\u2029/g;
+
+export function jsonLdString(payload: unknown): string {
+  return JSON.stringify(payload)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(LINE_SEP_RE, "\\u2028")
+    .replace(PARA_SEP_RE, "\\u2029");
+}

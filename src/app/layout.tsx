@@ -5,6 +5,7 @@ import "./globals.css";
 import { ToasterProvider } from "@/lib/providers/toaster";
 import {
   DEFAULT_OG_IMAGE,
+  jsonLdString,
   SITE_AUTHOR,
   SITE_DEFAULT_DESCRIPTION,
   SITE_DEFAULT_TITLE,
@@ -152,7 +153,7 @@ export default function RootLayout({
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify([websiteJsonLd, personJsonLd]),
+            __html: jsonLdString([websiteJsonLd, personJsonLd]),
           }}
           type="application/ld+json"
         />

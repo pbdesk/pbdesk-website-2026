@@ -1,18 +1,30 @@
 import { IconClock } from "@tabler/icons-react";
+import type { PillarKey } from "./section-banner";
 
 export interface Post {
   category: string;
   description: string;
   featured?: boolean;
   gradient: string;
+  labels: string[];
+  pillar?: PillarKey;
   readTime: string;
-  tags: string[];
+  slug?: string;
   title: string;
 }
 
 interface PostCardProps {
   accentColor: string;
   post: Post;
+}
+
+function postHref(post: Post): string {
+  // Detail pages land in PR 5; until then, fall back to "/" so cards
+  // remain clickable and lint stays happy.
+  if (post.pillar && post.slug) {
+    return `/${post.pillar}/${post.slug}`;
+  }
+  return "/";
 }
 
 export default function PostCard({ post, accentColor }: PostCardProps) {
@@ -48,7 +60,7 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
           </span>
           <span className="text-[var(--fg-muted)]">·</span>
           <span className="text-[var(--fg-muted)]">
-            {post.tags.map((t) => `#${t}`).join(" ")}
+            {post.labels.map((t) => `#${t}`).join(" ")}
           </span>
         </div>
         <h4
@@ -66,7 +78,7 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
         <div className="flex items-center justify-between">
           <a
             className="inline-flex items-center gap-1 font-semibold text-sm transition-colors hover:underline"
-            href="/"
+            href={postHref(post)}
             style={{ color: accentColor }}
           >
             Read More <span aria-hidden="true">→</span>

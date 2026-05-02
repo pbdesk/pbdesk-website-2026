@@ -51,5 +51,5 @@
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "cSpell.words": ["Pillers", "tabler"]
+  "cSpell.words": ["Pillers", "storyblok", "tabler"]
 }

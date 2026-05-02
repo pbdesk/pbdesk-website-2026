@@ -1,8 +1,48 @@
-import { IconBolt, IconHeart, IconPencil } from "@tabler/icons-react";
+import {
+  IconBolt,
+  IconCode,
+  IconHeart,
+  IconLeaf,
+  IconNotebook,
+  IconPencil,
+  type IconProps,
+} from "@tabler/icons-react";
+import type { ComponentType, ReactNode } from "react";
 import { Card } from "@/components/ui/card";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
-const realms = [
+type IconKey = "bolt" | "code" | "heart" | "leaf" | "notebook" | "pencil";
+
+const ICONS: Record<IconKey, ComponentType<IconProps>> = {
+  bolt: IconBolt,
+  code: IconCode,
+  heart: IconHeart,
+  leaf: IconLeaf,
+  notebook: IconNotebook,
+  pencil: IconPencil,
+};
+
+interface RealmCard {
+  description: string;
+  title: string;
+}
+
+interface FeatureCard {
+  description: string;
+  icon: IconKey;
+  title: string;
+}
+
+interface MyRealmProps {
+  eyebrow?: string;
+  features?: FeatureCard[];
+  headline?: ReactNode;
+  realms?: RealmCard[];
+  subheading?: string;
+  tags?: string[];
+}
+
+const DEFAULT_REALMS: RealmCard[] = [
   {
     title: "Nutrition",
     description:
@@ -25,28 +65,28 @@ const realms = [
   },
 ];
 
-const features = [
+const DEFAULT_FEATURES: FeatureCard[] = [
   {
     title: "Short-form Bits",
     description:
       "Quick takes you can read in the time it takes `npm install` to finish.",
-    icon: IconBolt,
+    icon: "bolt",
   },
   {
     title: "Wellness for devs",
     description:
       "Small habits that protect your energy — for the long code review marathon.",
-    icon: IconHeart,
+    icon: "heart",
   },
   {
     title: "Longer essays",
     description:
       "When a thought needs more than a tweet — full posts on the things I keep returning to.",
-    icon: IconPencil,
+    icon: "pencil",
   },
 ];
 
-const tags = [
+const DEFAULT_TAGS = [
   "JavaScript",
   "TypeScript",
   "Node.js",
@@ -59,12 +99,31 @@ const tags = [
   "MongoDB",
 ];
 
-export default function MyRealm() {
+const DEFAULT_HEADLINE = (
+  <>
+    Health, family, wellness,
+    <br />
+    and technology.
+  </>
+);
+
+export default function MyRealm({
+  eyebrow,
+  headline,
+  subheading,
+  realms,
+  features,
+  tags,
+}: MyRealmProps = {}) {
+  const realmList = realms ?? DEFAULT_REALMS;
+  const featureList = features ?? DEFAULT_FEATURES;
+  const tagList = tags ?? DEFAULT_TAGS;
+
   return (
     <section className="bg-[var(--bg-subtle)] py-20 sm:py-24">
       <div className="wrapper">
         <div className="mb-14 text-center">
-          <Eyebrow className="mb-3 block">My realm</Eyebrow>
+          <Eyebrow className="mb-3 block">{eyebrow ?? "My realm"}</Eyebrow>
           <h2
             className="mb-5 font-bold text-[var(--fg-primary)]"
             style={{
@@ -73,22 +132,19 @@ export default function MyRealm() {
               letterSpacing: "-0.025em",
             }}
           >
-            Health, family, wellness,
-            <br />
-            and technology.
+            {headline ?? DEFAULT_HEADLINE}
           </h2>
           <p
             className="mx-auto max-w-2xl text-[var(--fg-secondary)] text-base"
             style={{ lineHeight: 1.7 }}
           >
-            The four threads I weave through everything I write. Never one
-            without the others.
+            {subheading ??
+              "The four threads I weave through everything I write. Never one without the others."}
           </p>
         </div>
 
-        {/* 4 realm cards */}
         <div className="mb-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {realms.map((realm) => (
+          {realmList.map((realm) => (
             <Card className="rounded-xl p-6 shadow-none" key={realm.title}>
               <h3 className="mb-3 font-semibold text-[var(--fg-primary)] text-base">
                 {realm.title}
@@ -103,10 +159,9 @@ export default function MyRealm() {
           ))}
         </div>
 
-        {/* 3 feature cards */}
         <div className="mb-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => {
-            const Icon = feature.icon;
+          {featureList.map((feature) => {
+            const Icon = ICONS[feature.icon] ?? IconBolt;
             return (
               <Card className="rounded-xl p-7 shadow-none" key={feature.title}>
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--fg-brand)]">
@@ -126,9 +181,8 @@ export default function MyRealm() {
           })}
         </div>
 
-        {/* Tag chip strip */}
         <div className="flex flex-wrap items-center justify-center gap-3">
-          {tags.map((tag) => (
+          {tagList.map((tag) => (
             <span
               className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 py-2 font-medium text-[var(--fg-secondary)] text-sm"
               key={tag}

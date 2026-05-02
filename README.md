@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PBDesk 2026
 
-## Getting Started
+Next.js 16 + React 19 + Tailwind 4 + Bun. See [CLAUDE.md](./CLAUDE.md) and [AGENTS.md](./AGENTS.md) for the full conventions.
 
-First, run the development server:
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Common commands
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+bun run dev      # Local dev server
+bun run build    # Production build
+bun run start    # Run production server
+bun run check    # Ultracite/Biome lint check
+bun run fix      # Ultracite/Biome auto-fix (run before committing)
+```
 
-## Learn More
+Pre-commit hooks (Lefthook) auto-run `bun x ultracite fix` on staged files. Do not skip hooks.
 
-To learn more about Next.js, take a look at the following resources:
+## Environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Copy `.env.local.example` to `.env.local` and fill in the Storyblok values. Variables starting with `NEXT_PUBLIC_` are exposed to the browser; everything else is server-only.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Variable | Purpose |
+|---|---|
+| `STORYBLOK_REGION` | `eu` or `us` — must match your space's region. |
+| `STORYBLOK_ACCESS_TOKEN` | Public preview token used for published content fetches. |
+| `STORYBLOK_PREVIEW_TOKEN` | Token used in draft mode (often same as access token). |
+| `STORYBLOK_PREVIEW_SECRET` | Random string protecting `/api/draft`. |
+| `STORYBLOK_WEBHOOK_SECRET` | Shared with the Storyblok webhook; verifies `/api/revalidate` HMAC. |
+| `STORYBLOK_MANAGEMENT_TOKEN` | Personal Access Token; **only** used by `scripts/seed-storyblok.ts` and `scripts/import-resources.ts`. |
+| `STORYBLOK_SPACE_ID` | Numeric space ID; only for migration scripts. |
+| `NEXT_PUBLIC_STORYBLOK_REGION` | Browser-side region for the visual editor bridge. |
+| `NEXT_PUBLIC_STORYBLOK_PREVIEW_TOKEN` | Browser-side preview token for the bridge (loaded only inside draft mode). |
 
-## Deploy on Vercel
+## Storyblok routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `GET /api/draft?secret=<STORYBLOK_PREVIEW_SECRET>&slug=/path` — enables draft mode and redirects to the slug.
+- `GET /api/draft-disable` — disables draft mode.
+- `POST /api/revalidate` — webhook endpoint for Storyblok; verifies `webhook-signature` HMAC-SHA1 against `STORYBLOK_WEBHOOK_SECRET` and calls `revalidateTag`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Visual editor (local dev)
+
+The Storyblok visual editor loads your dev server in an iframe under `https://app.storyblok.com`. To make this work over `http://localhost:3000`, either:
+
+- Run `bun run dev --experimental-https` (Next.js generates a self-signed cert), or
+- Toggle "Allow http://localhost" in your Storyblok space settings.
+
+## Architecture overview
+
+- App Router under `src/app/`; public routes inside the `(site)` route group.
+- Server Components by default; mark client boundaries with `"use client"` only where needed.
+- Tailwind tokens live in `src/app/globals.css` (no `tailwind.config.js`).
+- Path alias: `@/*` → `src/*`.
+- React Compiler is enabled — avoid manual `useMemo` / `useCallback`.

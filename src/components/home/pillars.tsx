@@ -2,7 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
-const pillars = [
+interface PillarCard {
+  avatar: string;
+  cta: string;
+  description: string;
+  gradient: string;
+  href: string;
+  name: string;
+  title: string;
+}
+
+interface PillarsProps {
+  cards?: PillarCard[];
+  eyebrow?: string;
+  heading?: string;
+}
+
+const DEFAULT_CARDS: PillarCard[] = [
   {
     name: "Bits",
     title: "Bits — the tech side",
@@ -35,12 +51,20 @@ const pillars = [
   },
 ];
 
-export default function Pillars() {
+export default function Pillars({
+  eyebrow,
+  heading,
+  cards,
+}: PillarsProps = {}) {
+  const pillars = cards ?? DEFAULT_CARDS;
+
   return (
     <section className="py-20 sm:py-24">
       <div className="wrapper">
         <div className="mb-14 text-center">
-          <Eyebrow className="mb-3 block">What I write about</Eyebrow>
+          <Eyebrow className="mb-3 block">
+            {eyebrow ?? "What I write about"}
+          </Eyebrow>
           <h2
             className="font-bold text-[var(--fg-primary)]"
             style={{
@@ -49,7 +73,7 @@ export default function Pillars() {
               letterSpacing: "-0.025em",
             }}
           >
-            Three lanes, one desk.
+            {heading ?? "Three lanes, one desk."}
           </h2>
         </div>
 

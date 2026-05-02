@@ -1,7 +1,13 @@
 "use client";
 
-import { IconCode, IconLeaf, IconNotebook } from "@tabler/icons-react";
+import {
+  IconCode,
+  IconLeaf,
+  IconNotebook,
+  type IconProps,
+} from "@tabler/icons-react";
 import Link from "next/link";
+import type { ComponentType } from "react";
 import { useId, useState } from "react";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
@@ -13,14 +19,57 @@ interface Pillar {
   color: string;
   cta: string;
   href: string;
-  icon: typeof IconCode;
+  icon: ComponentType<IconProps>;
   key: PillarKey;
   n: string;
   short: string;
   title: string;
 }
 
-const Pillars: Pillar[] = [
+interface PillarInput {
+  angle?: number;
+  body: string;
+  color?: string;
+  cta?: string;
+  href?: string;
+  key: PillarKey;
+  n?: string;
+  short?: string;
+  title: string;
+}
+
+interface MyPillersProps {
+  eyebrow?: string;
+  heading?: string;
+  pillars?: PillarInput[];
+  subheading?: string;
+}
+
+const ICON_BY_PILLAR: Record<PillarKey, ComponentType<IconProps>> = {
+  bits: IconCode,
+  bites: IconLeaf,
+  blog: IconNotebook,
+};
+
+const DEFAULT_COLORS: Record<PillarKey, string> = {
+  bits: "#4F46E5",
+  bites: "#10B981",
+  blog: "#7C3AED",
+};
+
+const DEFAULT_ANGLES: Record<PillarKey, number> = {
+  bits: -90,
+  bites: 30,
+  blog: 150,
+};
+
+const DEFAULT_HREFS: Record<PillarKey, string> = {
+  bits: "/bits",
+  bites: "/bites",
+  blog: "/blog",
+};
+
+const DEFAULT_PILLARS: Pillar[] = [
   {
     n: "01",
     key: "bits",
@@ -59,6 +108,24 @@ const Pillars: Pillar[] = [
   },
 ];
 
+function normalizePillars(input?: PillarInput[]): Pillar[] {
+  if (!input?.length) {
+    return DEFAULT_PILLARS;
+  }
+  return input.map((p, idx) => ({
+    n: p.n ?? String(idx + 1).padStart(2, "0"),
+    key: p.key,
+    title: p.title,
+    short: p.short ?? p.key.charAt(0).toUpperCase() + p.key.slice(1),
+    body: p.body,
+    icon: ICON_BY_PILLAR[p.key],
+    color: p.color ?? DEFAULT_COLORS[p.key],
+    cta: p.cta ?? `Visit My ${p.key.charAt(0).toUpperCase() + p.key.slice(1)}`,
+    href: p.href ?? DEFAULT_HREFS[p.key],
+    angle: p.angle ?? DEFAULT_ANGLES[p.key],
+  }));
+}
+
 const VB = 560;
 const CENTER = VB / 2;
 const RING_R = 200;
@@ -76,9 +143,11 @@ function pos(deg: number) {
 function PillarsArt({
   active,
   onHover,
+  pillars,
 }: {
   active: PillarKey | null;
   onHover: (key: PillarKey | null) => void;
+  pillars: Pillar[];
 }) {
   const uid = useId().replace(/:/g, "");
 
@@ -121,7 +190,7 @@ function PillarsArt({
           />
         </radialGradient>
 
-        {Pillars.map((p) => (
+        {pillars.map((p) => (
           <radialGradient
             cx="50%"
             cy="40%"
@@ -151,7 +220,7 @@ function PillarsArt({
         return <circle className="pip" cx={p.x} cy={p.y} key={a} r="3" />;
       })}
 
-      {Pillars.map((p) => {
+      {pillars.map((p) => {
         const np = pos(p.angle);
         const isActive = active === p.key;
         return (
@@ -226,7 +295,7 @@ function PillarsArt({
         </text>
       </g>
 
-      {Pillars.map((p) => {
+      {pillars.map((p) => {
         const np = pos(p.angle);
         const isActive = active === p.key;
         const Icon = p.icon;
@@ -318,13 +387,15 @@ function PillarsArt({
 function PillarsList({
   active,
   setActive,
+  pillars,
 }: {
   active: PillarKey | null;
   setActive: (key: PillarKey | null) => void;
+  pillars: Pillar[];
 }) {
   return (
     <div className="flex flex-col gap-3">
-      {Pillars.map((p) => {
+      {pillars.map((p) => {
         const Icon = p.icon;
         const isActive = active === p.key;
         return (
@@ -368,14 +439,22 @@ function PillarsList({
   );
 }
 
-export default function MyPillers() {
+export default function MyPillers({
+  eyebrow,
+  heading,
+  subheading,
+  pillars,
+}: MyPillersProps = {}) {
   const [active, setActive] = useState<PillarKey | null>(null);
+  const pillarList = normalizePillars(pillars);
 
   return (
     <section className="py-20 sm:py-24">
       <div className="wrapper">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <Eyebrow className="mb-3 block">What I write about</Eyebrow>
+          <Eyebrow className="mb-3 block">
+            {eyebrow ?? "What I write about"}
+          </Eyebrow>
           <h2
             className="mb-4 font-bold text-[var(--fg-primary)]"
             style={{
@@ -385,22 +464,30 @@ export default function MyPillers() {
               textWrap: "balance",
             }}
           >
-            Three lanes, one desk.
+            {heading ?? "Three lanes, one desk."}
           </h2>
           <p
             className="mx-auto max-w-[58ch] text-[var(--fg-secondary)] text-base"
             style={{ lineHeight: 1.7, textWrap: "pretty" }}
           >
-            Bits, Bites, and the Blog where they meet — three orbits around the
-            same desk.
+            {subheading ??
+              "Bits, Bites, and the Blog where they meet — three orbits around the same desk."}
           </p>
         </div>
 
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(420px,1.05fr)_1fr] lg:gap-16">
           <div className="relative mx-auto aspect-square w-full max-w-[560px]">
-            <PillarsArt active={active} onHover={setActive} />
+            <PillarsArt
+              active={active}
+              onHover={setActive}
+              pillars={pillarList}
+            />
           </div>
-          <PillarsList active={active} setActive={setActive} />
+          <PillarsList
+            active={active}
+            pillars={pillarList}
+            setActive={setActive}
+          />
         </div>
       </div>
     </section>

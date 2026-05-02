@@ -6,6 +6,13 @@ interface FeaturedPostProps {
   post: Post;
 }
 
+function postHref(post: Post): string {
+  if (post.pillar && post.slug) {
+    return `/${post.pillar}/${post.slug}`;
+  }
+  return "/";
+}
+
 export default function FeaturedPost({ post, accentColor }: FeaturedPostProps) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)]">
@@ -35,7 +42,7 @@ export default function FeaturedPost({ post, accentColor }: FeaturedPostProps) {
           </span>
           <span className="text-[var(--fg-muted)]">·</span>
           <span className="text-[var(--fg-muted)]">
-            {post.tags.map((t) => `#${t}`).join(" ")}
+            {post.labels.map((t) => `#${t}`).join(" ")}
           </span>
         </div>
         <h3
@@ -53,7 +60,7 @@ export default function FeaturedPost({ post, accentColor }: FeaturedPostProps) {
         <div className="flex items-center justify-between">
           <a
             className="inline-flex items-center gap-1 font-semibold text-sm transition-colors hover:underline"
-            href="/"
+            href={postHref(post)}
             style={{ color: accentColor }}
           >
             Read More <span aria-hidden="true">→</span>

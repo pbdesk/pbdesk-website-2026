@@ -1,23 +1,93 @@
 "use client";
 
-import { IconApple, IconHeart, IconMoon, IconRun } from "@tabler/icons-react";
+import {
+  IconApple,
+  IconHeart,
+  IconMoon,
+  type IconProps,
+  IconRun,
+} from "@tabler/icons-react";
+import type { ComponentType } from "react";
 import { useId, useState } from "react";
 import { Eyebrow } from "@/components/ui/eyebrow";
 
 type PillarKey = "nutrition" | "exercise" | "sleep" | "emotion";
+type IconKey = "apple" | "run" | "moon" | "heart";
+
+const ICONS: Record<IconKey, ComponentType<IconProps>> = {
+  apple: IconApple,
+  run: IconRun,
+  moon: IconMoon,
+  heart: IconHeart,
+};
+
+const ICON_BY_PILLAR: Record<PillarKey, IconKey> = {
+  nutrition: "apple",
+  exercise: "run",
+  sleep: "moon",
+  emotion: "heart",
+};
 
 interface Thread {
   angle: number;
   body: string;
   color: string;
-  icon: typeof IconApple;
+  icon: ComponentType<IconProps>;
   key: PillarKey;
   n: string;
   short: string;
   title: string;
 }
 
-const Threads: Thread[] = [
+interface ThreadInput {
+  angle?: number;
+  body: string;
+  color?: string;
+  icon?: IconKey;
+  key: PillarKey;
+  n?: string;
+  short: string;
+  title: string;
+}
+
+interface MyWellnessThreadsProps {
+  eyebrow?: string;
+  headline?: string;
+  subheading?: string;
+  threads?: ThreadInput[];
+}
+
+const DEFAULT_COLORS: Record<PillarKey, string> = {
+  nutrition: "#10B981",
+  exercise: "#F59E0B",
+  sleep: "#0EA5E9",
+  emotion: "#E11D48",
+};
+
+const DEFAULT_ANGLES: Record<PillarKey, number> = {
+  nutrition: -135,
+  exercise: -45,
+  sleep: 135,
+  emotion: 45,
+};
+
+function normalizeThreads(input?: ThreadInput[]): Thread[] {
+  if (!input?.length) {
+    return DEFAULT_THREADS;
+  }
+  return input.map((t, idx) => ({
+    n: t.n ?? String(idx + 1).padStart(2, "0"),
+    key: t.key,
+    title: t.title,
+    short: t.short,
+    body: t.body,
+    icon: ICONS[t.icon ?? ICON_BY_PILLAR[t.key]] ?? IconApple,
+    color: t.color ?? DEFAULT_COLORS[t.key],
+    angle: t.angle ?? DEFAULT_ANGLES[t.key],
+  }));
+}
+
+const DEFAULT_THREADS: Thread[] = [
   {
     n: "01",
     key: "nutrition",
@@ -77,9 +147,11 @@ function pos(deg: number) {
 function WellnessArt({
   active,
   onHover,
+  threads,
 }: {
   active: PillarKey | null;
   onHover: (key: PillarKey | null) => void;
+  threads: Thread[];
 }) {
   const uid = useId().replace(/:/g, "");
 
@@ -122,7 +194,7 @@ function WellnessArt({
           />
         </radialGradient>
 
-        {Threads.map((p) => (
+        {threads.map((p) => (
           <radialGradient
             cx="50%"
             cy="40%"
@@ -152,7 +224,7 @@ function WellnessArt({
         return <circle className="pip" cx={p.x} cy={p.y} key={a} r="3" />;
       })}
 
-      {Threads.map((p) => {
+      {threads.map((p) => {
         const np = pos(p.angle);
         const isActive = active === p.key;
         return (
@@ -227,7 +299,7 @@ function WellnessArt({
         </text>
       </g>
 
-      {Threads.map((p) => {
+      {threads.map((p) => {
         const np = pos(p.angle);
         const isActive = active === p.key;
         const Icon = p.icon;
@@ -319,13 +391,15 @@ function WellnessArt({
 function ThreadsList({
   active,
   setActive,
+  threads,
 }: {
   active: PillarKey | null;
   setActive: (key: PillarKey | null) => void;
+  threads: Thread[];
 }) {
   return (
     <div className="flex flex-col gap-3">
-      {Threads.map((p) => {
+      {threads.map((p) => {
         const Icon = p.icon;
         const isActive = active === p.key;
         return (
@@ -362,14 +436,22 @@ function ThreadsList({
   );
 }
 
-export default function MyWellnessThreads() {
+export default function MyWellnessThreads({
+  eyebrow,
+  headline,
+  subheading,
+  threads,
+}: MyWellnessThreadsProps = {}) {
   const [active, setActive] = useState<PillarKey | null>(null);
+  const threadList = normalizeThreads(threads);
 
   return (
     <section className="py-20 sm:py-24">
       <div className="wrapper">
         <div className="mx-auto mb-16 max-w-2xl text-center">
-          <Eyebrow className="mb-3 block">My Wellness Threads</Eyebrow>
+          <Eyebrow className="mb-3 block">
+            {eyebrow ?? "My Wellness Threads"}
+          </Eyebrow>
           <h2
             className="mb-4 font-bold text-[var(--fg-primary)]"
             style={{
@@ -379,21 +461,29 @@ export default function MyWellnessThreads() {
               textWrap: "balance",
             }}
           >
-            for happy &amp; healthy life.
+            {headline ?? "for happy & healthy life."}
           </h2>
           <p
             className="mx-auto max-w-[58ch] text-[var(--fg-secondary)] text-base"
             style={{ lineHeight: 1.7, textWrap: "pretty" }}
           >
-            Four threads I keep weaving through everyday life.
+            {subheading ?? "Four threads I keep weaving through everyday life."}
           </p>
         </div>
 
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(420px,1.05fr)_1fr] lg:gap-16">
           <div className="relative mx-auto aspect-square w-full max-w-[560px]">
-            <WellnessArt active={active} onHover={setActive} />
+            <WellnessArt
+              active={active}
+              onHover={setActive}
+              threads={threadList}
+            />
           </div>
-          <ThreadsList active={active} setActive={setActive} />
+          <ThreadsList
+            active={active}
+            setActive={setActive}
+            threads={threadList}
+          />
         </div>
       </div>
     </section>
