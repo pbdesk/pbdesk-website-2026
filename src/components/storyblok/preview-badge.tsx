@@ -3,17 +3,17 @@
 // the server sees on every request, which is exactly the signal that
 // drives whether storyblok fetches return draft or published content.
 
-import { cookies, draftMode } from "next/headers";
+import { cookies, draftMode, headers } from "next/headers";
 
 const PREVIEW_COOKIE = "sb-preview";
+const PREVIEW_HEADER = "x-sb-preview";
 
 export default async function PreviewBadge() {
-  const [{ isEnabled: nextDraft }, cookieStore] = await Promise.all([
-    draftMode(),
-    cookies(),
-  ]);
+  const [{ isEnabled: nextDraft }, cookieStore, headersList] =
+    await Promise.all([draftMode(), cookies(), headers()]);
   const sbPreviewCookie = cookieStore.get(PREVIEW_COOKIE);
-  const isDraft = nextDraft || Boolean(sbPreviewCookie);
+  const sbPreviewHeader = headersList.get(PREVIEW_HEADER) === "1";
+  const isDraft = nextDraft || Boolean(sbPreviewCookie) || sbPreviewHeader;
 
   // Only render when we're in some kind of preview mode. Regular visitors
   // never see this.
@@ -21,9 +21,14 @@ export default async function PreviewBadge() {
     return null;
   }
 
-  const reason = nextDraft
-    ? "draftMode (Next __prerender_bypass)"
-    : "sb-preview cookie";
+  let reason: string;
+  if (nextDraft) {
+    reason = "draftMode (Next __prerender_bypass)";
+  } else if (sbPreviewCookie) {
+    reason = "sb-preview cookie";
+  } else {
+    reason = "x-sb-preview header (middleware)";
+  }
 
   return (
     <div
