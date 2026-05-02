@@ -1,0 +1,99 @@
+---
+type: Blog
+title: "TypeScript: From JavaScript Superset to Go-Powered Powerhouse"
+description: >-
+  Discover how TypeScript evolved from a JavaScript superset to a blazing-fast,
+  Go-powered compiler shaping modern web development.
+image: ../type-script-from-java-script-superset-to-go-powered-powerhouse/image.png
+url: https://devblogs.microsoft.com/typescript/typescript-native-port/
+youtubeId: pNlq-EVld70
+category: Programming
+labels:
+  - _Featured
+  - TypeScript
+draft: false
+pubDate: 2025-05-04
+updatedDate: 2025-05-04
+related: []
+---
+
+In March 2025, Microsoft shook the developer world: the TypeScript compiler was being rewritten in Go, promising up to **10× faster builds**. For a language born as a JavaScript superset, this shift to a lower-level language marked a pivotal evolution—not just in performance, but in purpose.
+
+But to understand the why, we need to rewind.
+
+## The JavaScript Pain Point
+
+In the early 2010s, JavaScript was everywhere—but cracks were showing:
+
+- Runtime errors only surfaced during execution
+- Refactoring was risky
+- Large apps were fragile
+- Small mistakes had big consequences
+
+Companies like Slack faced growing pains maintaining massive JavaScript codebases. JavaScript’s dynamic nature, once a strength, had become a liability.
+
+## TypeScript’s Bet: Structure Without Sacrifice
+
+Enter **TypeScript**, a side project at Microsoft led by **Anders Hejlsberg** (of C# fame). Instead of replacing JavaScript, TypeScript extended it:
+
+- Every JS program was valid TypeScript
+- Developers could adopt types gradually
+- Compile-time errors replaced runtime surprises
+
+Crucially, TypeScript was open-sourced in 2012—an unusual move for Microsoft at the time.
+
+## From Doubt to Default
+
+Early reactions were mixed. Was this just another Microsoft experiment? That changed when **Google scrapped its own “AtScript”** and built **Angular 2 (2016)** entirely with TypeScript. This endorsement put TypeScript on the map.
+
+From there, adoption skyrocketed:
+
+- **VS Code** was built in TypeScript
+- **Airbnb** made it their frontend default
+- **Slack** moved their Electron app to it
+- **Stripe** said 38% of past bugs could’ve been avoided with TypeScript
+
+## Why Developers Fell in Love
+
+TypeScript didn’t just add types. It gave JavaScript developers powerful tools:
+
+- **Generics** for reusable components
+- **Union types** and **enums** for safer APIs
+- **Decorators** for metaprogramming
+- **Async/await** + type safety for async logic
+- Seamless integration with JS tooling and libraries
+
+It wasn't just about preventing bugs—it made engineers faster and more confident.
+
+## Performance Hits a Wall
+
+As TypeScript projects scaled to millions of lines, one issue emerged: **speed**. The compiler, built on Node.js, was straining. Even with years of optimizations, **slow builds and laggy editors** were becoming unacceptable in massive monorepos.
+
+Meanwhile, newer tools like **ESBuild** (Go) and **SWC** (Rust) demonstrated what was possible with low-level performance.
+
+## Project Corsair: The Compiler Rewrite in Go
+
+By 2023, Microsoft began **Project Corsair**—a full Go rewrite of the TypeScript compiler. The goals were ambitious:
+
+- 10× faster builds
+- Instant feedback in the editor
+- Lower memory usage
+- Scalable tooling for AI-assisted dev
+
+Anders Hejlsberg announced **TypeScript 7** in March 2025, powered by this Go-based engine. For developers, this wasn’t just faster—it unlocked new workflows in CI, real-time collaboration, and large-scale code analysis.
+
+## A Language That Changed the Industry
+
+TypeScript has gone from a Microsoft experiment to an industry standard:
+
+- **VS Code**, **Angular**, **Next.js**, and **NestJS** all use or default to it
+- Tech giants and startups alike trust it for mission-critical apps
+- Surveys rank it among the **top 5 most loved languages** year after year
+
+Its success is even influencing JavaScript itself—**type annotations may soon become native** to the language.
+
+## The Road Ahead
+
+TypeScript didn’t just fix JavaScript’s scaling issues—it changed how we write software. Its static analysis powers AI tools, makes teams faster, and prevents bugs before they happen. And now, with a Go-powered core, it’s ready for the next decade of growth.
+
+**If you haven’t adopted TypeScript yet, now might be the time.** It’s not just a better JavaScript—it’s the foundation of how modern software gets built.
