@@ -11,9 +11,9 @@ interface RouteParams {
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
   const posts = await loadAllPosts();
-  return groupByLabel(posts).map(({ name }) => ({
-    label: encodeURIComponent(name),
-  }));
+  // Return raw values — Next encodes route params when generating paths.
+  // Returning encoded values here would result in double-encoded URLs.
+  return groupByLabel(posts).map(({ name }) => ({ label: name }));
 }
 
 export async function generateMetadata({
@@ -22,11 +22,10 @@ export async function generateMetadata({
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const { label } = await params;
-  const decoded = decodeURIComponent(label);
   return pageMetadata({
-    title: `#${decoded} — Label on PBDesk`,
-    description: `Every PBDesk post tagged with #${decoded} across Bits, Bites, and Blog.`,
-    path: `/labels/${encodeURIComponent(decoded)}`,
+    title: `#${label} — Label on PBDesk`,
+    description: `Every PBDesk post tagged with #${label} across Bits, Bites, and Blog.`,
+    path: `/labels/${encodeURIComponent(label)}`,
   });
 }
 
@@ -36,10 +35,9 @@ export default async function LabelPage({
   params: Promise<RouteParams>;
 }) {
   const { label } = await params;
-  const decoded = decodeURIComponent(label);
   const posts = await loadAllPosts();
   const match = groupByLabel(posts).find(
-    (group) => group.name.toLowerCase() === decoded.toLowerCase()
+    (group) => group.name.toLowerCase() === label.toLowerCase()
   );
   if (!match) {
     notFound();

@@ -108,6 +108,7 @@ export default function Header({
                   className="relative py-2 font-medium text-sm transition-colors"
                   href={item.href}
                   key={item.href}
+                  rel={item.targetBlank ? "noopener noreferrer" : undefined}
                   style={{
                     color: isActive
                       ? "var(--fg-primary)"
@@ -185,6 +186,7 @@ export default function Header({
                     className="rounded-md px-3 py-2 font-medium text-sm transition-colors"
                     href={item.href}
                     key={item.href}
+                    rel={item.targetBlank ? "noopener noreferrer" : undefined}
                     style={{
                       background: isActive ? "var(--bg-subtle)" : "transparent",
                       color: isActive ? "var(--fg-brand)" : "var(--fg-primary)",

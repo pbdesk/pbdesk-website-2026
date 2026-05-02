@@ -51,7 +51,7 @@ async function isDraft(): Promise<boolean> {
   // means anonymous traffic never calls draftMode(), which would otherwise
   // opt every public route into dynamic rendering.
   const [cookieStore, headersList] = await Promise.all([cookies(), headers()]);
-  if (cookieStore.get(PREVIEW_COOKIE)) {
+  if (cookieStore.get(PREVIEW_COOKIE)?.value === "1") {
     return true;
   }
   if (headersList.get(PREVIEW_HEADER) === "1") {
@@ -131,29 +131,41 @@ async function fetchStoriesRaw<TStory>(params: {
   startsWith?: string;
   contentType?: string;
   perPage?: number;
-  page?: number;
   sortBy?: string;
 }): Promise<TStory[]> {
   const draft = await isDraft();
   if (draft) {
     noStore();
   }
-  try {
-    const data = await storyblokFetch<{ stories?: TStory[] }>("cdn/stories", {
-      draft,
-      tags: [STORYBLOK_CACHE_TAG],
-      query: {
-        starts_with: params.startsWith,
-        content_type: params.contentType,
-        per_page: String(params.perPage ?? 100),
-        page: String(params.page ?? 1),
-        sort_by: params.sortBy,
-      },
-    });
-    return data?.stories ?? [];
-  } catch {
-    return [];
+  // Storyblok caps `per_page` at 100. Loop until a page returns fewer
+  // items than `perPage`, which signals the end of the result set. Hard
+  // cap at 50 pages (5000 stories) as a safety net.
+  const perPage = Math.min(params.perPage ?? 100, 100);
+  const all: TStory[] = [];
+  for (let page = 1; page <= 50; page += 1) {
+    let chunk: TStory[];
+    try {
+      const data = await storyblokFetch<{ stories?: TStory[] }>("cdn/stories", {
+        draft,
+        tags: [STORYBLOK_CACHE_TAG],
+        query: {
+          starts_with: params.startsWith,
+          content_type: params.contentType,
+          per_page: String(perPage),
+          page: String(page),
+          sort_by: params.sortBy,
+        },
+      });
+      chunk = data?.stories ?? [];
+    } catch {
+      break;
+    }
+    all.push(...chunk);
+    if (chunk.length < perPage) {
+      break;
+    }
   }
+  return all;
 }
 
 export function fetchHomeStory(): Promise<HomePageStory | null> {

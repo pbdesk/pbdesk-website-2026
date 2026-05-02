@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 import CtaBanner from "@/components/home/cta-banner";
 import LivePostBody from "@/components/storyblok/live-post-body";
 import { pillarAccents } from "@/lib/pillars";
-import { pageMetadata, SITE_AUTHOR, SITE_URL } from "@/lib/seo";
+import { jsonLdString, pageMetadata, SITE_AUTHOR, SITE_URL } from "@/lib/seo";
 import { loadAllPostSlugs, loadPostStory } from "@/lib/storyblok/landing";
 import type { PillarKey } from "@/lib/storyblok/types";
 import { normalizeAssetUrl } from "@/lib/storyblok/url";
@@ -242,7 +242,7 @@ export default async function PostPage({
     <main>
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(articleJsonLd) }}
         type="application/ld+json"
       />
       <PostHeader pillar={pillar} story={story} />

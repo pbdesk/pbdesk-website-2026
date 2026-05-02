@@ -184,6 +184,7 @@ function FooterColumn({
             <Link
               className="text-sm transition-colors hover:underline"
               href={item.href}
+              rel={item.targetBlank ? "noopener noreferrer" : undefined}
               style={{ color: "var(--fg-secondary)" }}
               target={item.targetBlank ? "_blank" : undefined}
             >

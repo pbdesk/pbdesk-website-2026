@@ -8,21 +8,38 @@
 //   - set the sb-preview RESPONSE cookie (SameSite=None; Secure) so
 //     SUBSEQUENT in-iframe navigations carry the signal too
 //
-// This means the user doesn't have to configure the Storyblok preview URL
-// to go through /api/draft — the iframe load is detected automatically.
+// **Defense in depth**: the `_storyblok*` query params alone are not a
+// sufficient auth signal — anyone could append them to bypass `/api/draft`.
+// We additionally require the request to look like an embedded iframe
+// load originating from app.storyblok.com (Sec-Fetch-Dest: iframe + a
+// matching Referer). For top-level navigation outside the editor, users
+// must still go through /api/draft with the preview secret.
 
 import { type NextRequest, NextResponse } from "next/server";
 
 const PREVIEW_COOKIE = "sb-preview";
 const PREVIEW_HEADER = "x-sb-preview";
 
+const STORYBLOK_REFERER = /^https:\/\/app(-[a-z]+)?\.storyblok\.com\//;
+
 function isStoryblokIframe(request: NextRequest): boolean {
+  let hasStoryblokParam = false;
   for (const key of request.nextUrl.searchParams.keys()) {
     if (key.startsWith("_storyblok")) {
-      return true;
+      hasStoryblokParam = true;
+      break;
     }
   }
-  return false;
+  if (!hasStoryblokParam) {
+    return false;
+  }
+  // Must look like an iframe sub-request from the Storyblok editor —
+  // not a top-level navigation a third party crafted.
+  if (request.headers.get("sec-fetch-dest") !== "iframe") {
+    return false;
+  }
+  const referer = request.headers.get("referer") ?? "";
+  return STORYBLOK_REFERER.test(referer);
 }
 
 export function proxy(request: NextRequest) {

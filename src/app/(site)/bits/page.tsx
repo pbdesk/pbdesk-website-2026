@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import type { Post } from "@/components/landing/post-card";
 import SectionLanding from "@/components/landing/section-landing";
 import { pillarAccents } from "@/lib/pillars";
-import { pageMetadata, SITE_AUTHOR, SITE_NAME, SITE_URL } from "@/lib/seo";
+import {
+  jsonLdString,
+  pageMetadata,
+  SITE_AUTHOR,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/seo";
 import { loadPillarData } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
@@ -139,7 +145,7 @@ export default async function BitsPage() {
     <>
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(bitsJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(bitsJsonLd) }}
         type="application/ld+json"
       />
       <SectionLanding

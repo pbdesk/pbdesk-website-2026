@@ -14,6 +14,7 @@ import { Chip } from "@/components/ui/chip";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import {
+  jsonLdString,
   pageMetadata,
   SITE_AUTHOR,
   SITE_NAME,
@@ -271,7 +272,7 @@ export default async function AboutPage() {
       <main>
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdString(personJsonLd) }}
           type="application/ld+json"
         />
         <Reveal>
@@ -288,7 +289,7 @@ export default async function AboutPage() {
     <main>
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(personJsonLd) }}
         type="application/ld+json"
       />
       <Reveal>

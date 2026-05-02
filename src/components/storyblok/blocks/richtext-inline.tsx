@@ -24,6 +24,31 @@ function asLooseDoc(doc?: TypedRichtextDoc): RichtextDoc | undefined {
   return doc as unknown as RichtextDoc | undefined;
 }
 
+// Allow only safe URL schemes — guards against `javascript:` / `data:`
+// hrefs an editor could store in Storyblok richtext links.
+const SAFE_SCHEME_RE = /^(https?:|mailto:|tel:)/i;
+const HTTP_SCHEME_RE = /^https?:/i;
+
+function safeHref(raw: unknown): string {
+  if (typeof raw !== "string" || raw.length === 0) {
+    return "#";
+  }
+  const trimmed = raw.trim();
+  // Same-origin relative paths and fragments are always safe.
+  if (
+    trimmed.startsWith("/") ||
+    trimmed.startsWith("#") ||
+    trimmed.startsWith("?")
+  ) {
+    return trimmed;
+  }
+  // For absolute URLs, only allow http/https/mailto/tel.
+  if (SAFE_SCHEME_RE.test(trimmed)) {
+    return trimmed;
+  }
+  return "#";
+}
+
 function applyMarks(text: ReactNode, marks?: RichtextNode["marks"]): ReactNode {
   if (!marks?.length) {
     return text;
@@ -37,12 +62,13 @@ function applyMarks(text: ReactNode, marks?: RichtextNode["marks"]): ReactNode {
     } else if (mark.type === "code") {
       out = <code>{out}</code>;
     } else if (mark.type === "link") {
-      const href = (mark.attrs?.href as string) ?? "#";
+      const href = safeHref(mark.attrs?.href);
+      const isExternal = HTTP_SCHEME_RE.test(href);
       out = (
         <a
           href={href}
-          rel="noopener"
-          target={href.startsWith("http") ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          target={isExternal ? "_blank" : undefined}
         >
           {out}
         </a>

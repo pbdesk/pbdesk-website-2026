@@ -11,9 +11,9 @@ interface RouteParams {
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
   const posts = await loadAllPosts();
-  return groupByCategory(posts).map(({ name }) => ({
-    category: encodeURIComponent(name),
-  }));
+  // Return raw values — Next encodes route params when generating paths.
+  // Returning encoded values here would result in double-encoded URLs.
+  return groupByCategory(posts).map(({ name }) => ({ category: name }));
 }
 
 export async function generateMetadata({
@@ -22,11 +22,10 @@ export async function generateMetadata({
   params: Promise<RouteParams>;
 }): Promise<Metadata> {
   const { category } = await params;
-  const decoded = decodeURIComponent(category);
   return pageMetadata({
-    title: `${decoded} — Category on PBDesk`,
-    description: `Every PBDesk post in the ${decoded} category — across Bits, Bites, and Blog.`,
-    path: `/categories/${encodeURIComponent(decoded)}`,
+    title: `${category} — Category on PBDesk`,
+    description: `Every PBDesk post in the ${category} category — across Bits, Bites, and Blog.`,
+    path: `/categories/${encodeURIComponent(category)}`,
   });
 }
 
@@ -36,10 +35,9 @@ export default async function CategoryPage({
   params: Promise<RouteParams>;
 }) {
   const { category } = await params;
-  const decoded = decodeURIComponent(category);
   const posts = await loadAllPosts();
   const match = groupByCategory(posts).find(
-    (group) => group.name.toLowerCase() === decoded.toLowerCase()
+    (group) => group.name.toLowerCase() === category.toLowerCase()
   );
   if (!match) {
     notFound();
