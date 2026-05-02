@@ -6,18 +6,32 @@ import {
 } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 import CtaBanner from "@/components/home/cta-banner";
-import FeaturedPost from "./featured-post";
-import PostCard, { type Post } from "./post-card";
+import type { Post } from "./post-card";
+import PostGrid from "./post-grid";
 import SectionBanner, { type PillarKey } from "./section-banner";
 
 export interface SectionLandingProps {
   accentColor: string;
   cadence: string;
   description: ReactNode;
-  filters: { label: string; count: number }[];
+  /**
+   * Optional editorial override for the filter chip list.
+   * When omitted, chips are auto-derived from `posts`.
+   */
+  filters?: { label: string; count: number }[];
   pillar: PillarKey;
   posts: Post[];
   title: string;
+}
+
+function deriveFilters(posts: Post[]): { label: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const post of posts) {
+    counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([label, count]) => ({ label, count }))
+    .sort((a, b) => b.count - a.count);
 }
 
 export default function SectionLanding({
@@ -31,9 +45,7 @@ export default function SectionLanding({
 }: SectionLandingProps) {
   const totalPosts = posts.length;
   const categoryCount = new Set(posts.map((p) => p.category)).size;
-  const featured = posts[0];
-  const secondary = posts[1];
-  const rest = posts.slice(2);
+  const filterChips = filters ?? deriveFilters(posts);
 
   return (
     <main>
@@ -102,7 +114,7 @@ export default function SectionLanding({
                 count={totalPosts}
                 label="All"
               />
-              {filters.map((f) => (
+              {filterChips.map((f) => (
                 <FilterChip
                   accentColor={accentColor}
                   count={f.count}
@@ -128,36 +140,7 @@ export default function SectionLanding({
         </div>
       </section>
 
-      {/* Featured + secondary */}
-      <section className="pb-10">
-        <div className="wrapper">
-          <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-            {featured ? (
-              <FeaturedPost accentColor={accentColor} post={featured} />
-            ) : null}
-            {secondary ? (
-              <PostCard accentColor={accentColor} post={secondary} />
-            ) : null}
-          </div>
-        </div>
-      </section>
-
-      {/* Rest grid */}
-      {rest.length > 0 ? (
-        <section className="pb-16">
-          <div className="wrapper">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {rest.map((post) => (
-                <PostCard
-                  accentColor={accentColor}
-                  key={post.title}
-                  post={post}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
+      <PostGrid accentColor={accentColor} posts={posts} />
 
       <CtaBanner />
     </main>
