@@ -12,7 +12,9 @@
     "fix": "ultracite fix",
     "clean": "rm -rf node_modules .next .turbo && bun install",
     "prepare": "lefthook install",
-    "seed:storyblok": "bun scripts/seed-storyblok.ts"
+    "seed:storyblok": "bun scripts/seed-storyblok.ts",
+    "import:resources": "bun scripts/import-resources.ts",
+    "import:resources:dry": "bun scripts/import-resources.ts --dry-run"
   },
   "dependencies": {
     "@storyblok/react": "6.1.5",
@@ -31,6 +33,7 @@
     "@tailwindcss/postcss": "4.2.4",
     "@tailwindcss/typography": "0.5.19",
     "@types/bun": "1.3.13",
+    "@types/mdast": "4.0.4",
     "@types/node": "25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
