@@ -1,5 +1,5 @@
 import { getStoryblokApi } from "@storyblok/react/rsc";
-import { draftMode } from "next/headers";
+import { cookies, draftMode } from "next/headers";
 import "./init";
 import { STORYBLOK_CACHE_TAG, storyTag } from "./tags";
 import type {
@@ -17,9 +17,22 @@ interface FetchStoryOptions {
   resolveRelations?: string[];
 }
 
+// Name of the iframe-friendly preview cookie set by /api/draft.
+// Kept in sync with PREVIEW_COOKIE in src/app/api/draft/route.ts but
+// duplicated here to avoid a server-route → client-lib import direction.
+const PREVIEW_COOKIE = "sb-preview";
+
 async function isDraft(): Promise<boolean> {
-  const { isEnabled } = await draftMode();
-  return isEnabled;
+  // Honor Next's built-in draft mode (top-level navigation) AND our
+  // SameSite=None cookie (works inside the Storyblok visual-editor iframe).
+  const [{ isEnabled }, cookieStore] = await Promise.all([
+    draftMode(),
+    cookies(),
+  ]);
+  if (isEnabled) {
+    return true;
+  }
+  return Boolean(cookieStore.get(PREVIEW_COOKIE));
 }
 
 async function fetchStoryRaw<TStory>(

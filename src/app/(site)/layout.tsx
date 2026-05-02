@@ -1,9 +1,7 @@
-import { draftMode } from "next/headers";
 import type { ReactNode } from "react";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header/header";
 import StoryblokBridge from "@/components/storyblok/storyblok-bridge";
-import StoryblokProvider from "@/components/storyblok/storyblok-provider";
 import { globalConfigToLayoutData } from "@/lib/storyblok/global-config";
 import { loadGlobalConfig } from "@/lib/storyblok/landing";
 
@@ -12,14 +10,14 @@ export default async function SiteLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const [{ isEnabled: isDraft }, configStory] = await Promise.all([
-    draftMode(),
-    loadGlobalConfig(),
-  ]);
+  const configStory = await loadGlobalConfig();
   const config = globalConfigToLayoutData(configStory);
 
-  const inner = (
+  return (
     <div className="flex flex-1 flex-col">
+      {/* Mounted unconditionally; the component self-gates to only run inside
+          the Storyblok visual editor iframe. */}
+      <StoryblokBridge />
       <Header
         brandTagline={config?.brandTagline}
         navItems={config?.navItems}
@@ -36,14 +34,4 @@ export default async function SiteLayout({
       />
     </div>
   );
-
-  if (isDraft) {
-    return (
-      <StoryblokProvider>
-        <StoryblokBridge />
-        {inner}
-      </StoryblokProvider>
-    );
-  }
-  return inner;
 }
