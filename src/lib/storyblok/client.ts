@@ -1,4 +1,13 @@
-import { getStoryblokApi } from "@storyblok/react/rsc";
+// Storyblok Content Delivery API client.
+//
+// Uses native fetch (not the SDK's axios-backed client) so we can pass
+// Next's `next: { tags }` option. The /api/revalidate webhook calls
+// revalidateTag against the same tag names, which is how published edits
+// flush the route cache without a redeploy.
+//
+// Draft requests bypass the cache entirely (`cache: "no-store"` + a cv
+// busting param) so the visual editor sees keystroke-fresh content.
+
 import { unstable_noStore as noStore } from "next/cache";
 import { cookies, draftMode, headers } from "next/headers";
 import "./init";
@@ -18,31 +27,76 @@ interface FetchStoryOptions {
   resolveRelations?: string[];
 }
 
-// Names kept in sync with src/middleware.ts and src/app/api/draft/route.ts
-// (duplicated here to keep the client lib free of server-route imports).
+// Names duplicated here (vs imported from src/proxy.ts and the route
+// handler) to keep this lib free of server-route imports.
 const PREVIEW_COOKIE = "sb-preview";
 const PREVIEW_HEADER = "x-sb-preview";
 
+const API_HOSTS: Record<string, string> = {
+  eu: "api.storyblok.com",
+  us: "api-us.storyblok.com",
+  ca: "api-ca.storyblok.com",
+  ap: "api-ap.storyblok.com",
+  cn: "app.storyblokchina.cn",
+};
+
+function getApiHost(): string {
+  const region = process.env.STORYBLOK_REGION ?? "eu";
+  return API_HOSTS[region] ?? API_HOSTS.eu;
+}
+
 async function isDraft(): Promise<boolean> {
-  // Three signals, any one of them enables draft fetching:
-  //   1. Next's built-in draftMode (top-level navigation through /api/draft)
-  //   2. Our SameSite=None sb-preview cookie (works in the Storyblok iframe
-  //      across navigations, set by /api/draft and by middleware)
-  //   3. The x-sb-preview request header (set by middleware on the *current*
-  //      request when the URL contains _storyblok* query params — this
-  //      handles the very first iframe load before any cookie is set)
-  const [{ isEnabled }, cookieStore, headersList] = await Promise.all([
-    draftMode(),
-    cookies(),
-    headers(),
-  ]);
-  if (isEnabled) {
-    return true;
-  }
+  // Cheap signals first. The sb-preview cookie + x-sb-preview header are
+  // set by src/proxy.ts on visual editor iframe loads — checking them first
+  // means anonymous traffic never calls draftMode(), which would otherwise
+  // opt every public route into dynamic rendering.
+  const [cookieStore, headersList] = await Promise.all([cookies(), headers()]);
   if (cookieStore.get(PREVIEW_COOKIE)) {
     return true;
   }
-  return headersList.get(PREVIEW_HEADER) === "1";
+  if (headersList.get(PREVIEW_HEADER) === "1") {
+    return true;
+  }
+  // Fall back to Next's draftMode for top-level navigation through /api/draft.
+  const { isEnabled } = await draftMode();
+  return isEnabled;
+}
+
+interface FetchOptions {
+  draft: boolean;
+  query: Record<string, string | undefined>;
+  tags: string[];
+}
+
+async function storyblokFetch<TResult>(
+  path: string,
+  { query, tags, draft }: FetchOptions
+): Promise<TResult | null> {
+  const url = new URL(`https://${getApiHost()}/v2/${path}`);
+  for (const [key, value] of Object.entries(query)) {
+    if (value !== undefined && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  }
+  url.searchParams.set("version", draft ? "draft" : "published");
+  url.searchParams.set(
+    "token",
+    (draft
+      ? process.env.STORYBLOK_PREVIEW_TOKEN
+      : process.env.STORYBLOK_ACCESS_TOKEN) ?? ""
+  );
+  if (draft) {
+    url.searchParams.set("cv", String(Date.now()));
+  }
+
+  const response = await fetch(url, {
+    headers: { Accept: "application/json" },
+    ...(draft ? { cache: "no-store" } : { next: { tags, revalidate: 3600 } }),
+  });
+  if (!response.ok) {
+    return null;
+  }
+  return (await response.json()) as TResult;
 }
 
 async function fetchStoryRaw<TStory>(
@@ -51,24 +105,23 @@ async function fetchStoryRaw<TStory>(
 ): Promise<TStory | null> {
   const draft = await isDraft();
   if (draft) {
-    // Opt this whole request out of Next's data cache so router.refresh()
-    // always pulls fresh draft content. Without this, the underlying fetch
-    // can be served from the Server Component data cache even though our
-    // route is dynamic.
+    // Belt-and-braces: ensure no enclosing cache scope serves stale data
+    // for editor traffic, even if cache: "no-store" is somehow honored.
     noStore();
   }
-  const api = getStoryblokApi();
   try {
-    const { data } = await api.get(`cdn/stories/${slug}`, {
-      version: draft ? "draft" : "published",
-      resolve_links: options.resolveLinks ?? "url",
-      resolve_relations: options.resolveRelations?.join(",") ?? undefined,
-      cv: draft ? Date.now() : undefined,
-      token: draft
-        ? process.env.STORYBLOK_PREVIEW_TOKEN
-        : process.env.STORYBLOK_ACCESS_TOKEN,
-    });
-    return data?.story as TStory;
+    const data = await storyblokFetch<{ story?: TStory }>(
+      `cdn/stories/${slug}`,
+      {
+        draft,
+        tags: [STORYBLOK_CACHE_TAG, storyTag(slug)],
+        query: {
+          resolve_links: options.resolveLinks ?? "url",
+          resolve_relations: options.resolveRelations?.join(","),
+        },
+      }
+    );
+    return data?.story ?? null;
   } catch {
     return null;
   }
@@ -82,20 +135,25 @@ async function fetchStoriesRaw<TStory>(params: {
   sortBy?: string;
 }): Promise<TStory[]> {
   const draft = await isDraft();
-  const api = getStoryblokApi();
-  const { data } = await api.get("cdn/stories", {
-    version: draft ? "draft" : "published",
-    starts_with: params.startsWith,
-    content_type: params.contentType,
-    per_page: params.perPage ?? 100,
-    page: params.page ?? 1,
-    sort_by: params.sortBy,
-    cv: draft ? Date.now() : undefined,
-    token: draft
-      ? process.env.STORYBLOK_PREVIEW_TOKEN
-      : process.env.STORYBLOK_ACCESS_TOKEN,
-  });
-  return (data?.stories ?? []) as TStory[];
+  if (draft) {
+    noStore();
+  }
+  try {
+    const data = await storyblokFetch<{ stories?: TStory[] }>("cdn/stories", {
+      draft,
+      tags: [STORYBLOK_CACHE_TAG],
+      query: {
+        starts_with: params.startsWith,
+        content_type: params.contentType,
+        per_page: String(params.perPage ?? 100),
+        page: String(params.page ?? 1),
+        sort_by: params.sortBy,
+      },
+    });
+    return data?.stories ?? [];
+  } catch {
+    return [];
+  }
 }
 
 export function fetchHomeStory(): Promise<HomePageStory | null> {
@@ -139,16 +197,10 @@ export async function fetchStoriesByPillar(
   return stories.filter((s) => !s.full_slug.endsWith("/index"));
 }
 
-export async function fetchAllPosts(): Promise<PostStory[]> {
-  const stories = await fetchStoriesRaw<PostStory>({
+export function fetchAllPosts(): Promise<PostStory[]> {
+  return fetchStoriesRaw<PostStory>({
     contentType: "post",
     perPage: 100,
     sortBy: "content.published_at:desc",
   });
-  return stories;
 }
-
-export const storyblokCacheTags = {
-  all: STORYBLOK_CACHE_TAG,
-  story: storyTag,
-};

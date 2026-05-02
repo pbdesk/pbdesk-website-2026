@@ -1,7 +1,12 @@
 // Pillar / taxonomy page data loader. Fetches from Storyblok when env vars
 // are present; gracefully returns null otherwise so the page can render
 // hardcoded fallback content during development.
+//
+// `loadAllPosts` and `loadAllPostSlugs` are wrapped in React.cache so the
+// taxonomy routes (which call them across generateStaticParams +
+// generateMetadata + the page render) only fetch once per render pass.
 
+import { cache } from "react";
 import type { Post } from "@/components/landing/post-card";
 import type { PostWithSlug } from "./adapters";
 import { postStoryToPost } from "./adapters";
@@ -40,7 +45,11 @@ interface PillarPageData {
 }
 
 function isStoryblokConfigured(): boolean {
-  return Boolean(process.env.STORYBLOK_ACCESS_TOKEN);
+  // Either token is enough — the client picks the right one based on
+  // whether the request is in draft mode.
+  return Boolean(
+    process.env.STORYBLOK_ACCESS_TOKEN || process.env.STORYBLOK_PREVIEW_TOKEN
+  );
 }
 
 interface FallbackContent {
@@ -96,24 +105,27 @@ export async function loadPillarData(
   }
 }
 
-/**
- * Load every post from Storyblok, mapped through the post adapter.
- * Used by /categories, /labels, and their per-term listing pages.
- * Returns an empty array when Storyblok isn't configured or the fetch fails,
- * so taxonomy pages don't crash the build during local dev.
- */
-export async function loadAllPosts(): Promise<PostWithSlug[]> {
+const fetchAllPostsCached = cache(async (): Promise<PostStory[]> => {
   if (!isStoryblokConfigured()) {
     return [];
   }
   try {
     const stories = await fetchAllPosts();
-    return stories
-      .filter((s) => !s.full_slug.endsWith("/index"))
-      .map(postStoryToPost);
+    return stories.filter((s) => !s.full_slug.endsWith("/index"));
   } catch {
     return [];
   }
+});
+
+/**
+ * Load every post from Storyblok, mapped through the post adapter.
+ * Used by /categories, /labels, and their per-term listing pages.
+ * Cached at the React render level so generateStaticParams +
+ * generateMetadata + the page handler share a single fetch.
+ */
+export async function loadAllPosts(): Promise<PostWithSlug[]> {
+  const stories = await fetchAllPostsCached();
+  return stories.map(postStoryToPost);
 }
 
 /**
@@ -124,17 +136,8 @@ export async function loadAllPosts(): Promise<PostWithSlug[]> {
 export async function loadAllPostSlugs(): Promise<
   { pillar: PillarKey; slug: string }[]
 > {
-  if (!isStoryblokConfigured()) {
-    return [];
-  }
-  try {
-    const stories = await fetchAllPosts();
-    return stories
-      .filter((s) => !s.full_slug.endsWith("/index"))
-      .map((s) => ({ pillar: s.content.pillar, slug: s.slug }));
-  } catch {
-    return [];
-  }
+  const stories = await fetchAllPostsCached();
+  return stories.map((s) => ({ pillar: s.content.pillar, slug: s.slug }));
 }
 
 /**
