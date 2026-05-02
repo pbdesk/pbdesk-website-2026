@@ -8,9 +8,10 @@ import { postStoryToPost } from "./adapters";
 import {
   fetchAllPosts,
   fetchLandingStory,
+  fetchPostStory,
   fetchStoriesByPillar,
 } from "./client";
-import type { LandingPageStory, PillarKey } from "./types";
+import type { LandingPageStory, PillarKey, PostStory } from "./types";
 
 interface PillarPageData {
   cadence: string;
@@ -100,5 +101,44 @@ export async function loadAllPosts(): Promise<PostWithSlug[]> {
       .map(postStoryToPost);
   } catch {
     return [];
+  }
+}
+
+/**
+ * Enumerate every imported post's `{ pillar, slug }` pair so the post
+ * detail route can pre-generate static pages. Returns [] when Storyblok
+ * isn't configured (build still succeeds; routes are dynamic at runtime).
+ */
+export async function loadAllPostSlugs(): Promise<
+  { pillar: PillarKey; slug: string }[]
+> {
+  if (!isStoryblokConfigured()) {
+    return [];
+  }
+  try {
+    const stories = await fetchAllPosts();
+    return stories
+      .filter((s) => !s.full_slug.endsWith("/index"))
+      .map((s) => ({ pillar: s.content.pillar, slug: s.slug }));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Fetch a single post story by pillar + slug. Returns null if Storyblok
+ * isn't configured, the fetch fails, or no story matches.
+ */
+export async function loadPostStory(
+  pillar: PillarKey,
+  slug: string
+): Promise<PostStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchPostStory(pillar, slug);
+  } catch {
+    return null;
   }
 }
