@@ -7,11 +7,17 @@ import type { PostWithSlug } from "./adapters";
 import { postStoryToPost } from "./adapters";
 import {
   fetchAllPosts,
+  fetchHomeStory,
   fetchLandingStory,
   fetchPostStory,
   fetchStoriesByPillar,
 } from "./client";
-import type { LandingPageStory, PillarKey, PostStory } from "./types";
+import type {
+  HomePageStory,
+  LandingPageStory,
+  PillarKey,
+  PostStory,
+} from "./types";
 
 interface PillarPageData {
   cadence: string;
@@ -138,6 +144,22 @@ export async function loadPostStory(
   }
   try {
     return await fetchPostStory(pillar, slug);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the `home` singleton story. Returns null when Storyblok isn't
+ * configured or the story doesn't exist — homepage falls back to its
+ * hardcoded section stack in that case.
+ */
+export async function loadHomeStory(): Promise<HomePageStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchHomeStory();
   } catch {
     return null;
   }
