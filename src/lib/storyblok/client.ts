@@ -175,7 +175,9 @@ export function fetchGlobalConfig(): Promise<GlobalConfigStory | null> {
 export function fetchLandingStory(
   pillar: PillarKey
 ): Promise<LandingPageStory | null> {
-  return fetchStoryRaw<LandingPageStory>(`${pillar}/index`);
+  // Pillar landing stories are folder startpages (is_startpage: true), so
+  // their full_slug is just the folder name (e.g. "bits"), not "bits/index".
+  return fetchStoryRaw<LandingPageStory>(pillar);
 }
 
 export function fetchPostStory(
