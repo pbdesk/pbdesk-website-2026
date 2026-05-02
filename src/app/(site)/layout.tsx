@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header/header";
-import PreviewBadge from "@/components/storyblok/preview-badge";
 import StoryblokBridge from "@/components/storyblok/storyblok-bridge";
 import StoryblokProvider from "@/components/storyblok/storyblok-provider";
 import { globalConfigToLayoutData } from "@/lib/storyblok/global-config";
@@ -18,10 +17,9 @@ export default async function SiteLayout({
   return (
     <StoryblokProvider>
       <div className="flex flex-1 flex-col">
-        {/* Mounted unconditionally; both components self-gate so they
-            only do work inside the Storyblok visual editor iframe. */}
+        {/* Mounted unconditionally; self-gates so it only loads the
+            bridge script inside the Storyblok visual editor iframe. */}
         <StoryblokBridge />
-        <PreviewBadge />
         <Header
           brandTagline={config?.brandTagline}
           navItems={config?.navItems}
