@@ -1,6 +1,7 @@
 import type { ISbStoryData } from "@storyblok/react";
 import type { Metadata } from "next";
 import LiveRichText from "@/components/storyblok/live-richtext";
+import { Chip } from "@/components/ui/chip";
 import { pageMetadata, SITE_NAME } from "@/lib/seo";
 import { loadDisclaimerStory } from "@/lib/storyblok/landing";
 
@@ -28,43 +29,72 @@ export default async function DisclaimerPage() {
   const c = story?.content;
   const lastUpdated = c?.last_updated;
   const title = c?.title ?? "Disclaimer";
+  const eyebrow = c?.eyebrow;
+  const lede = c?.lede;
 
   return (
     <main>
-      <section className="py-16 sm:py-20">
+      <section className="hero-gradient-bg relative overflow-hidden py-20 sm:py-24">
+        <div className="wrapper relative z-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
+              <a
+                className="text-[var(--fg-secondary)] hover:underline"
+                href="/"
+              >
+                PBDesk
+              </a>
+              <span>/</span>
+              <span className="text-[var(--fg-primary)]">{title}</span>
+            </nav>
+
+            {eyebrow ? (
+              <div className="mb-5 flex justify-center">
+                <Chip variant="brand">
+                  <span>{eyebrow}</span>
+                </Chip>
+              </div>
+            ) : null}
+
+            <h1
+              className="mb-6 font-bold text-[var(--fg-primary)]"
+              style={{
+                fontSize: "clamp(40px, 5vw, 64px)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.03em",
+                textWrap: "balance",
+              }}
+            >
+              {title}
+            </h1>
+
+            {lede ? (
+              <p
+                className="mx-auto mb-6 max-w-2xl text-[var(--fg-secondary)] text-lg"
+                style={{ lineHeight: 1.7 }}
+              >
+                {lede}
+              </p>
+            ) : null}
+
+            {lastUpdated ? (
+              <p className="text-[var(--fg-muted)] text-sm">
+                Last updated{" "}
+                <time dateTime={lastUpdated}>
+                  {new Date(lastUpdated).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              </p>
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[var(--bg-subtle)] py-16 sm:py-20">
         <div className="wrapper">
-          <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
-            <a className="text-[var(--fg-secondary)] hover:underline" href="/">
-              PBDesk
-            </a>
-            <span>/</span>
-            <span className="text-[var(--fg-primary)]">{title}</span>
-          </nav>
-
-          <h1
-            className="mb-6 text-center font-bold text-[var(--fg-primary)]"
-            style={{
-              fontSize: "clamp(40px, 5vw, 64px)",
-              lineHeight: 1.05,
-              letterSpacing: "-0.03em",
-            }}
-          >
-            {title}
-          </h1>
-
-          {lastUpdated ? (
-            <p className="mb-10 text-center text-[var(--fg-muted)] text-sm">
-              Last updated{" "}
-              <time dateTime={lastUpdated}>
-                {new Date(lastUpdated).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-            </p>
-          ) : null}
-
           {story ? (
             <LiveRichText
               fallback={FALLBACK_BODY.map((paragraph) => (

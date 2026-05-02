@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { buildStoryContent as buildDisclaimerContent } from "../update-disclaimer";
 import type { SbStoryContent } from "./storyblok-management";
 
 // Helpers --------------------------------------------------------------------
@@ -335,21 +336,11 @@ export const aboutContent: SbStoryContent = {
 // ============================================================================
 // Disclaimer page
 // ============================================================================
+// Long-form content (hero + 18 sections) lives in scripts/update-disclaimer.ts
+// so a focused `bun run update:disclaimer` and the full `bun run seed:storyblok`
+// produce identical output. Edit the canonical copy there.
 
-export const disclaimerContent: SbStoryContent = {
-  component: "disclaimer_page",
-  title: "Disclaimer",
-  body: richtext(
-    "The views expressed on PBDesk are personal and do not necessarily reflect the views of any employer, client, or affiliated organization.",
-    "Articles share opinions, experiments, and references at the time of writing. Technology moves fast — examples may become outdated, and the code or tools mentioned may change behavior over time. Please verify against current documentation before relying on anything here in production.",
-    "Wellness content reflects my personal practice and is not medical advice. Please consult a qualified healthcare professional for guidance specific to your situation.",
-    "External links open in new tabs and lead to third-party sites that are not under my control. I am not responsible for their content or practices."
-  ),
-  last_updated: new Date().toISOString(),
-  seo_title: "Disclaimer — PBDesk",
-  seo_description:
-    "Editorial, technical, and wellness disclaimer for content published on PBDesk.",
-};
+export const disclaimerContent: SbStoryContent = buildDisclaimerContent();
 
 // ============================================================================
 // Landing pages

@@ -783,6 +783,15 @@ const contentTypes: SbComponent[] = [
       preview_field: "title",
       schema: f({
         title: field({ type: "text", required: true }),
+        eyebrow: field({
+          type: "text",
+          description:
+            'Small uppercase label shown above the H1 (e.g. "Legal").',
+        }),
+        lede: field({
+          type: "textarea",
+          description: "Intro paragraph rendered under the H1 in the hero.",
+        }),
         body: field({ type: "richtext" }),
         last_updated: field({ type: "datetime" }),
         seo_title: field({ type: "text" }),

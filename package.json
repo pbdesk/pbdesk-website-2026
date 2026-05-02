@@ -14,6 +14,7 @@
     "clean": "rm -rf node_modules .next .turbo && bun install",
     "prepare": "lefthook install",
     "seed:storyblok": "bun scripts/seed-storyblok.ts",
+    "update:disclaimer": "bun scripts/update-disclaimer.ts",
     "import:resources": "bun scripts/import-resources.ts",
     "import:resources:dry": "bun scripts/import-resources.ts --dry-run"
   },

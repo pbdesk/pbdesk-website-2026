@@ -84,7 +84,9 @@ export interface AboutPageStoryContent extends SbBlokBase {
 export interface DisclaimerPageStoryContent extends SbBlokBase {
   body: unknown;
   component: "disclaimer_page";
+  eyebrow?: string;
   last_updated?: string;
+  lede?: string;
   seo_description?: string;
   seo_title?: string;
   title: string;
