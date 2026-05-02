@@ -1,5 +1,6 @@
-import { StoryblokServerRichText } from "@storyblok/react/rsc";
+import type { ISbStoryData } from "@storyblok/react";
 import type { Metadata } from "next";
+import LiveRichText from "@/components/storyblok/live-richtext";
 import { pageMetadata, SITE_NAME } from "@/lib/seo";
 import { loadDisclaimerStory } from "@/lib/storyblok/landing";
 
@@ -64,19 +65,21 @@ export default async function DisclaimerPage() {
             </p>
           ) : null}
 
-          <article className="post-prose mx-auto max-w-3xl">
-            {c?.body ? (
-              <StoryblokServerRichText
-                doc={
-                  c.body as Parameters<typeof StoryblokServerRichText>[0]["doc"]
-                }
-              />
-            ) : (
-              FALLBACK_BODY.map((paragraph) => (
+          {story ? (
+            <LiveRichText
+              fallback={FALLBACK_BODY.map((paragraph) => (
                 <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-              ))
-            )}
-          </article>
+              ))}
+              fieldName="body"
+              story={story as unknown as ISbStoryData<Record<string, unknown>>}
+            />
+          ) : (
+            <article className="post-prose mx-auto max-w-3xl">
+              {FALLBACK_BODY.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
+              ))}
+            </article>
+          )}
         </div>
       </section>
     </main>
