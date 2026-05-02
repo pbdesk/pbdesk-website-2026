@@ -1,6 +1,18 @@
 "use client";
 
-export default function CtaBanner() {
+interface CtaBannerProps {
+  description?: string;
+  heading?: string;
+  placeholder?: string;
+  submitLabel?: string;
+}
+
+export default function CtaBanner({
+  heading = "Stay in touch.",
+  description = "One email when something new lands on Bits, Bites, or Blog. No noise, no spam — just signal from my desk to yours.",
+  placeholder = "your@email.com",
+  submitLabel = "Subscribe",
+}: CtaBannerProps = {}) {
   return (
     <section className="py-12 sm:py-16">
       <div className="wrapper">
@@ -13,15 +25,14 @@ export default function CtaBanner() {
               letterSpacing: "-0.025em",
             }}
           >
-            Stay in touch.
+            {heading}
           </h2>
 
           <p
             className="mx-auto mb-10 max-w-xl text-base text-indigo-200"
             style={{ lineHeight: 1.7 }}
           >
-            One email when something new lands on Bits, Bites, or Blog. No
-            noise, no spam — just signal from my desk to yours.
+            {description}
           </p>
 
           <form
@@ -30,14 +41,14 @@ export default function CtaBanner() {
           >
             <input
               className="flex-1 bg-transparent px-5 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none"
-              placeholder="your@email.com"
+              placeholder={placeholder}
               type="email"
             />
             <button
               className="rounded-full bg-[var(--fg-brand)] px-6 py-3 font-semibold text-sm text-white transition-transform hover:-translate-y-0.5"
               type="submit"
             >
-              Subscribe
+              {submitLabel}
             </button>
           </form>
         </div>
