@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header/header";
+import PreviewBadge from "@/components/storyblok/preview-badge";
 import StoryblokBridge from "@/components/storyblok/storyblok-bridge";
 import { globalConfigToLayoutData } from "@/lib/storyblok/global-config";
 import { loadGlobalConfig } from "@/lib/storyblok/landing";
@@ -18,6 +19,7 @@ export default async function SiteLayout({
       {/* Mounted unconditionally; the component self-gates to only run inside
           the Storyblok visual editor iframe. */}
       <StoryblokBridge />
+      <PreviewBadge />
       <Header
         brandTagline={config?.brandTagline}
         navItems={config?.navItems}
