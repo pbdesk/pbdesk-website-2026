@@ -18,6 +18,7 @@ import {
   fetchHomeStory,
   fetchLandingStory,
   fetchPostStory,
+  fetchPrivacyPolicyStory,
   fetchStoriesByPillar,
 } from "./client";
 import type {
@@ -28,6 +29,7 @@ import type {
   LandingPageStory,
   PillarKey,
   PostStory,
+  PrivacyPolicyPageStory,
 } from "./types";
 
 interface PillarPageData {
@@ -214,6 +216,20 @@ export async function loadDisclaimerStory(): Promise<DisclaimerPageStory | null>
   }
   try {
     return await fetchDisclaimerStory();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the `privacy-policy` singleton story.
+ */
+export async function loadPrivacyPolicyStory(): Promise<PrivacyPolicyPageStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchPrivacyPolicyStory();
   } catch {
     return null;
   }

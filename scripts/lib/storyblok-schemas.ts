@@ -800,6 +800,35 @@ const contentTypes: SbComponent[] = [
     };
   })(),
 
+  // ----- Privacy Policy Page -----
+  (() => {
+    reset();
+    return {
+      name: "privacy_policy_page",
+      display_name: "Privacy Policy Page",
+      is_root: true,
+      is_nestable: false,
+      icon: "block-doc",
+      preview_field: "title",
+      schema: f({
+        title: field({ type: "text", required: true }),
+        eyebrow: field({
+          type: "text",
+          description:
+            'Small uppercase label shown above the H1 (e.g. "Privacy").',
+        }),
+        lede: field({
+          type: "textarea",
+          description: "Intro paragraph rendered under the H1 in the hero.",
+        }),
+        body: field({ type: "richtext" }),
+        last_updated: field({ type: "datetime" }),
+        seo_title: field({ type: "text" }),
+        seo_description: field({ type: "textarea" }),
+      }),
+    };
+  })(),
+
   // ----- Global Config -----
   (() => {
     reset();

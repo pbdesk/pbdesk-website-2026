@@ -20,6 +20,7 @@ import type {
   LandingPageStory,
   PillarKey,
   PostStory,
+  PrivacyPolicyPageStory,
 } from "./types";
 
 interface FetchStoryOptions {
@@ -178,6 +179,10 @@ export function fetchAboutStory(): Promise<AboutPageStory | null> {
 
 export function fetchDisclaimerStory(): Promise<DisclaimerPageStory | null> {
   return fetchStoryRaw<DisclaimerPageStory>("disclaimer");
+}
+
+export function fetchPrivacyPolicyStory(): Promise<PrivacyPolicyPageStory | null> {
+  return fetchStoryRaw<PrivacyPolicyPageStory>("privacy-policy");
 }
 
 export function fetchGlobalConfig(): Promise<GlobalConfigStory | null> {

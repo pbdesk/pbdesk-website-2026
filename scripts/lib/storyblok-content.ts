@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { buildStoryContent as buildDisclaimerContent } from "../update-disclaimer";
+import { buildStoryContent as buildPrivacyPolicyContent } from "../update-privacy-policy";
 import type { SbStoryContent } from "./storyblok-management";
 
 // Helpers --------------------------------------------------------------------
@@ -343,6 +344,16 @@ export const aboutContent: SbStoryContent = {
 export const disclaimerContent: SbStoryContent = buildDisclaimerContent();
 
 // ============================================================================
+// Privacy Policy page
+// ============================================================================
+// Long-form content (hero + Privacy Policy + Cookie Notice) lives in
+// scripts/update-privacy-policy.ts so a focused `bun run update:privacy-policy`
+// and the full `bun run seed:storyblok` produce identical output. Edit the
+// canonical copy there.
+
+export const privacyPolicyContent: SbStoryContent = buildPrivacyPolicyContent();
+
+// ============================================================================
 // Landing pages
 // ============================================================================
 
@@ -432,7 +443,10 @@ export const globalConfigContent: SbStoryContent = {
     navItem("Categories", "/categories"),
     navItem("Labels", "/labels"),
   ],
-  footer_more: [navItem("Disclaimer", "/disclaimer")],
+  footer_more: [
+    navItem("Disclaimer", "/disclaimer"),
+    navItem("Privacy Policy", "/privacy-policy"),
+  ],
   social_links: socialLinks,
   cta_default: [ctaBannerBlok],
 };

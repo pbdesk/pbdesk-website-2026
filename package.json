@@ -15,6 +15,7 @@
     "prepare": "lefthook install",
     "seed:storyblok": "bun scripts/seed-storyblok.ts",
     "update:disclaimer": "bun scripts/update-disclaimer.ts",
+    "update:privacy-policy": "bun scripts/update-privacy-policy.ts",
     "import:resources": "bun scripts/import-resources.ts",
     "import:resources:dry": "bun scripts/import-resources.ts --dry-run"
   },

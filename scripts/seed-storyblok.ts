@@ -21,6 +21,7 @@ import {
   disclaimerContent,
   globalConfigContent,
   homeContent,
+  privacyPolicyContent,
   swapAssetPlaceholders,
 } from "./lib/storyblok-content";
 import {
@@ -186,6 +187,11 @@ function buildSeedStories(
       name: "Disclaimer",
       slug: "disclaimer",
       content: swapAssetPlaceholders(disclaimerContent, assetMap),
+    },
+    {
+      name: "Privacy Policy",
+      slug: "privacy-policy",
+      content: swapAssetPlaceholders(privacyPolicyContent, assetMap),
     },
     {
       name: "Config",

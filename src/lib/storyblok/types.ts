@@ -92,6 +92,17 @@ export interface DisclaimerPageStoryContent extends SbBlokBase {
   title: string;
 }
 
+export interface PrivacyPolicyPageStoryContent extends SbBlokBase {
+  body: unknown;
+  component: "privacy_policy_page";
+  eyebrow?: string;
+  last_updated?: string;
+  lede?: string;
+  seo_description?: string;
+  seo_title?: string;
+  title: string;
+}
+
 export interface NavItemBlok extends SbBlokBase {
   component: "nav_item";
   href: SbLinkField;
@@ -123,4 +134,6 @@ export type LandingPageStory = ISbStoryData<LandingPageStoryContent>;
 export type HomePageStory = ISbStoryData<HomePageStoryContent>;
 export type AboutPageStory = ISbStoryData<AboutPageStoryContent>;
 export type DisclaimerPageStory = ISbStoryData<DisclaimerPageStoryContent>;
+export type PrivacyPolicyPageStory =
+  ISbStoryData<PrivacyPolicyPageStoryContent>;
 export type GlobalConfigStory = ISbStoryData<GlobalConfigStoryContent>;

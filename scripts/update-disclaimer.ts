@@ -511,7 +511,7 @@ function buildBody(): RtDoc {
   blocks.push(
     p(
       "Use of the Site is also governed by the ",
-      link("/privacy", "Privacy Policy"),
+      link("/privacy-policy", "Privacy Policy & Cookie Notice"),
       ". Please read it to understand how cookies, analytics, and any submitted information are handled."
     )
   );
