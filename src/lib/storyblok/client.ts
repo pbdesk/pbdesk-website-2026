@@ -1,0 +1,124 @@
+import { getStoryblokApi } from "@storyblok/react/rsc";
+import { draftMode } from "next/headers";
+import "./init";
+import { STORYBLOK_CACHE_TAG, storyTag } from "./tags";
+import type {
+  AboutPageStory,
+  DisclaimerPageStory,
+  GlobalConfigStory,
+  HomePageStory,
+  LandingPageStory,
+  PillarKey,
+  PostStory,
+} from "./types";
+
+interface FetchStoryOptions {
+  resolveLinks?: "url" | "story";
+  resolveRelations?: string[];
+}
+
+async function isDraft(): Promise<boolean> {
+  const { isEnabled } = await draftMode();
+  return isEnabled;
+}
+
+async function fetchStoryRaw<TStory>(
+  slug: string,
+  options: FetchStoryOptions = {}
+): Promise<TStory | null> {
+  const draft = await isDraft();
+  const api = getStoryblokApi();
+  try {
+    const { data } = await api.get(`cdn/stories/${slug}`, {
+      version: draft ? "draft" : "published",
+      resolve_links: options.resolveLinks ?? "url",
+      resolve_relations: options.resolveRelations?.join(",") ?? undefined,
+      cv: draft ? Date.now() : undefined,
+      token: draft
+        ? process.env.STORYBLOK_PREVIEW_TOKEN
+        : process.env.STORYBLOK_ACCESS_TOKEN,
+    });
+    return data?.story as TStory;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchStoriesRaw<TStory>(params: {
+  startsWith?: string;
+  contentType?: string;
+  perPage?: number;
+  page?: number;
+  sortBy?: string;
+}): Promise<TStory[]> {
+  const draft = await isDraft();
+  const api = getStoryblokApi();
+  const { data } = await api.get("cdn/stories", {
+    version: draft ? "draft" : "published",
+    starts_with: params.startsWith,
+    content_type: params.contentType,
+    per_page: params.perPage ?? 100,
+    page: params.page ?? 1,
+    sort_by: params.sortBy,
+    cv: draft ? Date.now() : undefined,
+    token: draft
+      ? process.env.STORYBLOK_PREVIEW_TOKEN
+      : process.env.STORYBLOK_ACCESS_TOKEN,
+  });
+  return (data?.stories ?? []) as TStory[];
+}
+
+export function fetchHomeStory(): Promise<HomePageStory | null> {
+  return fetchStoryRaw<HomePageStory>("home");
+}
+
+export function fetchAboutStory(): Promise<AboutPageStory | null> {
+  return fetchStoryRaw<AboutPageStory>("about");
+}
+
+export function fetchDisclaimerStory(): Promise<DisclaimerPageStory | null> {
+  return fetchStoryRaw<DisclaimerPageStory>("disclaimer");
+}
+
+export function fetchGlobalConfig(): Promise<GlobalConfigStory | null> {
+  return fetchStoryRaw<GlobalConfigStory>("_global/config");
+}
+
+export function fetchLandingStory(
+  pillar: PillarKey
+): Promise<LandingPageStory | null> {
+  return fetchStoryRaw<LandingPageStory>(`${pillar}/index`);
+}
+
+export function fetchPostStory(
+  pillar: PillarKey,
+  slug: string
+): Promise<PostStory | null> {
+  return fetchStoryRaw<PostStory>(`${pillar}/${slug}`);
+}
+
+export async function fetchStoriesByPillar(
+  pillar: PillarKey
+): Promise<PostStory[]> {
+  const stories = await fetchStoriesRaw<PostStory>({
+    startsWith: `${pillar}/`,
+    contentType: "post",
+    perPage: 100,
+    sortBy: "content.published_at:desc",
+  });
+  return stories.filter((s) => !s.full_slug.endsWith("/index"));
+}
+
+export async function fetchAllPosts(): Promise<PostStory[]> {
+  const stories = await fetchStoriesRaw<PostStory>({
+    contentType: "post",
+    perPage: 100,
+    sortBy: "content.published_at:desc",
+  });
+  return stories;
+}
+
+export const storyblokCacheTags = {
+  all: STORYBLOK_CACHE_TAG,
+  story: storyTag,
+};
