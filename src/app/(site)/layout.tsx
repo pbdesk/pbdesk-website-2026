@@ -2,6 +2,7 @@ import { draftMode } from "next/headers";
 import type { ReactNode } from "react";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header/header";
+import StoryblokBridge from "@/components/storyblok/storyblok-bridge";
 import StoryblokProvider from "@/components/storyblok/storyblok-provider";
 import { globalConfigToLayoutData } from "@/lib/storyblok/global-config";
 import { loadGlobalConfig } from "@/lib/storyblok/landing";
@@ -37,7 +38,12 @@ export default async function SiteLayout({
   );
 
   if (isDraft) {
-    return <StoryblokProvider>{inner}</StoryblokProvider>;
+    return (
+      <StoryblokProvider>
+        <StoryblokBridge />
+        {inner}
+      </StoryblokProvider>
+    );
   }
   return inner;
 }
