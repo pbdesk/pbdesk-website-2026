@@ -9,6 +9,7 @@
     "lint": "biome check",
     "format": "biome format --write",
     "check": "ultracite check",
+    "full-check": "bun run clean && bun run fix && bun run build",
     "fix": "ultracite fix",
     "clean": "rm -rf node_modules .next .turbo && bun install",
     "prepare": "lefthook install",
