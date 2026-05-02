@@ -39,7 +39,7 @@ interface HeroProps {
 
 const DEFAULT_HEADLINE = (
   <>
-    <span className="text-[var(--fg-brand)]"> Learnig </span>
+    <span className="text-[var(--fg-brand)]"> Learning </span>
     endeavor forever...
     <br />
     <span style={{ fontSize: "clamp(20px, 3vw, 40px)" }}>
