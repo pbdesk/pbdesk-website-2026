@@ -12,6 +12,7 @@ import type {
   SocialLink,
 } from "@/components/layout/header/header";
 import type { GlobalConfigStory, NavItemBlok, SocialLinkBlok } from "./types";
+import { resolveLinkHref } from "./url";
 
 const VALID_SOCIAL_ICONS: readonly SocialIconKey[] = [
   "github",
@@ -29,7 +30,7 @@ function isSocialIconKey(value: string | undefined): value is SocialIconKey {
 function navItemFromBlok(blok: NavItemBlok): NavItem {
   return {
     label: blok.label,
-    href: blok.href?.url ?? blok.href?.cached_url ?? "#",
+    href: resolveLinkHref(blok.href),
     targetBlank: blok.target_blank ?? false,
   };
 }
@@ -40,7 +41,7 @@ function socialLinkFromBlok(blok: SocialLinkBlok): SocialLink | null {
   }
   return {
     label: blok.label,
-    href: blok.href?.url ?? blok.href?.cached_url ?? "#",
+    href: resolveLinkHref(blok.href),
     icon: blok.icon,
   };
 }

@@ -1,4 +1,5 @@
 import MyPillersComponent from "@/components/home/my-pillers";
+import { resolveLinkHref } from "@/lib/storyblok/url";
 import { editable } from "./editable";
 import type { MyPillersBlok } from "./types";
 
@@ -20,7 +21,7 @@ export default function MyPillers({ blok }: { blok: MyPillersBlok }) {
       short: p.label ?? p.title ?? "",
       body: p.body ?? "",
       cta: p.cta_label,
-      href: p.href?.url ?? p.href?.cached_url,
+      href: p.href ? resolveLinkHref(p.href) : undefined,
       color: p.color,
       angle: p.angle,
       n: p.index,

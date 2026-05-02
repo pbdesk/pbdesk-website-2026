@@ -12,7 +12,9 @@ export interface SbAssetField {
 }
 
 export interface SbLinkField {
+  anchor?: string;
   cached_url?: string;
+  email?: string;
   id?: string;
   linktype?: "url" | "story" | "asset" | "email";
   target?: "_blank" | "_self";

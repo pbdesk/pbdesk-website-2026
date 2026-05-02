@@ -1,5 +1,5 @@
 import PillarsComponent from "@/components/home/pillars";
-import { normalizeAssetUrl } from "@/lib/storyblok/url";
+import { normalizeAssetUrl, resolveLinkHref } from "@/lib/storyblok/url";
 import { editable } from "./editable";
 import type { PillarsBlok } from "./types";
 
@@ -9,7 +9,7 @@ export default function Pillars({ blok }: { blok: PillarsBlok }) {
     title: card.title,
     description: card.description ?? "",
     cta: card.cta_label ?? "",
-    href: card.href?.url ?? card.href?.cached_url ?? "#",
+    href: resolveLinkHref(card.href),
     gradient: card.gradient_class ?? "pillar-bits-gradient",
     avatar: normalizeAssetUrl(card.avatar?.filename) ?? "",
   }));
