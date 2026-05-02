@@ -2,47 +2,84 @@ import {
   IconBrandGithubFilled,
   IconBrandLinkedinFilled,
   IconBrandX,
+  type IconProps,
 } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { ComponentType } from "react";
 import { getCurrentYear } from "@/lib/utils";
 
-const explore = [
+export type SocialIconKey = "github" | "linkedin" | "x";
+
+export interface NavItem {
+  href: string;
+  label: string;
+  targetBlank?: boolean;
+}
+
+export interface SocialLink {
+  href: string;
+  icon: SocialIconKey;
+  label: string;
+}
+
+interface FooterProps {
+  brandTagline?: string;
+  exploreItems?: NavItem[];
+  footerAbout?: string;
+  moreItems?: NavItem[];
+  socials?: SocialLink[];
+  topicsItems?: NavItem[];
+}
+
+const DEFAULT_EXPLORE: NavItem[] = [
   { label: "Bits", href: "/bits" },
   { label: "Bites", href: "/bites" },
   { label: "Blog", href: "/blog" },
   { label: "About Me", href: "/about" },
 ];
 
-const topics = [
-  { label: "AI & ML", href: "/topics/ai" },
-  { label: "Web Dev", href: "/topics/web-dev" },
-  { label: "Tools", href: "/topics/tools" },
-  { label: "Wellness", href: "/topics/wellness" },
-];
-
-const more = [
-  { label: "RSS Feed", href: "/rss.xml" },
+const DEFAULT_TOPICS: NavItem[] = [
   { label: "Categories", href: "/categories" },
-  { label: "Archive", href: "/archive" },
-  { label: "Privacy", href: "/privacy" },
+  { label: "Labels", href: "/labels" },
 ];
 
-const socials = [
-  {
-    label: "GitHub",
-    href: "https://github.com/pinalbhatt",
-    icon: IconBrandGithubFilled,
-  },
+const DEFAULT_MORE: NavItem[] = [{ label: "Disclaimer", href: "/disclaimer" }];
+
+const DEFAULT_SOCIALS: SocialLink[] = [
+  { label: "GitHub", href: "https://github.com/pinalbhatt", icon: "github" },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/pinalbhatt",
-    icon: IconBrandLinkedinFilled,
+    icon: "linkedin",
   },
-  { label: "X", href: "https://x.com/pbdesk", icon: IconBrandX },
+  { label: "X", href: "https://x.com/pbdesk", icon: "x" },
 ];
 
-export default function Footer() {
+const SOCIAL_ICONS: Record<SocialIconKey, ComponentType<IconProps>> = {
+  github: IconBrandGithubFilled,
+  linkedin: IconBrandLinkedinFilled,
+  x: IconBrandX,
+};
+
+const DEFAULT_FOOTER_ABOUT =
+  "Bits & Bites — Developer's Life. Learning Endeavor Forever, from the desk of Pinal Bhatt.";
+
+export default function Footer({
+  exploreItems,
+  topicsItems,
+  moreItems,
+  socials,
+  brandTagline,
+  footerAbout,
+}: FooterProps = {}) {
+  const explore = exploreItems?.length ? exploreItems : DEFAULT_EXPLORE;
+  const topics = topicsItems?.length ? topicsItems : DEFAULT_TOPICS;
+  const more = moreItems?.length ? moreItems : DEFAULT_MORE;
+  const socialList = socials?.length ? socials : DEFAULT_SOCIALS;
+  const tagline = brandTagline ?? "from the desk of Pinal Bhatt";
+  const about = footerAbout ?? DEFAULT_FOOTER_ABOUT;
+
   return (
     <footer
       className="border-t"
@@ -69,9 +106,7 @@ export default function Footer() {
                   <span className="pb-mark">PB</span>
                   <span style={{ color: "var(--fg-primary)" }}>Desk</span>
                 </span>
-                <span className="brand-tagline">
-                  from the desk of Pinal Bhatt
-                </span>
+                <span className="brand-tagline">{tagline}</span>
               </div>
             </Link>
             <p
@@ -81,33 +116,33 @@ export default function Footer() {
                 lineHeight: 1.65,
               }}
             >
-              Bits &amp; Bites — Developer&apos;s Life. Learning Endeavor
-              Forever, from the desk of Pinal Bhatt.
+              {about}
             </p>
             <div className="flex items-center gap-1">
-              {socials.map(({ label, href, icon: Icon }) => (
-                <a
-                  className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  href={href}
-                  key={label}
-                  rel="noopener"
-                  style={{ color: "var(--fg-muted)" }}
-                  target="_blank"
-                >
-                  <Icon size={18} />
-                  <span className="sr-only">{label}</span>
-                </a>
-              ))}
+              {socialList.map(({ label, href, icon }) => {
+                const Icon = SOCIAL_ICONS[icon];
+                return (
+                  <a
+                    className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    href={href}
+                    key={label}
+                    rel="noopener"
+                    style={{ color: "var(--fg-muted)" }}
+                    target="_blank"
+                  >
+                    <Icon size={18} />
+                    <span className="sr-only">{label}</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
 
-          {/* Explore column */}
           <FooterColumn heading="Explore" items={explore} />
           <FooterColumn heading="Topics" items={topics} />
           <FooterColumn heading="More" items={more} />
         </div>
 
-        {/* Bottom bar */}
         <div
           className="mt-14 flex flex-col items-start justify-between gap-3 border-t pt-6 sm:flex-row sm:items-center"
           style={{ borderColor: "var(--border-subtle)" }}
@@ -133,7 +168,7 @@ function FooterColumn({
   items,
 }: {
   heading: string;
-  items: { label: string; href: string }[];
+  items: NavItem[];
 }) {
   return (
     <div>
@@ -150,6 +185,7 @@ function FooterColumn({
               className="text-sm transition-colors hover:underline"
               href={item.href}
               style={{ color: "var(--fg-secondary)" }}
+              target={item.targetBlank ? "_blank" : undefined}
             >
               {item.label}
             </Link>
