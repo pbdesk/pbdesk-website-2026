@@ -9,7 +9,7 @@ export function postStoryToPost(story: PostStory): PostWithSlug {
     title: c.title,
     description: c.excerpt,
     category: c.category,
-    tags: c.labels ?? [],
+    labels: c.labels ?? [],
     readTime: c.read_time,
     gradient: c.gradient,
     featured: c.featured ?? false,
@@ -36,5 +36,50 @@ export function deriveFilterChips(
   }
   return Array.from(counts.entries())
     .map(([label, count]) => ({ label, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+/**
+ * Group posts by category for the /categories index page.
+ */
+export function groupByCategory(
+  posts: PostWithSlug[]
+): { name: string; count: number; posts: PostWithSlug[] }[] {
+  const map = new Map<string, PostWithSlug[]>();
+  for (const post of posts) {
+    const list = map.get(post.category) ?? [];
+    list.push(post);
+    map.set(post.category, list);
+  }
+  return Array.from(map.entries())
+    .map(([name, postList]) => ({
+      name,
+      count: postList.length,
+      posts: postList,
+    }))
+    .sort((a, b) => b.count - a.count);
+}
+
+/**
+ * Group posts by label for the /labels index page. Each post can appear in
+ * multiple groups (one per label).
+ */
+export function groupByLabel(
+  posts: PostWithSlug[]
+): { name: string; count: number; posts: PostWithSlug[] }[] {
+  const map = new Map<string, PostWithSlug[]>();
+  for (const post of posts) {
+    for (const label of post.labels) {
+      const list = map.get(label) ?? [];
+      list.push(post);
+      map.set(label, list);
+    }
+  }
+  return Array.from(map.entries())
+    .map(([name, postList]) => ({
+      name,
+      count: postList.length,
+      posts: postList,
+    }))
     .sort((a, b) => b.count - a.count);
 }
