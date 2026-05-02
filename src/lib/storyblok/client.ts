@@ -1,4 +1,5 @@
 import { getStoryblokApi } from "@storyblok/react/rsc";
+import { unstable_noStore as noStore } from "next/cache";
 import { cookies, draftMode, headers } from "next/headers";
 import "./init";
 import { STORYBLOK_CACHE_TAG, storyTag } from "./tags";
@@ -49,6 +50,13 @@ async function fetchStoryRaw<TStory>(
   options: FetchStoryOptions = {}
 ): Promise<TStory | null> {
   const draft = await isDraft();
+  if (draft) {
+    // Opt this whole request out of Next's data cache so router.refresh()
+    // always pulls fresh draft content. Without this, the underlying fetch
+    // can be served from the Server Component data cache even though our
+    // route is dynamic.
+    noStore();
+  }
   const api = getStoryblokApi();
   try {
     const { data } = await api.get(`cdn/stories/${slug}`, {
@@ -60,6 +68,19 @@ async function fetchStoryRaw<TStory>(
         ? process.env.STORYBLOK_PREVIEW_TOKEN
         : process.env.STORYBLOK_ACCESS_TOKEN,
     });
+    if (draft) {
+      // Server log so we can correlate router.refresh() with what arrived.
+      // Visible in `bun run dev` terminal.
+      const story = data?.story as
+        | { content?: { _editable?: string } }
+        | undefined;
+      const preview = story?.content
+        ? JSON.stringify(story.content).slice(0, 120).replace(/\n/g, " ")
+        : "(no story)";
+      process.stdout.write(
+        `[sb-fetch draft] ${slug} cv=${Date.now()} → ${preview}…\n`
+      );
+    }
     return data?.story as TStory;
   } catch {
     return null;
