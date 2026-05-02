@@ -1,3 +1,4 @@
+import type { ISbStoryData } from "@storyblok/react";
 import type { Metadata } from "next";
 import About from "@/components/home/about";
 import CtaBanner from "@/components/home/cta-banner";
@@ -6,7 +7,7 @@ import MyPillers from "@/components/home/my-pillers";
 import MyRealm from "@/components/home/my-realm";
 import MyWellnessThreads from "@/components/home/my-wellness-threads";
 import Pillars from "@/components/home/pillars";
-import Page from "@/components/storyblok/blocks/page";
+import LivePage from "@/components/storyblok/live-page";
 import { Reveal } from "@/components/ui/reveal";
 import { pageMetadata } from "@/lib/seo";
 import { loadHomeStory } from "@/lib/storyblok/landing";
@@ -40,7 +41,9 @@ export default async function Home() {
   if (story?.content?.body?.length) {
     return (
       <main>
-        <Page body={story.content.body} />
+        <LivePage
+          story={story as unknown as ISbStoryData<Record<string, unknown>>}
+        />
       </main>
     );
   }

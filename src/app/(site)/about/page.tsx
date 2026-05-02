@@ -1,3 +1,4 @@
+import type { ISbStoryData } from "@storyblok/react";
 import {
   IconBrandGithubFilled,
   IconBrandLinkedinFilled,
@@ -7,7 +8,7 @@ import type { Metadata } from "next";
 import About from "@/components/home/about";
 import MyPillers from "@/components/home/my-pillers";
 import MyWellnessThreads from "@/components/home/my-wellness-threads";
-import Page from "@/components/storyblok/blocks/page";
+import LivePage from "@/components/storyblok/live-page";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Eyebrow } from "@/components/ui/eyebrow";
@@ -20,7 +21,6 @@ import {
   SOCIAL,
 } from "@/lib/seo";
 import { loadAboutStory } from "@/lib/storyblok/landing";
-import type { SbBlokBase } from "@/lib/storyblok/types";
 
 export const metadata: Metadata = pageMetadata({
   title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
@@ -277,7 +277,9 @@ export default async function AboutPage() {
         <Reveal>
           <AboutHero />
         </Reveal>
-        <Page body={story.content.body as SbBlokBase[]} />
+        <LivePage
+          story={story as unknown as ISbStoryData<Record<string, unknown>>}
+        />
       </main>
     );
   }

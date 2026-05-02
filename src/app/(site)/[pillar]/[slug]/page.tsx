@@ -1,14 +1,15 @@
+import type { ISbStoryData } from "@storyblok/react";
 import { IconArrowLeft, IconClock } from "@tabler/icons-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CtaBanner from "@/components/home/cta-banner";
-import PostBody from "@/components/storyblok/blocks/post-body";
+import LivePostBody from "@/components/storyblok/live-post-body";
 import { pillarAccents } from "@/lib/pillars";
 import { pageMetadata, SITE_AUTHOR, SITE_URL } from "@/lib/seo";
 import { loadAllPostSlugs, loadPostStory } from "@/lib/storyblok/landing";
-import type { PillarKey, SbBlokBase } from "@/lib/storyblok/types";
+import type { PillarKey } from "@/lib/storyblok/types";
 import { normalizeAssetUrl } from "@/lib/storyblok/url";
 
 const VALID_PILLARS: readonly PillarKey[] = ["bits", "bites", "blog"] as const;
@@ -222,7 +223,6 @@ export default async function PostPage({
   }
 
   const c = story.content;
-  const introBlocks = (c.intro_blocks ?? []) as SbBlokBase[];
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -249,7 +249,9 @@ export default async function PostPage({
 
       <section className="pb-12">
         <div className="wrapper max-w-3xl">
-          <PostBody body={c.body} introBlocks={introBlocks} />
+          <LivePostBody
+            story={story as unknown as ISbStoryData<Record<string, unknown>>}
+          />
         </div>
       </section>
 

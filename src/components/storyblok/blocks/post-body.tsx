@@ -1,9 +1,10 @@
 // Renders a post's intro_blocks (youtube_embed) followed by its richtext
-// body. Uses StoryblokServerRichText from @storyblok/react/rsc for the
-// richtext, with element-level styling against the project's design tokens
-// (Tailwind Typography is not in use).
+// body. Uses the main `@storyblok/react` StoryblokRichText (works in both
+// server and client trees) so the same block can be rendered server-side
+// for SEO/SSR and inside <LivePage> for live editor updates. Element-level
+// styling lives in the .post-prose class (Tailwind Typography not in use).
 
-import { StoryblokServerRichText } from "@storyblok/react/rsc";
+import { StoryblokRichText } from "@storyblok/react";
 import type { SbBlokBase } from "@/lib/storyblok/types";
 import YoutubeEmbed from "./youtube-embed";
 
@@ -38,8 +39,8 @@ export default function PostBody({ body, introBlocks }: PostBodyProps) {
         return null;
       })}
       {body ? (
-        <StoryblokServerRichText
-          doc={body as Parameters<typeof StoryblokServerRichText>[0]["doc"]}
+        <StoryblokRichText
+          doc={body as Parameters<typeof StoryblokRichText>[0]["doc"]}
         />
       ) : null}
     </article>
