@@ -96,6 +96,10 @@ export interface SbStoryInput {
   is_startpage?: boolean;
   name: string;
   parent_id?: number;
+  // Storyblok "Real path" override. When set, the visual editor appends this
+  // (instead of `full_slug`) to the preview URL. Use "/" for the home story
+  // so the editor loads `/` rather than `/home`.
+  path?: string;
   slug: string;
 }
 
