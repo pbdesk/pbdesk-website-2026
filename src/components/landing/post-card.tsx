@@ -1,3 +1,4 @@
+import { IconFolder } from "@tabler/icons-react";
 import Image from "next/image";
 import type { PillarKey } from "./section-banner";
 
@@ -43,10 +44,11 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
           />
           {/* Category chip */}
           <a
-            className="absolute top-4 left-4 rounded-full bg-black/40 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md transition-opacity hover:opacity-80"
+            className="absolute top-4 left-4 flex items-center gap-1 rounded-full bg-black/40 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md transition-opacity hover:opacity-80"
             href={`/categories/${encodeURIComponent(post.category)}`}
             style={{ letterSpacing: "0.05em" }}
           >
+            <IconFolder size={12} stroke={2} />
             {post.category}
           </a>
         </div>
@@ -56,10 +58,11 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
         >
           {/* Category chip */}
           <a
-            className="absolute top-4 left-4 rounded-full bg-white/15 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md transition-opacity hover:opacity-80"
+            className="absolute top-4 left-4 flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md transition-opacity hover:opacity-80"
             href={`/categories/${encodeURIComponent(post.category)}`}
             style={{ letterSpacing: "0.05em" }}
           >
+            <IconFolder size={12} stroke={2} />
             {post.category}
           </a>
           <h3

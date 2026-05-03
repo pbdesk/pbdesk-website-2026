@@ -128,7 +128,6 @@ export default async function BlogPage() {
       />
       <SectionLanding
         accentColor={pillarAccents.blog.primary}
-        cadence={data.cadence}
         description={data.description}
         pillar="blog"
         posts={posts}

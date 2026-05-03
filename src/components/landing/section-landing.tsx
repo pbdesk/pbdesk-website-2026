@@ -1,6 +1,6 @@
 import {
-  IconCalendarStats,
-  IconLayersIntersect,
+  IconFolders,
+  IconNews,
   IconSearch,
   IconTags,
 } from "@tabler/icons-react";
@@ -12,7 +12,6 @@ import SectionBanner, { type PillarKey } from "./section-banner";
 
 export interface SectionLandingProps {
   accentColor: string;
-  cadence: string;
   description: ReactNode;
   /**
    * Optional editorial override for the filter chip list.
@@ -40,11 +39,11 @@ export default function SectionLanding({
   accentColor,
   filters,
   posts,
-  cadence,
   pillar,
 }: SectionLandingProps) {
   const totalPosts = posts.length;
   const categoryCount = new Set(posts.map((p) => p.category)).size;
+  const labelCount = new Set(posts.flatMap((p) => p.labels)).size;
   const filterChips = filters ?? deriveFilters(posts);
 
   return (
@@ -82,22 +81,21 @@ export default function SectionLanding({
           <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10">
             <MetaItem
               accentColor={accentColor}
-              icon={<IconLayersIntersect size={18} stroke={1.75} />}
+              icon={<IconNews size={18} stroke={1.75} />}
               label="posts"
               value={String(totalPosts)}
             />
             <MetaItem
               accentColor={accentColor}
-              icon={<IconTags size={18} stroke={1.75} />}
+              icon={<IconFolders size={18} stroke={1.75} />}
               label="categories"
               value={String(categoryCount)}
             />
             <MetaItem
               accentColor={accentColor}
-              icon={<IconCalendarStats size={18} stroke={1.75} />}
-              label={cadence}
-              reverse
-              value="Updated"
+              icon={<IconTags size={18} stroke={1.75} />}
+              label="labels"
+              value={String(labelCount)}
             />
           </div>
         </div>
