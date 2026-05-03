@@ -68,41 +68,15 @@ export default function SectionLanding({
             {description}
           </p>
 
-          {/* Meta row */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10">
-            <MetaItem
-              accentColor={accentColor}
-              icon={<IconNews size={18} stroke={1.75} />}
-              label="posts"
-              value={String(totalPosts)}
-            />
-            <MetaItem
-              accentColor={accentColor}
-              icon={<IconFolders size={18} stroke={1.75} />}
-              label="categories"
-              value={String(categoryCount)}
-            />
-            <MetaItem
-              accentColor={accentColor}
-              icon={<IconTags size={18} stroke={1.75} />}
-              label="labels"
-              value={String(labelCount)}
-            />
-            <Link
-              className="inline-flex items-center gap-2 rounded-full border px-5 py-2 font-semibold text-sm transition-all hover:bg-[var(--accent)] hover:text-white"
-              href={`/${pillar}/all`}
-              style={
-                {
-                  "--accent": accentColor,
-                  borderColor: accentColor,
-                  color: accentColor,
-                } as React.CSSProperties
-              }
-            >
-              View all {title}
-              <IconArrowRight size={16} stroke={2} />
-            </Link>
-          </div>
+          <MetaRow
+            accentColor={accentColor}
+            categoryCount={categoryCount}
+            labelCount={labelCount}
+            pillar={pillar}
+            title={title}
+            totalPosts={totalPosts}
+            wrapperClassName="mt-12"
+          />
         </div>
       </section>
 
@@ -157,41 +131,75 @@ export default function SectionLanding({
 
       <PostGrid accentColor={accentColor} posts={posts} />
 
-      <div className="my-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10">
-        <MetaItem
-          accentColor={accentColor}
-          icon={<IconNews size={18} stroke={1.75} />}
-          label="posts"
-          value={String(totalPosts)}
-        />
-        <MetaItem
-          accentColor={accentColor}
-          icon={<IconFolders size={18} stroke={1.75} />}
-          label="categories"
-          value={String(categoryCount)}
-        />
-        <MetaItem
-          accentColor={accentColor}
-          icon={<IconTags size={18} stroke={1.75} />}
-          label="labels"
-          value={String(labelCount)}
-        />
-        <Link
-          className="inline-flex items-center gap-2 rounded-full border px-5 py-2 font-semibold text-sm transition-all hover:bg-[var(--accent)] hover:text-white"
-          href={`/${pillar}/all`}
-          style={
-            {
-              "--accent": accentColor,
-              borderColor: accentColor,
-              color: accentColor,
-            } as React.CSSProperties
-          }
-        >
-          View all {title}
-          <IconArrowRight size={16} stroke={2} />
-        </Link>
-      </div>
+      <MetaRow
+        accentColor={accentColor}
+        categoryCount={categoryCount}
+        labelCount={labelCount}
+        pillar={pillar}
+        title={title}
+        totalPosts={totalPosts}
+        wrapperClassName="my-12"
+      />
     </main>
+  );
+}
+
+function MetaRow({
+  accentColor,
+  categoryCount,
+  labelCount,
+  pillar,
+  title,
+  totalPosts,
+  wrapperClassName,
+}: {
+  accentColor: string;
+  categoryCount: number;
+  labelCount: number;
+  pillar: PillarKey;
+  title: string;
+  totalPosts: number;
+  wrapperClassName?: string;
+}) {
+  return (
+    <div
+      className={`flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10 ${wrapperClassName ?? ""}`}
+    >
+      <MetaItem
+        accentColor={accentColor}
+        href={`/${pillar}/all`}
+        icon={<IconNews size={18} stroke={1.75} />}
+        label="posts"
+        value={String(totalPosts)}
+      />
+      <MetaItem
+        accentColor={accentColor}
+        href="/categories"
+        icon={<IconFolders size={18} stroke={1.75} />}
+        label="categories"
+        value={String(categoryCount)}
+      />
+      <MetaItem
+        accentColor={accentColor}
+        href="/labels"
+        icon={<IconTags size={18} stroke={1.75} />}
+        label="labels"
+        value={String(labelCount)}
+      />
+      <Link
+        className="inline-flex items-center gap-2 rounded-full border px-5 py-2 font-semibold text-sm transition-all [color:var(--accent)] hover:bg-[var(--accent)] hover:text-white"
+        href={`/${pillar}/all`}
+        style={
+          {
+            "--accent": accentColor,
+            borderColor: accentColor,
+          } as React.CSSProperties
+        }
+      >
+        View all {title}
+        <IconArrowRight size={16} stroke={2} />
+      </Link>
+    </div>
   );
 }
 
@@ -200,15 +208,17 @@ function MetaItem({
   value,
   label,
   accentColor,
+  href,
   reverse,
 }: {
   icon: ReactNode;
   value: string;
   label: string;
   accentColor: string;
+  href?: string;
   reverse?: boolean;
 }) {
-  return (
+  const content = (
     <div className="flex items-center gap-3">
       <span
         className="flex h-9 w-9 items-center justify-center rounded-lg"
@@ -231,4 +241,14 @@ function MetaItem({
       </span>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link className="underline-offset-4 hover:underline" href={href}>
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }
