@@ -51,5 +51,6 @@
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "cSpell.words": ["lede", "Pillers", "storyblok", "tabler"]
+  "cSpell.words": ["lede", "Pillers", "storyblok", "tabler"],
+  "liveServer.settings.port": 5501
 }

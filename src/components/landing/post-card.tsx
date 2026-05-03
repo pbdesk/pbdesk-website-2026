@@ -1,4 +1,3 @@
-import { IconClock } from "@tabler/icons-react";
 import type { PillarKey } from "./section-banner";
 
 export interface Post {
@@ -35,12 +34,13 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
         className={`${post.gradient} relative flex items-center justify-center px-6 py-12`}
       >
         {/* Category chip in top left */}
-        <span
-          className="absolute top-4 left-4 rounded-full bg-white/15 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md"
+        <a
+          className="absolute top-4 left-4 rounded-full bg-white/15 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md transition-opacity hover:opacity-80"
+          href={`/categories/${encodeURIComponent(post.category)}`}
           style={{ letterSpacing: "0.05em" }}
         >
           {post.category}
-        </span>
+        </a>
         <h3
           className="text-center font-bold text-white text-xl sm:text-2xl"
           style={{ lineHeight: 1.2, letterSpacing: "-0.01em" }}
@@ -51,17 +51,21 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
 
       {/* Body */}
       <div className="p-6">
-        <div className="mb-3 flex items-center gap-2 text-xs">
-          <span
-            className="font-semibold uppercase"
-            style={{ color: accentColor, letterSpacing: "0.05em" }}
-          >
-            {post.category}
-          </span>
-          <span className="text-[var(--fg-muted)]">·</span>
-          <span className="text-[var(--fg-muted)]">
-            {post.labels.map((t) => `#${t}`).join(" ")}
-          </span>
+        <div className="mb-3 flex flex-wrap items-center gap-1.5">
+          {post.labels.map((label) => (
+            <a
+              className="rounded-full px-2.5 py-0.5 font-semibold text-xs transition-opacity hover:opacity-75"
+              href={`/labels/${encodeURIComponent(label)}`}
+              key={label}
+              style={{
+                backgroundColor: `color-mix(in srgb, ${accentColor} 12%, transparent)`,
+                color: accentColor,
+                letterSpacing: "0.03em",
+              }}
+            >
+              #{label}
+            </a>
+          ))}
         </div>
         <h4
           className="mb-3 font-bold text-[var(--fg-primary)] text-lg"
@@ -83,10 +87,10 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
           >
             Read More <span aria-hidden="true">→</span>
           </a>
-          <span className="inline-flex items-center gap-1 text-[var(--fg-muted)] text-xs">
+          {/* <span className="inline-flex items-center gap-1 text-[var(--fg-muted)] text-xs">
             <IconClock size={12} stroke={2} />
             {post.readTime}
-          </span>
+          </span> */}
         </div>
       </div>
     </article>
