@@ -70,27 +70,30 @@ function PostHeader({
 
   return (
     <header className="relative">
-      {/* Banner — gradient or cover image */}
-      {cover ? (
-        <div className="relative aspect-[16/7] w-full overflow-hidden">
-          <Image
-            alt={c.cover_image?.alt ?? c.title}
-            className="object-cover"
-            fill
-            priority
-            sizes="100vw"
-            src={cover}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/20 to-black/70" />
-        </div>
-      ) : (
-        <div
-          aria-hidden="true"
-          className={`${c.gradient ?? "post-grad-indigo"} h-72 w-full sm:h-96`}
-        />
-      )}
+      {/* Full-width gradient with optional cover image on top */}
+      <div
+        aria-hidden="true"
+        className={`${c.gradient ?? "post-grad-indigo"} w-full`}
+      >
+        {cover ? (
+          <div className="wrapper px-4 pt-8 pb-20 sm:px-6 sm:pt-10 sm:pb-28">
+            <div className="relative aspect-[16/7] w-full overflow-hidden rounded-2xl shadow-2xl">
+              <Image
+                alt={c.cover_image?.alt ?? c.title}
+                className="object-cover"
+                fill
+                priority
+                sizes="100vw"
+                src={cover}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="h-56 sm:h-72" />
+        )}
+      </div>
 
-      <div className="wrapper relative -mt-24 pb-10 sm:-mt-32">
+      <div className="wrapper relative -mt-16 pb-10 sm:-mt-20">
         <div className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-7 shadow-[var(--shadow-lg)] sm:p-10">
           <nav className="mb-5 flex items-center justify-start gap-2 text-[var(--fg-muted)] text-sm">
             <Link
@@ -110,12 +113,13 @@ function PostHeader({
             {/* <span>/</span>
             <span className="text-[var(--fg-primary)]">{c.title}</span> */}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <span
-              className="inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase"
+            <Link
+              className="inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase transition-opacity hover:opacity-90"
+              href={`/categories/${encodeURIComponent(c.category)}`}
               style={{ background: accent, letterSpacing: "0.05em" }}
             >
               {c.category}
-            </span>
+            </Link>
           </nav>
 
           {/* <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">

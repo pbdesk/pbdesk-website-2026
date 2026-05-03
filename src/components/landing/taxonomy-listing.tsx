@@ -66,7 +66,10 @@ export default function TaxonomyListing({
             }}
           >
             {kind === "category" ? "Category" : "Label"}{" "}
-            <span style={{ color: accent }}>#{term}</span>
+            <span style={{ color: accent }}>
+              {kind === "label" ? "#" : ""}
+              {term}
+            </span>
           </h1>
 
           <p
