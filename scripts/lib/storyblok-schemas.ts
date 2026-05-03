@@ -225,6 +225,79 @@ const nestableBlocks: SbComponent[] = [
     };
   })(),
 
+  // ----- About Hero -----
+  (() => {
+    reset();
+    return {
+      name: "about_hero",
+      display_name: "About Hero",
+      is_root: false,
+      is_nestable: true,
+      icon: "user",
+      preview_field: "title_name",
+      schema: f({
+        chip_label: field({ type: "text" }),
+        title_lead: field({
+          type: "text",
+          description: 'Text before the highlighted name (e.g. "Hi, I\'m ").',
+        }),
+        title_name: field({
+          type: "text",
+          description: "Highlighted name shown in brand color, italic.",
+        }),
+        title_subheadline: field({
+          type: "textarea",
+          description:
+            "Smaller secondary line rendered inside the H1. Newlines become line breaks.",
+        }),
+        description: field({ type: "textarea" }),
+        primary_cta_label: field({ type: "text" }),
+        primary_cta_href: field({ type: "multilink" }),
+        secondary_cta_label: field({ type: "text" }),
+        secondary_cta_href: field({
+          type: "multilink",
+          description:
+            'Supports anchors like "#social-links" via a URL link type.',
+        }),
+        show_social: field({ type: "boolean", default_value: true }),
+      }),
+    };
+  })(),
+
+  // ----- About Story -----
+  (() => {
+    reset();
+    return {
+      name: "about_story",
+      display_name: "About Story",
+      is_root: false,
+      is_nestable: true,
+      icon: "block-paragraph",
+      preview_field: "heading",
+      schema: f({
+        eyebrow: field({ type: "text" }),
+        heading: field({ type: "text" }),
+        column_left: field({
+          type: "richtext",
+          description: "Left column paragraphs.",
+        }),
+        column_right: field({
+          type: "richtext",
+          description: "Right column paragraphs.",
+        }),
+        quote_text: field({ type: "text" }),
+        quote_link: field({
+          type: "multilink",
+          description: "Optional link wrapping the quote text.",
+        }),
+        quote_attribution: field({
+          type: "text",
+          description: 'Caption under the quote (e.g. "— That\'s why I say").',
+        }),
+      }),
+    };
+  })(),
+
   // ----- My Realm -----
   (() => {
     reset();
@@ -795,7 +868,9 @@ const contentTypes: SbComponent[] = [
           type: "bloks",
           restrict_components: true,
           component_whitelist: [
+            "about_hero",
             "about_section",
+            "about_story",
             "my_pillers",
             "my_wellness_threads",
             "richtext_section",

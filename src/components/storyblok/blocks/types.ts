@@ -59,6 +59,31 @@ export interface AboutSectionBlok extends SbBlokBase {
   show_social?: boolean;
 }
 
+export interface AboutHeroBlok extends SbBlokBase {
+  chip_label?: string;
+  component: "about_hero";
+  description?: string;
+  primary_cta_href?: SbLinkField;
+  primary_cta_label?: string;
+  secondary_cta_href?: SbLinkField;
+  secondary_cta_label?: string;
+  show_social?: boolean;
+  title_lead?: string;
+  title_name?: string;
+  title_subheadline?: string;
+}
+
+export interface AboutStoryBlok extends SbBlokBase {
+  column_left?: RichtextDoc;
+  column_right?: RichtextDoc;
+  component: "about_story";
+  eyebrow?: string;
+  heading?: string;
+  quote_attribution?: string;
+  quote_link?: SbLinkField;
+  quote_text?: string;
+}
+
 // ---- MyRealm + sub-blocks -------------------------------------------------
 
 export interface RealmCardBlok extends SbBlokBase {

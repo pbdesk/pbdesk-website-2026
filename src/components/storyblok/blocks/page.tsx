@@ -11,7 +11,9 @@
 //     it on every editor keystroke for true WYSIWYG live edit.
 
 import type { SbBlokBase } from "@/lib/storyblok/types";
+import AboutHero from "./about-hero";
 import AboutSection from "./about-section";
+import AboutStory from "./about-story";
 import CtaBanner from "./cta-banner";
 import CuratedPostSetBlock from "./curated-post-set";
 import Hero from "./hero";
@@ -21,7 +23,9 @@ import MyWellnessThreads from "./my-wellness-threads";
 import Pillars from "./pillars";
 import RichtextSection from "./richtext-section";
 import type {
+  AboutHeroBlok,
   AboutSectionBlok,
+  AboutStoryBlok,
   CtaBannerBlok,
   CuratedPostSetBlok,
   HeroBlok,
@@ -48,10 +52,14 @@ export default function Page({ body }: PageProps) {
             return <Hero blok={blok as HeroBlok} key={blok._uid} />;
           case "pillars":
             return <Pillars blok={blok as PillarsBlok} key={blok._uid} />;
+          case "about_hero":
+            return <AboutHero blok={blok as AboutHeroBlok} key={blok._uid} />;
           case "about_section":
             return (
               <AboutSection blok={blok as AboutSectionBlok} key={blok._uid} />
             );
+          case "about_story":
+            return <AboutStory blok={blok as AboutStoryBlok} key={blok._uid} />;
           case "my_realm":
             return <MyRealm blok={blok as MyRealmBlok} key={blok._uid} />;
           case "my_wellness_threads":

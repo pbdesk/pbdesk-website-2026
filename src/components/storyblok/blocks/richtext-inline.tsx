@@ -131,6 +131,38 @@ export function richtextToInline(input?: TypedRichtextDoc): ReactNode {
   return <>{nodes}</>;
 }
 
+/**
+ * Render a richtext doc as a list of ReactNodes — one per paragraph node.
+ * Marks (bold/italic/code/link) and hard breaks within each paragraph are
+ * preserved. Non-paragraph blocks (lists, headings) are unwrapped inline.
+ * Useful when the caller wants to wrap each paragraph in its own styled
+ * container (e.g. AboutStory's two-column layout).
+ */
+export function richtextToParagraphs(input?: TypedRichtextDoc): ReactNode[] {
+  const doc = asLooseDoc(input);
+  if (!doc?.content?.length) {
+    return [];
+  }
+  const out: ReactNode[] = [];
+  let counter = 0;
+  let paragraphIndex = 0;
+  for (const block of doc.content) {
+    if (block.type === "paragraph") {
+      const inline: ReactNode[] = [];
+      for (const c of block.content ?? []) {
+        counter += 1;
+        inline.push(renderNode(c, counter));
+      }
+      paragraphIndex += 1;
+      out.push(<Fragment key={`p-${paragraphIndex}`}>{inline}</Fragment>);
+    } else {
+      counter += 1;
+      out.push(renderNode(block, counter));
+    }
+  }
+  return out;
+}
+
 /** Extract the first paragraph as plain text — useful for `string` props. */
 export function richtextToString(input?: TypedRichtextDoc): string | undefined {
   const doc = asLooseDoc(input);
