@@ -1,0 +1,1 @@
+- extract out breadcrumbs into its own component and reuse it on all pages wherever needed.
