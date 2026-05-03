@@ -1,3 +1,4 @@
+import type { ISbStoryData } from "@storyblok/react";
 import {
   IconArrowRight,
   IconFolders,
@@ -6,7 +7,9 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import LivePage from "@/components/storyblok/live-page";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import type { LandingPageStory } from "@/lib/storyblok/types";
 import type { Post } from "./post-card";
 import PostGrid from "./post-grid";
 import SectionBanner, { type PillarKey } from "./section-banner";
@@ -16,6 +19,8 @@ export interface SectionLandingProps {
   description: ReactNode;
   pillar: PillarKey;
   posts: Post[];
+  /** Storyblok landing story; its `body` blocks render below the post grid. */
+  story?: LandingPageStory | null;
   title: string;
 }
 
@@ -25,10 +30,12 @@ export default function SectionLanding({
   accentColor,
   posts,
   pillar,
+  story,
 }: SectionLandingProps) {
   const totalPosts = posts.length;
   const categoryCount = new Set(posts.map((p) => p.category)).size;
   const labelCount = new Set(posts.flatMap((p) => p.labels)).size;
+  const hasBody = (story?.content?.body?.length ?? 0) > 0;
 
   return (
     <main>
@@ -119,6 +126,12 @@ export default function SectionLanding({
       </section>
 
       <PostGrid accentColor={accentColor} posts={posts} />
+
+      {hasBody && story ? (
+        <LivePage
+          story={story as unknown as ISbStoryData<Record<string, unknown>>}
+        />
+      ) : null}
 
       <MetaRow
         accentColor={accentColor}

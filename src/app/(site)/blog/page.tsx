@@ -131,6 +131,7 @@ export default async function BlogPage() {
         description={data.description}
         pillar="blog"
         posts={posts}
+        story={data.story}
         title="Blog"
       />
     </>

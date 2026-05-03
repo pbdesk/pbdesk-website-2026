@@ -446,6 +446,40 @@ const nestableBlocks: SbComponent[] = [
     };
   })(),
 
+  // ----- Curated Post Set -----
+  // Editor picks one Pillar (landing_page) and exactly three Posts; the
+  // renderer surfaces them as four PostCard tiles under a shared eyebrow
+  // and title. Designed for cross-promotion sections on home/landing pages.
+  (() => {
+    reset();
+    return {
+      name: "curated_post_set",
+      display_name: "Curated Post Set",
+      is_root: false,
+      is_nestable: true,
+      icon: "block-grid",
+      preview_field: "title",
+      schema: f({
+        eyebrow: field({ type: "text" }),
+        title: field({ type: "text", required: true }),
+        pillar: field({
+          type: "option",
+          source: "internal_stories",
+          filter_content_type: ["landing_page"],
+          required: true,
+        }),
+        posts: field({
+          type: "options",
+          source: "internal_stories",
+          filter_content_type: ["post"],
+          minimum: 3,
+          maximum: 3,
+          required: true,
+        }),
+      }),
+    };
+  })(),
+
   // ----- Featured Post Block -----
   (() => {
     reset();
@@ -623,6 +657,7 @@ const contentTypes: SbComponent[] = [
             "my_realm",
             "my_wellness_threads",
             "my_pillers",
+            "curated_post_set",
             "cta_banner",
             "richtext_section",
           ],
@@ -665,6 +700,7 @@ const contentTypes: SbComponent[] = [
             "richtext_section",
             "featured_post_block",
             "post_grid_block",
+            "curated_post_set",
             "cta_banner",
           ],
         }),

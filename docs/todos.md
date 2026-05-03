@@ -1,0 +1,1 @@
+PostCard - Clicking on the image should also link to the post. 

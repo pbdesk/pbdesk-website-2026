@@ -18,7 +18,10 @@
 import type { ISbStoryData } from "@storyblok/react";
 import { useStoryblokState } from "@storyblok/react";
 import Page from "@/components/storyblok/blocks/page";
+import { STORY_RELATION_PATHS } from "@/lib/storyblok/relations";
 import type { SbBlokBase } from "@/lib/storyblok/types";
+
+const BRIDGE_OPTIONS = { resolveRelations: STORY_RELATION_PATHS };
 
 interface LivePageProps {
   /** Top-level key in `story.content` that holds the blocks array. Defaults to "body". */
@@ -28,7 +31,7 @@ interface LivePageProps {
 }
 
 export default function LivePage({ story, fieldName = "body" }: LivePageProps) {
-  const liveStory = useStoryblokState(story);
+  const liveStory = useStoryblokState(story, BRIDGE_OPTIONS);
   const source = liveStory ?? story;
   const body = source.content?.[fieldName] as SbBlokBase[] | undefined;
   return <Page body={body} />;

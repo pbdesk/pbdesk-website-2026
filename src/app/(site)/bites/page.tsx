@@ -138,6 +138,7 @@ export default async function BitesPage() {
         description={data.description}
         pillar="bites"
         posts={posts}
+        story={data.story}
         title="Bites"
       />
     </>

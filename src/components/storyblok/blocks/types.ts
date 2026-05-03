@@ -1,6 +1,8 @@
 // Shared block types for the Storyblok wrapper components.
 
 import type {
+  LandingPageStory,
+  PostStory,
   SbAssetField,
   SbBlokBase,
   SbLinkField,
@@ -135,6 +137,20 @@ export interface CtaBannerBlok extends SbBlokBase {
   placeholder?: string;
   submit_action?: SbLinkField;
   submit_label?: string;
+}
+
+// ---- Curated Post Set ----------------------------------------------------
+
+// `pillar` and `posts` hold story UUIDs from Storyblok. With
+// `resolve_relations` (configured in the storyblok client + bridge) they
+// arrive pre-inflated as full story objects. The block wrapper accepts
+// either shape and unwraps stories before rendering.
+export interface CuratedPostSetBlok extends SbBlokBase {
+  component: "curated_post_set";
+  eyebrow?: string;
+  pillar?: LandingPageStory | string;
+  posts?: (PostStory | string)[];
+  title: string;
 }
 
 // ---- Richtext Section ----------------------------------------------------

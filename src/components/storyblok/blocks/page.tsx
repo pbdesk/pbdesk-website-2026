@@ -13,6 +13,7 @@
 import type { SbBlokBase } from "@/lib/storyblok/types";
 import AboutSection from "./about-section";
 import CtaBanner from "./cta-banner";
+import CuratedPostSetBlock from "./curated-post-set";
 import Hero from "./hero";
 import MyPillers from "./my-pillers";
 import MyRealm from "./my-realm";
@@ -22,6 +23,7 @@ import RichtextSection from "./richtext-section";
 import type {
   AboutSectionBlok,
   CtaBannerBlok,
+  CuratedPostSetBlok,
   HeroBlok,
   MyPillersBlok,
   MyRealmBlok,
@@ -61,6 +63,13 @@ export default function Page({ body }: PageProps) {
             );
           case "my_pillers":
             return <MyPillers blok={blok as MyPillersBlok} key={blok._uid} />;
+          case "curated_post_set":
+            return (
+              <CuratedPostSetBlock
+                blok={blok as CuratedPostSetBlok}
+                key={blok._uid}
+              />
+            );
           case "cta_banner":
             return <CtaBanner blok={blok as CtaBannerBlok} key={blok._uid} />;
           case "richtext_section":
