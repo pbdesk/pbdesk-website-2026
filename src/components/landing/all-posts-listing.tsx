@@ -41,7 +41,7 @@ function countOccurrences(values: string[]): ChipCount[] {
 
 export default function AllPostsListing({
   accentColor,
-  description,
+  // description,
   pillar,
   posts,
   title,
@@ -120,7 +120,16 @@ export default function AllPostsListing({
             className="mx-auto max-w-3xl text-center text-[var(--fg-secondary)] text-base sm:text-lg"
             style={{ lineHeight: 1.7 }}
           >
-            {description}
+            {/* {description} */}
+            Filter by{" "}
+            <b>
+              <em>Category</em>
+            </b>{" "}
+            or{" "}
+            <b>
+              <em>Label</em>
+            </b>{" "}
+            to narrow the list.
           </p>
         </div>
       </section>
