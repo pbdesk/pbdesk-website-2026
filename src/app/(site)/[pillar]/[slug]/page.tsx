@@ -1,5 +1,10 @@
 import type { ISbStoryData } from "@storyblok/react";
-import { IconArrowLeft, IconClock } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconCalendarMonth,
+  IconHome,
+  IconTags,
+} from "@tabler/icons-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -92,7 +97,7 @@ function PostHeader({
               className="text-[var(--fg-secondary)] hover:underline"
               href="/"
             >
-              PBDesk
+              <IconHome stroke={1.5} />
             </Link>
             <span>/</span>
             <Link
@@ -102,11 +107,18 @@ function PostHeader({
               {pillar.charAt(0).toUpperCase()}
               {pillar.slice(1)}
             </Link>
-            <span>/</span>
-            <span className="text-[var(--fg-primary)]">{c.title}</span>
+            {/* <span>/</span>
+            <span className="text-[var(--fg-primary)]">{c.title}</span> */}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span
+              className="inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase"
+              style={{ background: accent, letterSpacing: "0.05em" }}
+            >
+              {c.category}
+            </span>
           </nav>
 
-          <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
+          {/* <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
             <span
               className="inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase"
               style={{ background: accent, letterSpacing: "0.05em" }}
@@ -122,7 +134,7 @@ function PostHeader({
                 #{label}
               </Link>
             ))}
-          </div>
+          </div> */}
 
           <h1
             className="mb-4 font-bold text-[var(--fg-primary)]"
@@ -144,10 +156,11 @@ function PostHeader({
           </p>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[var(--fg-muted)] text-sm">
-            <span>{SITE_AUTHOR}</span>
+            {/* <span>{SITE_AUTHOR}</span> */}
             {c.published_at ? (
               <>
-                <span aria-hidden="true">·</span>
+                {/* <span aria-hidden="true">·</span> */}
+                <IconCalendarMonth stroke={1.5} />
                 <time dateTime={c.published_at}>
                   {new Date(c.published_at).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -157,7 +170,29 @@ function PostHeader({
                 </time>
               </>
             ) : null}
-            {c.read_time ? (
+            <IconTags stroke={2} />
+            {c.labels?.map((label) => (
+              <Link
+                className="rounded-full bg-[var(--bg-subtle)] px-3 py-1 text-[var(--fg-secondary)] hover:underline"
+                href={`/labels/${encodeURIComponent(label)}`}
+                key={label}
+              >
+                #{label}
+              </Link>
+            ))}
+            {/* {c.updated_at ? (
+              <>
+                <span aria-hidden="true">·</span>
+                <time dateTime={c.updated_at}>
+                  {new Date(c.updated_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              </>
+            ) : null} */}
+            {/* {c.read_time ? (
               <>
                 <span aria-hidden="true">·</span>
                 <span className="inline-flex items-center gap-1">
@@ -165,7 +200,7 @@ function PostHeader({
                   {c.read_time}
                 </span>
               </>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>
