@@ -13,10 +13,14 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function CategoriesIndexPage() {
   const posts = await loadAllPosts();
-  const groups = groupByCategory(posts).map(({ name, count }) => ({
-    name,
-    count,
-  }));
+  const groups = groupByCategory(posts).map(
+    ({ name, count, pillars, pillarCounts }) => ({
+      name,
+      count,
+      pillars,
+      pillarCounts,
+    })
+  );
 
   return (
     <TaxonomyIndex
