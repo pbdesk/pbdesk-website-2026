@@ -1,9 +1,4 @@
 import type { ISbStoryData } from "@storyblok/react";
-import {
-  IconBrandGithubFilled,
-  IconBrandLinkedinFilled,
-  IconBrandX,
-} from "@tabler/icons-react";
 import type { Metadata } from "next";
 import About from "@/components/home/about";
 import MyPillers from "@/components/home/my-pillers";
@@ -13,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/ui/reveal";
+import { SocialIcons } from "@/components/ui/social-icons";
 import {
   jsonLdString,
   pageMetadata,
@@ -53,27 +49,6 @@ const personJsonLd = {
     "Software engineer, AI tinkerer, and wellness enthusiast writing at PBDesk.",
   sameAs: [SOCIAL.github, SOCIAL.linkedin, SOCIAL.x],
 };
-
-const socials = [
-  {
-    label: "GitHub",
-    href: "https://github.com/pinalbhatt",
-    icon: IconBrandGithubFilled,
-    hoverClass: "hover:text-[#181717] dark:hover:text-white",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/pinalbhatt",
-    icon: IconBrandLinkedinFilled,
-    hoverClass: "hover:text-[#0A66C2]",
-  },
-  {
-    label: "X",
-    href: "https://x.com/pbdesk",
-    icon: IconBrandX,
-    hoverClass: "hover:text-black dark:hover:text-white",
-  },
-];
 
 function AboutStory() {
   return (
@@ -239,20 +214,7 @@ function AboutHero() {
             </Button>
           </div>
 
-          <div className="flex items-center justify-center gap-2">
-            {socials.map(({ label, href, icon: Icon, hoverClass }) => (
-              <a
-                className={`flex h-10 w-10 items-center justify-center rounded-full text-[var(--fg-muted)] transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 ${hoverClass}`}
-                href={href}
-                key={label}
-                rel="noopener"
-                target="_blank"
-              >
-                <Icon size={18} />
-                <span className="sr-only">{label}</span>
-              </a>
-            ))}
-          </div>
+          <SocialIcons className="justify-center" />
         </div>
       </div>
     </section>
