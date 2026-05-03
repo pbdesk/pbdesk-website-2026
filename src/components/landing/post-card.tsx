@@ -42,9 +42,13 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
             sizes="(max-width: 768px) 100vw, 50vw"
             src={post.coverImage}
           />
+          {/* Post link overlay */}
+          <a className="absolute inset-0" href={postHref(post)}>
+            <span className="sr-only">Read {post.title}</span>
+          </a>
           {/* Category chip */}
           <a
-            className="absolute top-4 left-4 flex items-center gap-1 rounded-full bg-black/40 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md transition-opacity hover:opacity-80"
+            className="absolute top-4 left-4 z-10 flex items-center gap-1 rounded-full bg-black/40 px-3 py-1 font-semibold text-white text-xs ring-1 ring-white/10 backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-black/60 hover:ring-white/40"
             href={`/categories/${encodeURIComponent(post.category)}`}
             style={{ letterSpacing: "0.05em" }}
           >
@@ -56,9 +60,13 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
         <div
           className={`${post.gradient} relative flex items-center justify-center px-6 py-12`}
         >
+          {/* Post link overlay */}
+          <a className="absolute inset-0" href={postHref(post)}>
+            <span className="sr-only">Read {post.title}</span>
+          </a>
           {/* Category chip */}
           <a
-            className="absolute top-4 left-4 flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md transition-opacity hover:opacity-80"
+            className="absolute top-4 left-4 z-10 flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 font-semibold text-white text-xs ring-1 ring-white/20 backdrop-blur-md transition-all hover:-translate-y-0.5 hover:bg-white/30 hover:ring-white/50"
             href={`/categories/${encodeURIComponent(post.category)}`}
             style={{ letterSpacing: "0.05em" }}
           >

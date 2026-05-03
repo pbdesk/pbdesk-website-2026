@@ -19,6 +19,9 @@ export default function FeaturedPost({ post, accentColor }: FeaturedPostProps) {
       <div
         className={`${post.gradient} relative flex flex-1 items-center justify-center px-8 py-24 sm:py-32`}
       >
+        <a className="absolute inset-0" href={postHref(post)}>
+          <span className="sr-only">Read {post.title}</span>
+        </a>
         <span
           className="absolute top-5 left-5 rounded-full bg-white/15 px-3 py-1 font-semibold text-white text-xs backdrop-blur-md"
           style={{ letterSpacing: "0.05em" }}
