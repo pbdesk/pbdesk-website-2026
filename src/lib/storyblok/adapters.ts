@@ -3,12 +3,17 @@ import type { PillarKey, PostStory } from "./types";
 
 export type PostWithSlug = Post & { slug: string; pillar: PillarKey };
 
+const PROTOCOL_RELATIVE = /^\/\//;
+
 export function postStoryToPost(story: PostStory): PostWithSlug {
   const c = story.content;
   return {
     title: c.title,
     description: c.excerpt,
     category: c.category,
+    coverImage: c.cover_image?.filename
+      ? c.cover_image.filename.replace(PROTOCOL_RELATIVE, "https://")
+      : undefined,
     labels: c.labels ?? [],
     readTime: c.read_time,
     gradient: c.gradient,
