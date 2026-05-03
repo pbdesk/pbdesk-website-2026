@@ -1,11 +1,11 @@
 import {
+  IconArrowRight,
   IconFolders,
   IconNews,
-  IconSearch,
   IconTags,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
-import CtaBanner from "@/components/home/cta-banner";
 import type { Post } from "./post-card";
 import PostGrid from "./post-grid";
 import SectionBanner, { type PillarKey } from "./section-banner";
@@ -13,38 +13,21 @@ import SectionBanner, { type PillarKey } from "./section-banner";
 export interface SectionLandingProps {
   accentColor: string;
   description: ReactNode;
-  /**
-   * Optional editorial override for the filter chip list.
-   * When omitted, chips are auto-derived from `posts`.
-   */
-  filters?: { label: string; count: number }[];
   pillar: PillarKey;
   posts: Post[];
   title: string;
-}
-
-function deriveFilters(posts: Post[]): { label: string; count: number }[] {
-  const counts = new Map<string, number>();
-  for (const post of posts) {
-    counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
-  }
-  return Array.from(counts.entries())
-    .map(([label, count]) => ({ label, count }))
-    .sort((a, b) => b.count - a.count);
 }
 
 export default function SectionLanding({
   title,
   description,
   accentColor,
-  filters,
   posts,
   pillar,
 }: SectionLandingProps) {
   const totalPosts = posts.length;
   const categoryCount = new Set(posts.map((p) => p.category)).size;
   const labelCount = new Set(posts.flatMap((p) => p.labels)).size;
-  const filterChips = filters ?? deriveFilters(posts);
 
   return (
     <main>
@@ -97,6 +80,20 @@ export default function SectionLanding({
               label="labels"
               value={String(labelCount)}
             />
+            <Link
+              className="inline-flex items-center gap-2 rounded-full border px-5 py-2 font-semibold text-sm transition-all hover:bg-[var(--accent)] hover:text-white"
+              href={`/${pillar}/all`}
+              style={
+                {
+                  "--accent": accentColor,
+                  borderColor: accentColor,
+                  color: accentColor,
+                } as React.CSSProperties
+              }
+            >
+              View all {title}
+              <IconArrowRight size={16} stroke={2} />
+            </Link>
           </div>
         </div>
       </section>
@@ -104,8 +101,20 @@ export default function SectionLanding({
       {/* Filters + search */}
       <section className="pb-10">
         <div className="wrapper">
-          <div className="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
+            <h3
+              className="mb-8 text-center font-bold text-[var(--fg-primary)]"
+              style={{
+                fontSize: "clamp(40px, 4vw, 60px)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.03em",
+              }}
+            >
+              Featured <span style={{ color: accentColor }}>{title}</span>
+            </h3>
+            <hr />
+
+            {/* <div className="flex flex-wrap items-center gap-2">
               <FilterChip
                 accentColor={accentColor}
                 active
@@ -133,14 +142,47 @@ export default function SectionLanding({
                 placeholder="Search posts..."
                 type="search"
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
 
       <PostGrid accentColor={accentColor} posts={posts} />
 
-      <CtaBanner />
+      <div className="my-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10">
+        <MetaItem
+          accentColor={accentColor}
+          icon={<IconNews size={18} stroke={1.75} />}
+          label="posts"
+          value={String(totalPosts)}
+        />
+        <MetaItem
+          accentColor={accentColor}
+          icon={<IconFolders size={18} stroke={1.75} />}
+          label="categories"
+          value={String(categoryCount)}
+        />
+        <MetaItem
+          accentColor={accentColor}
+          icon={<IconTags size={18} stroke={1.75} />}
+          label="labels"
+          value={String(labelCount)}
+        />
+        <Link
+          className="inline-flex items-center gap-2 rounded-full border px-5 py-2 font-semibold text-sm transition-all hover:bg-[var(--accent)] hover:text-white"
+          href={`/${pillar}/all`}
+          style={
+            {
+              "--accent": accentColor,
+              borderColor: accentColor,
+              color: accentColor,
+            } as React.CSSProperties
+          }
+        >
+          View all {title}
+          <IconArrowRight size={16} stroke={2} />
+        </Link>
+      </div>
     </main>
   );
 }
@@ -180,32 +222,5 @@ function MetaItem({
         )}
       </span>
     </div>
-  );
-}
-
-function FilterChip({
-  label,
-  count,
-  active,
-  accentColor,
-}: {
-  label: string;
-  count: number;
-  active?: boolean;
-  accentColor: string;
-}) {
-  return (
-    <button
-      className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-semibold text-sm transition-colors"
-      style={{
-        background: active ? accentColor : "var(--bg-elevated)",
-        color: active ? "#fff" : "var(--fg-secondary)",
-        borderColor: active ? accentColor : "var(--border-subtle)",
-      }}
-      type="button"
-    >
-      {label}
-      <span className="text-xs opacity-75">{count}</span>
-    </button>
   );
 }
