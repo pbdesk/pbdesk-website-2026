@@ -4,7 +4,11 @@
 // (category + label) and 20-per-page pagination. State lives in the
 // client; data is fetched server-side and handed in via props.
 
-import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconHome,
+} from "@tabler/icons-react";
 import { useState } from "react";
 import CtaBanner from "@/components/home/cta-banner";
 import PostCard, { type Post } from "./post-card";
@@ -88,7 +92,7 @@ export default function AllPostsListing({
         <div className="wrapper">
           <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
             <a className="text-[var(--fg-secondary)] hover:underline" href="/">
-              PBDesk
+              <IconHome size={16} stroke={1.5} />
             </a>
             <span>/</span>
             <a
