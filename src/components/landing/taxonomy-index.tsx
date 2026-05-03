@@ -5,6 +5,7 @@
 import { IconArrowRight, IconLayersIntersect } from "@tabler/icons-react";
 import { useState } from "react";
 import MyPillers from "@/components/home/my-pillers";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { pillarAccents } from "@/lib/pillars";
 import type { PillarKey } from "@/lib/storyblok/types";
 
@@ -66,13 +67,7 @@ export default function TaxonomyIndex({
     <main>
       <section className="py-16">
         <div className="wrapper">
-          <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
-            <a className="text-[var(--fg-secondary)] hover:underline" href="/">
-              PBDesk
-            </a>
-            <span>/</span>
-            <span className="text-[var(--fg-primary)]">{title}</span>
-          </nav>
+          <Breadcrumb items={[{ label: title }]} />
 
           <h1
             className="mb-6 text-center font-bold text-[var(--fg-primary)]"

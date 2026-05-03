@@ -1,12 +1,12 @@
 import {
   IconArrowRight,
   IconFolders,
-  IconHome,
   IconNews,
   IconTags,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import type { Post } from "./post-card";
 import PostGrid from "./post-grid";
 import SectionBanner, { type PillarKey } from "./section-banner";
@@ -37,18 +37,7 @@ export default function SectionLanding({
       {/* Breadcrumb + intro */}
       <section className="py-12">
         <div className="wrapper">
-          <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
-            <span className="text-[var(--fg-secondary)]">
-              <a
-                className="text-[var(--fg-secondary)] hover:underline"
-                href="/"
-              >
-                <IconHome size={16} stroke={1.5} />
-              </a>
-            </span>
-            <span>/</span>
-            <span className="text-[var(--fg-primary)]">{title}</span>
-          </nav>
+          <Breadcrumb items={[{ label: title }]} />
 
           <h2
             className="mb-8 text-center font-bold text-[var(--fg-primary)]"

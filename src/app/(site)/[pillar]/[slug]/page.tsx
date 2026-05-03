@@ -2,7 +2,6 @@ import type { ISbStoryData } from "@storyblok/react";
 import {
   IconArrowLeft,
   IconCalendarMonth,
-  IconHome,
   IconTags,
 } from "@tabler/icons-react";
 import type { Metadata } from "next";
@@ -11,6 +10,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CtaBanner from "@/components/home/cta-banner";
 import LivePostBody from "@/components/storyblok/live-post-body";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { pillarAccents } from "@/lib/pillars";
 import { jsonLdString, pageMetadata, SITE_AUTHOR, SITE_URL } from "@/lib/seo";
 import { loadAllPostSlugs, loadPostStory } from "@/lib/storyblok/landing";
@@ -95,32 +95,23 @@ function PostHeader({
 
       <div className="wrapper relative -mt-16 pb-10 sm:-mt-20">
         <div className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-7 shadow-[var(--shadow-lg)] sm:p-10">
-          <nav className="mb-5 flex items-center justify-start gap-2 text-[var(--fg-muted)] text-sm">
+          <Breadcrumb
+            align="start"
+            items={[
+              {
+                label: `${pillar.charAt(0).toUpperCase()}${pillar.slice(1)}`,
+                href: `/${pillar}`,
+              },
+            ]}
+          >
             <Link
-              className="text-[var(--fg-secondary)] hover:underline"
-              href="/"
-            >
-              <IconHome stroke={1.5} />
-            </Link>
-            <span>/</span>
-            <Link
-              className="text-[var(--fg-secondary)] hover:underline"
-              href={`/${pillar}`}
-            >
-              {pillar.charAt(0).toUpperCase()}
-              {pillar.slice(1)}
-            </Link>
-            {/* <span>/</span>
-            <span className="text-[var(--fg-primary)]">{c.title}</span> */}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Link
-              className="inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase transition-opacity hover:opacity-90"
+              className="ml-3 inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase transition-opacity hover:opacity-90"
               href={`/categories/${encodeURIComponent(c.category)}`}
               style={{ background: accent, letterSpacing: "0.05em" }}
             >
               {c.category}
             </Link>
-          </nav>
+          </Breadcrumb>
 
           {/* <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
             <span

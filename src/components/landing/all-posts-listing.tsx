@@ -4,13 +4,10 @@
 // (category + label) and 20-per-page pagination. State lives in the
 // client; data is fetched server-side and handed in via props.
 
-import {
-  IconChevronLeft,
-  IconChevronRight,
-  IconHome,
-} from "@tabler/icons-react";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useState } from "react";
 import CtaBanner from "@/components/home/cta-banner";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import PostCard, { type Post } from "./post-card";
 import SectionBanner, { type PillarKey } from "./section-banner";
 
@@ -90,20 +87,9 @@ export default function AllPostsListing({
 
       <section className="py-12">
         <div className="wrapper">
-          <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
-            <a className="text-[var(--fg-secondary)] hover:underline" href="/">
-              <IconHome size={16} stroke={1.5} />
-            </a>
-            <span>/</span>
-            <a
-              className="text-[var(--fg-secondary)] hover:underline"
-              href={`/${pillar}`}
-            >
-              {title}
-            </a>
-            <span>/</span>
-            <span className="text-[var(--fg-primary)]">All</span>
-          </nav>
+          <Breadcrumb
+            items={[{ label: title, href: `/${pillar}` }, { label: "All" }]}
+          />
 
           <h1
             className="mb-6 text-center font-bold text-[var(--fg-primary)]"
