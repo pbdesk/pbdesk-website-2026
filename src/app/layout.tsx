@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Onest } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -157,6 +159,8 @@ export default function RootLayout({
           }}
           type="application/ld+json"
         />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

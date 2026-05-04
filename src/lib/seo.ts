@@ -1,8 +1,25 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://pbdesk.com"
-).replace(/\/$/, "");
+// On Vercel preview deploys, NEXT_PUBLIC_SITE_URL is intentionally unset so
+// each unique preview URL resolves correctly. Vercel auto-injects
+// NEXT_PUBLIC_VERCEL_URL (client-safe) and VERCEL_URL (server-only); we use
+// either as the fallback host before defaulting to production.
+const TRAILING_SLASH_RE = /\/$/;
+
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) {
+    return explicit.replace(TRAILING_SLASH_RE, "");
+  }
+  const vercelHost =
+    process.env.NEXT_PUBLIC_VERCEL_URL ?? process.env.VERCEL_URL;
+  if (vercelHost) {
+    return `https://${vercelHost}`;
+  }
+  return "https://pbdesk.com";
+}
+
+export const SITE_URL = resolveSiteUrl();
 export const SITE_NAME = "PBDesk";
 export const SITE_AUTHOR = "Pinal Bhatt";
 export const SITE_TAGLINE = "Bits, Bites & Blog — from the desk of Pinal Bhatt";
