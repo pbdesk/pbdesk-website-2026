@@ -1,3 +1,4 @@
+import { cookies, draftMode } from "next/headers";
 import type { ReactNode } from "react";
 import Footer from "@/components/layout/footer";
 import Header from "@/components/layout/header/header";
@@ -6,35 +7,69 @@ import StoryblokProvider from "@/components/storyblok/storyblok-provider";
 import { globalConfigToLayoutData } from "@/lib/storyblok/global-config";
 import { loadGlobalConfig } from "@/lib/storyblok/landing";
 
+// Same iframe-friendly cookie set by /api/draft. Reading it here mirrors the
+// detection in src/lib/storyblok/client.ts so the visual editor iframe is
+// recognised as a draft session even when Next's draftMode() returns false
+// (which happens because __prerender_bypass uses SameSite=Lax and isn't sent
+// on cross-origin sub-requests from app.storyblok.com).
+const PREVIEW_COOKIE = "sb-preview";
+const STORYBLOK_REGION = process.env.STORYBLOK_REGION ?? "eu";
+
+async function isDraftSession(): Promise<boolean> {
+  const cookieStore = await cookies();
+  if (cookieStore.get(PREVIEW_COOKIE)?.value === "1") {
+    return true;
+  }
+  const { isEnabled } = await draftMode();
+  return isEnabled;
+}
+
 export default async function SiteLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const configStory = await loadGlobalConfig();
+  const [isDraft, configStory] = await Promise.all([
+    isDraftSession(),
+    loadGlobalConfig(),
+  ]);
   const config = globalConfigToLayoutData(configStory);
 
+  const layout = (
+    <div className="flex flex-1 flex-col">
+      {/* Bridge self-gates by iframe detection, but we only ship its chunk to
+          draft sessions so public visitors don't pay for unused JS. */}
+      {isDraft ? <StoryblokBridge /> : null}
+      <Header
+        brandTagline={config?.brandTagline}
+        navItems={config?.navItems}
+        socials={config?.socials}
+      />
+      <div className="isolate flex flex-1 flex-col">{children}</div>
+      <Footer
+        brandTagline={config?.brandTagline}
+        exploreItems={config?.footerExplore}
+        footerAbout={config?.footerAbout}
+        moreItems={config?.footerMore}
+        socials={config?.footerSocials}
+        topicsItems={config?.footerTopics}
+      />
+    </div>
+  );
+
+  if (!isDraft) {
+    return layout;
+  }
+
+  // Draft session: pass the preview token via RSC props so it reaches the
+  // editor's browser without ever being inlined into a public bundle.
+  const previewToken = process.env.STORYBLOK_PREVIEW_TOKEN;
+  if (!previewToken) {
+    return layout;
+  }
   return (
-    <StoryblokProvider>
-      <div className="flex flex-1 flex-col">
-        {/* Mounted unconditionally; self-gates so it only loads the
-            bridge script inside the Storyblok visual editor iframe. */}
-        <StoryblokBridge />
-        <Header
-          brandTagline={config?.brandTagline}
-          navItems={config?.navItems}
-          socials={config?.socials}
-        />
-        <div className="isolate flex flex-1 flex-col">{children}</div>
-        <Footer
-          brandTagline={config?.brandTagline}
-          exploreItems={config?.footerExplore}
-          footerAbout={config?.footerAbout}
-          moreItems={config?.footerMore}
-          socials={config?.footerSocials}
-          topicsItems={config?.footerTopics}
-        />
-      </div>
+    <StoryblokProvider accessToken={previewToken} region={STORYBLOK_REGION}>
+      {layout}
     </StoryblokProvider>
   );
 }
