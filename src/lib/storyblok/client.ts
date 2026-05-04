@@ -47,21 +47,35 @@ function getApiHost(): string {
   return API_HOSTS[region] ?? API_HOSTS.eu;
 }
 
+// Wrapper that swallows Next's `DYNAMIC_SERVER_USAGE` error. cookies(),
+// headers(), and draftMode() throw that error when called from a static
+// rendering context (generateStaticParams, generateMetadata for SSG routes,
+// or the page body during build-time pre-rendering). For those contexts
+// we want "not a draft session" — i.e. the published path — so swallowing
+// the error and treating it as null is the correct fallback.
+async function safeReadDynamic<T>(read: () => Promise<T>): Promise<T | null> {
+  try {
+    return await read();
+  } catch {
+    return null;
+  }
+}
+
 async function isDraft(): Promise<boolean> {
   // Cheap signals first. The sb-preview cookie + x-sb-preview header are
   // set by src/proxy.ts on visual editor iframe loads — checking them first
-  // means anonymous traffic never calls draftMode(), which would otherwise
-  // opt every public route into dynamic rendering.
-  const [cookieStore, headersList] = await Promise.all([cookies(), headers()]);
-  if (cookieStore.get(PREVIEW_COOKIE)?.value === "1") {
+  // means anonymous traffic never reaches draftMode().
+  const cookieStore = await safeReadDynamic(cookies);
+  if (cookieStore?.get(PREVIEW_COOKIE)?.value === "1") {
     return true;
   }
-  if (headersList.get(PREVIEW_HEADER) === "1") {
+  const headersList = await safeReadDynamic(headers);
+  if (headersList?.get(PREVIEW_HEADER) === "1") {
     return true;
   }
   // Fall back to Next's draftMode for top-level navigation through /api/draft.
-  const { isEnabled } = await draftMode();
-  return isEnabled;
+  const draft = await safeReadDynamic(draftMode);
+  return draft?.isEnabled ?? false;
 }
 
 interface FetchOptions {

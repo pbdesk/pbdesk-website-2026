@@ -15,13 +15,25 @@ import { loadGlobalConfig } from "@/lib/storyblok/landing";
 const PREVIEW_COOKIE = "sb-preview";
 const STORYBLOK_REGION = process.env.STORYBLOK_REGION ?? "eu";
 
+// cookies() and draftMode() throw DYNAMIC_SERVER_USAGE in static rendering
+// contexts (build-time pre-render of routes nested under this layout).
+// Treat that as "not a draft session" — the published path — and fall
+// through silently.
+async function safeReadDynamic<T>(read: () => Promise<T>): Promise<T | null> {
+  try {
+    return await read();
+  } catch {
+    return null;
+  }
+}
+
 async function isDraftSession(): Promise<boolean> {
-  const cookieStore = await cookies();
-  if (cookieStore.get(PREVIEW_COOKIE)?.value === "1") {
+  const cookieStore = await safeReadDynamic(cookies);
+  if (cookieStore?.get(PREVIEW_COOKIE)?.value === "1") {
     return true;
   }
-  const { isEnabled } = await draftMode();
-  return isEnabled;
+  const draft = await safeReadDynamic(draftMode);
+  return draft?.isEnabled ?? false;
 }
 
 export default async function SiteLayout({
