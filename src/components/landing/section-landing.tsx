@@ -16,6 +16,8 @@ import SectionBanner, { type PillarKey } from "./section-banner";
 
 export interface SectionLandingProps {
   accentColor: string;
+  bannerDarkSrc?: string;
+  bannerLightSrc?: string;
   description: ReactNode;
   pillar: PillarKey;
   posts: Post[];
@@ -28,6 +30,8 @@ export default function SectionLanding({
   title,
   description,
   accentColor,
+  bannerDarkSrc,
+  bannerLightSrc,
   posts,
   pillar,
   story,
@@ -39,7 +43,12 @@ export default function SectionLanding({
 
   return (
     <main>
-      <SectionBanner pillar={pillar} title={title} />
+      <SectionBanner
+        darkSrc={bannerDarkSrc}
+        lightSrc={bannerLightSrc}
+        pillar={pillar}
+        title={title}
+      />
 
       {/* Breadcrumb + intro */}
       <section className="py-12">

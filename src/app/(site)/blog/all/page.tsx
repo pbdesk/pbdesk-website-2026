@@ -27,6 +27,8 @@ export default async function BlogAllPage() {
   return (
     <AllPostsListing
       accentColor={pillarAccents.blog.primary}
+      bannerDarkSrc={data.bannerDarkSrc}
+      bannerLightSrc={data.bannerLightSrc}
       description={data.description}
       pillar="blog"
       posts={data.posts}

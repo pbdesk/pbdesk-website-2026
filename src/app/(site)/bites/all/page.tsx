@@ -27,6 +27,8 @@ export default async function BitesAllPage() {
   return (
     <AllPostsListing
       accentColor={pillarAccents.bites.primary}
+      bannerDarkSrc={data.bannerDarkSrc}
+      bannerLightSrc={data.bannerLightSrc}
       description={data.description}
       pillar="bites"
       posts={data.posts}

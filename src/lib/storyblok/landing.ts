@@ -31,8 +31,13 @@ import type {
   PostStory,
   PrivacyPolicyPageStory,
 } from "./types";
+import { normalizeAssetUrl } from "./url";
 
 interface PillarPageData {
+  /** Storyblok-hosted dark-mode banner URL; undefined falls back to the local SVG. */
+  bannerDarkSrc?: string;
+  /** Storyblok-hosted light-mode banner URL; undefined falls back to the local SVG. */
+  bannerLightSrc?: string;
   cadence: string;
   description: string;
   /** True when content came from Storyblok; false when fallback was used. */
@@ -92,6 +97,8 @@ export async function loadPillarData(
     return {
       description: story.content.description ?? fallback.description,
       cadence: story.content.cadence ?? fallback.cadence,
+      bannerLightSrc: normalizeAssetUrl(story.content.banner_light?.filename),
+      bannerDarkSrc: normalizeAssetUrl(story.content.banner_dark?.filename),
       posts,
       fromStoryblok: true,
       story,

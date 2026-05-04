@@ -15,6 +15,8 @@ const POSTS_PER_PAGE = 20;
 
 interface AllPostsListingProps {
   accentColor: string;
+  bannerDarkSrc?: string;
+  bannerLightSrc?: string;
   description: string;
   pillar: PillarKey;
   posts: Post[];
@@ -38,6 +40,8 @@ function countOccurrences(values: string[]): ChipCount[] {
 
 export default function AllPostsListing({
   accentColor,
+  bannerDarkSrc,
+  bannerLightSrc,
   // description,
   pillar,
   posts,
@@ -83,7 +87,12 @@ export default function AllPostsListing({
 
   return (
     <main>
-      <SectionBanner pillar={pillar} title={title} />
+      <SectionBanner
+        darkSrc={bannerDarkSrc}
+        lightSrc={bannerLightSrc}
+        pillar={pillar}
+        title={title}
+      />
 
       <section className="py-12">
         <div className="wrapper">
