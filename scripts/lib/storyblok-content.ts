@@ -440,6 +440,9 @@ export const globalConfigContent: SbStoryContent = {
     navItem("About Me", "/about"),
   ],
   footer_topics: [
+    navItem("All Bits", "/bits/all"),
+    navItem("All Bites", "/bites/all"),
+    navItem("All Blog Posts", "/blog/all"),
     navItem("Categories", "/categories"),
     navItem("Labels", "/labels"),
   ],

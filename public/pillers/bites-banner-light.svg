@@ -1,9 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="640" viewBox="0 0 1920 640">
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="640" viewBox="0 0 1920 640" font-family="Onest, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
 <defs>
   
-  <pattern id="grid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-    <circle cx="1.2" cy="1.2" r="1.2" fill="#D4D4D8"></circle>
-  </pattern>
   <radialGradient id="glow-blue" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35"></stop><stop offset="60%" stop-color="#3B82F6" stop-opacity="0.08"></stop><stop offset="100%" stop-color="#3B82F6" stop-opacity="0"></stop></radialGradient>
   <radialGradient id="glow-emerald" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#10B981" stop-opacity="0.35"></stop><stop offset="60%" stop-color="#10B981" stop-opacity="0.08"></stop><stop offset="100%" stop-color="#10B981" stop-opacity="0"></stop></radialGradient>
   <radialGradient id="glow-violet" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#7C3AED" stop-opacity="0.4"></stop><stop offset="60%" stop-color="#7C3AED" stop-opacity="0.08"></stop><stop offset="100%" stop-color="#7C3AED" stop-opacity="0"></stop></radialGradient>
@@ -12,15 +9,9 @@
   <linearGradient id="tile-violet" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8B5CF6"></stop><stop offset="100%" stop-color="#2563EB"></stop></linearGradient>
 </defs>
 <rect width="1920" height="640" fill="#FAFAFA"></rect>
-<rect width="1920" height="640" fill="url(#grid)"></rect>
 <circle cx="1400" cy="340" r="520" fill="url(#glow-emerald)" opacity="0.6"></circle>
 <g stroke="#10B981" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="880,340 960,340 990,300 1020,380 1050,260 1080,400 1110,340 1200,340"></polyline></g>
 <g font-size="22" font-weight="600">
-  
-  <g transform="translate(230,180)">
-    <rect x="-70" y="-22" width="140" height="44" rx="22" fill="#FFFFFF" stroke="#E4E4E7"></rect>
-    <text text-anchor="middle" dy="7" fill="#059669">Nutrition</text>
-  </g>
   
   <g transform="translate(1620,160)">
     <rect x="-80" y="-22" width="160" height="44" rx="22" fill="#FFFFFF" stroke="#E4E4E7"></rect>

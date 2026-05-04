@@ -1,14 +1,9 @@
-import {
-  IconBrandGithubFilled,
-  IconBrandLinkedinFilled,
-  IconBrandX,
-  type IconProps,
-} from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import type { ComponentType } from "react";
+import { SocialIcons, type SocialItem } from "@/components/ui/social-icons";
 import { getCurrentYear } from "@/lib/utils";
 
+export type { SocialItem as SocialLink } from "@/components/ui/social-icons";
 export type SocialIconKey = "github" | "linkedin" | "x";
 
 export interface NavItem {
@@ -17,18 +12,12 @@ export interface NavItem {
   targetBlank?: boolean;
 }
 
-export interface SocialLink {
-  href: string;
-  icon: SocialIconKey;
-  label: string;
-}
-
 interface FooterProps {
   brandTagline?: string;
   exploreItems?: NavItem[];
   footerAbout?: string;
   moreItems?: NavItem[];
-  socials?: SocialLink[];
+  socials?: SocialItem[];
   topicsItems?: NavItem[];
 }
 
@@ -46,22 +35,6 @@ const DEFAULT_TOPICS: NavItem[] = [
 
 const DEFAULT_MORE: NavItem[] = [{ label: "Disclaimer", href: "/disclaimer" }];
 
-const DEFAULT_SOCIALS: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com/pinalbhatt", icon: "github" },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/pinalbhatt",
-    icon: "linkedin",
-  },
-  { label: "X", href: "https://x.com/pbdesk", icon: "x" },
-];
-
-const SOCIAL_ICONS: Record<SocialIconKey, ComponentType<IconProps>> = {
-  github: IconBrandGithubFilled,
-  linkedin: IconBrandLinkedinFilled,
-  x: IconBrandX,
-};
-
 const DEFAULT_FOOTER_ABOUT =
   "Bits & Bites — Developer's Life. Learning Endeavor Forever, from the desk of Pinal Bhatt.";
 
@@ -76,7 +49,7 @@ export default function Footer({
   const explore = exploreItems?.length ? exploreItems : DEFAULT_EXPLORE;
   const topics = topicsItems?.length ? topicsItems : DEFAULT_TOPICS;
   const more = moreItems?.length ? moreItems : DEFAULT_MORE;
-  const socialList = socials?.length ? socials : DEFAULT_SOCIALS;
+  const socialList = socials?.length ? socials : undefined;
   const tagline = brandTagline ?? "from the desk of Pinal Bhatt";
   const about = footerAbout ?? DEFAULT_FOOTER_ABOUT;
 
@@ -118,24 +91,7 @@ export default function Footer({
             >
               {about}
             </p>
-            <div className="flex items-center gap-1">
-              {socialList.map(({ label, href, icon }) => {
-                const Icon = SOCIAL_ICONS[icon];
-                return (
-                  <a
-                    className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                    href={href}
-                    key={label}
-                    rel="noopener"
-                    style={{ color: "var(--fg-muted)" }}
-                    target="_blank"
-                  >
-                    <Icon size={18} />
-                    <span className="sr-only">{label}</span>
-                  </a>
-                );
-              })}
-            </div>
+            <SocialIcons items={socialList} size="sm" />
           </div>
 
           <FooterColumn heading="Explore" items={explore} />

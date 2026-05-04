@@ -135,10 +135,12 @@ export default async function BitesPage() {
       />
       <SectionLanding
         accentColor={pillarAccents.bites.primary}
-        cadence={data.cadence}
+        bannerDarkSrc={data.bannerDarkSrc}
+        bannerLightSrc={data.bannerLightSrc}
         description={data.description}
         pillar="bites"
         posts={posts}
+        story={data.story}
         title="Bites"
       />
     </>

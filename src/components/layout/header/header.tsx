@@ -1,14 +1,9 @@
 "use client";
-import {
-  IconBrandGithubFilled,
-  IconBrandLinkedinFilled,
-  IconBrandX,
-  type IconProps,
-} from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type ComponentType, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { SocialIcons, type SocialItem } from "@/components/ui/social-icons";
 import { CloseIcon, MenuIcon } from "@/icons/icons";
 import ThemeToggle from "./theme-toggle";
 
@@ -18,18 +13,13 @@ export interface NavItem {
   targetBlank?: boolean;
 }
 
+export type { SocialItem as SocialLink } from "@/components/ui/social-icons";
 export type SocialIconKey = "github" | "linkedin" | "x";
-
-export interface SocialLink {
-  href: string;
-  icon: SocialIconKey;
-  label: string;
-}
 
 interface HeaderProps {
   brandTagline?: string;
   navItems?: NavItem[];
-  socials?: SocialLink[];
+  socials?: SocialItem[];
 }
 
 const DEFAULT_NAV_ITEMS: NavItem[] = [
@@ -40,22 +30,6 @@ const DEFAULT_NAV_ITEMS: NavItem[] = [
   { label: "About", href: "/about" },
 ];
 
-const DEFAULT_SOCIALS: SocialLink[] = [
-  { label: "GitHub", href: "https://github.com/pinalbhatt", icon: "github" },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/pinalbhatt",
-    icon: "linkedin",
-  },
-  { label: "X", href: "https://x.com/pbdesk", icon: "x" },
-];
-
-const SOCIAL_ICONS: Record<SocialIconKey, ComponentType<IconProps>> = {
-  github: IconBrandGithubFilled,
-  linkedin: IconBrandLinkedinFilled,
-  x: IconBrandX,
-};
-
 export default function Header({
   navItems,
   socials,
@@ -65,7 +39,7 @@ export default function Header({
   const pathname = usePathname();
 
   const items = navItems?.length ? navItems : DEFAULT_NAV_ITEMS;
-  const socialList = socials?.length ? socials : DEFAULT_SOCIALS;
+  const socialList = socials?.length ? socials : undefined;
   const tagline = brandTagline ?? "from the desk of Pinal Bhatt";
 
   useEffect(() => {
@@ -129,24 +103,11 @@ export default function Header({
           </nav>
 
           <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-1 md:flex">
-              {socialList.map(({ label, href, icon }) => {
-                const Icon = SOCIAL_ICONS[icon];
-                return (
-                  <a
-                    className="flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                    href={href}
-                    key={label}
-                    rel="noopener"
-                    style={{ color: "var(--fg-secondary)" }}
-                    target="_blank"
-                  >
-                    <Icon size={18} />
-                    <span className="sr-only">{label}</span>
-                  </a>
-                );
-              })}
-            </div>
+            <SocialIcons
+              className="hidden md:flex"
+              items={socialList}
+              size="sm"
+            />
 
             <ThemeToggle />
 
@@ -199,25 +160,10 @@ export default function Header({
               })}
             </div>
             <div
-              className="mt-4 flex items-center gap-2 border-t pt-4"
+              className="mt-4 border-t pt-4"
               style={{ borderColor: "var(--border-subtle)" }}
             >
-              {socialList.map(({ label, href, icon }) => {
-                const Icon = SOCIAL_ICONS[icon];
-                return (
-                  <a
-                    className="flex h-9 w-9 items-center justify-center rounded-full"
-                    href={href}
-                    key={label}
-                    rel="noopener"
-                    style={{ color: "var(--fg-secondary)" }}
-                    target="_blank"
-                  >
-                    <Icon size={18} />
-                    <span className="sr-only">{label}</span>
-                  </a>
-                );
-              })}
+              <SocialIcons items={socialList} size="sm" />
             </div>
           </div>
         </nav>

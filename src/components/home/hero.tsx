@@ -1,32 +1,7 @@
-import {
-  IconBrandGithubFilled,
-  IconBrandLinkedinFilled,
-  IconBrandX,
-} from "@tabler/icons-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
-
-const socials = [
-  {
-    label: "GitHub",
-    href: "https://github.com/pinalbhatt",
-    icon: IconBrandGithubFilled,
-    hoverClass: "hover:text-[#181717] dark:hover:text-white",
-  },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/pinalbhatt",
-    icon: IconBrandLinkedinFilled,
-    hoverClass: "hover:text-[#0A66C2]",
-  },
-  {
-    label: "X",
-    href: "https://x.com/pbdesk",
-    icon: IconBrandX,
-    hoverClass: "hover:text-black dark:hover:text-white",
-  },
-];
+import { SocialIcons } from "@/components/ui/social-icons";
 
 interface HeroProps {
   ctaHref?: string;
@@ -104,22 +79,7 @@ export default function Hero({
             </Button>
           </div>
 
-          {showSocial ? (
-            <div className="flex items-center justify-center gap-2">
-              {socials.map(({ label, href, icon: Icon, hoverClass }) => (
-                <a
-                  className={`flex h-10 w-10 items-center justify-center rounded-full text-[var(--fg-muted)] transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 ${hoverClass}`}
-                  href={href}
-                  key={label}
-                  rel="noopener"
-                  target="_blank"
-                >
-                  <Icon size={18} />
-                  <span className="sr-only">{label}</span>
-                </a>
-              ))}
-            </div>
-          ) : null}
+          {showSocial ? <SocialIcons className="justify-center" /> : null}
         </div>
       </div>
     </section>

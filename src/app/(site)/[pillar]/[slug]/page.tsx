@@ -1,11 +1,16 @@
 import type { ISbStoryData } from "@storyblok/react";
-import { IconArrowLeft, IconClock } from "@tabler/icons-react";
+import {
+  IconArrowLeft,
+  IconCalendarMonth,
+  IconTags,
+} from "@tabler/icons-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CtaBanner from "@/components/home/cta-banner";
 import LivePostBody from "@/components/storyblok/live-post-body";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { pillarAccents } from "@/lib/pillars";
 import { jsonLdString, pageMetadata, SITE_AUTHOR, SITE_URL } from "@/lib/seo";
 import { loadAllPostSlugs, loadPostStory } from "@/lib/storyblok/landing";
@@ -65,48 +70,50 @@ function PostHeader({
 
   return (
     <header className="relative">
-      {/* Banner — gradient or cover image */}
-      {cover ? (
-        <div className="relative aspect-[16/7] w-full overflow-hidden">
-          <Image
-            alt={c.cover_image?.alt ?? c.title}
-            className="object-cover"
-            fill
-            priority
-            sizes="100vw"
-            src={cover}
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/20 to-black/70" />
-        </div>
-      ) : (
-        <div
-          aria-hidden="true"
-          className={`${c.gradient ?? "post-grad-indigo"} h-72 w-full sm:h-96`}
-        />
-      )}
+      {/* Full-width gradient with optional cover image on top */}
+      <div
+        aria-hidden="true"
+        className={`${c.gradient ?? "post-grad-indigo"} w-full`}
+      >
+        {cover ? (
+          <div className="wrapper px-4 pt-8 pb-20 sm:px-6 sm:pt-10 sm:pb-28">
+            <div className="relative aspect-[16/7] w-full overflow-hidden rounded-2xl shadow-2xl">
+              <Image
+                alt={c.cover_image?.alt ?? c.title}
+                className="object-cover"
+                fill
+                priority
+                sizes="100vw"
+                src={cover}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="h-56 sm:h-72" />
+        )}
+      </div>
 
-      <div className="wrapper relative -mt-24 pb-10 sm:-mt-32">
+      <div className="wrapper relative -mt-16 pb-10 sm:-mt-20">
         <div className="rounded-3xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] p-7 shadow-[var(--shadow-lg)] sm:p-10">
-          <nav className="mb-5 flex items-center justify-start gap-2 text-[var(--fg-muted)] text-sm">
+          <Breadcrumb
+            align="start"
+            items={[
+              {
+                label: `${pillar.charAt(0).toUpperCase()}${pillar.slice(1)}`,
+                href: `/${pillar}`,
+              },
+            ]}
+          >
             <Link
-              className="text-[var(--fg-secondary)] hover:underline"
-              href="/"
+              className="ml-3 inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase transition-opacity hover:opacity-90"
+              href={`/categories/${encodeURIComponent(c.category)}`}
+              style={{ background: accent, letterSpacing: "0.05em" }}
             >
-              PBDesk
+              {c.category}
             </Link>
-            <span>/</span>
-            <Link
-              className="text-[var(--fg-secondary)] hover:underline"
-              href={`/${pillar}`}
-            >
-              {pillar.charAt(0).toUpperCase()}
-              {pillar.slice(1)}
-            </Link>
-            <span>/</span>
-            <span className="text-[var(--fg-primary)]">{c.title}</span>
-          </nav>
+          </Breadcrumb>
 
-          <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
+          {/* <div className="mb-3 flex flex-wrap items-center gap-2 text-xs">
             <span
               className="inline-flex items-center rounded-full px-3 py-1 font-semibold text-white uppercase"
               style={{ background: accent, letterSpacing: "0.05em" }}
@@ -122,7 +129,7 @@ function PostHeader({
                 #{label}
               </Link>
             ))}
-          </div>
+          </div> */}
 
           <h1
             className="mb-4 font-bold text-[var(--fg-primary)]"
@@ -144,10 +151,11 @@ function PostHeader({
           </p>
 
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[var(--fg-muted)] text-sm">
-            <span>{SITE_AUTHOR}</span>
+            {/* <span>{SITE_AUTHOR}</span> */}
             {c.published_at ? (
               <>
-                <span aria-hidden="true">·</span>
+                {/* <span aria-hidden="true">·</span> */}
+                <IconCalendarMonth stroke={1.5} />
                 <time dateTime={c.published_at}>
                   {new Date(c.published_at).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -157,7 +165,29 @@ function PostHeader({
                 </time>
               </>
             ) : null}
-            {c.read_time ? (
+            <IconTags stroke={2} />
+            {c.labels?.map((label) => (
+              <Link
+                className="rounded-full bg-[var(--bg-subtle)] px-3 py-1 text-[var(--fg-secondary)] hover:underline"
+                href={`/labels/${encodeURIComponent(label)}`}
+                key={label}
+              >
+                #{label}
+              </Link>
+            ))}
+            {/* {c.updated_at ? (
+              <>
+                <span aria-hidden="true">·</span>
+                <time dateTime={c.updated_at}>
+                  {new Date(c.updated_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              </>
+            ) : null} */}
+            {/* {c.read_time ? (
               <>
                 <span aria-hidden="true">·</span>
                 <span className="inline-flex items-center gap-1">
@@ -165,7 +195,7 @@ function PostHeader({
                   {c.read_time}
                 </span>
               </>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { cookies, draftMode, headers } from "next/headers";
 import "./init";
+import { STORY_RELATION_PATHS } from "./relations";
 import { STORYBLOK_CACHE_TAG, storyTag } from "./tags";
 import type {
   AboutPageStory,
@@ -100,6 +101,85 @@ async function storyblokFetch<TResult>(
   return (await response.json()) as TResult;
 }
 
+// Walk the content tree and replace UUID strings/arrays at every configured
+// `${component}.${field}` path with the matching resolved story from `rels`.
+// Mirrors the inline-injection that storyblok-js-client does internally so
+// downstream block components receive full story objects rather than UUIDs.
+type RelByUuid = Map<string, { uuid: string }>;
+
+function resolveBlokField(
+  blok: Record<string, unknown>,
+  key: string,
+  byUuid: RelByUuid
+): void {
+  const value = blok[key];
+  if (typeof value === "string") {
+    const resolved = byUuid.get(value);
+    if (resolved) {
+      blok[key] = resolved;
+    }
+    return;
+  }
+  if (Array.isArray(value)) {
+    blok[key] = value
+      .map((uuid) =>
+        typeof uuid === "string" ? (byUuid.get(uuid) ?? uuid) : uuid
+      )
+      .filter((entry) => typeof entry !== "string");
+  }
+}
+
+function resolveBlokRelations(
+  blok: Record<string, unknown> & { component?: string },
+  pathSet: Set<string>,
+  byUuid: RelByUuid
+): void {
+  if (typeof blok.component !== "string") {
+    return;
+  }
+  for (const key of Object.keys(blok)) {
+    if (pathSet.has(`${blok.component}.${key}`)) {
+      resolveBlokField(blok, key, byUuid);
+    }
+  }
+}
+
+function walkContent(
+  node: unknown,
+  pathSet: Set<string>,
+  byUuid: RelByUuid
+): void {
+  if (!node) {
+    return;
+  }
+  if (Array.isArray(node)) {
+    for (const item of node) {
+      walkContent(item, pathSet, byUuid);
+    }
+    return;
+  }
+  if (typeof node !== "object") {
+    return;
+  }
+  const blok = node as Record<string, unknown> & { component?: string };
+  resolveBlokRelations(blok, pathSet, byUuid);
+  for (const value of Object.values(blok)) {
+    walkContent(value, pathSet, byUuid);
+  }
+}
+
+function inlineRelations(
+  story: { content?: Record<string, unknown> } | undefined,
+  rels: { uuid: string }[],
+  paths: string[]
+): void {
+  if (!(story?.content && rels.length && paths.length)) {
+    return;
+  }
+  const byUuid: RelByUuid = new Map(rels.map((r) => [r.uuid, r]));
+  walkContent(story.content, new Set(paths), byUuid);
+}
+
 async function fetchStoryRaw<TStory>(
   slug: string,
   options: FetchStoryOptions = {}
@@ -111,18 +191,28 @@ async function fetchStoryRaw<TStory>(
     noStore();
   }
   try {
-    const data = await storyblokFetch<{ story?: TStory }>(
-      `cdn/stories/${slug}`,
-      {
-        draft,
-        tags: [STORYBLOK_CACHE_TAG, storyTag(slug)],
-        query: {
-          resolve_links: options.resolveLinks ?? "url",
-          resolve_relations: options.resolveRelations?.join(","),
-        },
-      }
-    );
-    return data?.story ?? null;
+    const data = await storyblokFetch<{
+      rels?: { uuid: string }[];
+      story?: TStory;
+    }>(`cdn/stories/${slug}`, {
+      draft,
+      tags: [STORYBLOK_CACHE_TAG, storyTag(slug)],
+      query: {
+        resolve_links: options.resolveLinks ?? "url",
+        resolve_relations: options.resolveRelations?.join(","),
+      },
+    });
+    if (!data?.story) {
+      return null;
+    }
+    if (options.resolveRelations?.length && data.rels?.length) {
+      inlineRelations(
+        data.story as { content?: Record<string, unknown> },
+        data.rels,
+        options.resolveRelations
+      );
+    }
+    return data.story;
   } catch {
     return null;
   }
@@ -170,7 +260,9 @@ async function fetchStoriesRaw<TStory>(params: {
 }
 
 export function fetchHomeStory(): Promise<HomePageStory | null> {
-  return fetchStoryRaw<HomePageStory>("home");
+  return fetchStoryRaw<HomePageStory>("home", {
+    resolveRelations: STORY_RELATION_PATHS,
+  });
 }
 
 export function fetchAboutStory(): Promise<AboutPageStory | null> {
@@ -194,7 +286,9 @@ export function fetchLandingStory(
 ): Promise<LandingPageStory | null> {
   // Pillar landing stories are folder startpages (is_startpage: true), so
   // their full_slug is just the folder name (e.g. "bits"), not "bits/index".
-  return fetchStoryRaw<LandingPageStory>(pillar);
+  return fetchStoryRaw<LandingPageStory>(pillar, {
+    resolveRelations: STORY_RELATION_PATHS,
+  });
 }
 
 export function fetchPostStory(

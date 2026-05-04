@@ -1,64 +1,59 @@
+import type { ISbStoryData } from "@storyblok/react";
 import {
-  IconCalendarStats,
-  IconLayersIntersect,
-  IconSearch,
+  IconArrowRight,
+  IconFolders,
+  IconNews,
   IconTags,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
-import CtaBanner from "@/components/home/cta-banner";
+import LivePage from "@/components/storyblok/live-page";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import type { LandingPageStory } from "@/lib/storyblok/types";
 import type { Post } from "./post-card";
 import PostGrid from "./post-grid";
 import SectionBanner, { type PillarKey } from "./section-banner";
 
 export interface SectionLandingProps {
   accentColor: string;
-  cadence: string;
+  bannerDarkSrc?: string;
+  bannerLightSrc?: string;
   description: ReactNode;
-  /**
-   * Optional editorial override for the filter chip list.
-   * When omitted, chips are auto-derived from `posts`.
-   */
-  filters?: { label: string; count: number }[];
   pillar: PillarKey;
   posts: Post[];
+  /** Storyblok landing story; its `body` blocks render below the post grid. */
+  story?: LandingPageStory | null;
   title: string;
-}
-
-function deriveFilters(posts: Post[]): { label: string; count: number }[] {
-  const counts = new Map<string, number>();
-  for (const post of posts) {
-    counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
-  }
-  return Array.from(counts.entries())
-    .map(([label, count]) => ({ label, count }))
-    .sort((a, b) => b.count - a.count);
 }
 
 export default function SectionLanding({
   title,
   description,
   accentColor,
-  filters,
+  bannerDarkSrc,
+  bannerLightSrc,
   posts,
-  cadence,
   pillar,
+  story,
 }: SectionLandingProps) {
   const totalPosts = posts.length;
   const categoryCount = new Set(posts.map((p) => p.category)).size;
-  const filterChips = filters ?? deriveFilters(posts);
+  const labelCount = new Set(posts.flatMap((p) => p.labels)).size;
+  const hasBody = (story?.content?.body?.length ?? 0) > 0;
 
   return (
     <main>
-      <SectionBanner pillar={pillar} title={title} />
+      <SectionBanner
+        darkSrc={bannerDarkSrc}
+        lightSrc={bannerLightSrc}
+        pillar={pillar}
+        title={title}
+      />
 
       {/* Breadcrumb + intro */}
       <section className="py-12">
         <div className="wrapper">
-          <nav className="mb-5 flex items-center justify-center gap-2 text-[var(--fg-muted)] text-sm">
-            <span className="text-[var(--fg-secondary)]">PBDesk</span>
-            <span>/</span>
-            <span className="text-[var(--fg-primary)]">{title}</span>
-          </nav>
+          <Breadcrumb items={[{ label: title }]} />
 
           <h2
             className="mb-8 text-center font-bold text-[var(--fg-primary)]"
@@ -78,36 +73,35 @@ export default function SectionLanding({
             {description}
           </p>
 
-          {/* Meta row */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10">
-            <MetaItem
-              accentColor={accentColor}
-              icon={<IconLayersIntersect size={18} stroke={1.75} />}
-              label="posts"
-              value={String(totalPosts)}
-            />
-            <MetaItem
-              accentColor={accentColor}
-              icon={<IconTags size={18} stroke={1.75} />}
-              label="categories"
-              value={String(categoryCount)}
-            />
-            <MetaItem
-              accentColor={accentColor}
-              icon={<IconCalendarStats size={18} stroke={1.75} />}
-              label={cadence}
-              reverse
-              value="Updated"
-            />
-          </div>
+          <MetaRow
+            accentColor={accentColor}
+            categoryCount={categoryCount}
+            labelCount={labelCount}
+            pillar={pillar}
+            title={title}
+            totalPosts={totalPosts}
+            wrapperClassName="mt-12"
+          />
         </div>
       </section>
 
       {/* Filters + search */}
       <section className="pb-10">
         <div className="wrapper">
-          <div className="flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-            <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
+            <h3
+              className="mb-8 text-center font-bold text-[var(--fg-primary)]"
+              style={{
+                fontSize: "clamp(40px, 4vw, 60px)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.03em",
+              }}
+            >
+              Featured <span style={{ color: accentColor }}>{title}</span>
+            </h3>
+            <hr />
+
+            {/* <div className="flex flex-wrap items-center gap-2">
               <FilterChip
                 accentColor={accentColor}
                 active
@@ -135,15 +129,88 @@ export default function SectionLanding({
                 placeholder="Search posts..."
                 type="search"
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
 
       <PostGrid accentColor={accentColor} posts={posts} />
 
-      <CtaBanner />
+      {hasBody && story ? (
+        <LivePage
+          story={story as unknown as ISbStoryData<Record<string, unknown>>}
+        />
+      ) : null}
+
+      <MetaRow
+        accentColor={accentColor}
+        categoryCount={categoryCount}
+        labelCount={labelCount}
+        pillar={pillar}
+        title={title}
+        totalPosts={totalPosts}
+        wrapperClassName="my-12"
+      />
     </main>
+  );
+}
+
+function MetaRow({
+  accentColor,
+  categoryCount,
+  labelCount,
+  pillar,
+  title,
+  totalPosts,
+  wrapperClassName,
+}: {
+  accentColor: string;
+  categoryCount: number;
+  labelCount: number;
+  pillar: PillarKey;
+  title: string;
+  totalPosts: number;
+  wrapperClassName?: string;
+}) {
+  return (
+    <div
+      className={`flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-[var(--border-subtle)] border-t pt-10 ${wrapperClassName ?? ""}`}
+    >
+      <MetaItem
+        accentColor={accentColor}
+        href={`/${pillar}/all`}
+        icon={<IconNews size={18} stroke={1.75} />}
+        label="posts"
+        value={String(totalPosts)}
+      />
+      <MetaItem
+        accentColor={accentColor}
+        href="/categories"
+        icon={<IconFolders size={18} stroke={1.75} />}
+        label="categories"
+        value={String(categoryCount)}
+      />
+      <MetaItem
+        accentColor={accentColor}
+        href="/labels"
+        icon={<IconTags size={18} stroke={1.75} />}
+        label="labels"
+        value={String(labelCount)}
+      />
+      <Link
+        className="inline-flex items-center gap-2 rounded-full border px-5 py-2 font-semibold text-sm transition-all [color:var(--accent)] hover:bg-[var(--accent)] hover:text-white"
+        href={`/${pillar}/all`}
+        style={
+          {
+            "--accent": accentColor,
+            borderColor: accentColor,
+          } as React.CSSProperties
+        }
+      >
+        View all {title}
+        <IconArrowRight size={16} stroke={2} />
+      </Link>
+    </div>
   );
 }
 
@@ -152,15 +219,17 @@ function MetaItem({
   value,
   label,
   accentColor,
+  href,
   reverse,
 }: {
   icon: ReactNode;
   value: string;
   label: string;
   accentColor: string;
+  href?: string;
   reverse?: boolean;
 }) {
-  return (
+  const content = (
     <div className="flex items-center gap-3">
       <span
         className="flex h-9 w-9 items-center justify-center rounded-lg"
@@ -183,31 +252,14 @@ function MetaItem({
       </span>
     </div>
   );
-}
 
-function FilterChip({
-  label,
-  count,
-  active,
-  accentColor,
-}: {
-  label: string;
-  count: number;
-  active?: boolean;
-  accentColor: string;
-}) {
-  return (
-    <button
-      className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-semibold text-sm transition-colors"
-      style={{
-        background: active ? accentColor : "var(--bg-elevated)",
-        color: active ? "#fff" : "var(--fg-secondary)",
-        borderColor: active ? accentColor : "var(--border-subtle)",
-      }}
-      type="button"
-    >
-      {label}
-      <span className="text-xs opacity-75">{count}</span>
-    </button>
-  );
+  if (href) {
+    return (
+      <Link className="underline-offset-4 hover:underline" href={href}>
+        {content}
+      </Link>
+    );
+  }
+
+  return content;
 }

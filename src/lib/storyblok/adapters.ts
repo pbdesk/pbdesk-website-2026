@@ -3,12 +3,17 @@ import type { PillarKey, PostStory } from "./types";
 
 export type PostWithSlug = Post & { slug: string; pillar: PillarKey };
 
+const PROTOCOL_RELATIVE = /^\/\//;
+
 export function postStoryToPost(story: PostStory): PostWithSlug {
   const c = story.content;
   return {
     title: c.title,
     description: c.excerpt,
     category: c.category,
+    coverImage: c.cover_image?.filename
+      ? c.cover_image.filename.replace(PROTOCOL_RELATIVE, "https://")
+      : undefined,
     labels: c.labels ?? [],
     readTime: c.read_time,
     gradient: c.gradient,
@@ -39,12 +44,29 @@ export function deriveFilterChips(
     .sort((a, b) => b.count - a.count);
 }
 
+export interface TaxonomyGroup {
+  count: number;
+  name: string;
+  pillarCounts: Partial<Record<PillarKey, number>>;
+  pillars: PillarKey[];
+  posts: PostWithSlug[];
+}
+
+function buildPillarMeta(postList: PostWithSlug[]): {
+  pillars: PillarKey[];
+  pillarCounts: Partial<Record<PillarKey, number>>;
+} {
+  const counts: Partial<Record<PillarKey, number>> = {};
+  for (const post of postList) {
+    counts[post.pillar] = (counts[post.pillar] ?? 0) + 1;
+  }
+  return { pillars: Object.keys(counts) as PillarKey[], pillarCounts: counts };
+}
+
 /**
  * Group posts by category for the /categories index page.
  */
-export function groupByCategory(
-  posts: PostWithSlug[]
-): { name: string; count: number; posts: PostWithSlug[] }[] {
+export function groupByCategory(posts: PostWithSlug[]): TaxonomyGroup[] {
   const map = new Map<string, PostWithSlug[]>();
   for (const post of posts) {
     const list = map.get(post.category) ?? [];
@@ -55,6 +77,7 @@ export function groupByCategory(
     .map(([name, postList]) => ({
       name,
       count: postList.length,
+      ...buildPillarMeta(postList),
       posts: postList,
     }))
     .sort((a, b) => b.count - a.count);
@@ -64,9 +87,7 @@ export function groupByCategory(
  * Group posts by label for the /labels index page. Each post can appear in
  * multiple groups (one per label).
  */
-export function groupByLabel(
-  posts: PostWithSlug[]
-): { name: string; count: number; posts: PostWithSlug[] }[] {
+export function groupByLabel(posts: PostWithSlug[]): TaxonomyGroup[] {
   const map = new Map<string, PostWithSlug[]>();
   for (const post of posts) {
     for (const label of post.labels) {
@@ -79,6 +100,7 @@ export function groupByLabel(
     .map(([name, postList]) => ({
       name,
       count: postList.length,
+      ...buildPillarMeta(postList),
       posts: postList,
     }))
     .sort((a, b) => b.count - a.count);

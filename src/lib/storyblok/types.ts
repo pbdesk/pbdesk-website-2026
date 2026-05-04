@@ -51,6 +51,8 @@ export interface PostStoryContent extends SbBlokBase {
 export interface LandingPageStoryContent extends SbBlokBase {
   accent_primary: string;
   accent_secondary: string;
+  banner_dark?: SbAssetField;
+  banner_light?: SbAssetField;
   body?: SbBlokBase[];
   cadence: string;
   component: "landing_page";

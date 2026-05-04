@@ -150,10 +150,12 @@ export default async function BitsPage() {
       />
       <SectionLanding
         accentColor={pillarAccents.bits.primary}
-        cadence={data.cadence}
+        bannerDarkSrc={data.bannerDarkSrc}
+        bannerLightSrc={data.bannerLightSrc}
         description={data.description}
         pillar="bits"
         posts={posts}
+        story={data.story}
         title="Bits"
       />
     </>
