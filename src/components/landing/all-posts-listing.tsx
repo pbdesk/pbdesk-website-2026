@@ -6,7 +6,6 @@
 
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useState } from "react";
-import CtaBanner from "@/components/home/cta-banner";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import PostCard, { type Post } from "./post-card";
 import SectionBanner, { type PillarKey } from "./section-banner";
@@ -189,8 +188,6 @@ export default function AllPostsListing({
           totalPages={totalPages}
         />
       ) : null}
-
-      <CtaBanner />
     </main>
   );
 }

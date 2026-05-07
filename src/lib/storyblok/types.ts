@@ -42,7 +42,10 @@ export interface PostStoryContent extends SbBlokBase {
   pillar: PillarKey;
   published_at?: string;
   read_time: string;
-  related?: string[];
+  // After relation resolution these arrive as full `PostStory` objects;
+  // before resolution (or when relations fail) they're UUID strings.
+  related?: (PostStory | string)[];
+  related_sets?: SbBlokBase[];
   seo?: SbBlokBase[];
   title: string;
   updated_at?: string;

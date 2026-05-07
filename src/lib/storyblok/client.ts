@@ -161,24 +161,32 @@ function resolveBlokRelations(
 function walkContent(
   node: unknown,
   pathSet: Set<string>,
-  byUuid: RelByUuid
+  byUuid: RelByUuid,
+  seen: WeakSet<object>
 ): void {
   if (!node) {
     return;
   }
   if (Array.isArray(node)) {
     for (const item of node) {
-      walkContent(item, pathSet, byUuid);
+      walkContent(item, pathSet, byUuid, seen);
     }
     return;
   }
   if (typeof node !== "object") {
     return;
   }
+  // Resolved relations can introduce cycles (post A → related → post B →
+  // related → post A) and shared sub-trees. Skip nodes we've already
+  // visited so the walker terminates and we don't redo work.
+  if (seen.has(node)) {
+    return;
+  }
+  seen.add(node);
   const blok = node as Record<string, unknown> & { component?: string };
   resolveBlokRelations(blok, pathSet, byUuid);
   for (const value of Object.values(blok)) {
-    walkContent(value, pathSet, byUuid);
+    walkContent(value, pathSet, byUuid, seen);
   }
 }
 
@@ -191,7 +199,7 @@ function inlineRelations(
     return;
   }
   const byUuid: RelByUuid = new Map(rels.map((r) => [r.uuid, r]));
-  walkContent(story.content, new Set(paths), byUuid);
+  walkContent(story.content, new Set(paths), byUuid, new WeakSet());
 }
 
 async function fetchStoryRaw<TStory>(
@@ -309,7 +317,9 @@ export function fetchPostStory(
   pillar: PillarKey,
   slug: string
 ): Promise<PostStory | null> {
-  return fetchStoryRaw<PostStory>(`${pillar}/${slug}`);
+  return fetchStoryRaw<PostStory>(`${pillar}/${slug}`, {
+    resolveRelations: STORY_RELATION_PATHS,
+  });
 }
 
 export async function fetchStoriesByPillar(

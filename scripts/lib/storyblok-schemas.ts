@@ -838,6 +838,12 @@ const contentTypes: SbComponent[] = [
           source: "internal_stories",
           filter_content_type: ["post"],
         }),
+        related_sets: field({
+          type: "bloks",
+          restrict_components: true,
+          component_whitelist: ["curated_post_set"],
+          maximum: 2,
+        }),
         seo: field({
           type: "bloks",
           restrict_components: true,

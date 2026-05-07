@@ -8,14 +8,24 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import CtaBanner from "@/components/home/cta-banner";
+import RelatedPosts from "@/components/landing/related-posts";
+import LivePage from "@/components/storyblok/live-page";
 import LivePostBody from "@/components/storyblok/live-post-body";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { pillarAccents } from "@/lib/pillars";
 import { jsonLdString, pageMetadata, SITE_AUTHOR, SITE_URL } from "@/lib/seo";
 import { loadAllPostSlugs, loadPostStory } from "@/lib/storyblok/landing";
-import type { PillarKey } from "@/lib/storyblok/types";
+import type { PillarKey, PostStory } from "@/lib/storyblok/types";
 import { normalizeAssetUrl } from "@/lib/storyblok/url";
+
+function isResolvedPostStory(value: unknown): value is PostStory {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "content" in value &&
+    "uuid" in value
+  );
+}
 
 const VALID_PILLARS: readonly PillarKey[] = ["bits", "bites", "blog"] as const;
 
@@ -285,9 +295,14 @@ export default async function PostPage({
         </div>
       </section>
 
-      <PostFooter externalUrl={c.external_url} pillar={pillar} />
+      <RelatedPosts posts={(c.related ?? []).filter(isResolvedPostStory)} />
 
-      <CtaBanner />
+      <LivePage
+        fieldName="related_sets"
+        story={story as unknown as ISbStoryData<Record<string, unknown>>}
+      />
+
+      <PostFooter externalUrl={c.external_url} pillar={pillar} />
     </main>
   );
 }

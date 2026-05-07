@@ -1,7 +1,6 @@
 import type { ISbStoryData } from "@storyblok/react";
 import type { Metadata } from "next";
 import About from "@/components/home/about";
-import CtaBanner from "@/components/home/cta-banner";
 import Hero from "@/components/home/hero";
 import MyPillers from "@/components/home/my-pillers";
 import MyRealm from "@/components/home/my-realm";
@@ -67,9 +66,6 @@ export default async function Home() {
       </Reveal>
       <Reveal>
         <MyPillers />
-      </Reveal>
-      <Reveal>
-        <CtaBanner />
       </Reveal>
     </main>
   );

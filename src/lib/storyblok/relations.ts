@@ -11,4 +11,5 @@
 export const STORY_RELATION_PATHS = [
   "curated_post_set.pillar",
   "curated_post_set.posts",
+  "post.related",
 ];
