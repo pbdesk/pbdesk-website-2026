@@ -27,7 +27,7 @@ export default function storyblokImageLoader({
   const isStoryblokAsset =
     src.includes(`${STORYBLOK_HOST}/f/`) || src.startsWith("/f/");
   if (!isStoryblokAsset) {
-    return src;
+    return `${src}?w=${width}`;
   }
 
   const absolute = src.startsWith("http")
