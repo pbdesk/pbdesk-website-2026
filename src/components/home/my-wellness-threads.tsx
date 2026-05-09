@@ -416,7 +416,7 @@ function ThreadsList({
             <div className="min-w-0">
               <div className="mb-1.5 flex items-baseline gap-2.5">
                 <span className="font-mono font-semibold text-[11px] text-[var(--fg-muted)] tracking-wider">
-                  PILLAR / {p.n}
+                  THREAD / {p.n}
                 </span>
               </div>
               <h3 className="font-semibold text-[17px] text-[var(--fg-primary)] tracking-tight">
