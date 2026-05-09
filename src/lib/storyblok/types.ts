@@ -37,6 +37,7 @@ export interface PostStoryContent extends SbBlokBase {
   external_url?: SbLinkField;
   featured?: boolean;
   gradient: string;
+  hide_share_bar?: boolean;
   intro_blocks?: SbBlokBase[];
   labels: string[];
   pillar: PillarKey;
@@ -47,6 +48,7 @@ export interface PostStoryContent extends SbBlokBase {
   related?: (PostStory | string)[];
   related_sets?: SbBlokBase[];
   seo?: SbBlokBase[];
+  share_desktop_layout?: "inline" | "sidebar" | "both";
   title: string;
   updated_at?: string;
 }

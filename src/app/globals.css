@@ -1316,6 +1316,38 @@ body {
   --social-bg: #ffffff;
   --social-fg: #000000;
 }
+.social-icon-facebook {
+  --social-bg: #1877f2;
+  --social-fg: #ffffff;
+}
+.social-icon-pinterest {
+  --social-bg: #e60023;
+  --social-fg: #ffffff;
+}
+.social-icon-pocket {
+  --social-bg: #ef4056;
+  --social-fg: #ffffff;
+}
+.social-icon-telegram {
+  --social-bg: #26a5e4;
+  --social-fg: #ffffff;
+}
+.social-icon-whatsapp {
+  --social-bg: #25d366;
+  --social-fg: #ffffff;
+}
+.social-icon-email {
+  --social-bg: var(--color-pillar-blog);
+  --social-fg: #ffffff;
+}
+.social-icon-copy {
+  --social-bg: var(--fg-brand);
+  --social-fg: #ffffff;
+}
+.social-icon-copy.is-copied {
+  color: var(--fg-brand);
+  border-color: var(--fg-brand);
+}
 
 .social-icon {
   position: relative;

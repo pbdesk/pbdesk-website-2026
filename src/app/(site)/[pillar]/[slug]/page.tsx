@@ -9,6 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import RelatedPosts from "@/components/landing/related-posts";
+import { ShareBar } from "@/components/share/share-bar";
+import { ShareProvider } from "@/components/share/share-context";
 import LivePage from "@/components/storyblok/live-page";
 import LivePostBody from "@/components/storyblok/live-post-body";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
@@ -264,6 +266,15 @@ export default async function PostPage({
 
   const c = story.content;
 
+  const shareUrl = `${SITE_URL}/${pillar}/${slug}`;
+  const shareMedia = normalizeAssetUrl(c.cover_image?.filename);
+  const shareLayout = c.share_desktop_layout ?? "both";
+  const showShareBar = !c.hide_share_bar;
+  const showSidebarShare =
+    showShareBar && (shareLayout === "sidebar" || shareLayout === "both");
+  const showInlineShare = showShareBar;
+  const inlineShareDesktopHidden = shareLayout === "sidebar";
+
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -275,34 +286,75 @@ export default async function PostPage({
     dateModified: c.updated_at ?? c.published_at,
     author: { "@type": "Person", name: SITE_AUTHOR },
     image: normalizeAssetUrl(c.cover_image?.filename),
-    url: `${SITE_URL}/${pillar}/${slug}`,
+    url: shareUrl,
   };
 
   return (
-    <main>
-      <script
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
-        dangerouslySetInnerHTML={{ __html: jsonLdString(articleJsonLd) }}
-        type="application/ld+json"
-      />
-      <PostHeader pillar={pillar} story={story} />
+    <ShareProvider
+      value={{
+        url: shareUrl,
+        title: c.title,
+        description: c.excerpt,
+        media: shareMedia,
+      }}
+    >
+      <main>
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD payload is statically generated and safe.
+          dangerouslySetInnerHTML={{ __html: jsonLdString(articleJsonLd) }}
+          type="application/ld+json"
+        />
+        <PostHeader pillar={pillar} story={story} />
 
-      <section className="pb-12">
-        <div className="wrapper max-w-3xl">
-          <LivePostBody
-            story={story as unknown as ISbStoryData<Record<string, unknown>>}
-          />
-        </div>
-      </section>
+        <section className="pb-12">
+          <div className="wrapper relative max-w-3xl">
+            {showSidebarShare ? (
+              <div className="pointer-events-none absolute top-2 left-0 hidden lg:-left-20 lg:block">
+                <div className="pointer-events-auto">
+                  <ShareBar
+                    description={c.excerpt}
+                    heading="Share"
+                    media={shareMedia}
+                    title={c.title}
+                    url={shareUrl}
+                    variant="sidebar"
+                  />
+                </div>
+              </div>
+            ) : null}
+            <LivePostBody
+              story={story as unknown as ISbStoryData<Record<string, unknown>>}
+            />
+            {showInlineShare ? (
+              <div
+                className={
+                  inlineShareDesktopHidden
+                    ? "mt-10 border-[var(--border-subtle)] border-t pt-8 lg:hidden"
+                    : "mt-10 border-[var(--border-subtle)] border-t pt-8"
+                }
+              >
+                <ShareBar
+                  description={c.excerpt}
+                  heading="Share this post"
+                  media={shareMedia}
+                  title={c.title}
+                  url={shareUrl}
+                  variant="inline"
+                />
+              </div>
+            ) : null}
+          </div>
+        </section>
 
-      <RelatedPosts posts={(c.related ?? []).filter(isResolvedPostStory)} />
+        <RelatedPosts posts={(c.related ?? []).filter(isResolvedPostStory)} />
 
-      <LivePage
-        fieldName="related_sets"
-        story={story as unknown as ISbStoryData<Record<string, unknown>>}
-      />
+        <LivePage
+          fieldName="related_sets"
+          story={story as unknown as ISbStoryData<Record<string, unknown>>}
+        />
 
-      <PostFooter externalUrl={c.external_url} pillar={pillar} />
-    </main>
+        <PostFooter externalUrl={c.external_url} pillar={pillar} />
+      </main>
+    </ShareProvider>
   );
 }

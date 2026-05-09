@@ -184,3 +184,27 @@ export interface RichtextSectionBlok extends SbBlokBase {
   component: "richtext_section";
   content?: RichtextDoc;
 }
+
+// ---- Share Bar -----------------------------------------------------------
+
+export type ShareNetwork =
+  | "facebook"
+  | "linkedin"
+  | "pinterest"
+  | "pocket"
+  | "telegram"
+  | "twitter"
+  | "whatsapp"
+  | "email";
+
+export type ShareDesktopLayout = "inline" | "sidebar" | "both";
+
+export interface ShareBarBlok extends SbBlokBase {
+  component: "share_bar";
+  desktop_layout?: ShareDesktopLayout;
+  heading?: string;
+  networks?: ShareNetwork[];
+  show_copy_link?: boolean;
+  title_override?: string;
+  url_override?: string;
+}

@@ -519,6 +519,59 @@ const nestableBlocks: SbComponent[] = [
     };
   })(),
 
+  // ----- Share Bar -----
+  // Editor-droppable social share block. The component reads URL/title from
+  // the surrounding ShareProvider context unless explicitly overridden.
+  (() => {
+    reset();
+    return {
+      name: "share_bar",
+      display_name: "Share Bar",
+      is_root: false,
+      is_nestable: true,
+      icon: "block-share",
+      preview_field: "heading",
+      schema: f({
+        heading: field({ type: "text", default_value: "Share this post" }),
+        desktop_layout: field({
+          type: "option",
+          options: [
+            { name: "Inline horizontal", value: "inline" },
+            { name: "Floating left sidebar", value: "sidebar" },
+            { name: "Both", value: "both" },
+          ],
+          default_value: "inline",
+          exclude_empty_option: true,
+        }),
+        networks: field({
+          type: "options",
+          options: [
+            { name: "Facebook", value: "facebook" },
+            { name: "LinkedIn", value: "linkedin" },
+            { name: "Pinterest", value: "pinterest" },
+            { name: "Pocket", value: "pocket" },
+            { name: "Telegram", value: "telegram" },
+            { name: "Twitter (X)", value: "twitter" },
+            { name: "WhatsApp", value: "whatsapp" },
+            { name: "Email", value: "email" },
+          ],
+          description: "Leave empty to show all networks in the default order.",
+        }),
+        show_copy_link: field({ type: "boolean", default_value: true }),
+        url_override: field({
+          type: "text",
+          description:
+            "Optional. Defaults to the current page URL when used inside a post or landing page.",
+        }),
+        title_override: field({
+          type: "text",
+          description:
+            "Optional. Defaults to the current page title when used inside a post or landing page.",
+        }),
+      }),
+    };
+  })(),
+
   // ----- Curated Post Set -----
   // Editor picks one Pillar (landing_page) and exactly three Posts; the
   // renderer surfaces them as four PostCard tiles under a shared eyebrow
@@ -733,6 +786,7 @@ const contentTypes: SbComponent[] = [
             "curated_post_set",
             "cta_banner",
             "richtext_section",
+            "share_bar",
           ],
         }),
       }),
@@ -775,6 +829,7 @@ const contentTypes: SbComponent[] = [
             "post_grid_block",
             "curated_post_set",
             "cta_banner",
+            "share_bar",
           ],
         }),
         seo_title: field({ type: "text" }),
@@ -841,14 +896,31 @@ const contentTypes: SbComponent[] = [
         related_sets: field({
           type: "bloks",
           restrict_components: true,
-          component_whitelist: ["curated_post_set"],
-          maximum: 2,
+          component_whitelist: ["curated_post_set", "share_bar"],
+          maximum: 4,
         }),
         seo: field({
           type: "bloks",
           restrict_components: true,
           component_whitelist: ["seo"],
           maximum: 1,
+        }),
+        hide_share_bar: field({
+          type: "boolean",
+          default_value: false,
+          description: "Hide the default social share bar on this post.",
+        }),
+        share_desktop_layout: field({
+          type: "option",
+          options: [
+            { name: "Inline horizontal", value: "inline" },
+            { name: "Floating left sidebar", value: "sidebar" },
+            { name: "Both (sidebar on desktop + inline)", value: "both" },
+          ],
+          default_value: "both",
+          exclude_empty_option: true,
+          description:
+            "Mobile is always horizontal; this only affects desktop layout.",
         }),
       }),
     };
@@ -880,6 +952,7 @@ const contentTypes: SbComponent[] = [
             "my_pillers",
             "my_wellness_threads",
             "richtext_section",
+            "share_bar",
           ],
         }),
         seo_title: field({ type: "text" }),

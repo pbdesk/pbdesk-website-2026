@@ -22,6 +22,7 @@ import MyRealm from "./my-realm";
 import MyWellnessThreads from "./my-wellness-threads";
 import Pillars from "./pillars";
 import RichtextSection from "./richtext-section";
+import ShareBarBlock from "./share-bar";
 import type {
   AboutHeroBlok,
   AboutSectionBlok,
@@ -34,6 +35,7 @@ import type {
   MyWellnessThreadsBlok,
   PillarsBlok,
   RichtextSectionBlok,
+  ShareBarBlok,
 } from "./types";
 
 interface PageProps {
@@ -86,6 +88,10 @@ export default function Page({ body }: PageProps) {
                 blok={blok as RichtextSectionBlok}
                 key={blok._uid}
               />
+            );
+          case "share_bar":
+            return (
+              <ShareBarBlock blok={blok as ShareBarBlok} key={blok._uid} />
             );
           default:
             return null;

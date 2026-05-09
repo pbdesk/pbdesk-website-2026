@@ -7,9 +7,12 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ShareProvider } from "@/components/share/share-context";
 import LivePage from "@/components/storyblok/live-page";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { SITE_URL } from "@/lib/seo";
 import type { LandingPageStory } from "@/lib/storyblok/types";
+import { normalizeAssetUrl } from "@/lib/storyblok/url";
 import type { Post } from "./post-card";
 import PostGrid from "./post-grid";
 import SectionBanner, { type PillarKey } from "./section-banner";
@@ -41,6 +44,54 @@ export default function SectionLanding({
   const labelCount = new Set(posts.flatMap((p) => p.labels)).size;
   const hasBody = (story?.content?.body?.length ?? 0) > 0;
 
+  const shareCtx = {
+    url: `${SITE_URL}/${pillar}`,
+    title,
+    description: typeof description === "string" ? description : undefined,
+    media: normalizeAssetUrl(story?.content?.banner_light?.filename),
+  };
+
+  return (
+    <ShareProvider value={shareCtx}>
+      <SectionLandingMain
+        accentColor={accentColor}
+        bannerDarkSrc={bannerDarkSrc}
+        bannerLightSrc={bannerLightSrc}
+        categoryCount={categoryCount}
+        description={description}
+        hasBody={hasBody}
+        labelCount={labelCount}
+        pillar={pillar}
+        posts={posts}
+        story={story}
+        title={title}
+        totalPosts={totalPosts}
+      />
+    </ShareProvider>
+  );
+}
+
+interface SectionLandingMainProps extends SectionLandingProps {
+  categoryCount: number;
+  hasBody: boolean;
+  labelCount: number;
+  totalPosts: number;
+}
+
+function SectionLandingMain({
+  title,
+  description,
+  accentColor,
+  bannerDarkSrc,
+  bannerLightSrc,
+  posts,
+  pillar,
+  story,
+  hasBody,
+  totalPosts,
+  categoryCount,
+  labelCount,
+}: SectionLandingMainProps) {
   return (
     <main>
       <SectionBanner
