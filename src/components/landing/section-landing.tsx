@@ -42,6 +42,7 @@ export default function SectionLanding({
   const totalPosts = posts.length;
   const categoryCount = new Set(posts.map((p) => p.category)).size;
   const labelCount = new Set(posts.flatMap((p) => p.labels)).size;
+  const featuredPosts = posts.filter((p) => p.featured).slice(0, 12);
   const hasBody = (story?.content?.body?.length ?? 0) > 0;
 
   const shareCtx = {
@@ -59,6 +60,7 @@ export default function SectionLanding({
         bannerLightSrc={bannerLightSrc}
         categoryCount={categoryCount}
         description={description}
+        featuredPosts={featuredPosts}
         hasBody={hasBody}
         labelCount={labelCount}
         pillar={pillar}
@@ -73,6 +75,7 @@ export default function SectionLanding({
 
 interface SectionLandingMainProps extends SectionLandingProps {
   categoryCount: number;
+  featuredPosts: Post[];
   hasBody: boolean;
   labelCount: number;
   totalPosts: number;
@@ -84,7 +87,7 @@ function SectionLandingMain({
   accentColor,
   bannerDarkSrc,
   bannerLightSrc,
-  posts,
+  featuredPosts,
   pillar,
   story,
   hasBody,
@@ -185,7 +188,7 @@ function SectionLandingMain({
         </div>
       </section>
 
-      <PostGrid accentColor={accentColor} posts={posts} />
+      <PostGrid accentColor={accentColor} posts={featuredPosts} />
 
       {hasBody && story ? (
         <LivePage

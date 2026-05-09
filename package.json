@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "audit": "bun audit --audit-level=high",
     "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "format": "ultracite fix",
     "lint": "ultracite check",
-    "check": "bun run clean && bun run lint && bun run build",
+    "check": "bun run clean && bun run lint && bun run build && bun run audit",
     "clean": "rm -rf node_modules .next .turbo && bun install",
     "prepare": "lefthook install"
   },
@@ -27,7 +28,7 @@
     "tailwind-merge": "3.5.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.14",
+    "@biomejs/biome": "2.4.15",
     "@socketsecurity/bun-security-scanner": "1.1.2",
     "@tailwindcss/postcss": "4.3.0",
     "@tailwindcss/typography": "0.5.19",
