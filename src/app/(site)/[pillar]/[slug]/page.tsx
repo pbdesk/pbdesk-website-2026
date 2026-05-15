@@ -325,6 +325,7 @@ export default async function PostPage({
             <LivePostBody
               story={story as unknown as ISbStoryData<Record<string, unknown>>}
             />
+            <PostFooter externalUrl={c.external_url} pillar={pillar} />
             {showInlineShare ? (
               <div
                 className={
@@ -352,8 +353,6 @@ export default async function PostPage({
           fieldName="related_sets"
           story={story as unknown as ISbStoryData<Record<string, unknown>>}
         />
-
-        <PostFooter externalUrl={c.external_url} pillar={pillar} />
       </main>
     </ShareProvider>
   );
