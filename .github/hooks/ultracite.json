@@ -2,7 +2,7 @@
   "hooks": {
     "PostToolUse": [
       {
-        "command": "bun fix --skip=correctness/noUnusedImports",
+        "command": "bun x ultracite fix --skip=correctness/noUnusedImports",
         "type": "command"
       }
     ]

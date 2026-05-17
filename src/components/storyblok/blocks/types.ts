@@ -23,6 +23,10 @@ export interface HeroBlok extends SbBlokBase {
   cta_label?: string;
   eyebrow?: string;
   headline?: RichtextDoc;
+  kicker?: string;
+  secondary_cta_href?: SbLinkField;
+  secondary_cta_label?: string;
+  show_pillar_links?: boolean;
   show_social?: boolean;
   subheadline?: RichtextDoc;
 }

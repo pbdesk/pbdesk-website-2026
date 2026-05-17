@@ -5,7 +5,7 @@
     "": {
       "name": "pbdesk.com",
       "dependencies": {
-        "@storyblok/react": "6.1.5",
+        "@storyblok/react": "6.1.7",
         "@tabler/icons-react": "^3.44.0",
         "@vercel/analytics": "2.0.1",
         "@vercel/speed-insights": "2.0.0",
@@ -158,11 +158,11 @@
 
     "@socketsecurity/bun-security-scanner": ["@socketsecurity/bun-security-scanner@1.1.2", "", {}, "sha512-TdsAg6SMolubyZ6HfIjLWlANfHvhV6i7pdWof4OQ33zPEwXJm2ilA755levHMR618MKq22+06Ag8efiVKowxqA=="],
 
-    "@storyblok/js": ["@storyblok/js@5.1.4", "", { "dependencies": { "@storyblok/richtext": "4.2.1", "storyblok-js-client": "7.3.1" } }, "sha512-YK+Fb7t7bAQu2VlFO/6eWxOYx8JOGcsi8V5pePy2ZbrkCBGyQ+m09RFloFsJ4ytUvQelM0jo7+gYemk+cLST6g=="],
+    "@storyblok/js": ["@storyblok/js@5.1.6", "", { "dependencies": { "@storyblok/richtext": "4.3.1", "storyblok-js-client": "7.4.0" } }, "sha512-ts8dDddkBLbzC8BJp1U2yRDjPldhHyQW8iWKP1x2bm+f1vb6H4rhHX2Kz5pisP2cPavFW5DXHsBtLDNxeSQZaw=="],
 
-    "@storyblok/react": ["@storyblok/react@6.1.5", "", { "dependencies": { "@storyblok/js": "5.1.4" }, "peerDependencies": { "next": "^13 || ^14 || ^15 || ^16", "react": "^17 || ^18 || ^19", "react-dom": "^17 || ^18 || ^19" }, "optionalPeers": ["next"] }, "sha512-TAsTTMt7p4jDp0b3nCJssQWXC7tsn5kqK1pOfL7qRN1Zzan24I3mjCBlEIs3mVA3cJYOWYb2QtLOJLVRl4jqfw=="],
+    "@storyblok/react": ["@storyblok/react@6.1.7", "", { "dependencies": { "@storyblok/js": "5.1.6" }, "peerDependencies": { "next": "^13 || ^14 || ^15 || ^16", "react": "^17 || ^18 || ^19", "react-dom": "^17 || ^18 || ^19" }, "optionalPeers": ["next"] }, "sha512-Fhsw2Z8gItdp2rhfNwL8bcle8PSsuzsb4FqLzCAN+ljgB4XZoU7ycSLU+Nfaulqm0LbPGw8FkuDrG6yFrD2L1Q=="],
 
-    "@storyblok/richtext": ["@storyblok/richtext@4.2.1", "", { "dependencies": { "@tiptap/core": "^3.22.3", "@tiptap/extension-blockquote": "^3.22.3", "@tiptap/extension-bold": "^3.22.3", "@tiptap/extension-code": "^3.22.3", "@tiptap/extension-code-block": "^3.22.3", "@tiptap/extension-details": "^3.22.3", "@tiptap/extension-document": "^3.22.3", "@tiptap/extension-emoji": "^3.22.3", "@tiptap/extension-hard-break": "^3.22.3", "@tiptap/extension-heading": "^3.22.3", "@tiptap/extension-highlight": "^3.22.3", "@tiptap/extension-horizontal-rule": "^3.22.3", "@tiptap/extension-image": "^3.22.3", "@tiptap/extension-italic": "^3.22.3", "@tiptap/extension-link": "^3.22.3", "@tiptap/extension-list": "^3.22.3", "@tiptap/extension-paragraph": "^3.22.3", "@tiptap/extension-strike": "^3.22.3", "@tiptap/extension-subscript": "^3.22.3", "@tiptap/extension-superscript": "^3.22.3", "@tiptap/extension-table": "^3.22.3", "@tiptap/extension-text": "^3.22.3", "@tiptap/extension-text-align": "^3.22.3", "@tiptap/extension-text-style": "^3.22.3", "@tiptap/extension-underline": "^3.22.3", "@tiptap/html": "^3.22.3", "@tiptap/pm": "^3.22.3", "@tiptap/suggestion": "^3.22.3", "emojibase": "^17.0.0", "happy-dom": "^20.8.8", "markdown-it": "^14.1.0", "storyblok-js-client": "7.3.1" } }, "sha512-KXUroIhd6SheelujnTX7g5ArUwf1FNPHHrfYnGELtlFhADmfUOrn87OmY6EZ78m2dUbecxALK4daCFCcyxxnsg=="],
+    "@storyblok/richtext": ["@storyblok/richtext@4.3.1", "", { "dependencies": { "@tiptap/core": "^3.22.3", "@tiptap/extension-blockquote": "^3.22.3", "@tiptap/extension-bold": "^3.22.3", "@tiptap/extension-code": "^3.22.3", "@tiptap/extension-code-block": "^3.22.3", "@tiptap/extension-details": "^3.22.3", "@tiptap/extension-document": "^3.22.3", "@tiptap/extension-emoji": "^3.22.3", "@tiptap/extension-hard-break": "^3.22.3", "@tiptap/extension-heading": "^3.22.3", "@tiptap/extension-highlight": "^3.22.3", "@tiptap/extension-horizontal-rule": "^3.22.3", "@tiptap/extension-image": "^3.22.3", "@tiptap/extension-italic": "^3.22.3", "@tiptap/extension-link": "^3.22.3", "@tiptap/extension-list": "^3.22.3", "@tiptap/extension-paragraph": "^3.22.3", "@tiptap/extension-strike": "^3.22.3", "@tiptap/extension-subscript": "^3.22.3", "@tiptap/extension-superscript": "^3.22.3", "@tiptap/extension-table": "^3.22.3", "@tiptap/extension-text": "^3.22.3", "@tiptap/extension-text-align": "^3.22.3", "@tiptap/extension-text-style": "^3.22.3", "@tiptap/extension-underline": "^3.22.3", "@tiptap/html": "^3.22.3", "@tiptap/pm": "^3.22.3", "@tiptap/suggestion": "^3.22.3", "emojibase": "^17.0.0", "happy-dom": "^20.8.8", "markdown-it": "^14.1.0", "storyblok-js-client": "7.4.0" } }, "sha512-FraQfSivCBu9FVwfTXSDlukJj7t8v6EP4CjN6D1ORCz+6WPGKym12TJYNBDEUCv0qh9VLI7yWAoIxMlHCdczzA=="],
 
     "@swc/helpers": ["@swc/helpers@0.5.15", "", { "dependencies": { "tslib": "^2.8.0" } }, "sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g=="],
 
@@ -663,10 +663,6 @@
     "zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
 
     "zwitch": ["zwitch@2.0.4", "", {}, "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A=="],
-
-    "@storyblok/js/storyblok-js-client": ["storyblok-js-client@7.3.1", "", {}, "sha512-R/b0LGalGNCvdzqN1GbQAxl1mcAh7TdW3Ne0XPunCYrdO3gzvlNqqWqGWPhaIaHaUf+udwOPvQ93Eqcctx2oSw=="],
-
-    "@storyblok/richtext/storyblok-js-client": ["storyblok-js-client@7.3.1", "", {}, "sha512-R/b0LGalGNCvdzqN1GbQAxl1mcAh7TdW3Ne0XPunCYrdO3gzvlNqqWqGWPhaIaHaUf+udwOPvQ93Eqcctx2oSw=="],
 
     "@tailwindcss/oxide-wasm32-wasi/@emnapi/core": ["@emnapi/core@1.10.0", "", { "dependencies": { "@emnapi/wasi-threads": "1.2.1", "tslib": "^2.4.0" }, "bundled": true }, "sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw=="],
 

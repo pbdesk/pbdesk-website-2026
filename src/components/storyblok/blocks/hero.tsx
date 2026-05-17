@@ -8,10 +8,14 @@ export default function Hero({ blok }: { blok: HeroBlok }) {
   return (
     <div {...editable(blok)}>
       <HeroComponent
-        ctaHref={resolveLinkHref(blok.cta_href, "/about")}
+        ctaHref={resolveLinkHref(blok.cta_href, "#pillars")}
         ctaLabel={blok.cta_label}
         eyebrow={blok.eyebrow}
         headline={richtextToInline(blok.headline)}
+        kicker={blok.kicker}
+        secondaryCtaHref={resolveLinkHref(blok.secondary_cta_href, "/about")}
+        secondaryCtaLabel={blok.secondary_cta_label}
+        showPillarLinks={blok.show_pillar_links ?? true}
         showSocial={blok.show_social ?? true}
         subheadline={richtextToInline(blok.subheadline)}
       />

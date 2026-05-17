@@ -59,7 +59,7 @@ export default function Pillars({
   const pillars = cards ?? DEFAULT_CARDS;
 
   return (
-    <section className="py-20 sm:py-24">
+    <section className="py-20 sm:py-24" id="pillars">
       <div className="wrapper">
         <div className="mb-14 text-center">
           <Eyebrow className="mb-3 block">

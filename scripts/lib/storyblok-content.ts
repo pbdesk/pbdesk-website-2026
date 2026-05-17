@@ -79,11 +79,17 @@ const socialLinks = [
 // ============================================================================
 
 const heroBlok = blok("hero", {
-  eyebrow: "Bits & Bites — Developer's Life",
-  headline: richtext("Learnig endeavor forever..."),
-  subheadline: richtext("...from the desk of Pinal Bhatt"),
-  cta_label: "About Me",
-  cta_href: { url: "/about", linktype: "url" },
+  eyebrow: "Learning endeavor forever...",
+  headline: richtext("PBDesk"),
+  kicker: "From the desk of Pinal Bhatt",
+  subheadline: richtext(
+    "A personal space where code, AI, wellness, and mindful living meet."
+  ),
+  cta_label: "Explore PBDesk",
+  cta_href: { url: "#pillars", linktype: "url" },
+  secondary_cta_label: "About Pinal",
+  secondary_cta_href: { url: "/about", linktype: "url" },
+  show_pillar_links: true,
   show_social: true,
 });
 

@@ -146,9 +146,13 @@ const nestableBlocks: SbComponent[] = [
       schema: f({
         eyebrow: field({ type: "text" }),
         headline: field({ type: "richtext" }),
+        kicker: field({ type: "text" }),
         subheadline: field({ type: "richtext" }),
         cta_label: field({ type: "text" }),
         cta_href: field({ type: "multilink" }),
+        secondary_cta_label: field({ type: "text" }),
+        secondary_cta_href: field({ type: "multilink" }),
+        show_pillar_links: field({ type: "boolean", default_value: true }),
         show_social: field({ type: "boolean", default_value: true }),
       }),
     };
