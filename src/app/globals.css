@@ -178,6 +178,10 @@
 }
 
 /* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   font-family:

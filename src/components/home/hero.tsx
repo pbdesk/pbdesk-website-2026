@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
+import { SmoothAnchorButton } from "@/components/ui/smooth-anchor-button";
 import { SocialIcons } from "@/components/ui/social-icons";
 import { cn } from "@/lib/utils";
 import {
@@ -47,7 +48,7 @@ export default function Hero({
   showSocial = true,
 }: HeroProps = {}) {
   return (
-    <section className="hero-gradient-bg relative overflow-hidden py-20 sm:py-24 lg:py-28">
+    <section className="hero-gradient-bg relative flex overflow-hidden py-20 sm:py-24 lg:min-h-[calc(100svh-5rem)] lg:items-center lg:py-28">
       <div className="wrapper relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
           <div className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
@@ -86,10 +87,17 @@ export default function Hero({
             </p>
 
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
-              <Button href={ctaHref} size="lg">
-                {ctaLabel}
-                <span aria-hidden="true">→</span>
-              </Button>
+              {ctaHref.startsWith("#") ? (
+                <SmoothAnchorButton href={ctaHref}>
+                  {ctaLabel}
+                  <span aria-hidden="true">→</span>
+                </SmoothAnchorButton>
+              ) : (
+                <Button href={ctaHref} size="lg">
+                  {ctaLabel}
+                  <span aria-hidden="true">→</span>
+                </Button>
+              )}
               {secondaryCtaLabel ? (
                 <Button href={secondaryCtaHref} size="lg" variant="ghost">
                   {secondaryCtaLabel}
