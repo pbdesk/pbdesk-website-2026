@@ -16,6 +16,7 @@ if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "develop" ]; then
 fi
 
 echo "🔄 Fetching latest from remote..."
+git checkout "$BRANCH"
 git fetch
 
 echo "📦 Switching to develop..."
