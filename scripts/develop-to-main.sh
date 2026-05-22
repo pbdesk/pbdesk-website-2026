@@ -10,6 +10,7 @@ git fetch
 echo "🔍 Ensuring develop is up to date..."
 git checkout develop
 git pull
+git push
 
 echo "📦 Switching to main..."
 git checkout main

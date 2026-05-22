@@ -16,8 +16,12 @@ if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "develop" ]; then
 fi
 
 echo "🔄 Fetching latest from remote..."
-git checkout "$BRANCH"
 git fetch
+
+echo "🔍 Ensuring $BRANCH is up to date..."
+git checkout "$BRANCH"
+git pull
+git push
 
 echo "📦 Switching to develop..."
 git checkout develop
