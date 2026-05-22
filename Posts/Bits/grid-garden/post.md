@@ -1,0 +1,3 @@
+# Grid Garden
+
+CSS Grid Garden is an interactive, game-based learning platform designed to teach users the fundamentals of CSS Grid, a powerful layout system in web development. Through 28 engaging levels, players "water" a virtual garden by writing CSS code to position and style grid elements, mastering concepts like grid-template-columns, grid-gap, and justify-content. The site aims to make learning fun and intuitive, offering hands-on practice in a visually appealing environment. It’s ideal for beginners and intermediate developers seeking to deepen their understanding of CSS Grid while solving practical, real-world layout challenges with immediate feedback.

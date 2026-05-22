@@ -13,7 +13,9 @@
       "!dist",
       "!build",
       "!.claude",
-      "!docs"
+      "!docs",
+      "!coverage",
+      "!Posts"
     ]
   },
   "formatter": {

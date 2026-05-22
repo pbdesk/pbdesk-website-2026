@@ -1,0 +1,54 @@
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quality Sleep — the hardest skill I'm still learning">
+  <defs>
+    <linearGradient id="bgS" x1="0" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#0b1026"/>
+      <stop offset="55%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e0e7ff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#e0e7ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bgS)"/>
+
+  <g transform="translate(0, 150)">
+  <!-- soft moon glow -->
+  <circle cx="1280" cy="270" r="260" fill="url(#moonGlow)"/>
+
+  <!-- crescent moon -->
+  <g transform="translate(1280 270)">
+    <circle cx="0" cy="0" r="120" fill="#f5f3ff"/>
+    <circle cx="40" cy="-20" r="120" fill="#1e1b4b"/>
+  </g>
+
+  <!-- stars -->
+  <g fill="#e0e7ff">
+    <circle cx="980"  cy="120" r="2.5"/>
+    <circle cx="1080" cy="180" r="1.8"/>
+    <circle cx="1150" cy="90"  r="2"/>
+    <circle cx="1450" cy="120" r="2.2"/>
+    <circle cx="1500" cy="220" r="1.6"/>
+    <circle cx="1380" cy="430" r="2"/>
+    <circle cx="1170" cy="470" r="1.8"/>
+    <circle cx="1050" cy="380" r="2.2"/>
+    <circle cx="1480" cy="380" r="1.5"/>
+    <circle cx="930"  cy="260" r="2"/>
+  </g>
+
+  <!-- sleep wave (REM cycle) -->
+  <path d="M 80 540 Q 200 480 320 530 T 560 520 T 800 530 T 1040 510"
+        fill="none" stroke="#a5b4fc" stroke-width="2.5" stroke-opacity="0.6"/>
+
+  <!-- text -->
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#e0e7ff">
+    <text x="80" y="170" font-size="26" letter-spacing="3" opacity="0.85">My Wellness Threads</text>
+    <text x="80" y="310" font-size="96" font-weight="700">Quality</text>
+    <text x="80" y="410" font-size="96" font-weight="700">Sleep</text>
+    <text x="80" y="475" font-size="30" font-style="italic" opacity="0.9">Where 80% of the repair work happens.</text>
+  </g>
+
+  <rect x="80" y="340" width="120" height="3" fill="#a5b4fc"/>
+  </g>
+</svg>

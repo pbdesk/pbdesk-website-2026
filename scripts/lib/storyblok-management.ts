@@ -119,6 +119,12 @@ interface SbAssetRecord {
   pretty_url?: string;
 }
 
+interface SbAssetFolderRecord {
+  id: number;
+  name: string;
+  parent_id: number | null;
+}
+
 interface AssetUploadSignedResponse {
   fields: Record<string, string>;
   filename: string;
@@ -389,6 +395,34 @@ export class StoryblokManagement {
     return { record: created.story, created: true };
   }
 
+  async listAssetFolders(): Promise<SbAssetFolderRecord[]> {
+    const res = await this.request<{ asset_folders: SbAssetFolderRecord[] }>({
+      path: "/asset_folders",
+    });
+    return res.asset_folders;
+  }
+
+  // Find a top-level asset folder by name, creating it when absent.
+  async findOrCreateAssetFolder(
+    name: string,
+    parentId: number | null = null
+  ): Promise<SbAssetFolderRecord> {
+    const all = await this.listAssetFolders();
+    const existing = all.find(
+      (folder) =>
+        folder.name === name && (folder.parent_id ?? null) === parentId
+    );
+    if (existing) {
+      return existing;
+    }
+    const created = await this.request<{ asset_folder: SbAssetFolderRecord }>({
+      method: "POST",
+      path: "/asset_folders",
+      body: { asset_folder: { name, parent_id: parentId } },
+    });
+    return created.asset_folder;
+  }
+
   async findAssetByFilename(filename: string): Promise<SbAssetRecord | null> {
     const res = await this.request<{ assets: SbAssetRecord[] }>({
       path: "/assets",
@@ -397,7 +431,10 @@ export class StoryblokManagement {
     return res.assets.find((a) => a.filename.endsWith(`/${filename}`)) ?? null;
   }
 
-  async uploadAsset(filePath: string): Promise<SbAssetRecord> {
+  async uploadAsset(
+    filePath: string,
+    assetFolderId: number | null = null
+  ): Promise<SbAssetRecord> {
     const filename = basename(filePath);
     const stat = statSync(filePath);
     const fileBuffer = readFileSync(filePath);
@@ -410,7 +447,7 @@ export class StoryblokManagement {
         filename,
         size: `${stat.size}`,
         content_length: stat.size,
-        asset_folder_id: null,
+        asset_folder_id: assetFolderId,
       },
     });
 

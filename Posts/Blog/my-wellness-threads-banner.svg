@@ -1,0 +1,55 @@
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="My Wellness Threads — four threads, one fabric">
+  <defs>
+    <linearGradient id="bgB" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b132b"/>
+      <stop offset="100%" stop-color="#1c2541"/>
+    </linearGradient>
+    <linearGradient id="t1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a6b4c"/>
+      <stop offset="100%" stop-color="#d8b864"/>
+    </linearGradient>
+    <linearGradient id="t2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c2410c"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="t3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#a5b4fc"/>
+    </linearGradient>
+    <linearGradient id="t4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7e22ce"/>
+      <stop offset="100%" stop-color="#f9a8d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bgB)"/>
+
+  <g transform="translate(0, 150)">
+  <!-- woven threads (4 sinuous lines) -->
+  <g stroke-width="6" fill="none" opacity="0.95" stroke-linecap="round">
+    <path d="M 850 80  C 1050 200, 1250 -20, 1500 140" stroke="url(#t1)"/>
+    <path d="M 850 220 C 1050 340, 1250 120, 1500 280" stroke="url(#t2)"/>
+    <path d="M 850 360 C 1050 480, 1250 260, 1500 420" stroke="url(#t3)"/>
+    <path d="M 850 500 C 1050 620, 1250 400, 1500 560" stroke="url(#t4)"/>
+  </g>
+
+  <!-- weaving cross-threads (vertical, subtle) -->
+  <g stroke="#e5e7eb" stroke-opacity="0.18" stroke-width="1.5">
+    <line x1="950"  y1="40" x2="950"  y2="580"/>
+    <line x1="1080" y1="40" x2="1080" y2="580"/>
+    <line x1="1210" y1="40" x2="1210" y2="580"/>
+    <line x1="1340" y1="40" x2="1340" y2="580"/>
+    <line x1="1470" y1="40" x2="1470" y2="580"/>
+  </g>
+
+  <!-- text -->
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#f1f5f9">
+    <text x="80" y="290" font-size="98" font-weight="700">My Wellness</text>
+    <text x="80" y="395" font-size="98" font-weight="700">Threads.</text>
+    <text x="80" y="465" font-size="30" font-style="italic" opacity="0.92">Four threads. One fabric.</text>
+    <text x="80" y="510" font-size="22" opacity="0.7">Cellular Nutrition · Adequate Exercise · Quality Sleep · Emotional Wellness</text>
+  </g>
+
+  <rect x="80" y="320" width="140" height="4" fill="#fbbf24"/>
+  </g>
+</svg>

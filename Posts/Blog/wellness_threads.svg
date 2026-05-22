@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <linearGradient id="thread1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3a0"/>
+      <stop offset="100%" stop-color="#4ade80"/>
+    </linearGradient>
+    <linearGradient id="thread2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="thread3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="thread4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="1200" fill="url(#bg)"/>
+
+  <!-- Subtle grid dots -->
+  <g fill="#ffffff" opacity="0.04">
+    <circle cx="200" cy="200" r="2"/>
+    <circle cx="1000" cy="200" r="2"/>
+    <circle cx="200" cy="1000" r="2"/>
+    <circle cx="1000" cy="1000" r="2"/>
+    <circle cx="600" cy="100" r="2"/>
+    <circle cx="100" cy="600" r="2"/>
+    <circle cx="1100" cy="600" r="2"/>
+    <circle cx="600" cy="1100" r="2"/>
+  </g>
+
+  <!-- Header text -->
+  <text x="600" y="90" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#94a3b8" letter-spacing="6">MY WELLNESS THREADS</text>
+  <text x="600" y="135" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#ffffff" font-style="italic">for a happy &amp; healthy life</text>
+
+  <!-- Outer orbit ring -->
+  <circle cx="600" cy="620" r="360" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1" stroke-dasharray="4 8"/>
+  <circle cx="600" cy="620" r="280" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+
+  <!-- Weaving threads (curved paths between nodes) -->
+  <g fill="none" stroke-width="2" opacity="0.5" filter="url(#glow)">
+    <path d="M 600 260 Q 850 380 960 620" stroke="url(#thread1)"/>
+    <path d="M 960 620 Q 850 860 600 980" stroke="url(#thread2)"/>
+    <path d="M 600 980 Q 350 860 240 620" stroke="url(#thread3)"/>
+    <path d="M 240 620 Q 350 380 600 260" stroke="url(#thread4)"/>
+  </g>
+
+  <!-- Central core -->
+  <circle cx="600" cy="620" r="140" fill="#0a0a0a" stroke="#ffffff" stroke-opacity="0.2" stroke-width="2"/>
+  <circle cx="600" cy="620" r="140" fill="none" stroke="url(#thread1)" stroke-opacity="0.4" stroke-width="1"/>
+  <text x="600" y="595" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#94a3b8" letter-spacing="4">WELLNESS</text>
+  <text x="600" y="635" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#ffffff" font-style="italic">Live Well,</text>
+  <text x="600" y="670" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#ffffff" font-style="italic">Build Long.</text>
+
+  <!-- Node 01: Nutrition (top) -->
+  <g>
+    <circle cx="600" cy="260" r="80" fill="#0a0a0a" stroke="url(#thread1)" stroke-width="2.5" filter="url(#glow)"/>
+    <text x="600" y="245" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#7dd3a0" letter-spacing="3">THREAD / 01</text>
+    <text x="600" y="278" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#ffffff" font-weight="600">Nutrition</text>
+    <text x="600" y="190" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#94a3b8">Cellular fuel for repair</text>
+  </g>
+
+  <!-- Node 02: Exercise (right) -->
+  <g>
+    <circle cx="960" cy="620" r="80" fill="#0a0a0a" stroke="url(#thread2)" stroke-width="2.5" filter="url(#glow)"/>
+    <text x="960" y="605" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#fbbf24" letter-spacing="3">THREAD / 02</text>
+    <text x="960" y="638" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#ffffff" font-weight="600">Exercise</text>
+    <text x="960" y="730" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#94a3b8">Movement, every day</text>
+  </g>
+
+  <!-- Node 03: Sleep (bottom) -->
+  <g>
+    <circle cx="600" cy="980" r="80" fill="#0a0a0a" stroke="url(#thread3)" stroke-width="2.5" filter="url(#glow)"/>
+    <text x="600" y="965" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#818cf8" letter-spacing="3">THREAD / 03</text>
+    <text x="600" y="998" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#ffffff" font-weight="600">Sleep</text>
+    <text x="600" y="1090" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#94a3b8">Restore and rebuild</text>
+  </g>
+
+  <!-- Node 04: Emotion (left) -->
+  <g>
+    <circle cx="240" cy="620" r="80" fill="#0a0a0a" stroke="url(#thread4)" stroke-width="2.5" filter="url(#glow)"/>
+    <text x="240" y="605" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#f472b6" letter-spacing="3">THREAD / 04</text>
+    <text x="240" y="638" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#ffffff" font-weight="600">Emotion</text>
+    <text x="240" y="730" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="#94a3b8">Mindful and grateful</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="600" y="1160" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#64748b" letter-spacing="3">PBDESK.COM  /  FROM THE DESK OF PINAL BHATT</text>
+</svg>

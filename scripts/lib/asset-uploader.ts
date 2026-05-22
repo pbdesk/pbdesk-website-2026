@@ -59,9 +59,19 @@ export class AssetUploader {
     this.cache = loadCache();
   }
 
-  async upload(absolutePath: string): Promise<UploadedAsset> {
+  async upload(
+    absolutePath: string,
+    assetFolderId: number | null = null
+  ): Promise<UploadedAsset> {
     const hash = hashFile(absolutePath);
-    const cached = this.cache.entries[absolutePath];
+    // Namespace the cache key by folder so a file previously uploaded to the
+    // root isn't served from cache when a folder is requested (and vice
+    // versa). Root uploads keep the bare-path key for backward compatibility.
+    const cacheKey =
+      assetFolderId === null
+        ? absolutePath
+        : `${absolutePath}::folder-${assetFolderId}`;
+    const cached = this.cache.entries[cacheKey];
     if (cached && cached.hash === hash) {
       return {
         id: cached.asset_id,
@@ -70,9 +80,9 @@ export class AssetUploader {
       };
     }
 
-    const record = await this.sb.uploadAsset(absolutePath);
+    const record = await this.sb.uploadAsset(absolutePath, assetFolderId);
     const filename = record.pretty_url ?? record.filename;
-    this.cache.entries[absolutePath] = {
+    this.cache.entries[cacheKey] = {
       hash,
       asset_id: record.id,
       filename,

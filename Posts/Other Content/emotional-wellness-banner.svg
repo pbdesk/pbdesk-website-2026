@@ -1,0 +1,50 @@
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Emotional Wellness — the thread I used to skip">
+  <defs>
+    <linearGradient id="bgEm" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b0764"/>
+      <stop offset="55%" stop-color="#7e22ce"/>
+      <stop offset="100%" stop-color="#f9a8d4"/>
+    </linearGradient>
+    <radialGradient id="heartGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bgEm)"/>
+
+  <g transform="translate(0, 150)">
+  <!-- glow -->
+  <circle cx="1260" cy="300" r="280" fill="url(#heartGlow)"/>
+
+  <!-- breath rings -->
+  <g fill="none" stroke="#fce7f3" stroke-opacity="0.45">
+    <circle cx="1260" cy="300" r="80" stroke-width="2"/>
+    <circle cx="1260" cy="300" r="140" stroke-width="1.5"/>
+    <circle cx="1260" cy="300" r="200" stroke-width="1"/>
+    <circle cx="1260" cy="300" r="260" stroke-width="0.7"/>
+  </g>
+
+  <!-- heart, abstract -->
+  <path d="M 1260 380
+           C 1180 320, 1140 240, 1200 200
+           C 1240 175, 1260 215, 1260 240
+           C 1260 215, 1280 175, 1320 200
+           C 1380 240, 1340 320, 1260 380 Z"
+        fill="#fce7f3" fill-opacity="0.92"/>
+
+  <!-- subtle thread weaving along bottom -->
+  <path d="M 80 555 Q 240 525 400 555 T 720 555 T 1040 555 T 1360 555 T 1680 555"
+        fill="none" stroke="#fce7f3" stroke-width="1.5" stroke-opacity="0.5"/>
+
+  <!-- text -->
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#fdf2f8">
+    <text x="80" y="170" font-size="26" letter-spacing="3" opacity="0.9">My Wellness Threads</text>
+    <text x="80" y="310" font-size="96" font-weight="700">Emotional</text>
+    <text x="80" y="410" font-size="96" font-weight="700">Wellness</text>
+    <text x="80" y="475" font-size="30" font-style="italic" opacity="0.95">The load-bearing thread.</text>
+  </g>
+
+  <rect x="80" y="340" width="120" height="3" fill="#fbcfe8"/>
+  </g>
+</svg>
