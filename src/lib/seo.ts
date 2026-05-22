@@ -1,22 +1,35 @@
 import type { Metadata } from "next";
 
-// On Vercel preview deploys, NEXT_PUBLIC_SITE_URL is intentionally unset so
-// each unique preview URL resolves correctly. Vercel auto-injects
-// NEXT_PUBLIC_VERCEL_URL (client-safe) and VERCEL_URL (server-only); we use
-// either as the fallback host before defaulting to production.
-const TRAILING_SLASH_RE = /\/$/;
+const PRODUCTION_SITE_URL = "https://www.pbdesk.com";
+const PROTOCOL_RE = /^https?:\/\//;
+const TRAILING_SLASHES_RE = /\/+$/;
 
-function resolveSiteUrl(): string {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+interface SiteUrlEnv {
+  NEXT_PUBLIC_SITE_URL?: string;
+  NEXT_PUBLIC_VERCEL_URL?: string;
+  VERCEL_ENV?: string;
+  VERCEL_URL?: string;
+}
+
+function normalizeSiteUrl(value: string): string {
+  const normalized = value.trim().replace(TRAILING_SLASHES_RE, "");
+  return PROTOCOL_RE.test(normalized) ? normalized : `https://${normalized}`;
+}
+
+export function resolveSiteUrl(
+  env: SiteUrlEnv = process.env as SiteUrlEnv
+): string {
+  const explicit = env.NEXT_PUBLIC_SITE_URL?.trim();
   if (explicit) {
-    return explicit.replace(TRAILING_SLASH_RE, "");
+    return normalizeSiteUrl(explicit);
   }
-  const vercelHost =
-    process.env.NEXT_PUBLIC_VERCEL_URL ?? process.env.VERCEL_URL;
-  if (vercelHost) {
-    return `https://${vercelHost}`;
+
+  const vercelHost = env.NEXT_PUBLIC_VERCEL_URL ?? env.VERCEL_URL;
+  if (env.VERCEL_ENV === "preview" && vercelHost) {
+    return normalizeSiteUrl(vercelHost);
   }
-  return "https://pbdesk.com";
+
+  return PRODUCTION_SITE_URL;
 }
 
 export const SITE_URL = resolveSiteUrl();
