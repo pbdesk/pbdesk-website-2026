@@ -2,10 +2,10 @@
 set -e
 
 # Merge a feature branch to develop, then develop to main
-# Usage: ./scripts/merge-to-main.sh <branch-name>
+# Usage: ./scripts/feature-to-main.sh <branch-name>
 
 if [ -z "$1" ]; then
-  echo "Usage: ./scripts/merge-to-main.sh <branch-name>"
+  echo "Usage: ./scripts/feature-to-main.sh <branch-name>"
   exit 1
 fi
 
