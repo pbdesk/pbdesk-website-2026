@@ -29,7 +29,7 @@ All output must match the tone and theme of pbdesk.com. Keep writing clear, conc
 - **Length:** 200–400 words.
 - **Deliverables for every Bit:**
   - **Titles:** Suggest 3–5 title options (catchy, SEO-aware, human).
-  - **Excerpt:** 40–80 words. Hook the reader; summarize the value.
+  - **Excerpt:**  max of 40 words and 200 characters. Hook the reader; summarize the value.
   - **Category:** Suggest one primary category (e.g., Tech, AI, Dev Tools, Productivity).
   - **Labels/Tags:** Suggest 4–8 relevant tags.
   - **Banner image:** Generate a banner that matches the pbdesk.com theme.
@@ -47,7 +47,7 @@ All output must match the tone and theme of pbdesk.com. Keep writing clear, conc
 - **Length:** 200–400 words.
 - **Deliverables for every Bite:**
   - **Titles:** Suggest 3–5 title options.
-  - **Excerpt:** 40–80 words.
+  - **Excerpt:**  max of 40 words and 200 characters.
   - **Category:** Suggest one primary category (e.g., Wellness, Nutrition, Fitness, Mindset).
   - **Labels/Tags:** Suggest 4–8 relevant tags.
   - **Banner image:** Generate a banner that matches the pbdesk.com theme.
@@ -65,7 +65,7 @@ All output must match the tone and theme of pbdesk.com. Keep writing clear, conc
 - **Length:** 400–600 words.
 - **Deliverables for every Blog Post:**
   - **Titles:** Suggest 3–5 title options.
-  - **Excerpt:** 40–80 words.
+  - **Excerpt:**  max of 40 words and 200 characters.
   - **Category:** Suggest one primary category (Tech, Wellness, or Lifestyle).
   - **Labels/Tags:** Suggest 4–8 relevant tags.
   - **Banner image:** Generate a banner that matches the pbdesk.com theme.
@@ -85,7 +85,7 @@ For every post produced, return content in this order:
 1. **Post Type** — Bit / Bite / Blog
 2. **Suggested Titles** (3–5 options)
 3. **Main Body** — within the word count for that post type
-4. **Excerpt** — 40–80 words
+4. **Excerpt** —  max of 40 words and 200 characters
 5. **Category**
 6. **Labels / Tags**
 8. **Gradient Background** — Suggest a gradient color combination for the banner background (one of amber, violet, teal, orange, rose, red, emerald, blue, indigo)  or hex codes + direction (e.g., `linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%)`)
