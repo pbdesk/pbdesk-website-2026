@@ -2,6 +2,7 @@ export type HeroPillarTone = "bits" | "bites" | "blog";
 
 export interface HeroPillarLink {
   href: string;
+  icon?: string;
   label: string;
   tone: HeroPillarTone;
 }
@@ -19,7 +20,22 @@ export const DEFAULT_HERO_CONTENT = {
 } as const;
 
 export const DEFAULT_HERO_PILLAR_LINKS: HeroPillarLink[] = [
-  { href: "/bits", label: "Bits", tone: "bits" },
-  { href: "/bites", label: "Bites", tone: "bites" },
-  { href: "/blog", label: "Blog", tone: "blog" },
+  {
+    href: "/bits",
+    icon: "/pillers/bits-avatar.svg",
+    label: "Bits",
+    tone: "bits",
+  },
+  {
+    href: "/bites",
+    icon: "/pillers/bites-avatar.svg",
+    label: "Bites",
+    tone: "bites",
+  },
+  {
+    href: "/blog",
+    icon: "/pillers/blog-avatar.svg",
+    label: "Blog",
+    tone: "blog",
+  },
 ];

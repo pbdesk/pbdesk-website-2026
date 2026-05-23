@@ -113,12 +113,24 @@ export default function Hero({
                 {pillarLinks.map((pillar) => (
                   <Link
                     className={cn(
-                      "inline-flex h-10 items-center rounded-full border bg-[var(--bg-elevated)]/70 px-4 font-semibold text-sm shadow-[var(--shadow-sm)] backdrop-blur transition-transform hover:-translate-y-0.5",
+                      "inline-flex h-10 items-center gap-2 rounded-full border bg-[var(--bg-elevated)]/70 pr-4 font-semibold text-sm shadow-[var(--shadow-sm)] backdrop-blur transition-transform hover:-translate-y-0.5",
+                      pillar.icon ? "pl-1.5" : "pl-4",
                       pillarToneClasses[pillar.tone]
                     )}
                     href={pillar.href}
                     key={pillar.href}
                   >
+                    {pillar.icon ? (
+                      <Image
+                        alt=""
+                        aria-hidden="true"
+                        className="rounded-full"
+                        height={28}
+                        src={pillar.icon}
+                        unoptimized
+                        width={28}
+                      />
+                    ) : null}
                     {pillar.label}
                   </Link>
                 ))}
