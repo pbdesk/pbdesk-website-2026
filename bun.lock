@@ -6,7 +6,7 @@
       "name": "pbdesk.com",
       "dependencies": {
         "@storyblok/react": "6.1.9",
-        "@tabler/icons-react": "^3.44.0",
+        "@tabler/icons-react": "3.44.0",
         "@vercel/analytics": "2.0.1",
         "@vercel/speed-insights": "2.0.0",
         "clsx": "2.1.1",

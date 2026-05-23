@@ -93,7 +93,7 @@ export default function CuratedPostSet({
             </Link>
             <Link
               className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[var(--accent)] bg-transparent px-7 font-semibold text-[var(--accent)] text-sm transition-all hover:bg-[var(--accent)] hover:text-white"
-              href={`/${pillarSlug}/all`}
+              href={`/${pillarSlug}all`}
             >
               Browse All {pillarLabel}
             </Link>

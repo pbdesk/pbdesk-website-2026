@@ -1,9 +1,26 @@
 import type { Post } from "@/components/landing/post-card";
 import type { PillarKey, PostStory } from "./types";
 
-export type PostWithSlug = Post & { slug: string; pillar: PillarKey };
+export type PostWithSlug = Post & {
+  publishedAt?: string;
+  slug: string;
+  pillar: PillarKey;
+  updatedAt?: string;
+};
 
 const PROTOCOL_RELATIVE = /^\/\//;
+
+function firstDateValue(
+  ...values: (null | string | undefined)[]
+): string | undefined {
+  for (const value of values) {
+    if (value?.trim()) {
+      return value;
+    }
+  }
+
+  return;
+}
 
 export function postStoryToPost(story: PostStory): PostWithSlug {
   const c = story.content;
@@ -20,6 +37,12 @@ export function postStoryToPost(story: PostStory): PostWithSlug {
     featured: c.featured ?? false,
     slug: story.slug,
     pillar: c.pillar,
+    publishedAt: firstDateValue(
+      story.published_at,
+      story.first_published_at,
+      c.published_at
+    ),
+    updatedAt: firstDateValue(story.updated_at, c.updated_at),
   };
 }
 
