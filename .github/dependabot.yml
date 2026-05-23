@@ -1,0 +1,64 @@
+version: 2
+
+updates:
+  # ── npm / Bun packages ──────────────────────────────────────────────────
+  # Dependabot uses the "npm" ecosystem for Bun projects (bun.lock is treated
+  # as a compatible lockfile). It will open PRs for outdated dependencies in
+  # package.json, including both dependencies and devDependencies.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "javascript"
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      # Group all Tabler icon updates into one PR
+      tabler-icons:
+        patterns:
+          - "@tabler/icons-react"
+      # Group all Tailwind-related updates
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+      # Group Storyblok SDK updates
+      storyblok:
+        patterns:
+          - "@storyblok/*"
+          - "storyblok-*"
+      # Group React + React DOM together
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      # Group all @types/* packages
+      types:
+        patterns:
+          - "@types/*"
+
+  # ── GitHub Actions ──────────────────────────────────────────────────────
+  # Keeps actions/checkout, oven-sh/setup-bun, actions/cache, etc. up to date.
+  # Updating setup-bun also indirectly keeps the Bun runtime current when
+  # bun-version is set to "latest".
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "09:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "chore(ci)"

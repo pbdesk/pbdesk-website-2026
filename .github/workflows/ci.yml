@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint · Test · Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # Storyblok tokens needed for build-time CMS fetches.
+      # Add these as repository secrets in GitHub → Settings → Secrets.
+      STORYBLOK_ACCESS_TOKEN: ${{ secrets.STORYBLOK_ACCESS_TOKEN }}
+      NEXT_PUBLIC_STORYBLOK_TOKEN: ${{ secrets.NEXT_PUBLIC_STORYBLOK_TOKEN }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      # Cache Bun's global module cache so repeated installs are fast.
+      - name: Cache Bun modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # ── Lint ───────────────────────────────────────────────────────────────
+      - name: Lint (Ultracite / Biome)
+        run: bun run lint
+
+      # ── Tests ──────────────────────────────────────────────────────────────
+      - name: Test
+        run: bun test
+
+      # ── Build ──────────────────────────────────────────────────────────────
+      # `next build` validates TypeScript, resolves routes, and runs RSC.
+      # Lefthook hooks are skipped in CI (no git context needed here).
+      - name: Build
+        run: bun run build
+        env:
+          # Suppress Next.js telemetry in CI
+          NEXT_TELEMETRY_DISABLED: "1"
