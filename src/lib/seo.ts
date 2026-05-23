@@ -39,7 +39,9 @@ export const SITE_TAGLINE = "Bits, Bites & Blog — from the desk of Pinal Bhatt
 export const SITE_DEFAULT_TITLE = "PBDesk — Bits, Bites & Blog";
 export const SITE_DEFAULT_DESCRIPTION =
   "From the desk of Pinal Bhatt — a space where code meets wellness. Bits (dev & AI), Bites (fitness & mindfulness), Blog (long-form reflections).";
-export const DEFAULT_OG_IMAGE = "/pb/pb-sq-no-bg.png";
+export const DEFAULT_OG_IMAGE = "/og-image.png";
+export const DEFAULT_OG_IMAGE_HEIGHT = 630;
+export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 
 export const SOCIAL = {
   twitterHandle: "@pbdesk",
@@ -103,6 +105,8 @@ export function pageMetadata({
         {
           url: ogImage,
           alt: `${title} — ${SITE_NAME}`,
+          height: DEFAULT_OG_IMAGE_HEIGHT,
+          width: DEFAULT_OG_IMAGE_WIDTH,
         },
       ],
     },

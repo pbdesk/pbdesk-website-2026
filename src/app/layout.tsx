@@ -7,6 +7,8 @@ import "./globals.css";
 import { ToasterProvider } from "@/lib/providers/toaster";
 import {
   DEFAULT_OG_IMAGE,
+  DEFAULT_OG_IMAGE_HEIGHT,
+  DEFAULT_OG_IMAGE_WIDTH,
   jsonLdString,
   SITE_AUTHOR,
   SITE_DEFAULT_DESCRIPTION,
@@ -69,6 +71,8 @@ export const metadata: Metadata = {
       {
         url: DEFAULT_OG_IMAGE,
         alt: `${SITE_NAME} — ${SITE_AUTHOR}`,
+        height: DEFAULT_OG_IMAGE_HEIGHT,
+        width: DEFAULT_OG_IMAGE_WIDTH,
       },
     ],
   },
