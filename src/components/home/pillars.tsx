@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { Reveal } from "@/components/ui/reveal";
+import { getRevealStaggerDelay } from "@/lib/reveal-motion";
 
 interface PillarCard {
   avatar: string;
@@ -78,39 +80,44 @@ export default function Pillars({
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
-          {pillars.map((pillar) => (
-            <Link
-              className="group flex flex-col overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
-              href={pillar.href}
+          {pillars.map((pillar, index) => (
+            <Reveal
+              className="h-full"
+              delay={getRevealStaggerDelay(index)}
               key={pillar.name}
             >
-              <div
-                aria-hidden="true"
-                className={`${pillar.gradient} relative flex h-44 w-full items-center justify-center`}
+              <Link
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)] shadow-[var(--shadow-sm)] transition-all duration-200 hover:-translate-y-1 hover:shadow-xl"
+                href={pillar.href}
               >
-                <Image
-                  alt=""
-                  className="h-28 w-28 object-contain transition-transform duration-200 hover:rotate-[-5deg]"
-                  height={120}
-                  src={pillar.avatar}
-                  width={120}
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-7">
-                <h3 className="mb-3 font-bold text-[var(--fg-primary)] text-xl">
-                  {pillar.title}
-                </h3>
-                <p
-                  className="mb-6 flex-1 text-[var(--fg-secondary)] text-sm"
-                  style={{ lineHeight: 1.65 }}
+                <div
+                  aria-hidden="true"
+                  className={`${pillar.gradient} relative flex h-44 w-full items-center justify-center`}
                 >
-                  {pillar.description}
-                </p>
-                <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--fg-brand)] text-sm">
-                  {pillar.cta} <span aria-hidden="true">→</span>
-                </span>
-              </div>
-            </Link>
+                  <Image
+                    alt=""
+                    className="h-28 w-28 object-contain transition-transform duration-200 hover:rotate-[-5deg]"
+                    height={120}
+                    src={pillar.avatar}
+                    width={120}
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-7">
+                  <h3 className="mb-3 font-bold text-[var(--fg-primary)] text-xl">
+                    {pillar.title}
+                  </h3>
+                  <p
+                    className="mb-6 flex-1 text-[var(--fg-secondary)] text-sm"
+                    style={{ lineHeight: 1.65 }}
+                  >
+                    {pillar.description}
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--fg-brand)] text-sm">
+                    {pillar.cta} <span aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </div>

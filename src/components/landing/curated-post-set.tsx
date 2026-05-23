@@ -9,6 +9,7 @@ import type { CSSProperties } from "react";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Reveal } from "@/components/ui/reveal";
 import { pillarAccents } from "@/lib/pillars";
+import { getRevealStaggerDelay } from "@/lib/reveal-motion";
 import { postStoryToPost } from "@/lib/storyblok/adapters";
 import type {
   LandingPageStory,
@@ -74,12 +75,14 @@ export default function CuratedPostSet({
         </Reveal>
 
         <div className="grid gap-6 lg:grid-cols-3">
-          {cards.map((card) => (
-            <PostCard
-              accentColor={accentColor}
+          {cards.map((card, index) => (
+            <Reveal
+              className="h-full"
+              delay={getRevealStaggerDelay(index)}
               key={`${card.pillar}/${card.slug}`}
-              post={card}
-            />
+            >
+              <PostCard accentColor={accentColor} post={card} />
+            </Reveal>
           ))}
         </div>
 

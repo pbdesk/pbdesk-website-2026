@@ -10,6 +10,8 @@ import {
 import type { ComponentType } from "react";
 import { useId, useState } from "react";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { Reveal } from "@/components/ui/reveal";
+import { getRevealStaggerDelay } from "@/lib/reveal-motion";
 
 type PillarKey = "nutrition" | "exercise" | "sleep" | "emotion";
 type IconKey = "apple" | "run" | "moon" | "heart";
@@ -399,37 +401,38 @@ function ThreadsList({
 }) {
   return (
     <div className="flex flex-col gap-3">
-      {threads.map((p) => {
+      {threads.map((p, index) => {
         const Icon = p.icon;
         const isActive = active === p.key;
         return (
-          <div
-            className={`pillar-row ${isActive ? "pillar-row-active" : ""}`}
-            key={p.key}
-            onMouseEnter={() => setActive(p.key)}
-            onMouseLeave={() => setActive(null)}
-            style={{ ["--pillar-color" as string]: p.color }}
-          >
-            <span className="pillar-icon">
-              <Icon size={26} stroke={1.75} />
-            </span>
-            <div className="min-w-0">
-              <div className="mb-1.5 flex items-baseline gap-2.5">
-                <span className="font-mono font-semibold text-[11px] text-[var(--fg-muted)] tracking-wider">
-                  THREAD / {p.n}
-                </span>
+          <Reveal delay={getRevealStaggerDelay(index)} key={p.key}>
+            <div
+              className={`pillar-row ${isActive ? "pillar-row-active" : ""}`}
+              onMouseEnter={() => setActive(p.key)}
+              onMouseLeave={() => setActive(null)}
+              style={{ ["--pillar-color" as string]: p.color }}
+            >
+              <span className="pillar-icon">
+                <Icon size={26} stroke={1.75} />
+              </span>
+              <div className="min-w-0">
+                <div className="mb-1.5 flex items-baseline gap-2.5">
+                  <span className="font-mono font-semibold text-[11px] text-[var(--fg-muted)] tracking-wider">
+                    THREAD / {p.n}
+                  </span>
+                </div>
+                <h3 className="font-semibold text-[17px] text-[var(--fg-primary)] tracking-tight">
+                  {p.title}
+                </h3>
+                <p
+                  className="text-[14px] text-[var(--fg-secondary)]"
+                  style={{ lineHeight: 1.6 }}
+                >
+                  {p.body}
+                </p>
               </div>
-              <h3 className="font-semibold text-[17px] text-[var(--fg-primary)] tracking-tight">
-                {p.title}
-              </h3>
-              <p
-                className="text-[14px] text-[var(--fg-secondary)]"
-                style={{ lineHeight: 1.6 }}
-              >
-                {p.body}
-              </p>
             </div>
-          </div>
+          </Reveal>
         );
       })}
     </div>

@@ -10,6 +10,8 @@ import {
 import type { ComponentType, ReactNode } from "react";
 import { Card } from "@/components/ui/card";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { Reveal } from "@/components/ui/reveal";
+import { getRevealStaggerDelay } from "@/lib/reveal-motion";
 
 type IconKey = "bolt" | "code" | "heart" | "leaf" | "notebook" | "pencil";
 
@@ -144,39 +146,51 @@ export default function MyRealm({
         </div>
 
         <div className="mb-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {realmList.map((realm) => (
-            <Card className="rounded-xl p-6 shadow-none" key={realm.title}>
-              <h3 className="mb-3 font-semibold text-[var(--fg-primary)] text-base">
-                {realm.title}
-              </h3>
-              <p
-                className="text-[var(--fg-secondary)] text-sm"
-                style={{ lineHeight: 1.65 }}
-              >
-                {realm.description}
-              </p>
-            </Card>
-          ))}
-        </div>
-
-        <div className="mb-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featureList.map((feature) => {
-            const Icon = ICONS[feature.icon] ?? IconBolt;
-            return (
-              <Card className="rounded-xl p-7 shadow-none" key={feature.title}>
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--fg-brand)]">
-                  <Icon size={22} stroke={1.75} />
-                </div>
-                <h3 className="mb-3 font-semibold text-[var(--fg-primary)] text-lg">
-                  {feature.title}
+          {realmList.map((realm, index) => (
+            <Reveal
+              className="h-full"
+              delay={getRevealStaggerDelay(index)}
+              key={realm.title}
+            >
+              <Card className="h-full rounded-xl p-6 shadow-none">
+                <h3 className="mb-3 font-semibold text-[var(--fg-primary)] text-base">
+                  {realm.title}
                 </h3>
                 <p
                   className="text-[var(--fg-secondary)] text-sm"
                   style={{ lineHeight: 1.65 }}
                 >
-                  {feature.description}
+                  {realm.description}
                 </p>
               </Card>
+            </Reveal>
+          ))}
+        </div>
+
+        <div className="mb-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {featureList.map((feature, index) => {
+            const Icon = ICONS[feature.icon] ?? IconBolt;
+            return (
+              <Reveal
+                className="h-full"
+                delay={getRevealStaggerDelay(index)}
+                key={feature.title}
+              >
+                <Card className="h-full rounded-xl p-7 shadow-none">
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-brand-50)] text-[var(--fg-brand)]">
+                    <Icon size={22} stroke={1.75} />
+                  </div>
+                  <h3 className="mb-3 font-semibold text-[var(--fg-primary)] text-lg">
+                    {feature.title}
+                  </h3>
+                  <p
+                    className="text-[var(--fg-secondary)] text-sm"
+                    style={{ lineHeight: 1.65 }}
+                  >
+                    {feature.description}
+                  </p>
+                </Card>
+              </Reveal>
             );
           })}
         </div>

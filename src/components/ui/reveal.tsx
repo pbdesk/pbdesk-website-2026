@@ -1,27 +1,15 @@
 "use client";
 
 import { type ReactNode, useEffect, useRef, useState } from "react";
+import { getRevealVariant, type RevealVariant } from "@/lib/reveal-motion";
 import { cn } from "@/lib/utils";
-
-const VARIANTS = [
-  "up",
-  "down",
-  "left",
-  "right",
-  "zoom-in",
-  "zoom-out",
-  "blur",
-  "tilt",
-] as const;
-
-type Variant = (typeof VARIANTS)[number] | "fade";
 
 interface RevealProps {
   children: ReactNode;
   className?: string;
   delay?: number;
   threshold?: number;
-  variant?: Variant;
+  variant?: RevealVariant;
 }
 
 export function Reveal({
@@ -33,21 +21,9 @@ export function Reveal({
 }: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
-  const [variant, setVariant] = useState<Variant | null>(null);
+  const variant = getRevealVariant(explicitVariant);
 
   useEffect(() => {
-    if (explicitVariant) {
-      setVariant(explicitVariant);
-      return;
-    }
-    const pick = VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
-    setVariant(pick);
-  }, [explicitVariant]);
-
-  useEffect(() => {
-    if (!variant) {
-      return;
-    }
     const node = ref.current;
     if (!node) {
       return;

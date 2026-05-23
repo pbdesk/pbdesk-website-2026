@@ -454,6 +454,61 @@ body {
   );
 }
 
+.hero-intro-chip,
+.hero-portrait-shell,
+.hero-portrait-aura,
+.hero-portrait-image,
+.hero-orbit-chip {
+  animation: hero-gentle-rise 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-portrait-aura {
+  animation-delay: 80ms;
+}
+
+.hero-portrait-image {
+  animation-delay: 140ms;
+}
+
+.hero-orbit-chip {
+  animation-delay: 220ms;
+}
+
+.hero-orbit-chip-bites {
+  animation-delay: 300ms;
+}
+
+.hero-orbit-chip-blog {
+  animation-delay: 380ms;
+}
+
+.hero-status-pulse {
+  animation: hero-status-pulse 2400ms ease-in-out infinite;
+}
+
+@keyframes hero-gentle-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes hero-status-pulse {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.56;
+    transform: scale(1.35);
+  }
+}
+
 /* Hero blob backgrounds */
 .hero-blob-left {
   position: absolute;
@@ -1027,43 +1082,20 @@ body {
   }
 }
 
-/* Scroll-triggered reveal — keyframe variants picked at mount */
+/* Scroll-triggered reveal — deterministic fade with a slight upward rise */
 .reveal {
   opacity: 0;
   will-change: opacity, transform, filter;
 }
 
 .reveal-visible {
-  animation-duration: 950ms;
+  animation-duration: 720ms;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   animation-fill-mode: forwards;
 }
 
 .reveal-visible.reveal-up {
   animation-name: reveal-up;
-}
-.reveal-visible.reveal-down {
-  animation-name: reveal-down;
-}
-.reveal-visible.reveal-left {
-  animation-name: reveal-left;
-}
-.reveal-visible.reveal-right {
-  animation-name: reveal-right;
-}
-.reveal-visible.reveal-zoom-in {
-  animation-name: reveal-zoom-in;
-}
-.reveal-visible.reveal-zoom-out {
-  animation-name: reveal-zoom-out;
-}
-.reveal-visible.reveal-blur {
-  animation-name: reveal-blur;
-  animation-duration: 1100ms;
-}
-.reveal-visible.reveal-tilt {
-  animation-name: reveal-tilt;
-  animation-duration: 1050ms;
 }
 .reveal-visible.reveal-fade {
   animation-name: reveal-fade;
@@ -1072,90 +1104,11 @@ body {
 @keyframes reveal-up {
   from {
     opacity: 0;
-    transform: translate3d(0, 56px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes reveal-down {
-  from {
-    opacity: 0;
-    transform: translate3d(0, -56px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes reveal-left {
-  from {
-    opacity: 0;
-    transform: translate3d(-72px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes reveal-right {
-  from {
-    opacity: 0;
-    transform: translate3d(72px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes reveal-zoom-in {
-  from {
-    opacity: 0;
-    transform: scale(0.86);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes reveal-zoom-out {
-  from {
-    opacity: 0;
-    transform: scale(1.14);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes reveal-blur {
-  from {
-    opacity: 0;
-    filter: blur(14px);
     transform: translate3d(0, 24px, 0);
   }
   to {
     opacity: 1;
-    filter: blur(0);
     transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes reveal-tilt {
-  from {
-    opacity: 0;
-    transform: rotate(-2.5deg) translate3d(0, 44px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(0deg) translate3d(0, 0, 0);
   }
 }
 
@@ -1169,6 +1122,32 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-intro-chip,
+  .hero-portrait-shell,
+  .hero-portrait-aura,
+  .hero-portrait-image,
+  .hero-orbit-chip,
+  .hero-status-pulse,
+  .heart-pulse,
+  .pillars-art .hub-glow,
+  .pillars-art .breath,
+  .pillars-art .float-1,
+  .pillars-art .float-2,
+  .pillars-art .float-3,
+  .pillars-art .float-4,
+  .floating,
+  .floating-1,
+  .floating-2,
+  .floating-3,
+  .floating-4 {
+    animation: none;
+  }
+
+  .hero-intro-chip,
+  .hero-portrait-shell,
+  .hero-portrait-aura,
+  .hero-portrait-image,
+  .hero-orbit-chip,
   .reveal {
     opacity: 1;
   }

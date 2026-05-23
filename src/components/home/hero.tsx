@@ -52,10 +52,10 @@ export default function Hero({
       <div className="wrapper relative z-10">
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
           <div className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
-            <Chip className="mb-7" variant="brand">
+            <Chip className="hero-intro-chip mb-7" variant="brand">
               <span className="relative flex h-2 w-2">
                 <span
-                  className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
+                  className="hero-status-pulse absolute inline-flex h-full w-full rounded-full opacity-60"
                   style={{ background: "var(--fg-brand)" }}
                 />
                 <span
@@ -130,30 +130,30 @@ export default function Hero({
             ) : null}
           </div>
 
-          <div className="relative mx-auto aspect-square w-full max-w-[430px] lg:max-w-[520px]">
+          <div className="hero-portrait-stage relative mx-auto aspect-square w-full max-w-[430px] lg:max-w-[520px]">
             <div
               aria-hidden="true"
-              className="absolute inset-8 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/55 shadow-[var(--shadow-xl)] backdrop-blur"
+              className="hero-portrait-shell absolute inset-8 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/55 shadow-[var(--shadow-xl)] backdrop-blur"
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_25%,rgb(16_185_129_/_0.2),transparent_34%),radial-gradient(circle_at_75%_68%,rgb(245_158_11_/_0.18),transparent_32%),radial-gradient(circle_at_50%_50%,rgb(79_70_229_/_0.18),transparent_58%)]"
+              className="hero-portrait-aura absolute inset-0 rounded-full bg-[radial-gradient(circle_at_35%_25%,rgb(16_185_129_/_0.2),transparent_34%),radial-gradient(circle_at_75%_68%,rgb(245_158_11_/_0.18),transparent_32%),radial-gradient(circle_at_50%_50%,rgb(79_70_229_/_0.18),transparent_58%)]"
             />
             <Image
               alt="Portrait of Pinal Bhatt"
-              className="relative z-10 h-full w-full object-contain drop-shadow-2xl"
+              className="hero-portrait-image relative z-10 h-full w-full object-contain drop-shadow-2xl"
               height={491}
               priority
               src="/pb/pb-sq-no-bg.png"
               width={491}
             />
-            <div className="absolute top-16 -left-2 z-20 rounded-full border border-[var(--color-pillar-bits)]/25 bg-[var(--bg-elevated)]/90 px-4 py-2 font-semibold text-[var(--color-pillar-bits)] text-sm shadow-[var(--shadow-md)] backdrop-blur">
+            <div className="hero-orbit-chip hero-orbit-chip-bits absolute top-16 -left-2 z-20 rounded-full border border-[var(--color-pillar-bits)]/25 bg-[var(--bg-elevated)]/90 px-4 py-2 font-semibold text-[var(--color-pillar-bits)] text-sm shadow-[var(--shadow-md)] backdrop-blur">
               Code
             </div>
-            <div className="absolute top-1/2 right-0 z-20 rounded-full border border-[var(--color-pillar-bites)]/25 bg-[var(--bg-elevated)]/90 px-4 py-2 font-semibold text-[var(--color-pillar-bites)] text-sm shadow-[var(--shadow-md)] backdrop-blur">
+            <div className="hero-orbit-chip hero-orbit-chip-bites absolute top-1/2 right-0 z-20 rounded-full border border-[var(--color-pillar-bites)]/25 bg-[var(--bg-elevated)]/90 px-4 py-2 font-semibold text-[var(--color-pillar-bites)] text-sm shadow-[var(--shadow-md)] backdrop-blur">
               Wellness
             </div>
-            <div className="absolute bottom-12 left-10 z-20 rounded-full border border-[var(--color-pillar-blog)]/25 bg-[var(--bg-elevated)]/90 px-4 py-2 font-semibold text-[var(--color-pillar-blog)] text-sm shadow-[var(--shadow-md)] backdrop-blur">
+            <div className="hero-orbit-chip hero-orbit-chip-blog absolute bottom-12 left-10 z-20 rounded-full border border-[var(--color-pillar-blog)]/25 bg-[var(--bg-elevated)]/90 px-4 py-2 font-semibold text-[var(--color-pillar-blog)] text-sm shadow-[var(--shadow-md)] backdrop-blur">
               Reflections
             </div>
           </div>
