@@ -1121,6 +1121,40 @@ body {
   }
 }
 
+/* Pillar pill sonar-ripple on hover */
+.pillar-pill {
+  position: relative;
+}
+
+.pillar-pill::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  border: 1.5px solid currentColor;
+  border-radius: inherit;
+  opacity: 0;
+}
+
+.pillar-pill:hover::after {
+  animation: pillar-ripple 1.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes pillar-ripple {
+  0% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  65% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-intro-chip,
   .hero-portrait-shell,
@@ -1139,7 +1173,8 @@ body {
   .floating-1,
   .floating-2,
   .floating-3,
-  .floating-4 {
+  .floating-4,
+  .pillar-pill:hover::after {
     animation: none;
   }
 
