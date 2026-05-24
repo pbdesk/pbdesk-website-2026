@@ -13,6 +13,7 @@ import { postStoryToPost } from "./adapters";
 import {
   fetchAboutStory,
   fetchAllPosts,
+  fetchBrainBoostHubStory,
   fetchDisclaimerStory,
   fetchGlobalConfig,
   fetchHomeStory,
@@ -24,6 +25,7 @@ import {
 } from "./client";
 import type {
   AboutPageStory,
+  BrainBoostHubPageStory,
   DisclaimerPageStory,
   GlobalConfigStory,
   HomePageStory,
@@ -255,6 +257,22 @@ export async function loadKenkenStory(): Promise<KenkenPageStory | null> {
   }
   try {
     return await fetchKenkenStory();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the `brain-boost/hub` singleton story. Returns null when Storyblok
+ * isn't configured or the story doesn't exist — the hub page falls back to
+ * its hardcoded TypeScript constants in that case.
+ */
+export async function loadBrainBoostHubStory(): Promise<BrainBoostHubPageStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchBrainBoostHubStory();
   } catch {
     return null;
   }
