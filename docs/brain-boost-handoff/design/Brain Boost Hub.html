@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Brain Boost · /brain-boost hub — PBDesk 2026</title>
+  <link rel="stylesheet" href="brain-boost.css?v=1"/>
+  <style>
+    /* Page-level: design canvas takes the viewport; each artboard is a
+       self-contained mock with its own data-theme. */
+    html, body { height: 100%; overflow: hidden; }
+    #root { width: 100vw; height: 100vh; }
+    .bb-artboard {
+      background: var(--bg-page);
+      color: var(--fg-primary);
+      font-family: var(--font-sans);
+    }
+    .bb-artboard.dark { color-scheme: dark; }
+  </style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="brain-boost-chrome.jsx"></script>
+  <script type="text/babel" src="brain-boost-variants.jsx"></script>
+
+  <script type="text/babel" data-presets="env,react">
+    const { useState, useMemo } = React;
+
+    /* Wraps a variant in its own theme scope. Each artboard sets
+       data-theme on its inner root so light/dark coexist on the canvas. */
+    function Artboard({ theme = 'light', children }) {
+      return (
+        <div className={`bb-artboard ${theme}`} data-theme={theme} style={{minHeight:'100%'}}>
+          <Nav dark={theme === 'dark'} onToggleDark={() => {}}/>
+          {children}
+        </div>
+      );
+    }
+
+    function App() {
+      // Artboard width/heights are tuned so each variant shows the full hub
+      // composition without scrolling — the canvas focus mode lets the
+      // user dive into any one.
+      return (
+        <DesignCanvas projectName="/brain-boost hub — PBDesk 2026" defaultSectionId="hub">
+          <DCSection id="hub" title="Brain Boost — hub page design (3 directions)">
+            <DCArtboard id="v1-light" label="V1 · Editorial Hub — light" width={1280} height={3120}>
+              <Artboard theme="light"><VariantEditorial/></Artboard>
+            </DCArtboard>
+            <DCArtboard id="v2-light" label="V2 · Arcade Tiles — light" width={1280} height={2200}>
+              <Artboard theme="light"><VariantArcade/></Artboard>
+            </DCArtboard>
+            <DCArtboard id="v3-light" label="V3 · Daily-First — light" width={1280} height={2200}>
+              <Artboard theme="light"><VariantDaily/></Artboard>
+            </DCArtboard>
+          </DCSection>
+
+          <DCSection id="hub-dark" title="Same variants — dark theme">
+            <DCArtboard id="v1-dark" label="V1 · Editorial Hub — dark" width={1280} height={3120}>
+              <Artboard theme="dark"><VariantEditorial/></Artboard>
+            </DCArtboard>
+            <DCArtboard id="v2-dark" label="V2 · Arcade Tiles — dark" width={1280} height={2200}>
+              <Artboard theme="dark"><VariantArcade/></Artboard>
+            </DCArtboard>
+            <DCArtboard id="v3-dark" label="V3 · Daily-First — dark" width={1280} height={2200}>
+              <Artboard theme="dark"><VariantDaily/></Artboard>
+            </DCArtboard>
+          </DCSection>
+        </DesignCanvas>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
