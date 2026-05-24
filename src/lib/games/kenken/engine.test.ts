@@ -1,12 +1,17 @@
 /// <reference types="bun-types" />
 import { describe, expect, test } from "bun:test";
 import {
+  cageConflicts,
   clearCell,
   cloneGrid,
   createEmptyGrid,
+  isSolved,
+  mistakeCells,
+  rowColConflicts,
   setCellValue,
   toggleCellNote,
 } from "./engine";
+import type { GameGrid } from "./runtime-types";
 import type { Cage } from "./types";
 
 describe("createEmptyGrid", () => {
@@ -110,5 +115,136 @@ describe("clearCell", () => {
     grid = setCellValue(grid, [0, 0], 1, []);
     grid = clearCell(grid, [0, 0]);
     expect(grid[0][0]).toEqual({ value: null, notes: [] });
+  });
+});
+
+function gridFromValues(values: (number | null)[][]): GameGrid {
+  return values.map((row) =>
+    row.map((value) => ({ value, notes: [] as number[] }))
+  );
+}
+
+describe("rowColConflicts", () => {
+  test("flags duplicate digits in a row and a column", () => {
+    const grid = gridFromValues([
+      [1, 1, 3],
+      [1, 2, 3],
+      [3, 1, 2],
+    ]);
+    const conflicts = rowColConflicts(grid);
+    expect(conflicts.has("0,0")).toBe(true);
+    expect(conflicts.has("0,1")).toBe(true);
+    expect(conflicts.has("1,0")).toBe(true);
+    expect(conflicts.has("2,2")).toBe(false);
+  });
+
+  test("empty cells never conflict", () => {
+    const grid = gridFromValues([
+      [null, null],
+      [null, null],
+    ]);
+    expect(rowColConflicts(grid).size).toBe(0);
+  });
+});
+
+describe("cageConflicts", () => {
+  const cages: Cage[] = [
+    {
+      cells: [
+        [0, 0],
+        [0, 1],
+      ],
+      op: "+",
+      target: 3,
+    },
+    {
+      cells: [
+        [1, 0],
+        [1, 1],
+      ],
+      op: "-",
+      target: 1,
+    },
+  ];
+
+  test("flags a fully-filled cage that violates its target", () => {
+    const grid = gridFromValues([
+      [2, 2],
+      [1, 2],
+    ]);
+    const conflicts = cageConflicts(grid, cages);
+    expect(conflicts.has("0,0")).toBe(true);
+    expect(conflicts.has("0,1")).toBe(true);
+    expect(conflicts.has("1,0")).toBe(false);
+  });
+
+  test("a partially-filled cage is never flagged", () => {
+    const grid = gridFromValues([
+      [2, null],
+      [null, null],
+    ]);
+    expect(cageConflicts(grid, cages).size).toBe(0);
+  });
+});
+
+describe("isSolved", () => {
+  const cages: Cage[] = [
+    {
+      cells: [
+        [0, 0],
+        [0, 1],
+      ],
+      op: "+",
+      target: 3,
+    },
+    {
+      cells: [
+        [1, 0],
+        [1, 1],
+      ],
+      op: "+",
+      target: 3,
+    },
+  ];
+
+  test("true when grid is full, Latin-valid, and all cages satisfied", () => {
+    const grid = gridFromValues([
+      [1, 2],
+      [2, 1],
+    ]);
+    expect(isSolved(grid, 2, cages)).toBe(true);
+  });
+
+  test("false when a cell is empty", () => {
+    const grid = gridFromValues([
+      [1, 2],
+      [2, null],
+    ]);
+    expect(isSolved(grid, 2, cages)).toBe(false);
+  });
+
+  test("false when a Latin constraint is violated", () => {
+    const grid = gridFromValues([
+      [1, 1],
+      [2, 2],
+    ]);
+    expect(isSolved(grid, 2, cages)).toBe(false);
+  });
+});
+
+describe("mistakeCells", () => {
+  test("flags filled cells that differ from the solution", () => {
+    const solution = [
+      [1, 2],
+      [2, 1],
+    ];
+    const grid = gridFromValues([
+      [1, 3],
+      [null, 1],
+    ]);
+    const mistakes = mistakeCells(grid, solution);
+    expect(mistakes).toContainEqual([0, 1]);
+    expect(mistakes).not.toContainEqual([1, 0]);
+    expect(mistakes).not.toContainEqual([0, 0]);
   });
 });
