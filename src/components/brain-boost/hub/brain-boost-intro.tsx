@@ -61,7 +61,7 @@ export default function BrainBoostIntro({
           lineHeight: 1.05,
         }}
       >
-        My <span className="bb-gradient-text">{title}</span>
+        Brain <span className="bb-gradient-text">{title}</span>
       </h1>
 
       <p
