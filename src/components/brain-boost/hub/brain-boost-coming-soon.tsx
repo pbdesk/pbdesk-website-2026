@@ -1,7 +1,17 @@
-import { BRAIN_BOOST_GAMES, STATUS_LABEL } from "./games-registry";
+import {
+  BRAIN_BOOST_GAMES,
+  type BrainBoostGame,
+  STATUS_LABEL,
+} from "./games-registry";
 
-export default function BrainBoostComingSoon() {
-  const coming = BRAIN_BOOST_GAMES.filter((g) => g.status !== "live");
+interface BrainBoostComingSoonProps {
+  games?: BrainBoostGame[];
+}
+
+export default function BrainBoostComingSoon({
+  games = BRAIN_BOOST_GAMES,
+}: BrainBoostComingSoonProps) {
+  const coming = games.filter((g) => g.status !== "live");
   return (
     <section className="wrapper py-12">
       <div className="mb-6 flex items-end justify-between gap-4">

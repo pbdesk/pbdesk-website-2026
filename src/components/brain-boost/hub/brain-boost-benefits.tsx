@@ -6,37 +6,24 @@ import {
 } from "@tabler/icons-react";
 import type { ReactNode } from "react";
 import { BRAIN_BOOST_ACCENT } from "@/components/brain-boost/accent";
+import { BENEFITS, type Benefit, type BenefitIconKey } from "./meta";
 
-interface Benefit {
-  body: string;
-  icon: ReactNode;
-  title: string;
+const ICON_MAP: Record<BenefitIconKey, ReactNode> = {
+  Target: <IconTarget size={20} />,
+  Brain: <IconBrain size={20} />,
+  Clock: <IconClock size={20} />,
+  Flame: <IconFlame size={20} />,
+};
+
+interface BrainBoostBenefitsProps {
+  benefits?: readonly Benefit[];
+  heading?: string;
 }
 
-const BENEFITS: readonly Benefit[] = [
-  {
-    icon: <IconTarget size={20} />,
-    title: "Single-task focus",
-    body: "Puzzles are one-pointed by design. Twenty minutes of nothing-but-this is a small luxury during a working week.",
-  },
-  {
-    icon: <IconBrain size={20} />,
-    title: "Working-memory workout",
-    body: 'Mental arithmetic + spatial reasoning, in low-stakes reps. The "I can almost see it" feeling is the point.',
-  },
-  {
-    icon: <IconClock size={20} />,
-    title: "Designed to be short",
-    body: "Every puzzle has a finish line within 30 minutes. No sprawling boards, no endless modes.",
-  },
-  {
-    icon: <IconFlame size={20} />,
-    title: "Daily ritual, no streak shame",
-    body: "A new puzzle every day, but we won't shake a finger at you if you miss one. Show up when you can.",
-  },
-];
-
-export default function BrainBoostBenefits() {
+export default function BrainBoostBenefits({
+  benefits = BENEFITS,
+  heading = "Why Brain Boost?",
+}: BrainBoostBenefitsProps) {
   const tileBg = `color-mix(in srgb, ${BRAIN_BOOST_ACCENT.primary} 12%, transparent)`;
   return (
     <section className="wrapper py-12">
@@ -48,10 +35,10 @@ export default function BrainBoostBenefits() {
           lineHeight: 1.1,
         }}
       >
-        Why <span className="bb-gradient-text">Brain Boost?</span>
+        <span className="bb-gradient-text">{heading}</span>
       </h2>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {BENEFITS.map((b) => (
+        {benefits.map((b) => (
           <article
             className="flex flex-col gap-3 rounded-2xl border p-6"
             key={b.title}
@@ -65,7 +52,7 @@ export default function BrainBoostBenefits() {
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl"
               style={{ background: tileBg, color: BRAIN_BOOST_ACCENT.primary }}
             >
-              {b.icon}
+              {ICON_MAP[b.icon]}
             </span>
             <h3
               className="font-bold"

@@ -1,10 +1,16 @@
 import { IconArrowRight, IconPlayerPlay } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { BRAIN_BOOST_GAMES } from "./games-registry";
+import { BRAIN_BOOST_GAMES, type BrainBoostGame } from "./games-registry";
 
-export default function BrainBoostFeaturedKenken() {
-  const kenken = BRAIN_BOOST_GAMES.find((g) => g.slug === "kenken");
+interface BrainBoostFeaturedKenkenProps {
+  game?: BrainBoostGame;
+}
+
+export default function BrainBoostFeaturedKenken({
+  game,
+}: BrainBoostFeaturedKenkenProps) {
+  const kenken = game ?? BRAIN_BOOST_GAMES.find((g) => g.slug === "kenken");
   if (!kenken) {
     return null;
   }

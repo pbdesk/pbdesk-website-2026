@@ -1,7 +1,17 @@
 import { IconCalendar, IconPlayerPlay } from "@tabler/icons-react";
 import Link from "next/link";
 
-export default function BrainBoostDailyStrip() {
+interface BrainBoostDailyStripProps {
+  body?: string;
+  ctaPlay?: string;
+  heading?: string;
+}
+
+export default function BrainBoostDailyStrip({
+  body = "A fresh hand-checked KenKen, the same all day. Refresh keeps your progress; come back tomorrow for a new one.",
+  ctaPlay = "Play today's",
+  heading = "Today's daily — Intermediate",
+}: BrainBoostDailyStripProps) {
   return (
     <section className="wrapper py-6">
       <div className="bb-gradient-bg relative grid items-center gap-6 overflow-hidden rounded-2xl p-9 text-white md:grid-cols-[1fr_auto] md:p-10">
@@ -18,14 +28,13 @@ export default function BrainBoostDailyStrip() {
             className="font-extrabold"
             style={{ fontSize: 28, lineHeight: 1.15 }}
           >
-            Today's daily — Intermediate
+            {heading}
           </h3>
           <p
             className="mt-2 max-w-2xl text-sm sm:text-base"
             style={{ color: "rgb(255 255 255 / 0.85)", lineHeight: 1.6 }}
           >
-            A fresh hand-checked KenKen, the same all day. Refresh keeps your
-            progress; come back tomorrow for a new one.
+            {body}
           </p>
         </div>
         <div className="relative flex flex-wrap gap-3">
@@ -34,7 +43,7 @@ export default function BrainBoostDailyStrip() {
             href="/brain-boost/kenken/daily"
             style={{ color: "#9a3412" }}
           >
-            <IconPlayerPlay size={14} /> Play today's
+            <IconPlayerPlay size={14} /> {ctaPlay}
           </Link>
           {/* TODO archive route — Phase 2 of the spec (date-seeded daily + archive) */}
           <button

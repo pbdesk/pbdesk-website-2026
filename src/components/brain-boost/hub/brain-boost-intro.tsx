@@ -11,6 +11,7 @@ import {
   BRAIN_BOOST_LEDE,
   BRAIN_BOOST_META,
   type BrainBoostMetaIcon,
+  type BrainBoostMetaItem,
 } from "./meta";
 
 const ICON_MAP: Record<BrainBoostMetaIcon, ReactNode> = {
@@ -20,7 +21,15 @@ const ICON_MAP: Record<BrainBoostMetaIcon, ReactNode> = {
   Calendar: <IconCalendar size={18} />,
 };
 
-export default function BrainBoostIntro() {
+interface BrainBoostIntroProps {
+  lede?: string;
+  metaItems?: readonly BrainBoostMetaItem[];
+}
+
+export default function BrainBoostIntro({
+  lede = BRAIN_BOOST_LEDE,
+  metaItems = BRAIN_BOOST_META,
+}: BrainBoostIntroProps) {
   const tileBg = `color-mix(in srgb, ${BRAIN_BOOST_ACCENT.primary} 12%, transparent)`;
   return (
     <section className="wrapper py-12">
@@ -56,14 +65,14 @@ export default function BrainBoostIntro() {
         className="mx-auto mt-6 max-w-3xl text-center text-base sm:text-lg"
         style={{ color: "var(--fg-secondary)", lineHeight: 1.7 }}
       >
-        {BRAIN_BOOST_LEDE}
+        {lede}
       </p>
 
       <div
         className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 border-t pt-8"
         style={{ borderColor: "var(--border-subtle)" }}
       >
-        {BRAIN_BOOST_META.map((item) => (
+        {metaItems.map((item) => (
           <span
             className="flex items-center gap-3 text-sm"
             key={item.label}
