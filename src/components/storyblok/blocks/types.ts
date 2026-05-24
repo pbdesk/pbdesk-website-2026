@@ -212,3 +212,66 @@ export interface ShareBarBlok extends SbBlokBase {
   title_override?: string;
   url_override?: string;
 }
+
+// ---- KenKen page bloks ---------------------------------------------------
+
+export interface KenkenHeroBlok extends SbBlokBase {
+  component: "kenken_hero";
+  cta_daily_label?: string;
+  cta_play_label?: string;
+  eyebrow?: string;
+  lede?: string;
+  title?: string;
+}
+
+export interface KenkenProseBlok extends SbBlokBase {
+  component: "kenken_prose";
+  heading?: string;
+  richtext?: RichtextDoc;
+}
+
+export interface KenkenStepBlok extends SbBlokBase {
+  component: "kenken_step";
+  text?: string;
+  title?: string;
+}
+
+export interface KenkenStepsBlok extends SbBlokBase {
+  component: "kenken_steps";
+  heading?: string;
+  steps: KenkenStepBlok[];
+}
+
+export interface KenkenOperationBlok extends SbBlokBase {
+  component: "kenken_operation";
+  description?: string;
+  name?: string;
+  symbol?: string;
+}
+
+export interface KenkenOperationsBlok extends SbBlokBase {
+  component: "kenken_operations";
+  heading?: string;
+  operations: KenkenOperationBlok[];
+}
+
+export interface KenkenLevelBlok extends SbBlokBase {
+  component: "kenken_level";
+  description?: string;
+  name?: string;
+  operations?: string;
+  sizes?: string;
+}
+
+export interface KenkenLevelsBlok extends SbBlokBase {
+  component: "kenken_levels";
+  heading?: string;
+  levels: KenkenLevelBlok[];
+}
+
+export interface KenkenCtaBlok extends SbBlokBase {
+  component: "kenken_cta";
+  cta_daily_label?: string;
+  cta_play_label?: string;
+  heading?: string;
+}

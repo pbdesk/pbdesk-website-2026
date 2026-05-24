@@ -136,6 +136,13 @@ export interface GlobalConfigStoryContent extends SbBlokBase {
   social_links: SocialLinkBlok[];
 }
 
+export interface KenkenPageStoryContent extends SbBlokBase {
+  body?: SbBlokBase[];
+  component: "kenken_page";
+  seo_description?: string;
+  seo_title?: string;
+}
+
 export type PostStory = ISbStoryData<PostStoryContent>;
 export type LandingPageStory = ISbStoryData<LandingPageStoryContent>;
 export type HomePageStory = ISbStoryData<HomePageStoryContent>;
@@ -144,3 +151,4 @@ export type DisclaimerPageStory = ISbStoryData<DisclaimerPageStoryContent>;
 export type PrivacyPolicyPageStory =
   ISbStoryData<PrivacyPolicyPageStoryContent>;
 export type GlobalConfigStory = ISbStoryData<GlobalConfigStoryContent>;
+export type KenkenPageStory = ISbStoryData<KenkenPageStoryContent>;
