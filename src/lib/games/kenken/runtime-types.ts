@@ -4,16 +4,13 @@ export type CellValue = number | null;
 
 export interface CellState {
   given: boolean; // pre-filled freebie — never editable
-  notes: number[]; // candidate digits, ascending; empty when none
+  hinted?: boolean; // filled via hint action — shown in orange
   value: CellValue;
 }
 
 export type GameGrid = CellState[][]; // size × size
 
-export type InputMode = "value" | "note";
 export type GameStatus = "playing" | "won";
-
-export const INITIAL_INPUT_MODE: InputMode = "value";
 
 export interface GameState {
   elapsedSeconds: number;
@@ -21,7 +18,6 @@ export interface GameState {
   freebies: Cell[];
   grid: GameGrid;
   hintsUsed: number;
-  mode: InputMode;
   paused: boolean;
   puzzle: KenKenPuzzle;
   redoStack: GameGrid[];
@@ -48,15 +44,15 @@ export type GameAction =
   | { type: "move"; dRow: number; dCol: number }
   | { type: "input"; digit: number }
   | { type: "clear" }
-  | { type: "setMode"; mode: InputMode }
-  | { type: "toggleMode" }
   | { type: "undo" }
   | { type: "redo" }
   | { type: "hint" }
   | { type: "revealMistakes" }
+  | { type: "clearRevealedMistakes" }
   | { type: "toggleRuleCheck" }
   | { type: "tick" }
   | { type: "setPaused"; paused: boolean }
+  | { type: "reset" }
   | {
       type: "restore";
       grid: GameGrid;

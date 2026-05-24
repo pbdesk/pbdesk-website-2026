@@ -48,12 +48,6 @@ export default function CellStatusBar({ state }: CellStatusBarProps) {
           {cell.value ?? "—"}
         </span>
       </span>
-      <span className="text-sm" style={{ color: "var(--fg-secondary)" }}>
-        Notes:{" "}
-        <span className="font-semibold" style={{ color: "var(--fg-primary)" }}>
-          {cell.notes.length > 0 ? cell.notes.join(" ") : "—"}
-        </span>
-      </span>
     </div>
   );
 }

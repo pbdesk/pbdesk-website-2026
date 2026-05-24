@@ -38,10 +38,14 @@ function resolveCellBackground(
 function resolveValueColor(
   given: boolean,
   conflict: boolean,
-  mistake: boolean
+  mistake: boolean,
+  hinted: boolean
 ): string {
   if (conflict || mistake) {
     return "#dc2626"; // red-600 — not sole signal (ring too)
+  }
+  if (hinted) {
+    return "#ea580c"; // orange-600
   }
   return given ? "var(--fg-brand)" : "var(--fg-primary)";
 }
@@ -62,7 +66,6 @@ interface CellProps {
   borders: CellBorders;
   conflict: boolean;
   given: boolean;
-  hideNotes: boolean;
   label: string | null;
   mistake: boolean;
   onSelect: () => void;
@@ -82,7 +85,6 @@ export default function Cell({
   given,
   sameValueHighlight,
   peerHighlight,
-  hideNotes,
   onSelect,
 }: CellProps) {
   const background = resolveCellBackground(
@@ -91,7 +93,12 @@ export default function Cell({
     sameValueHighlight,
     selected
   );
-  const valueColor = resolveValueColor(given, conflict, mistake);
+  const valueColor = resolveValueColor(
+    given,
+    conflict,
+    mistake,
+    state.hinted ?? false
+  );
   const hasConflict = conflict || mistake;
 
   return (
@@ -133,17 +140,6 @@ export default function Cell({
           {state.value}
         </span>
       )}
-
-      {state.value === null && !hideNotes && state.notes.length > 0 ? (
-        <span
-          className="absolute inset-0 grid grid-cols-3 place-items-center p-0.5"
-          style={{ fontSize: "min(2.4vw, 0.6rem)", color: "var(--fg-muted)" }}
-        >
-          {state.notes.map((n) => (
-            <span key={n}>{n}</span>
-          ))}
-        </span>
-      ) : null}
     </button>
   );
 }

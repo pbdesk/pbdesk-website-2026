@@ -9,8 +9,6 @@ import type { GameState } from "@/lib/games/kenken/runtime-types";
 import type { Cell as CellPos } from "@/lib/games/kenken/types";
 import Cell from "./cell";
 
-const LARGE_GRID_THRESHOLD = 8; // hide in-cell notes at 8×8 and up
-
 interface GridProps {
   onKeyAction: (event: React.KeyboardEvent) => void;
   onSelect: (cell: CellPos) => void;
@@ -78,8 +76,6 @@ export default function Grid({ state, onSelect, onKeyAction }: GridProps) {
     return set;
   }, [selected, size, puzzle.cages]);
 
-  const hideNotes = size >= LARGE_GRID_THRESHOLD;
-
   return (
     // biome-ignore lint/a11y/useSemanticElements: grid role models the board for AT
     <div
@@ -101,7 +97,6 @@ export default function Grid({ state, onSelect, onKeyAction }: GridProps) {
               borders={borders[r][c]}
               conflict={conflicts.has(k)}
               given={cellState.given}
-              hideNotes={hideNotes}
               key={k}
               label={labelByKey.get(k) ?? null}
               mistake={mistakeKeys.has(k)}

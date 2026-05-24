@@ -22,10 +22,9 @@ const puzzle: KenKenPuzzle = {
 };
 
 describe("createInitialState", () => {
-  test("starts empty, value mode, not paused, playing", () => {
+  test("starts empty, not paused, playing", () => {
     const s = createInitialState(puzzle);
     expect(s.grid[0][0].value).toBeNull();
-    expect(s.mode).toBe("value");
     expect(s.paused).toBe(false);
     expect(s.status).toBe("playing");
     expect(s.hintsUsed).toBe(0);
@@ -38,15 +37,6 @@ describe("gameReducer input", () => {
     s = gameReducer(s, { type: "select", cell: [0, 0] });
     s = gameReducer(s, { type: "input", digit: 1 });
     expect(s.grid[0][0].value).toBe(1);
-  });
-
-  test("note mode toggles a pencil mark", () => {
-    let s = createInitialState(puzzle);
-    s = gameReducer(s, { type: "select", cell: [0, 0] });
-    s = gameReducer(s, { type: "setMode", mode: "note" });
-    s = gameReducer(s, { type: "input", digit: 2 });
-    expect(s.grid[0][0].notes).toEqual([2]);
-    expect(s.grid[0][0].value).toBeNull();
   });
 
   test("input with no selection is a no-op", () => {

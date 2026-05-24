@@ -95,6 +95,7 @@ function GamePlay({
     createInitialState(p, selectFreebies(p))
   );
   const [showHowTo, setShowHowTo] = useState(!getHowToSeen());
+  const [copied, setCopied] = useState(false);
 
   // Restore saved progress on mount (if any).
   useEffect(() => {
@@ -138,8 +139,6 @@ function GamePlay({
       dispatch({ type: "move", dRow: 0, dCol: 1 });
     } else if (key === "Backspace" || key === "Delete") {
       dispatch({ type: "clear" });
-    } else if (key === "n" || key === "N") {
-      dispatch({ type: "toggleMode" });
     } else if (DIGIT_RE.test(key)) {
       dispatch({ type: "input", digit: Number(key) });
     } else {
@@ -150,9 +149,15 @@ function GamePlay({
 
   const handleShare = useCallback(() => {
     const url = `${globalThis.location.origin}/brain-boost/kenken/play?puzzle=${puzzle.id}`;
-    globalThis.navigator?.clipboard?.writeText(url).catch(() => {
-      // Clipboard may be unavailable; sharing is best-effort.
-    });
+    globalThis.navigator?.clipboard
+      ?.writeText(url)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(() => {
+        // Clipboard unavailable; sharing is best-effort.
+      });
   }, [puzzle.id]);
 
   const dismissHowTo = useCallback(() => {
@@ -197,25 +202,36 @@ function GamePlay({
 
         <CellStatusBar state={state} />
         <NumberPad
-          mode={state.mode}
           onDigit={(digit) => dispatch({ type: "input", digit })}
-          onErase={() => dispatch({ type: "clear" })}
-          onToggleMode={() => dispatch({ type: "toggleMode" })}
           size={puzzle.size}
         />
         <GameControls
           canRedo={state.redoStack.length > 0}
           canUndo={state.undoStack.length > 0}
           hintsUsed={state.hintsUsed}
+          onErase={() => dispatch({ type: "clear" })}
           onHint={() => dispatch({ type: "hint" })}
+          onNewGame={() => {
+            clearProgress();
+            onChangeLevel();
+          }}
           onRedo={() => dispatch({ type: "redo" })}
-          onRevealMistakes={() => dispatch({ type: "revealMistakes" })}
+          onReset={() => dispatch({ type: "reset" })}
+          onRevealMistakes={() =>
+            dispatch({
+              type:
+                state.revealedMistakes.length > 0
+                  ? "clearRevealedMistakes"
+                  : "revealMistakes",
+            })
+          }
           onTogglePause={() =>
             dispatch({ type: "setPaused", paused: !state.paused })
           }
           onToggleRuleCheck={() => dispatch({ type: "toggleRuleCheck" })}
           onUndo={() => dispatch({ type: "undo" })}
           paused={state.paused}
+          revealActive={state.revealedMistakes.length > 0}
           ruleCheckOn={state.ruleCheckOn}
         />
       </div>
@@ -223,6 +239,7 @@ function GamePlay({
       {showHowTo ? <HowToPlayOverlay onDismiss={dismissHowTo} /> : null}
       {state.status === "won" && !showHowTo ? (
         <WinOverlay
+          copied={copied}
           elapsedSeconds={state.elapsedSeconds}
           hintsUsed={state.hintsUsed}
           onChangeLevel={() => {

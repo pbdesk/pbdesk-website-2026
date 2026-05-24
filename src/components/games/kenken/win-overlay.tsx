@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { formatDuration } from "./timer";
 
 interface WinOverlayProps {
+  copied?: boolean;
   elapsedSeconds: number;
   hintsUsed: number;
   onChangeLevel: () => void;
@@ -13,6 +14,7 @@ interface WinOverlayProps {
 }
 
 export default function WinOverlay({
+  copied,
   elapsedSeconds,
   hintsUsed,
   onNewGame,
@@ -48,7 +50,7 @@ export default function WinOverlay({
             Change level
           </Button>
           <Button onClick={onShare} variant="ghost">
-            Share this puzzle
+            {copied ? "Copied!" : "Share this puzzle"}
           </Button>
         </div>
       </div>
