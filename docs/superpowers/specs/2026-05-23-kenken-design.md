@@ -22,7 +22,8 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
 
 - Ship a polished, mobile-first KenKen game as the first BrainBoost game.
 - Generate guaranteed-valid, uniquely-solvable puzzles offline and ship them as a
-  static library (no runtime backend, no login).
+  committed library, served one at a time by a read-only route handler (no database,
+  no login).
 - Establish the `/brain-boost` section so future games slot in cleanly.
 
 ### Non-goals (for the first implementation)
@@ -40,8 +41,9 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
 |-------|------|---------|
 | `/brain-boost` | Storyblok-managed hub landing | Lists BrainBoost games; KenKen is the first card. Consistent with Bits/Bites/Blog landings. |
 | `/brain-boost/kenken` | Storyblok-managed content page | Explains what KenKen is, how to play, the rules, and an overview of the difficulty levels. Links to `/play` and `/daily`. |
-| `/brain-boost/kenken/play` | Interactive game (client) | User selects a level/size and plays a puzzle from the library. |
-| `/brain-boost/kenken/daily` | Interactive game (client) | Serves one randomly-selected **Intermediate** puzzle. |
+| `/brain-boost/kenken/play` | Interactive game (client) | User selects a level and plays. Puzzles are fetched on demand from the API route. |
+| `/brain-boost/kenken/daily` | Interactive game (client) | Fetches one randomly-selected **Intermediate** puzzle from the API route. |
+| `GET /api/kenken/puzzle` | Route handler (server) | Returns a single puzzle as JSON from the committed library, selected by `level` (and optional `id` / `exclude` params). See §5a. |
 
 **Notes**
 
@@ -49,7 +51,9 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
 - `/brain-boost` and `/brain-boost/kenken` are CMS-driven (Storyblok), matching the
   existing section pattern (`loadPillarData`-style content + metadata + JSON-LD).
 - `/play` and `/daily` are interactive client games. Their pages are thin server
-  shells (metadata, JSON-LD, static puzzle import) that mount a client game component.
+  shells (metadata, JSON-LD) that mount a client game component. The client fetches
+  puzzles **one at a time** from `/api/kenken/puzzle` — the full library is **not**
+  bundled into the page JS (see §5a).
 - A new pillar accent is added to `src/lib/pillars.ts` for `brain-boost` (its own
   gradient pair).
 - "BrainBoost" is added to the header and footer navigation.
@@ -111,7 +115,10 @@ type KenKenPuzzle = {
 
 - Generated puzzles live under `src/lib/games/kenken/puzzles/`, organized by
   difficulty (e.g. `easy.json`, `intermediate.json`, `hard.json`, `genius.json`), and
-  committed to the repo. Imported as static JSON at build time.
+  committed to the repo.
+- These files are read **server-side** by the `/api/kenken/puzzle` route handler
+  (§5a). They are **not** imported into the client bundle, so the page stays light as
+  the library grows.
 - Target initial library size: enough variety per tier that free-play and random
   daily selection feel fresh (e.g. ~50 puzzles per tier as a starting point; tunable).
 
@@ -147,6 +154,46 @@ request time). Output is committed JSON.
 
 ---
 
+## 5a. Puzzle Delivery (route handler)
+
+Puzzles reach the browser via a single **Next.js route handler**, fetched on demand —
+one puzzle per call. The committed library is read server-side; nothing is bundled into
+the client.
+
+**Endpoint:** `GET /api/kenken/puzzle`
+
+| Param | Required | Meaning |
+|-------|----------|---------|
+| `level` | yes (unless `id`) | `easy` \| `intermediate` \| `hard` \| `genius`. Returns one puzzle of that tier. |
+| `id` | optional | Return a specific puzzle by id (used for shareable URLs). |
+| `exclude` | optional | Comma-separated puzzle ids to avoid (the player's already-seen ids). The handler prefers a puzzle whose id is not in this list. |
+
+**Selection logic**
+
+- With `id`: return that exact puzzle (404 if unknown).
+- With `level`: pick a **random** puzzle of that tier, **preferring one not in
+  `exclude`**. If every puzzle in the tier is excluded (pool exhausted), fall back to a
+  random one from the full tier.
+- Response: a single `KenKenPuzzle` JSON object.
+
+**Client usage**
+
+- On `/play`: when the user selects a level (and on each "New game, same level"), the
+  client calls `GET /api/kenken/puzzle?level=X&exclude=<seen ids for X>`.
+- On `/daily`: the client calls `GET /api/kenken/puzzle?level=intermediate`.
+- For a shared URL (`?puzzle=<id>`): the client calls `GET /api/kenken/puzzle?id=<id>`.
+
+**Play loop (`/play`)**
+
+1. User selects a level → client fetches a puzzle for that level → game starts.
+2. User solves or ends the game → completion view offers:
+   - **New game, same level** → fetch another puzzle of the same tier (excluding seen ids).
+   - **Change level** → return to level select; choosing a tier fetches a puzzle for it.
+3. Seen puzzle ids are tracked per-level in localStorage (§9) and passed as `exclude`
+   so "New game" prefers unseen puzzles.
+
+---
+
 ## 6. Game Engine & State
 
 The interactive game is a React **client component** tree mounted by the `/play` and
@@ -159,8 +206,11 @@ can be unit-tested without rendering.
 - `engine.ts` — pure functions: apply a value/note to a cell, clear a cell,
   detect row/column duplicate conflicts, detect cage-constraint violations, and
   determine the win condition (grid full + all rows/cols valid + all cages satisfied).
-- `puzzle-loader.ts` — select a puzzle by id, by (size, difficulty), or a random one
-  for a given tier (used by `/daily` → random Intermediate).
+- `puzzle-loader.ts` — **server-side** selection used by the `/api/kenken/puzzle` route
+  handler: read the committed library and select a puzzle by id, or a random one for a
+  tier with `exclude`-aware preference for unseen ids (§5a).
+- `puzzle-client.ts` — thin client helper that calls `/api/kenken/puzzle` (by level
+  + exclude, by id, or daily) and returns the puzzle to the game component.
 
 **Runtime state (held in the client game component)**
 
@@ -221,11 +271,17 @@ All of the following are in scope:
 - **localStorage** — persist in-progress game state (grid values, pencil marks, timer,
   selected puzzle id) keyed by puzzle id, so a refresh or return on the same device
   resumes the puzzle. Daily-puzzle completion state is also stored locally.
+- **Played-puzzle ids (repeat avoidance)** — track the set of completed/seen puzzle ids
+  **per level** in localStorage. The client passes these as the `exclude` param to
+  `/api/kenken/puzzle` (§5a) so "New game" prefers puzzles the player hasn't seen for
+  that level, falling back to any once the tier's pool is exhausted.
 - **Shareable URLs** — a puzzle is addressable by id (e.g.
   `/brain-boost/kenken/play?puzzle=k4-intermediate-00007`) so a specific puzzle can be
-  shared/bookmarked. Sharing the puzzle (not live progress) is the primary use; the
-  share affordance copies the puzzle URL.
-- No backend; all persistence is client-side.
+  shared/bookmarked. The client resolves the id via `GET /api/kenken/puzzle?id=…`.
+  Sharing the puzzle (not live progress) is the primary use; the share affordance copies
+  the puzzle URL.
+- No database; persistence of player state is client-side (localStorage). The only
+  server piece is the read-only puzzle route handler reading committed JSON.
 
 ---
 
@@ -266,8 +322,12 @@ complete, shippable game.
 - **Engine unit tests:** conflict detection (row/col duplicates, cage violations),
   win-condition detection, undo/redo correctness, pencil-mark behavior, auto-clear on
   value placement.
+- **Route handler tests:** `GET /api/kenken/puzzle` returns a valid puzzle for each
+  level; `id` returns the exact puzzle (404 if unknown); `exclude` prefers unseen ids
+  and falls back when the tier pool is exhausted.
 - **Persistence tests:** save/restore round-trips through localStorage; resume matches
-  prior state; share-URL puzzle id resolves to the correct puzzle.
+  prior state; played-id tracking accumulates per level; share-URL puzzle id resolves to
+  the correct puzzle.
 - **Build verification:** `bun run format` then `bun run check` (clean + lint + build).
 - **Manual UI verification:** play on desktop and a mobile viewport — keyboard and
   on-screen pad, notes, undo/redo, check, hints, win flow, resume after refresh.
@@ -284,13 +344,16 @@ src/
     types.ts                    # data model + runtime state types
     engine.ts                   # pure game logic (conflicts, win, moves)
     solver.ts                   # backtracking solver (shared by generator + tests)
-    puzzle-loader.ts            # select by id / (size,difficulty) / random tier
+    puzzle-loader.ts            # server-side selection by id / tier + exclude
+    puzzle-client.ts            # client fetch helper for /api/kenken/puzzle
     puzzles/
       easy.json
       intermediate.json
       hard.json
       genius.json
   components/games/kenken/      # client game UI (grid, cage borders, number pad, controls, timer, win)
+  app/api/kenken/puzzle/
+    route.ts                    # GET handler: returns one puzzle (level/id/exclude)
   app/(site)/brain-boost/
     page.tsx                    # Storyblok hub landing
     kenken/
