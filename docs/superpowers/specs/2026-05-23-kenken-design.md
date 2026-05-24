@@ -5,8 +5,14 @@
 - **Author:** Pinal Bhatt (with Claude)
 - **Section:** Brain Boost (`/brain-boost`) — the site's new brain-games section; KenKen is the first game.
 - **Display name:** "Brain Boost" (two words) in all UI, nav, and footer text. URL slug stays `/brain-boost`. Code identifiers may use `brainBoost`.
-- **Section model:** Brain Boost is conceptually a **games section** (no post/taxonomy content model like Bits/Bites/Blog). For clean reuse of `SectionLanding`/`SectionBanner` without TypeScript errors, `PillarKey` is **extended** to include `"brain-boost"` and a matching accent is added to `pillarAccents` (see §2.A).
-- **Accent — "Sunset Pulse":** Sunset Orange → Rose, `#f97316 → #ec4899`; gradient `linear-gradient(135deg, #f97316 0%, #ec4899 100%)`. Theme: focus + high energy, distinct from other sections.
+- **Section model:** Brain Boost is a **standalone games section** with its **own
+  bespoke look**. It does **NOT** reuse `SectionLanding`/`SectionBanner`, and `PillarKey`
+  / `pillarAccents` are **unchanged** (no `"brain-boost"` key). Brain Boost pages are
+  intentionally different from the pillar (Bits/Bites/Blog) pages.
+- **Accent — "Sunset Pulse":** Sunset Orange → Rose, `#f97316 → #ec4899`; gradient
+  `linear-gradient(135deg, #f97316 0%, #ec4899 100%)`. Theme: focus + high energy.
+  Defined as a **standalone constant** within the Brain Boost section (not in the pillar
+  registry).
 
 ---
 
@@ -27,8 +33,8 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
 - Generate guaranteed-valid, uniquely-solvable puzzles offline and ship them as a
   committed library, served one at a time by a read-only route handler (no database,
   no login).
-- Establish the `/brain-boost` games section (reusing the pillar landing styling) so
-  future games slot in cleanly.
+- Establish the `/brain-boost` games section (its own bespoke styling, distinct from the
+  pillar pages) so future games slot in cleanly.
 
 ### Non-goals (for the first implementation)
 
@@ -43,8 +49,8 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
 
 | Route | Type | Purpose |
 |-------|------|---------|
-| `/brain-boost` | Storyblok-managed hub landing | Lists Brain Boost games; KenKen is the first card. Reuses the Bits/Bites/Blog landing styling. |
-| `/brain-boost/kenken` | Storyblok-managed content page | Explains what KenKen is, how to play, the rules, and an overview of the difficulty levels. Links to `/play` and `/daily`. |
+| `/brain-boost` | Empty placeholder (for now) | Minimal placeholder page; full hub design is deferred. Bespoke look, not `SectionLanding`. |
+| `/brain-boost/kenken` | Storyblok-managed content page (bespoke) | Explains what KenKen is, how to play, rules, operations, and difficulty levels; links to `/play` and `/daily`. Custom components (not `SectionLanding`). See §2.B. |
 | `/brain-boost/kenken/play` | Interactive game (client) | User selects a level and plays. Puzzles are fetched on demand from the API route. |
 | `/brain-boost/kenken/daily` | Interactive game (client) | Fetches one randomly-selected **Intermediate** puzzle from the API route. |
 | `GET /api/kenken/puzzle` | Route handler (server) | Returns a single puzzle as JSON from the committed library, selected by `level` (and optional `id` / `exclude` params). See §5a. |
@@ -52,20 +58,22 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
 **Notes**
 
 - All routes use the hyphenated `/brain-boost` slug.
-- `/brain-boost` and `/brain-boost/kenken` are CMS-driven (Storyblok), matching the
-  existing section pattern (`loadPillarData`-style content + metadata + JSON-LD).
-- **Hardcoded fallbacks (PBDesk standard):** both `/brain-boost` and
-  `/brain-boost/kenken` ship high-quality built-in fallback layouts/content (like
-  `BitsPage`'s `fallbackPosts`), so the site renders fully **without a Storyblok token**
-  in local dev.
+- **`/brain-boost` is an empty placeholder for now** — a minimal page (e.g. a heading +
+  link to KenKen). The full Brain Boost hub/landing is designed later. It does **not**
+  use `SectionLanding`.
+- **`/brain-boost/kenken` is Storyblok-managed** via a bespoke content type and custom
+  components (see §2.B), following the `about_page`/`disclaimer_page` pattern: load the
+  story, render its blocks (or `LivePage` in the editor), else a **hardcoded fallback**.
+- **Hardcoded fallback (PBDesk standard):** `/brain-boost/kenken` ships built-in default
+  content so it renders fully **without a Storyblok token** in local dev (like
+  `AboutPage`'s `AboutHero`/`AboutStory` fallback).
 - `/play` and `/daily` are interactive client games. Their pages are thin server
   shells (metadata, JSON-LD) that mount a client game component. The client fetches
   puzzles **one at a time** from `/api/kenken/puzzle` — the full library is **not**
   bundled into the page JS (see §5a).
-- **Section accent / `PillarKey`:** Brain Boost reuses `SectionLanding`/`SectionBanner`.
-  To keep those typed cleanly, `PillarKey` is extended to include `"brain-boost"` and
-  `pillarAccents` gains a `"brain-boost"` entry (see §2.A). Conceptually it remains a
-  *games* section — it carries no posts/taxonomy.
+- **No `PillarKey` change:** Brain Boost does **not** reuse `SectionLanding`/`SectionBanner`,
+  so `PillarKey` and `pillarAccents` are left untouched. The Sunset Pulse accent is a
+  standalone constant in the Brain Boost section (see §2.A).
 - "Brain Boost" (two words) is added to the header and footer navigation.
 - **Daily semantics:** on the first visit to `/daily` on a given calendar date, the
   client picks a random Intermediate puzzle and stores `{ date, puzzleId }` in
@@ -73,27 +81,64 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
   puzzle; a new one is chosen the next day. (This is per-device, not yet a date-seeded
   "same puzzle for everyone" daily — that's §10 Phase 2.)
 
-### 2.A. Section accent integration (`PillarKey`)
+### 2.A. Section accent (standalone)
 
-To reuse `SectionLanding`/`SectionBanner` without TypeScript friction, extend the
-existing key type and accent map:
+Brain Boost does **not** touch `PillarKey` / `pillarAccents`. The Sunset Pulse accent is
+a standalone constant scoped to the Brain Boost section:
 
 ```typescript
-// src/lib/storyblok/types.ts
-export type PillarKey = "bits" | "bites" | "blog" | "brain-boost";
-
-// src/lib/pillars.ts — Sunset Pulse
-export const pillarAccents = {
-  bits: { primary: "#4f46e5", secondary: "#0ea5e9" },
-  bites: { primary: "#10b981", secondary: "#3b82f6" },
-  blog: { primary: "#7c3aed", secondary: "#10b981" },
-  "brain-boost": { primary: "#f97316", secondary: "#ec4899" },
+// src/components/brain-boost/accent.ts (or similar)
+export const BRAIN_BOOST_ACCENT = {
+  primary: "#f97316",   // sunset orange
+  secondary: "#ec4899", // rose
+  gradient: "linear-gradient(135deg, #f97316 0%, #ec4899 100%)",
 } as const;
 ```
 
-The hub passes `pillar="brain-boost"` / `accentColor={pillarAccents["brain-boost"].primary}`
-to the landing components, and the `linear-gradient(135deg, #f97316 0%, #ec4899 100%)`
-gradient is wired into the section styling.
+Bespoke Brain Boost components consume this directly; the pillar (Bits/Bites/Blog)
+styling and types are untouched.
+
+### 2.B. `/brain-boost/kenken` page (Storyblok-managed, bespoke)
+
+A custom content page following the `about_page` / `disclaimer_page` convention: a
+server component loads the story and renders its blocks (or `LivePage` in the visual
+editor); when there is no body/token it renders a **hardcoded fallback** with canonical
+default copy. It does **not** use `SectionLanding`/`SectionBanner`.
+
+**Content model — the page is fully CMS-editable.** Content type `kenken_page`:
+
+```ts
+interface KenkenPageStoryContent extends SbBlokBase {
+  component: "kenken_page";
+  body: SbBlokBase[];        // ordered, composed entirely in Storyblok
+  seo_title?: string;
+  seo_description?: string;
+}
+```
+
+**Body bloks** (all editable; every section is a blok so editors control order/content):
+
+| Blok | Fields | Renders |
+|------|--------|---------|
+| `kenken_hero` | `eyebrow`, `title`, `lede`, `cta_play_label`, `cta_daily_label` | Hero with two CTAs → `/brain-boost/kenken/play` and `/daily` (targets fixed in component; labels editable). |
+| `kenken_prose` | `heading`, `richtext` | A titled rich-text block (used for "What is KenKen", "How to play", tips). |
+| `kenken_steps` | `heading`, `steps: [{ title, text }]` | Numbered how-to-play steps. |
+| `kenken_operations` | `heading`, `operations: [{ symbol, name, description }]` | Operation cards (`+ − × ÷`). |
+| `kenken_levels` | `heading`, `levels: [{ name, sizes, operations, description }]` | Difficulty-tier cards (Easy/Intermediate/Hard/Genius). |
+| `kenken_cta` | `heading`, `cta_play_label`, `cta_daily_label` | Closing Play/Daily call-to-action. |
+
+**Default page composition** (used both as the recommended Storyblok setup and as the
+hardcoded fallback content): hero → "What is KenKen" prose → how-to steps → operations →
+levels → closing CTA. The fallback carries **canonical** operation/level copy so it
+matches §3 even with no CMS data.
+
+> **Tradeoff (fully CMS-editable, chosen):** operations and level definitions are also
+> editable in Storyblok, so they can *drift* from the actual engine/generator behavior.
+> The hardcoded fallback holds the canonical values; editors are responsible for keeping
+> CMS copy in sync if they change it.
+
+**SEO:** `pageMetadata({...})` from `seo_title`/`seo_description` (with sensible
+defaults) + JSON-LD (e.g. `Game` / `HowTo`).
 
 ---
 
@@ -421,14 +466,15 @@ complete, shippable game.
 
 - Generator + solver script and committed puzzle library (all tiers).
 - Game engine + full feature set (§7) and dual input (§8).
-- `/brain-boost` Storyblok hub + `/brain-boost/kenken` Storyblok info page, each with
-  **hardcoded fallback** content (works without a Storyblok token).
+- `/brain-boost` **empty placeholder** page (full hub design deferred).
+- `/brain-boost/kenken` bespoke, fully CMS-editable Storyblok page (§2.B) with a
+  **hardcoded fallback** (works without a Storyblok token).
 - `/brain-boost/kenken/play` (level select + free play) and
   `/brain-boost/kenken/daily` (per-device sticky daily Intermediate puzzle).
 - localStorage persistence (in-progress state, today's daily, served-id tracking) +
   shareable puzzle URLs.
-- "Brain Boost" nav/footer entry; `PillarKey` + `pillarAccents` extended with
-  `"brain-boost"` (Sunset Pulse accent, §2.A).
+- "Brain Boost" nav/footer entry; standalone Sunset Pulse accent constant
+  (**no** `PillarKey`/`pillarAccents` change, §2.A).
 - Cell status bar, auto-clear notes, pause/resume, and first-time how-to-play overlay.
 
 **Phase 2 — date-seeded daily + archive (future)**
@@ -496,21 +542,23 @@ src/
       hard.json
       genius.json
   components/games/kenken/      # client game UI (grid, cage borders, status bar, number pad, controls, timer, pause, hint counter, how-to-play overlay, win)
+  components/brain-boost/
+    accent.ts                   # standalone Sunset Pulse accent constant (§2.A)
+    kenken/                     # bespoke kenken_page bloks: hero, prose, steps, operations, levels, cta + fallback
   app/api/kenken/puzzle/
     route.ts                    # GET handler: returns one puzzle (level/id/exclude); 400/404/503
   app/(site)/brain-boost/
-    page.tsx                    # Storyblok hub landing + hardcoded fallback (reuses landing styling)
+    page.tsx                    # EMPTY PLACEHOLDER (full hub designed later)
     kenken/
-      page.tsx                  # Storyblok info/rules/levels page + hardcoded fallback
+      page.tsx                  # bespoke Storyblok page (kenken_page) + hardcoded fallback (§2.B)
       play/page.tsx             # server shell -> client game (level select + free play)
       daily/page.tsx            # server shell -> client game (sticky daily Intermediate)
-  lib/storyblok/types.ts        # extend PillarKey with "brain-boost"
-  lib/pillars.ts                # add "brain-boost" Sunset Pulse accent (§2.A)
 ```
 
-`PillarKey` (in `lib/storyblok/types.ts`) and `pillarAccents` (in `lib/pillars.ts`) are
-extended with `"brain-boost"` so `SectionLanding`/`SectionBanner` type-check when reused.
-"Brain Boost" is added to the header and footer nav lists.
+`PillarKey` / `pillarAccents` are **unchanged** (Brain Boost does not reuse
+`SectionLanding`/`SectionBanner`). A new `kenken_page` content type + its bloks are added
+to `lib/storyblok/types.ts`, and a `loadKenkenStory()` helper to `lib/storyblok/landing.ts`
+(mirroring `loadAboutStory`). "Brain Boost" is added to the header and footer nav lists.
 
 (Exact filenames/organization may be refined during planning, following existing
 project conventions.)
@@ -522,10 +570,14 @@ project conventions.)
 **Resolved (from review)**
 
 - **Display name:** "Brain Boost" (two words) in UI/nav/footer; slug `/brain-boost`.
-- **Section model:** conceptually a games section, but `PillarKey` + `pillarAccents`
-  **are** extended with `"brain-boost"` to reuse `SectionLanding`/`SectionBanner` cleanly
-  (§2.A). (This supersedes the earlier "no `pillars.ts` change" direction.)
-- **Accent — Sunset Pulse:** `#f97316 → #ec4899`, `linear-gradient(135deg, #f97316 0%, #ec4899 100%)`.
+- **Section model:** standalone games section with **bespoke** styling — does **not**
+  reuse `SectionLanding`/`SectionBanner`; `PillarKey`/`pillarAccents` **unchanged**.
+  (This reverts the prior "extend `PillarKey`" direction; the original "not a pillar"
+  intent stands.)
+- **`/brain-boost`:** empty placeholder for now (full hub designed later).
+- **`/brain-boost/kenken`:** bespoke, **fully CMS-editable** Storyblok page (§2.B) with a
+  hardcoded fallback; canonical operation/level copy lives in the fallback.
+- **Accent — Sunset Pulse:** `#f97316 → #ec4899`, `linear-gradient(135deg, #f97316 0%, #ec4899 100%)` — standalone constant (not in `pillarAccents`).
 - **Daily:** per-device sticky — same Intermediate puzzle all day, new one next day.
 - **Repeat avoidance:** exclude every puzzle **served/started** (not just completed).
 - **Hints:** unlimited, with a visible used-count per puzzle.
@@ -535,7 +587,7 @@ project conventions.)
 - **Cell status bar:** cage goal/operator + selected value + pencil marks above the keypad.
 - **Auto-clear notes:** committing a value clears that digit from row/column/cage notes.
 - **Cage borders:** computed dynamically per-cell vs. neighbors (handles L-shaped cages).
-- **Hardcoded fallbacks:** `/brain-boost` and `/brain-boost/kenken` render without a Storyblok token.
+- **Hardcoded fallback:** `/brain-boost/kenken` renders without a Storyblok token.
 - **Pause/resume:** included. **How-to-play overlay:** included (first-time, localStorage).
 - **Large mobile grids:** shrink to fit viewport width.
 - **Loading:** server-side static JSON import (not `fs`).
@@ -543,8 +595,9 @@ project conventions.)
 
 **Still open (resolve during planning)**
 
-- **Storyblok content types** — the hub and the kenken info page need new Storyblok
-  components/stories; field design happens at planning time.
+- **`kenken_page` blok fields** — the field-level Storyblok schema for the `kenken_page`
+  content type and its bloks (§2.B) is finalized at planning/implementation time.
+- **`/brain-boost` hub** — full design deferred (placeholder for now).
 
 ---
 
@@ -552,8 +605,9 @@ project conventions.)
 
 The first implementation is done when all of these pass (desktop + mobile):
 
-- [ ] Navigate to `/brain-boost`; the hub lists KenKen and links to it.
-- [ ] `/brain-boost/kenken` explains the game, rules, and levels, and links to play/daily.
+- [ ] `/brain-boost` loads as a placeholder (no crash) and links to KenKen.
+- [ ] `/brain-boost/kenken` (bespoke, not `SectionLanding`) explains the game, rules,
+      operations, and levels, and links to play/daily.
 - [ ] On `/play`, select a level → a puzzle of that level loads and is playable.
 - [ ] Fill cells via the **on-screen number pad** and via the **keyboard**; both work.
 - [ ] Pencil marks, undo/redo, mistake-check, hints (with used-count), and pause/resume
@@ -573,6 +627,7 @@ The first implementation is done when all of these pass (desktop + mobile):
       puzzle; a new day yields a new one.
 - [ ] On a phone, an 8×8/9×9 grid **fits the screen** (shrinks to width) and stays usable.
 - [ ] API returns `400` (bad level), `404` (unknown id), `503` (empty tier) appropriately.
-- [ ] `/brain-boost` and `/brain-boost/kenken` render fully with **no Storyblok token**
-      (hardcoded fallbacks).
-- [ ] The section shows the **Sunset Pulse** accent (`#f97316 → #ec4899`).
+- [ ] `/brain-boost/kenken` renders fully with **no Storyblok token** (hardcoded fallback)
+      and is fully editable via its `kenken_page` bloks when a token is present.
+- [ ] The section shows the **Sunset Pulse** accent (`#f97316 → #ec4899`); `PillarKey` /
+      `pillarAccents` are unchanged.
