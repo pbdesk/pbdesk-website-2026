@@ -10,6 +10,7 @@ import { BRAIN_BOOST_ACCENT } from "@/components/brain-boost/accent";
 import {
   BRAIN_BOOST_LEDE,
   BRAIN_BOOST_META,
+  BRAIN_BOOST_TITLE,
   type BrainBoostMetaIcon,
   type BrainBoostMetaItem,
 } from "./meta";
@@ -24,11 +25,13 @@ const ICON_MAP: Record<BrainBoostMetaIcon, ReactNode> = {
 interface BrainBoostIntroProps {
   lede?: string;
   metaItems?: readonly BrainBoostMetaItem[];
+  title?: string;
 }
 
 export default function BrainBoostIntro({
   lede = BRAIN_BOOST_LEDE,
   metaItems = BRAIN_BOOST_META,
+  title = BRAIN_BOOST_TITLE,
 }: BrainBoostIntroProps) {
   const tileBg = `color-mix(in srgb, ${BRAIN_BOOST_ACCENT.primary} 12%, transparent)`;
   return (
@@ -58,7 +61,7 @@ export default function BrainBoostIntro({
           lineHeight: 1.05,
         }}
       >
-        My <span className="bb-gradient-text">Brain Boost</span>
+        My <span className="bb-gradient-text">{title}</span>
       </h1>
 
       <p

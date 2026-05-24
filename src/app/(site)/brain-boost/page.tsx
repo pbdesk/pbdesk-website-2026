@@ -16,20 +16,25 @@ import {
 import { adaptHubStory, getHubFallback } from "@/lib/storyblok/adapters";
 import { loadBrainBoostHubStory } from "@/lib/storyblok/landing";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Brain Boost — Short games for long focus",
-  description:
-    "Brain Boost is PBDesk's small puzzle corner — KenKen today, more queued. A fresh daily puzzle, four difficulty tiers, hand-checked games designed to fit a coffee break.",
-  path: "/brain-boost",
-  keywords: [
-    "puzzles",
-    "kenken",
-    "brain training",
-    "focus",
-    "logic puzzles",
-    "PBDesk",
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const story = await loadBrainBoostHubStory();
+  return pageMetadata({
+    title:
+      story?.content.seo_title || "Brain Boost — Short games for long focus",
+    description:
+      story?.content.seo_description ||
+      "Brain Boost is PBDesk's small puzzle corner — KenKen today, more queued. A fresh daily puzzle, four difficulty tiers, hand-checked games designed to fit a coffee break.",
+    path: "/brain-boost",
+    keywords: [
+      "puzzles",
+      "kenken",
+      "brain training",
+      "focus",
+      "logic puzzles",
+      "PBDesk",
+    ],
+  });
+}
 
 export default async function BrainBoostHubPage() {
   const story = await loadBrainBoostHubStory();
@@ -55,7 +60,11 @@ export default async function BrainBoostHubPage() {
       />
       <main>
         <BrainBoostHero />
-        <BrainBoostIntro lede={hub.lede} metaItems={hub.metaItems} />
+        <BrainBoostIntro
+          lede={hub.lede}
+          metaItems={hub.metaItems}
+          title={hub.title}
+        />
         <BrainBoostFeaturedKenken game={liveGame} />
         <BrainBoostDailyStrip
           body={hub.dailyBody}
