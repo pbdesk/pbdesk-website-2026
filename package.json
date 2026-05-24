@@ -12,6 +12,7 @@
     "check": "bun run clean && bun run lint && bun run build && bun run audit && bun run test",
     "clean": "rm -rf node_modules .next .turbo && bun install",
     "prepare": "lefthook install",
+    "seed:kenken": "bun scripts/seed-kenken.ts",
     "test": "bun test"
   },
   "dependencies": {
