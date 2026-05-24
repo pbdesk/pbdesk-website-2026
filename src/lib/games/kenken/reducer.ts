@@ -12,10 +12,18 @@ import type { GameAction, GameGrid, GameState } from "./runtime-types";
 import { INITIAL_INPUT_MODE } from "./runtime-types";
 import type { Cell, KenKenPuzzle } from "./types";
 
-export function createInitialState(puzzle: KenKenPuzzle): GameState {
+export function createInitialState(
+  puzzle: KenKenPuzzle,
+  freebies: Cell[] = []
+): GameState {
+  const grid = createEmptyGrid(puzzle.size);
+  for (const [r, c] of freebies) {
+    grid[r][c] = { given: true, value: puzzle.solution[r][c], notes: [] };
+  }
   return {
     puzzle,
-    grid: createEmptyGrid(puzzle.size),
+    freebies,
+    grid,
     selected: null,
     mode: INITIAL_INPUT_MODE,
     undoStack: [],
@@ -52,6 +60,10 @@ function applyInput(state: GameState, digit: number): GameState {
   if (!state.selected || digit < 1 || digit > state.puzzle.size) {
     return state;
   }
+  const [r, c] = state.selected;
+  if (state.grid[r][c].given) {
+    return state;
+  }
   const next =
     state.mode === "note"
       ? toggleCellNote(state.grid, state.selected, digit)
@@ -59,10 +71,22 @@ function applyInput(state: GameState, digit: number): GameState {
   return commitGrid(state, next);
 }
 
+function applyClear(state: GameState): GameState {
+  if (!state.selected) {
+    return state;
+  }
+  const [r, c] = state.selected;
+  if (state.grid[r][c].given) {
+    return state;
+  }
+  return commitGrid(state, clearCell(state.grid, state.selected));
+}
+
 function firstEmptyCell(state: GameState): Cell | null {
   for (let r = 0; r < state.puzzle.size; r++) {
     for (let c = 0; c < state.puzzle.size; c++) {
-      if (state.grid[r][c].value === null) {
+      const cell = state.grid[r][c];
+      if (cell.value === null && !cell.given) {
         return [r, c];
       }
     }
@@ -76,12 +100,38 @@ function applyHint(state: GameState): GameState {
     return state;
   }
   const [r, c] = target;
+  if (state.grid[r][c].given) {
+    return state;
+  }
   const correct = state.puzzle.solution[r][c];
   const next = setCellValue(state.grid, target, correct, state.puzzle.cages);
   return {
     ...commitGrid(state, next),
     selected: target,
     hintsUsed: state.hintsUsed + 1,
+  };
+}
+
+function applyRestore(
+  state: GameState,
+  action: Extract<GameAction, { type: "restore" }>
+): GameState {
+  const grid = cloneGrid(action.grid);
+  // Re-stamp given cells so freebies survive a progress restore from old saves.
+  for (const [r, c] of state.freebies) {
+    grid[r][c] = { given: true, value: state.puzzle.solution[r][c], notes: [] };
+  }
+  return {
+    ...state,
+    grid,
+    elapsedSeconds: action.elapsedSeconds,
+    hintsUsed: action.hintsUsed,
+    undoStack: [],
+    redoStack: [],
+    revealedMistakes: [],
+    status: isSolved(grid, state.puzzle.size, state.puzzle.cages)
+      ? "won"
+      : "playing",
   };
 }
 
@@ -103,9 +153,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     case "input":
       return applyInput(state, action.digit);
     case "clear":
-      return state.selected
-        ? commitGrid(state, clearCell(state.grid, state.selected))
-        : state;
+      return applyClear(state);
     case "setMode":
       return { ...state, mode: action.mode };
     case "toggleMode":
@@ -157,21 +205,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         : { ...state, elapsedSeconds: state.elapsedSeconds + 1 };
     case "setPaused":
       return { ...state, paused: action.paused };
-    case "restore": {
-      const grid = cloneGrid(action.grid);
-      return {
-        ...state,
-        grid,
-        elapsedSeconds: action.elapsedSeconds,
-        hintsUsed: action.hintsUsed,
-        undoStack: [],
-        redoStack: [],
-        revealedMistakes: [],
-        status: isSolved(grid, state.puzzle.size, state.puzzle.cages)
-          ? "won"
-          : "playing",
-      };
-    }
+    case "restore":
+      return applyRestore(state, action);
     default:
       return state;
   }

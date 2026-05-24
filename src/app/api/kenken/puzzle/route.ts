@@ -14,9 +14,15 @@ export function GET(request: NextRequest) {
     .split(",")
     .map((s) => s.trim())
     .filter((s) => s.length > 0);
+  const sizeParam = searchParams.get("size");
+  const sizeNum = sizeParam === null ? null : Number(sizeParam);
+  const size =
+    sizeNum !== null && Number.isFinite(sizeNum) && sizeNum > 0
+      ? sizeNum
+      : null;
 
   const result = resolvePuzzleRequest(
-    { id, level, exclude },
+    { id, level, exclude, size },
     {
       byId: (puzzleId) => findById(puzzleId),
       byLevel: (lvl) => getLibrary(lvl).puzzles,

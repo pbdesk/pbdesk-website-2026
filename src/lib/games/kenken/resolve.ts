@@ -7,6 +7,8 @@ export interface PuzzleRequestParams {
   exclude: string[];
   id: string | null;
   level: string | null;
+  /** If set, only return puzzles of this grid size within the requested level. */
+  size?: number | null;
 }
 
 export interface PuzzleLookup {
@@ -35,7 +37,9 @@ export function resolvePuzzleRequest(
     return { status: 400, body: { error: "invalid level" } };
   }
 
-  const puzzles = lookup.byLevel(params.level);
+  const all = lookup.byLevel(params.level);
+  const puzzles =
+    params.size == null ? all : all.filter((p) => p.size === params.size);
   if (puzzles.length === 0) {
     return { status: 503, body: { error: "no puzzles available" } };
   }

@@ -19,7 +19,7 @@ describe("createEmptyGrid", () => {
     const grid = createEmptyGrid(3);
     expect(grid.length).toBe(3);
     expect(grid[0].length).toBe(3);
-    expect(grid[1][2]).toEqual({ value: null, notes: [] });
+    expect(grid[1][2]).toEqual({ given: false, value: null, notes: [] });
   });
 });
 
@@ -87,7 +87,7 @@ describe("setCellValue", () => {
     let grid = createEmptyGrid(3);
     grid = toggleCellNote(grid, [0, 0], 2);
     grid = setCellValue(grid, [0, 0], 2, cages);
-    expect(grid[0][0]).toEqual({ value: 2, notes: [] });
+    expect(grid[0][0]).toEqual({ given: false, value: 2, notes: [] });
   });
 
   test("auto-clears the committed digit from notes in same row, col, and cage", () => {
@@ -114,7 +114,7 @@ describe("clearCell", () => {
     let grid = createEmptyGrid(3);
     grid = setCellValue(grid, [0, 0], 1, []);
     grid = clearCell(grid, [0, 0]);
-    expect(grid[0][0]).toEqual({ value: null, notes: [] });
+    expect(grid[0][0]).toEqual({ given: false, value: null, notes: [] });
   });
 });
 

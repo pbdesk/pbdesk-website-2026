@@ -6,6 +6,7 @@ export function createEmptyGrid(size: number): GameGrid {
     Array.from(
       { length: size },
       (): CellState => ({
+        given: false,
         value: null,
         notes: [],
       })
@@ -15,7 +16,11 @@ export function createEmptyGrid(size: number): GameGrid {
 
 export function cloneGrid(grid: GameGrid): GameGrid {
   return grid.map((row) =>
-    row.map((cell) => ({ value: cell.value, notes: [...cell.notes] }))
+    row.map((cell) => ({
+      given: cell.given ?? false,
+      value: cell.value,
+      notes: [...cell.notes],
+    }))
   );
 }
 
@@ -49,7 +54,7 @@ export function setCellValue(
   cages: Cage[]
 ): GameGrid {
   const next = cloneGrid(grid);
-  next[r][c] = { value, notes: [] };
+  next[r][c] = { given: next[r][c].given, value, notes: [] };
   if (value === null) {
     return next;
   }
@@ -84,7 +89,7 @@ export function setCellValue(
 
 export function clearCell(grid: GameGrid, [r, c]: Cell): GameGrid {
   const next = cloneGrid(grid);
-  next[r][c] = { value: null, notes: [] };
+  next[r][c] = { given: false, value: null, notes: [] };
   return next;
 }
 

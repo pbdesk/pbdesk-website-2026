@@ -14,9 +14,54 @@ function borderValue(weight: "thick" | "thin"): string {
   return `${width} solid ${color}`;
 }
 
+function resolveCellBackground(
+  given: boolean,
+  peerHighlight: boolean,
+  sameValueHighlight: boolean,
+  selected: boolean
+): string {
+  if (selected) {
+    return `color-mix(in srgb, ${BRAIN_BOOST_ACCENT.primary} 22%, transparent)`;
+  }
+  if (sameValueHighlight) {
+    return "color-mix(in srgb, var(--fg-brand) 12%, transparent)";
+  }
+  if (peerHighlight) {
+    return "var(--bg-subtle)";
+  }
+  if (given) {
+    return "color-mix(in srgb, var(--fg-brand) 8%, var(--bg-page))";
+  }
+  return "var(--bg-page)";
+}
+
+function resolveValueColor(
+  given: boolean,
+  conflict: boolean,
+  mistake: boolean
+): string {
+  if (conflict || mistake) {
+    return "#dc2626"; // red-600 — not sole signal (ring too)
+  }
+  return given ? "var(--fg-brand)" : "var(--fg-primary)";
+}
+
+function cellAriaLabel(
+  label: string | null,
+  value: number | null,
+  given: boolean
+): string {
+  const valueStr = value ? `, value ${value}` : ", empty";
+  const givenStr = given ? ", pre-filled" : "";
+  return label
+    ? `Cell, cage ${label}${valueStr}${givenStr}`
+    : `Cell${valueStr}${givenStr}`;
+}
+
 interface CellProps {
   borders: CellBorders;
   conflict: boolean;
+  given: boolean;
   hideNotes: boolean;
   label: string | null;
   mistake: boolean;
@@ -34,34 +79,25 @@ export default function Cell({
   selected,
   conflict,
   mistake,
+  given,
   sameValueHighlight,
   peerHighlight,
   hideNotes,
   onSelect,
 }: CellProps) {
-  let background = "var(--bg-page)";
-  if (peerHighlight) {
-    background = "var(--bg-subtle)";
-  }
-  if (sameValueHighlight) {
-    background = "color-mix(in srgb, var(--fg-brand) 12%, transparent)";
-  }
-  if (selected) {
-    background = `color-mix(in srgb, ${BRAIN_BOOST_ACCENT.primary} 22%, transparent)`;
-  }
-
-  let valueColor = "var(--fg-primary)";
-  if (conflict || mistake) {
-    valueColor = "#dc2626"; // red-600 — color is not the sole signal (also ring)
-  }
+  const background = resolveCellBackground(
+    given,
+    peerHighlight,
+    sameValueHighlight,
+    selected
+  );
+  const valueColor = resolveValueColor(given, conflict, mistake);
+  const hasConflict = conflict || mistake;
 
   return (
     <button
-      aria-label={
-        label
-          ? `Cell, cage ${label}${state.value ? `, value ${state.value}` : ", empty"}`
-          : `Cell${state.value ? `, value ${state.value}` : ", empty"}`
-      }
+      aria-disabled={given || undefined}
+      aria-label={cellAriaLabel(label, state.value, given)}
       aria-pressed={selected}
       className="relative flex aspect-square items-center justify-center"
       onClick={onSelect}
@@ -71,7 +107,8 @@ export default function Cell({
         borderRight: borderValue(borders.right),
         borderBottom: borderValue(borders.bottom),
         borderLeft: borderValue(borders.left),
-        outline: conflict || mistake ? "2px solid #dc2626" : "none",
+        cursor: given ? "default" : undefined,
+        outline: hasConflict ? "2px solid #dc2626" : "none",
         outlineOffset: "-2px",
       }}
       type="button"

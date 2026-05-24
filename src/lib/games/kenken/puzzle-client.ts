@@ -12,16 +12,26 @@ function resolveFetch(provided?: typeof fetch): typeof fetch {
   return f;
 }
 
+export interface FetchByLevelOptions {
+  fetchImpl?: typeof fetch;
+  size?: number;
+}
+
 export async function fetchPuzzleByLevel(
   level: Difficulty,
   exclude: string[],
-  fetchImpl?: typeof fetch
+  options?: FetchByLevelOptions
 ): Promise<KenKenPuzzle> {
   const params = new URLSearchParams({ level });
+  if (options?.size !== undefined) {
+    params.set("size", String(options.size));
+  }
   if (exclude.length > 0) {
     params.set("exclude", exclude.join(","));
   }
-  const response = await resolveFetch(fetchImpl)(`${ENDPOINT}?${params}`);
+  const response = await resolveFetch(options?.fetchImpl)(
+    `${ENDPOINT}?${params}`
+  );
   if (!response.ok) {
     throw new Error(`puzzle fetch failed: ${response.status}`);
   }
@@ -59,7 +69,7 @@ export async function resolveDailyPuzzle(
       return existing;
     }
   }
-  const fresh = await fetchPuzzleByLevel("intermediate", [], fetchImpl);
+  const fresh = await fetchPuzzleByLevel("intermediate", [], { fetchImpl });
   setDaily({ date: today, puzzleId: fresh.id }, store);
   return fresh;
 }

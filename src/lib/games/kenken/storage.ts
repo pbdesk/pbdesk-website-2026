@@ -133,6 +133,25 @@ export function setLastLevel(level: Difficulty, store?: Storage): void {
   getStore(store)?.setItem(LAST_LEVEL_KEY, level);
 }
 
+const lastSizeKey = (level: Difficulty): string => `${NS}:lastSize:${level}`;
+
+export function getLastSize(level: Difficulty, store?: Storage): number | null {
+  const raw = getStore(store)?.getItem(lastSizeKey(level));
+  if (!raw) {
+    return null;
+  }
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+export function setLastSize(
+  level: Difficulty,
+  size: number,
+  store?: Storage
+): void {
+  getStore(store)?.setItem(lastSizeKey(level), String(size));
+}
+
 export function getHowToSeen(store?: Storage): boolean {
   return getStore(store)?.getItem(HOWTO_KEY) === "1";
 }

@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useReducer, useState } from "react";
+import { selectFreebies } from "@/lib/games/kenken/freebies";
 import {
   fetchPuzzleById,
   fetchPuzzleByLevel,
@@ -14,11 +15,13 @@ import {
   clearProgress,
   getHowToSeen,
   getLastLevel,
+  getLastSize,
   getServedIds,
   loadProgress,
   saveProgress,
   setHowToSeen,
   setLastLevel,
+  setLastSize,
 } from "@/lib/games/kenken/storage";
 import type { Difficulty, KenKenPuzzle } from "@/lib/games/kenken/types";
 import CellStatusBar from "./cell-status-bar";
@@ -27,6 +30,7 @@ import Grid from "./grid";
 import HowToPlayOverlay from "./how-to-play-overlay";
 import LevelPicker from "./level-picker";
 import NumberPad from "./number-pad";
+import SizePicker from "./size-picker";
 import Timer, { useGameTimer } from "./timer";
 import WinOverlay from "./win-overlay";
 
@@ -87,7 +91,9 @@ function GamePlay({
   onNewGame,
   onChangeLevel,
 }: GamePlayProps) {
-  const [state, dispatch] = useReducer(gameReducer, puzzle, createInitialState);
+  const [state, dispatch] = useReducer(gameReducer, puzzle, (p: KenKenPuzzle) =>
+    createInitialState(p, selectFreebies(p))
+  );
   const [showHowTo, setShowHowTo] = useState(!getHowToSeen());
 
   // Restore saved progress on mount (if any).
@@ -238,6 +244,7 @@ export default function KenKenGame({ mode, initialPuzzleId }: KenKenGameProps) {
   const [showPicker, setShowPicker] = useState(
     mode === "play" && !initialPuzzleId
   );
+  const [selectedLevel, setSelectedLevel] = useState<Difficulty | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const startPuzzle = useCallback((next: KenKenPuzzle) => {
@@ -247,15 +254,17 @@ export default function KenKenGame({ mode, initialPuzzleId }: KenKenGameProps) {
     setPuzzle(next);
   }, []);
 
-  const loadForLevel = useCallback(
-    async (level: Difficulty) => {
+  const loadForLevelAndSize = useCallback(
+    async (level: Difficulty, size: number) => {
       setLoadError(null);
       setLastLevel(level);
+      setLastSize(level, size);
       try {
         const served = getServedIds(level);
-        const next = await fetchPuzzleByLevel(level, served);
+        const next = await fetchPuzzleByLevel(level, served, { size });
         clearProgress();
         setShowPicker(false);
+        setSelectedLevel(null);
         startPuzzle(next);
       } catch {
         setLoadError("Could not load a puzzle. Please try again.");
@@ -292,6 +301,16 @@ export default function KenKenGame({ mode, initialPuzzleId }: KenKenGameProps) {
   }, [mode, initialPuzzleId, startPuzzle]);
 
   if (showPicker) {
+    if (selectedLevel !== null) {
+      return (
+        <SizePicker
+          lastSize={getLastSize(selectedLevel)}
+          level={selectedLevel}
+          onBack={() => setSelectedLevel(null)}
+          onSelect={(size) => loadForLevelAndSize(selectedLevel, size)}
+        />
+      );
+    }
     return (
       <>
         {loadError ? (
@@ -302,7 +321,10 @@ export default function KenKenGame({ mode, initialPuzzleId }: KenKenGameProps) {
             {loadError}
           </p>
         ) : null}
-        <LevelPicker initialLevel={getLastLevel()} onSelect={loadForLevel} />
+        <LevelPicker
+          initialLevel={getLastLevel()}
+          onSelect={(level) => setSelectedLevel(level)}
+        />
       </>
     );
   }
@@ -318,8 +340,11 @@ export default function KenKenGame({ mode, initialPuzzleId }: KenKenGameProps) {
   return (
     <GamePlay
       key={puzzle.id}
-      onChangeLevel={() => setShowPicker(true)}
-      onNewGame={() => loadForLevel(puzzle.difficulty)}
+      onChangeLevel={() => {
+        setSelectedLevel(null);
+        setShowPicker(true);
+      }}
+      onNewGame={() => loadForLevelAndSize(puzzle.difficulty, puzzle.size)}
       puzzle={puzzle}
       restoredProgress={restoredProgress}
     />

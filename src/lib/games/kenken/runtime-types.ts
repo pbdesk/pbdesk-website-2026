@@ -3,6 +3,7 @@ import type { Cell, KenKenPuzzle } from "./types";
 export type CellValue = number | null;
 
 export interface CellState {
+  given: boolean; // pre-filled freebie — never editable
   notes: number[]; // candidate digits, ascending; empty when none
   value: CellValue;
 }
@@ -16,6 +17,8 @@ export const INITIAL_INPUT_MODE: InputMode = "value";
 
 export interface GameState {
   elapsedSeconds: number;
+  /** Cells pre-filled as freebies for this puzzle. Stored so restore can re-stamp them. */
+  freebies: Cell[];
   grid: GameGrid;
   hintsUsed: number;
   mode: InputMode;

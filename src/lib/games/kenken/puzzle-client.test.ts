@@ -53,7 +53,9 @@ describe("fetchPuzzleByLevel", () => {
       seenUrl = String(input);
       return Promise.resolve(jsonResponse(puzzle("k3-easy-1")));
     };
-    const result = await fetchPuzzleByLevel("easy", ["x", "y"], fakeFetch);
+    const result = await fetchPuzzleByLevel("easy", ["x", "y"], {
+      fetchImpl: fakeFetch,
+    });
     expect(result.id).toBe("k3-easy-1");
     expect(seenUrl).toContain("level=easy");
     expect(seenUrl).toContain("exclude=x%2Cy");
@@ -62,7 +64,9 @@ describe("fetchPuzzleByLevel", () => {
   test("throws on a non-OK response", async () => {
     const fakeFetch: typeof fetch = () =>
       Promise.resolve(jsonResponse({ error: "no puzzles available" }, 503));
-    await expect(fetchPuzzleByLevel("easy", [], fakeFetch)).rejects.toThrow();
+    await expect(
+      fetchPuzzleByLevel("easy", [], { fetchImpl: fakeFetch })
+    ).rejects.toThrow();
   });
 });
 

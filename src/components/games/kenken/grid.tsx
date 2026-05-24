@@ -100,6 +100,7 @@ export default function Grid({ state, onSelect, onKeyAction }: GridProps) {
             <Cell
               borders={borders[r][c]}
               conflict={conflicts.has(k)}
+              given={cellState.given}
               hideNotes={hideNotes}
               key={k}
               label={labelByKey.get(k) ?? null}
