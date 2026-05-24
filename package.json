@@ -9,7 +9,7 @@
     "start": "next start",
     "format": "ultracite fix",
     "lint": "ultracite check",
-    "check": "bun run clean && bun run lint && bun run build && bun run audit",
+    "check": "bun run clean && bun run lint && bun run build && bun run audit && bun run test",
     "clean": "rm -rf node_modules .next .turbo && bun install",
     "prepare": "lefthook install",
     "test": "bun test"
