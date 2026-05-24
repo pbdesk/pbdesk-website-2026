@@ -1,7 +1,7 @@
 # KenKen Game — Requirements & Design
 
 - **Date:** 2026-05-23
-- **Status:** Draft for review
+- **Status:** Reviewed — ready for implementation planning
 - **Author:** Pinal Bhatt (with Claude)
 - **Section:** Brain Boost (`/brain-boost`) — the site's new brain-games section; KenKen is the first game.
 - **Display name:** "Brain Boost" (two words) in all UI, nav, and footer text. URL slug stays `/brain-boost`. Code identifiers may use `brainBoost`.
@@ -22,7 +22,8 @@ KenKen is an arithmetic logic puzzle. The player fills an N×N grid with the dig
 1…N so that **no digit repeats in any row or column** (a Latin square). The grid is
 divided into **cages** — outlined groups of cells — each labeled with a target number
 and an operation (`+`, `−`, `×`, `÷`). The digits in a cage must combine, using that
-operation, to produce the target. Single-cell cages are "freebies" (a given digit).
+operation, to produce the target. Single-cell cages are "freebies" — the target *is* the
+answer, but the player still **enters** the digit (cells are not pre-filled or locked).
 
 This document specifies the **full product vision** for KenKen on PBDesk, and scopes
 the **first implementation** to a self-contained, shippable game (see §10, Phasing).
@@ -75,6 +76,9 @@ the **first implementation** to a self-contained, shippable game (see §10, Phas
   so `PillarKey` and `pillarAccents` are left untouched. The Sunset Pulse accent is a
   standalone constant in the Brain Boost section (see §2.A).
 - "Brain Boost" (two words) is added to the header and footer navigation.
+- **Sitemap/SEO:** `/brain-boost/kenken` is added to `sitemap.ts`. The interactive app
+  routes (`/play`, `/daily`) and the `/brain-boost` placeholder are **excluded** from the
+  sitemap for now (the info page is the canonical, indexable entry point).
 - **Daily semantics:** on the first visit to `/daily` on a given calendar date, the
   client picks a random Intermediate puzzle and stores `{ date, puzzleId }` in
   localStorage. Refresh/return **the same day on the same device** restores that **same**
@@ -104,6 +108,15 @@ A custom content page following the `about_page` / `disclaimer_page` convention:
 server component loads the story and renders its blocks (or `LivePage` in the visual
 editor); when there is no body/token it renders a **hardcoded fallback** with canonical
 default copy. It does **not** use `SectionLanding`/`SectionBanner`.
+
+- **Data loading & revalidation:** a `loadKenkenStory()` helper (in
+  `lib/storyblok/landing.ts`, mirroring `loadAboutStory`) fetches via `storyblokFetch`,
+  so the page inherits the standard **cache-tag + `/api/revalidate` webhook** strategy —
+  editor publishes revalidate it like every other Storyblok page (draft mode stays
+  keystroke-fresh in the visual editor).
+- **Blok registration:** the new `kenken_*` bloks must be registered in the Storyblok
+  SDK component map (`storyblok/init.ts` / the storyblok provider) or `LivePage` and the
+  visual editor will not render them.
 
 **Content model — the page is fully CMS-editable.** Content type `kenken_page`:
 
@@ -167,7 +180,8 @@ Difficulty is a function of **grid size** and the **operation set** in play.
   (`|a − b|`).
 - **Division (`÷`)**: two cells; target is **larger ÷ smaller**, and only valid when the
   quotient is an **integer** (the generator only emits division cages that divide evenly).
-- **Single-cell (`=`)**: the target is the given digit.
+- **Single-cell (`=`)**: the target equals the cell's digit. The player still types it;
+  the cell starts **empty** (no pre-filled/locked givens anywhere in the grid).
 
 **Display mapping:** data stores ASCII operators `+`, `-`, `*`, `/` (and `=`); the UI
 renders them as `+`, `−`, `×`, `÷` (single-cell cages show just the number).
@@ -274,6 +288,18 @@ A pure-TypeScript Bun script, `scripts/bb/kenken/generate-kenken.ts`, run on dem
   that `solution` matches.
 - The generator is retained (not a throwaway) so the library can be expanded over time
   — this is the "hybrid: generate + cache" strategy.
+- **Seedable RNG:** the generator accepts an optional seed so runs are reproducible
+  (less git churn, debuggable failures). CLI flags also control target size/difficulty
+  and count to add.
+- **Attempt budget:** generation uses a per-puzzle attempt/time budget; if uniqueness
+  can't be achieved within budget it abandons that candidate and retries, so a run never
+  hangs.
+
+> **Risk — Genius generation cost:** uniqueness verification via backtracking gets
+> expensive for 8×8/9×9. Generating ~50 Genius puzzles may take meaningful time. Mitigate
+> with the attempt budget, an efficient solver (constraint propagation before brute
+> force), and — if needed — **seeding Genius with fewer puzzles initially** and growing
+> the pool later. (Generation is offline, so cost doesn't affect runtime.)
 
 ---
 
@@ -283,13 +309,18 @@ Puzzles reach the browser via a single **Next.js route handler**, fetched on dem
 one puzzle per call. The committed library is read server-side; nothing is bundled into
 the client.
 
+**Caching:** the handler returns a **random** puzzle, so it must be **uncached** — it is
+explicitly dynamic (`export const dynamic = "force-dynamic"`, or equivalently it derives
+its response from request query params). It must never serve a cached first pick to
+everyone.
+
 **Endpoint:** `GET /api/kenken/puzzle`
 
 | Param | Required | Meaning |
 |-------|----------|---------|
 | `level` | yes (unless `id`) | `easy` \| `intermediate` \| `hard` \| `genius`. Returns one puzzle of that tier. |
 | `id` | optional | Return a specific puzzle by id (used for shareable URLs). |
-| `exclude` | optional | Comma-separated puzzle ids to avoid (every puzzle the player has been **served/started** for that level, completed or not — see §9). The handler prefers a puzzle whose id is not in this list. |
+| `exclude` | optional | Comma-separated puzzle ids to avoid (every puzzle the player has been **served/started** for that level, completed or not — see §9). The handler prefers a puzzle whose id is not in this list. Naturally bounded by the tier's pool size (~50). |
 
 **Selection logic**
 
@@ -310,21 +341,26 @@ the client.
 **Client usage**
 
 - On `/play`: when the user selects a level (and on each "New game, same level"), the
-  client calls `GET /api/kenken/puzzle?level=X&exclude=<seen ids for X>`.
+  client calls `GET /api/kenken/puzzle?level=X&exclude=<served/started ids for X>`.
 - On `/daily`: the client first checks localStorage for today's stored daily
   (`{ date, puzzleId }`). If present, it resolves that puzzle via
   `GET /api/kenken/puzzle?id=<storedId>`; otherwise it calls
   `GET /api/kenken/puzzle?level=intermediate`, then stores `{ today, puzzle.id }` so the
   rest of the day is sticky (see §2, §9).
 - For a shared URL (`?puzzle=<id>`): the client calls `GET /api/kenken/puzzle?id=<id>`.
+  If that returns **404** (the puzzle was regenerated/removed), the UI shows a brief
+  notice and offers to start a random puzzle of that tier instead.
 
 **Play loop (`/play`)**
 
-1. User selects a level → client fetches a puzzle for that level → game starts.
-2. User solves or ends the game → completion view offers:
-   - **New game, same level** → fetch another puzzle of the same tier (excluding seen ids).
-   - **Change level** → return to level select; choosing a tier fetches a puzzle for it.
-3. Every puzzle served/started is tracked per-level in localStorage (§9) and passed as
+1. `/play` with no params shows a **level-picker** screen (the tiers from §3). The
+   last-played level is remembered in localStorage and pre-selected.
+2. User selects a level → client fetches a puzzle for that level → game starts.
+3. User solves or ends the game → completion view offers:
+   - **New game, same level** → fetch another puzzle of the same tier (excluding
+     served/started ids).
+   - **Change level** → return to the level picker; choosing a tier fetches a puzzle for it.
+4. Every puzzle served/started is tracked per-level in localStorage (§9) and passed as
    `exclude` so "New game" prefers puzzles the player has not yet been shown — even ones
    they abandoned.
 
@@ -367,20 +403,26 @@ predictable.
 All of the following are in scope:
 
 - **Pencil marks / notes** — toggle note mode; jot multiple candidate digits in a cell
-  before committing a final value.
+  before committing a final value. **On large grids (8×8/9×9) in-cell marks are hidden**
+  (cells are too small to be legible); the selected cell's notes are shown in the cell
+  status bar instead. On smaller grids, marks render inside the cell.
 - **Undo / redo** — step backward/forward through moves (value, note, and clear
   actions).
-- **Mistake checking** — highlight row/column duplicates and entries that conflict with
-  the solution. Available both as a manual "Check" action and as live conflict
-  highlighting for duplicate row/column digits. (Live full-correctness checking against
-  the solution is exposed via the Check action / hints, not forced on the player.)
+- **Mistake checking** — two complementary tools (user's choice, never forced):
+  - **Rule check (default):** highlights current row/column duplicates and any cage that
+    already violates its target. This is also surfaced live as conflict highlighting for
+    duplicate row/column digits.
+  - **Reveal mistakes vs. solution:** a separate action that flags every filled cell
+    differing from the stored unique `solution` (i.e. wrong even if not yet rule-breaking).
 - **Hints** — on request, reveal a correct cell (from `solution`) or flag an incorrect
   entry. **Unlimited**, but the game displays a **count of hints used** for the current
   puzzle (no cap, no cross-puzzle persistence).
-- **Timer with pause/resume** — shown during play and on completion. A visible
-  **pause/resume control** stops the timer and hides the grid (so the player can't keep
-  solving while "paused"); resuming restores the grid and continues timing. **Not**
-  persisted as stats/streaks.
+- **Timer with pause/resume** — starts when the puzzle becomes interactive (after the
+  how-to-play overlay is dismissed on first visit; otherwise on load) and **auto-pauses
+  when the browser tab is hidden**. A visible **pause/resume control** stops the timer
+  and hides the grid (so the player can't keep solving while "paused"); resuming restores
+  the grid and continues timing. Shown during play and on completion. **Not** persisted
+  as stats/streaks.
 - **Cell status bar** — a prominent strip directly above the keypad showing, in large,
   clear typography: the selected cell's **cage goal + operator** (e.g. `Cage: 12 ×`),
   the cell's current **value**, and its **pencil marks**. This keeps cage targets and
@@ -406,9 +448,10 @@ All of the following are in scope:
   phones.
 - **Large grids (8×8, 9×9) on mobile: shrink to fit the viewport width.** The grid
   always scales down so the whole board is visible at once (no horizontal scroll, no
-  zoom controls). Cells, cage labels, and pencil marks shrink accordingly; the layout
-  must keep them legible and tap targets usable at the smallest supported width. This
-  fit-to-width approach is decided up front because it shapes the grid layout
+  zoom controls). Cells and cage labels shrink accordingly; the layout must keep them
+  legible and tap targets usable at the smallest supported width. **In-cell pencil marks
+  are hidden at these sizes** — the cell status bar (§7) carries the selected cell's
+  notes. This fit-to-width approach is decided up front because it shapes the grid layout
   architecture.
 - **Dual input:**
   - **On-screen number pad** — tap a cell, tap a digit; a notes toggle and an erase
@@ -416,9 +459,10 @@ All of the following are in scope:
   - **Keyboard** — arrow keys move the selection; digit keys fill; a modifier or toggle
     enters note mode; Backspace/Delete clears; undo/redo shortcuts.
 - **Accessibility** (per project standards): semantic markup, ARIA roles/labels for the
-  grid and cells, visible focus, keyboard operability, sufficient color contrast for
-  cage borders, conflict highlights, and the active selection. Color is never the sole
-  signal for a conflict.
+  grid and cells (each cell's accessible label includes its position, value, and its
+  **cage target/operator**, since the in-cell label may be visually tiny), visible focus,
+  keyboard operability, sufficient color contrast for cage borders, conflict highlights,
+  and the active selection. Color is never the sole signal for a conflict.
 
 ### Cage border rendering (incl. L-shaped cages)
 
@@ -452,6 +496,14 @@ without special-casing.
   shared/bookmarked. The client resolves the id via `GET /api/kenken/puzzle?id=…`.
   Sharing the puzzle (not live progress) is the primary use; the share affordance copies
   the puzzle URL.
+- **Storage schema** — all keys are **namespaced and versioned**, e.g.
+  `bb:kenken:v1:progress:<puzzleId>`, `bb:kenken:v1:daily`,
+  `bb:kenken:v1:served:<level>`, `bb:kenken:v1:lastLevel`, `bb:kenken:v1:howtoSeen`. The
+  `v1` segment allows a clean migration/reset if the shape changes.
+- **Pruning** — per-puzzle in-progress state would otherwise accumulate unboundedly, so
+  only the **active** in-progress puzzle is retained (a completed or abandoned puzzle's
+  progress entry is cleared when a new one starts). Served-id sets are bounded by pool
+  size (~50/level). Reads tolerate missing/corrupt entries (treat as absent).
 - No database; persistence of player state is client-side (localStorage). The only
   server piece is the read-only puzzle route handler reading committed JSON.
 
@@ -541,7 +593,7 @@ src/
       intermediate.json
       hard.json
       genius.json
-  components/games/kenken/      # client game UI (grid, cage borders, status bar, number pad, controls, timer, pause, hint counter, how-to-play overlay, win)
+  components/games/kenken/      # client game UI (level picker, grid, cage borders, status bar, number pad, controls, timer, pause, hint counter, how-to-play overlay, win)
   components/brain-boost/
     accent.ts                   # standalone Sunset Pulse accent constant (§2.A)
     kenken/                     # bespoke kenken_page bloks: hero, prose, steps, operations, levels, cta + fallback
@@ -557,8 +609,10 @@ src/
 
 `PillarKey` / `pillarAccents` are **unchanged** (Brain Boost does not reuse
 `SectionLanding`/`SectionBanner`). A new `kenken_page` content type + its bloks are added
-to `lib/storyblok/types.ts`, and a `loadKenkenStory()` helper to `lib/storyblok/landing.ts`
-(mirroring `loadAboutStory`). "Brain Boost" is added to the header and footer nav lists.
+to `lib/storyblok/types.ts`; a `loadKenkenStory()` helper to `lib/storyblok/landing.ts`
+(mirroring `loadAboutStory`, via `storyblokFetch`); the `kenken_*` bloks are registered in
+`storyblok/init.ts`; `/brain-boost/kenken` is added to `app/sitemap.ts`; and "Brain Boost"
+is added to the header and footer nav lists.
 
 (Exact filenames/organization may be refined during planning, following existing
 project conventions.)
@@ -584,9 +638,17 @@ project conventions.)
 - **Library size:** ~50 puzzles per tier for launch.
 - **Operations:** standard rules (subtraction = absolute difference; division =
   larger ÷ smaller, integer only); data uses `+ - * /`, UI shows `+ − × ÷`.
+- **Single-cell cages:** player types them; no pre-filled/locked givens.
+- **Pencil marks on large grids:** hidden in-cell on 8×8/9×9; shown via the status bar.
+- **Timer:** starts after overlay/on load; **auto-pauses on tab hidden**.
+- **Mistake checking:** both a rule-check (default) and a separate reveal-vs-solution action.
 - **Cell status bar:** cage goal/operator + selected value + pencil marks above the keypad.
 - **Auto-clear notes:** committing a value clears that digit from row/column/cage notes.
 - **Cage borders:** computed dynamically per-cell vs. neighbors (handles L-shaped cages).
+- **Route caching:** `/api/kenken/puzzle` is uncached/dynamic (random selection).
+- **localStorage:** namespaced + versioned (`bb:kenken:v1:*`); only active progress retained.
+- **Generator:** seedable RNG + attempt budget; Genius pool may start smaller (cost risk).
+- **Sitemap:** `/brain-boost/kenken` indexed; `/play`, `/daily`, `/brain-boost` excluded.
 - **Hardcoded fallback:** `/brain-boost/kenken` renders without a Storyblok token.
 - **Pause/resume:** included. **How-to-play overlay:** included (first-time, localStorage).
 - **Large mobile grids:** shrink to fit viewport width.
@@ -608,7 +670,8 @@ The first implementation is done when all of these pass (desktop + mobile):
 - [ ] `/brain-boost` loads as a placeholder (no crash) and links to KenKen.
 - [ ] `/brain-boost/kenken` (bespoke, not `SectionLanding`) explains the game, rules,
       operations, and levels, and links to play/daily.
-- [ ] On `/play`, select a level → a puzzle of that level loads and is playable.
+- [ ] `/play` with no params shows a level picker (last level pre-selected); selecting a
+      level loads a playable puzzle of that level.
 - [ ] Fill cells via the **on-screen number pad** and via the **keyboard**; both work.
 - [ ] Pencil marks, undo/redo, mistake-check, hints (with used-count), and pause/resume
       all work.
@@ -622,7 +685,10 @@ The first implementation is done when all of these pass (desktop + mobile):
 - [ ] Completing a puzzle shows the win state with solve time and a share affordance.
 - [ ] Completion offers **New game (same level)** and **Change level**; "New game"
       avoids already-served puzzles for that level.
-- [ ] A shared URL (`?puzzle=<id>`) opens the **exact** puzzle.
+- [ ] A shared URL (`?puzzle=<id>`) opens the **exact** puzzle; an unknown id shows a
+      notice and offers a random puzzle of that tier.
+- [ ] Two browsers hitting `/play` at the same level get **different** puzzles (route is
+      not cached).
 - [ ] `/daily` shows an Intermediate puzzle; refreshing the same day keeps the **same**
       puzzle; a new day yields a new one.
 - [ ] On a phone, an 8×8/9×9 grid **fits the screen** (shrinks to width) and stays usable.
@@ -631,3 +697,6 @@ The first implementation is done when all of these pass (desktop + mobile):
       and is fully editable via its `kenken_page` bloks when a token is present.
 - [ ] The section shows the **Sunset Pulse** accent (`#f97316 → #ec4899`); `PillarKey` /
       `pillarAccents` are unchanged.
+- [ ] Editing the `kenken_page` story in Storyblok and publishing **revalidates** the
+      live page (cache-tag + webhook).
+- [ ] The timer auto-pauses when the tab is hidden and resumes on return.
