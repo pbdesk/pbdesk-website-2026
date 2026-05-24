@@ -1427,3 +1427,28 @@ body {
     transform: none;
   }
 }
+
+/* ===============================================
+   Brain Boost — section utilities (Sunset Pulse accent)
+   =============================================== */
+.bb-gradient-text {
+  color: transparent;
+  background: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.bb-gradient-bg {
+  background: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+}
+.bb-gradient-btn {
+  color: #fff;
+  background: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+  box-shadow: 0 10px 24px -10px rgb(249 115 22 / 0.55);
+  transition:
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 200ms;
+}
+.bb-gradient-btn:hover {
+  box-shadow: 0 14px 30px -10px rgb(249 115 22 / 0.7);
+  transform: translateY(-1px);
+}

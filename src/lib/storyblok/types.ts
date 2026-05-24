@@ -143,6 +143,51 @@ export interface KenkenPageStoryContent extends SbBlokBase {
   seo_title?: string;
 }
 
+export interface HubMetaItemBlok extends SbBlokBase {
+  component: "hub_meta_item";
+  icon: "Layers" | "Target" | "Sparkles" | "Calendar";
+  label: string;
+  value: string;
+}
+
+export interface HubGameBlok extends SbBlokBase {
+  category: string;
+  component: "hub_game";
+  cover_image?: string;
+  description?: string;
+  est_time?: string;
+  glyph?: string;
+  href?: string;
+  name: string;
+  operations?: string;
+  slug: string;
+  status: "live" | "coming-q3" | "coming-q4" | "exploring";
+  tiers?: number;
+}
+
+export interface HubBenefitBlok extends SbBlokBase {
+  body: string;
+  component: "hub_benefit";
+  icon: "Target" | "Brain" | "Clock" | "Flame";
+  title: string;
+}
+
+export interface BrainBoostHubPageStoryContent extends SbBlokBase {
+  benefits?: HubBenefitBlok[];
+  benefits_heading?: string;
+  component: "brain_boost_hub_page";
+  daily_body?: string;
+  daily_cta_play?: string;
+  daily_heading?: string;
+  games?: HubGameBlok[];
+  intro_lede?: string;
+  intro_tagline?: string;
+  intro_title?: string;
+  meta_items?: HubMetaItemBlok[];
+  seo_description?: string;
+  seo_title?: string;
+}
+
 export type PostStory = ISbStoryData<PostStoryContent>;
 export type LandingPageStory = ISbStoryData<LandingPageStoryContent>;
 export type HomePageStory = ISbStoryData<HomePageStoryContent>;
@@ -152,3 +197,5 @@ export type PrivacyPolicyPageStory =
   ISbStoryData<PrivacyPolicyPageStoryContent>;
 export type GlobalConfigStory = ISbStoryData<GlobalConfigStoryContent>;
 export type KenkenPageStory = ISbStoryData<KenkenPageStoryContent>;
+export type BrainBoostHubPageStory =
+  ISbStoryData<BrainBoostHubPageStoryContent>;

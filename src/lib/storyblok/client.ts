@@ -15,6 +15,7 @@ import { STORY_RELATION_PATHS } from "./relations";
 import { STORYBLOK_CACHE_TAG, storyTag } from "./tags";
 import type {
   AboutPageStory,
+  BrainBoostHubPageStory,
   DisclaimerPageStory,
   GlobalConfigStory,
   HomePageStory,
@@ -302,6 +303,10 @@ export function fetchPrivacyPolicyStory(): Promise<PrivacyPolicyPageStory | null
 
 export function fetchKenkenStory(): Promise<KenkenPageStory | null> {
   return fetchStoryRaw<KenkenPageStory>("brain-boost/kenken");
+}
+
+export function fetchBrainBoostHubStory(): Promise<BrainBoostHubPageStory | null> {
+  return fetchStoryRaw<BrainBoostHubPageStory>("brain-boost/hub");
 }
 
 export function fetchGlobalConfig(): Promise<GlobalConfigStory | null> {

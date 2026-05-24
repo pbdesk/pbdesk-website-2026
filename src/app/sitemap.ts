@@ -17,6 +17,7 @@ const STATIC_ROUTES: RouteEntry[] = [
   { path: "/bites", changeFrequency: "weekly", priority: 0.9 },
   { path: "/categories", changeFrequency: "weekly", priority: 0.7 },
   { path: "/labels", changeFrequency: "weekly", priority: 0.7 },
+  { path: "/brain-boost", changeFrequency: "weekly", priority: 0.9 },
   { path: "/brain-boost/kenken", changeFrequency: "monthly", priority: 0.7 },
 ];
 
