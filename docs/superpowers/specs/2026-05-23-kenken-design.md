@@ -113,12 +113,26 @@ type KenKenPuzzle = {
 
 ### Storage of the library
 
+**Location**
+
 - Generated puzzles live under `src/lib/games/kenken/puzzles/`, organized by
-  difficulty (e.g. `easy.json`, `intermediate.json`, `hard.json`, `genius.json`), and
-  committed to the repo.
-- These files are read **server-side** by the `/api/kenken/puzzle` route handler
-  (§5a). They are **not** imported into the client bundle, so the page stays light as
-  the library grows.
+  difficulty: `easy.json`, `intermediate.json`, `hard.json`, `genius.json`.
+- Committed to the repo and read **server-side** by the `/api/kenken/puzzle` route
+  handler (§5a). They are **not** imported into the client bundle, so the page stays
+  light as the library grows.
+- Output sits under `src/` (not next to the script) so the deployed Next server can
+  read it. The generator's own location (`scripts/bb/kenken/`) is independent of where
+  its output is written.
+
+**Format & save mechanics**
+
+- Each file is a **JSON array of `KenKenPuzzle` objects** (the shape above).
+- The generator **appends** newly-verified puzzles to the matching tier file, so
+  re-running grows the library rather than overwriting it.
+- Each puzzle gets a **stable, incrementing `id`** of the form
+  `k<size>-<difficulty>-<seq>` (e.g. `k4-intermediate-00007`).
+- **De-duplication:** before appending, skip any puzzle whose `solution` grid already
+  exists in that tier file, so identical puzzles don't accumulate.
 - Target initial library size: enough variety per tier that free-play and random
   daily selection feel fresh (e.g. ~50 puzzles per tier as a starting point; tunable).
 
@@ -126,8 +140,9 @@ type KenKenPuzzle = {
 
 ## 5. Puzzle Generator (offline script)
 
-A pure-TypeScript Bun script, `scripts/generate-kenken.ts`, run on demand (not at
-request time). Output is committed JSON.
+A pure-TypeScript Bun script, `scripts/bb/kenken/generate-kenken.ts`, run on demand
+(not at request time). Output is committed JSON written to
+`src/lib/games/kenken/puzzles/` (see §4, "Storage of the library").
 
 **Algorithm**
 
@@ -337,7 +352,7 @@ complete, shippable game.
 ## 12. Source Layout (proposed)
 
 ```
-scripts/
+scripts/bb/kenken/
   generate-kenken.ts            # offline generator + uniqueness verification
 src/
   lib/games/kenken/
