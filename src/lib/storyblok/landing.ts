@@ -16,6 +16,7 @@ import {
   fetchDisclaimerStory,
   fetchGlobalConfig,
   fetchHomeStory,
+  fetchKenkenStory,
   fetchLandingStory,
   fetchPostStory,
   fetchPrivacyPolicyStory,
@@ -26,6 +27,7 @@ import type {
   DisclaimerPageStory,
   GlobalConfigStory,
   HomePageStory,
+  KenkenPageStory,
   LandingPageStory,
   PillarKey,
   PostStory,
@@ -237,6 +239,22 @@ export async function loadPrivacyPolicyStory(): Promise<PrivacyPolicyPageStory |
   }
   try {
     return await fetchPrivacyPolicyStory();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Fetch the `brain-boost/kenken` info page story. Returns null when
+ * Storyblok isn't configured or the story doesn't exist — the page falls
+ * back to its hardcoded canonical content in that case.
+ */
+export async function loadKenkenStory(): Promise<KenkenPageStory | null> {
+  if (!isStoryblokConfigured()) {
+    return null;
+  }
+  try {
+    return await fetchKenkenStory();
   } catch {
     return null;
   }

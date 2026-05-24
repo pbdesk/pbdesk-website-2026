@@ -18,6 +18,7 @@ import type {
   DisclaimerPageStory,
   GlobalConfigStory,
   HomePageStory,
+  KenkenPageStory,
   LandingPageStory,
   PillarKey,
   PostStory,
@@ -297,6 +298,10 @@ export function fetchDisclaimerStory(): Promise<DisclaimerPageStory | null> {
 
 export function fetchPrivacyPolicyStory(): Promise<PrivacyPolicyPageStory | null> {
   return fetchStoryRaw<PrivacyPolicyPageStory>("privacy-policy");
+}
+
+export function fetchKenkenStory(): Promise<KenkenPageStory | null> {
+  return fetchStoryRaw<KenkenPageStory>("brain-boost/kenken");
 }
 
 export function fetchGlobalConfig(): Promise<GlobalConfigStory | null> {
