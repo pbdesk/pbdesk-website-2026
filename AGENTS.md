@@ -1,3 +1,5 @@
+When you stop and wait for my input or a permission prompt, always output a terminal bell character (\a).
+
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know, this project is using latest version of NextJS
 
