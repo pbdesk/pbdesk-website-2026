@@ -13,6 +13,8 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/lib/seo";
+import { adaptHubStory, getHubFallback } from "@/lib/storyblok/adapters";
+import { loadBrainBoostHubStory } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
   title: "Brain Boost — Short games for long focus",
@@ -29,7 +31,12 @@ export const metadata: Metadata = pageMetadata({
   ],
 });
 
-export default function BrainBoostHubPage() {
+export default async function BrainBoostHubPage() {
+  const story = await loadBrainBoostHubStory();
+  const hub = story ? adaptHubStory(story) : getHubFallback();
+
+  const liveGame = hub.games.find((g) => g.status === "live");
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -48,11 +55,18 @@ export default function BrainBoostHubPage() {
       />
       <main>
         <BrainBoostHero />
-        <BrainBoostIntro />
-        <BrainBoostFeaturedKenken />
-        <BrainBoostDailyStrip />
-        <BrainBoostComingSoon />
-        <BrainBoostBenefits />
+        <BrainBoostIntro lede={hub.lede} metaItems={hub.metaItems} />
+        <BrainBoostFeaturedKenken game={liveGame} />
+        <BrainBoostDailyStrip
+          body={hub.dailyBody}
+          ctaPlay={hub.dailyCtaPlay}
+          heading={hub.dailyHeading}
+        />
+        <BrainBoostComingSoon games={hub.games} />
+        <BrainBoostBenefits
+          benefits={hub.benefits}
+          heading={hub.benefitsHeading}
+        />
       </main>
     </>
   );
