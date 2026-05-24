@@ -1,5 +1,6 @@
 // src/components/brain-boost/kenken/sections.tsx
 import { StoryblokRichText } from "@storyblok/react";
+import Image from "next/image";
 import { BRAIN_BOOST_ACCENT } from "@/components/brain-boost/accent";
 import { Button } from "@/components/ui/button";
 import type { LevelCopy, OperationCopy, StepCopy } from "./fallback-content";
@@ -25,41 +26,56 @@ export function KenkenHero({
       className="relative overflow-hidden py-20 sm:py-24"
       style={{ background: BRAIN_BOOST_ACCENT.gradient }}
     >
-      <div className="wrapper relative z-10 text-center text-white">
-        {eyebrow ? (
-          <span
-            className="inline-flex items-center rounded-full px-4 py-1.5 font-medium text-sm text-white"
-            style={{ background: "rgb(255 255 255 / 0.18)" }}
-          >
-            {eyebrow}
-          </span>
-        ) : null}
-        <h1
-          className="mt-6 mb-4 font-bold"
-          style={{
-            fontSize: "clamp(36px, 5vw, 64px)",
-            letterSpacing: "-0.03em",
-          }}
-        >
-          {title}
-        </h1>
-        {lede ? (
-          <p
-            className="mx-auto mb-8 max-w-2xl text-lg"
-            style={{ lineHeight: 1.6 }}
-          >
-            {lede}
-          </p>
-        ) : null}
-        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-          {ctaPlayLabel ? (
-            <Button href={PLAY_HREF}>{ctaPlayLabel}</Button>
-          ) : null}
-          {ctaDailyLabel ? (
-            <Button href={DAILY_HREF} variant="ghost">
-              {ctaDailyLabel}
-            </Button>
-          ) : null}
+      <div className="wrapper relative z-10">
+        <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-[1fr_auto]">
+          <div className="text-center text-white md:text-left">
+            {eyebrow ? (
+              <span
+                className="inline-flex items-center rounded-full px-4 py-1.5 font-medium text-sm text-white"
+                style={{ background: "rgb(255 255 255 / 0.18)" }}
+              >
+                {eyebrow}
+              </span>
+            ) : null}
+            <h1
+              className="mt-6 mb-4 font-bold"
+              style={{
+                fontSize: "clamp(36px, 5vw, 64px)",
+                letterSpacing: "-0.03em",
+              }}
+            >
+              {title}
+            </h1>
+            {lede ? (
+              <p
+                className="mx-auto mb-8 max-w-2xl text-lg md:mx-0"
+                style={{ lineHeight: 1.6 }}
+              >
+                {lede}
+              </p>
+            ) : null}
+            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row md:justify-start">
+              {ctaPlayLabel ? (
+                <Button href={PLAY_HREF}>{ctaPlayLabel}</Button>
+              ) : null}
+              {ctaDailyLabel ? (
+                <Button href={DAILY_HREF} variant="ghost">
+                  {ctaDailyLabel}
+                </Button>
+              ) : null}
+            </div>
+          </div>
+          <div className="hidden items-center justify-center md:flex">
+            <Image
+              alt="KenKen puzzle preview"
+              className="rounded-2xl"
+              height={340}
+              priority
+              src="/pillers/kenken-banner.png"
+              style={{ boxShadow: "0 30px 60px -20px rgb(0 0 0 / 0.5)" }}
+              width={340}
+            />
+          </div>
         </div>
       </div>
     </section>
