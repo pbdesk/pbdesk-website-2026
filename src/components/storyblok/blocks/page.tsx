@@ -17,6 +17,14 @@ import AboutStory from "./about-story";
 import CtaBanner from "./cta-banner";
 import CuratedPostSetBlock from "./curated-post-set";
 import Hero from "./hero";
+import {
+  KenkenCtaBlock,
+  KenkenHeroBlock,
+  KenkenLevelsBlock,
+  KenkenOperationsBlock,
+  KenkenProseBlock,
+  KenkenStepsBlock,
+} from "./kenken";
 import MyPillers from "./my-pillers";
 import MyRealm from "./my-realm";
 import MyWellnessThreads from "./my-wellness-threads";
@@ -30,6 +38,12 @@ import type {
   CtaBannerBlok,
   CuratedPostSetBlok,
   HeroBlok,
+  KenkenCtaBlok,
+  KenkenHeroBlok,
+  KenkenLevelsBlok,
+  KenkenOperationsBlok,
+  KenkenProseBlok,
+  KenkenStepsBlok,
   MyPillersBlok,
   MyRealmBlok,
   MyWellnessThreadsBlok,
@@ -92,6 +106,42 @@ export default function Page({ body }: PageProps) {
           case "share_bar":
             return (
               <ShareBarBlock blok={blok as ShareBarBlok} key={blok._uid} />
+            );
+          case "kenken_hero":
+            return (
+              <KenkenHeroBlock blok={blok as KenkenHeroBlok} key={blok._uid} />
+            );
+          case "kenken_prose":
+            return (
+              <KenkenProseBlock
+                blok={blok as KenkenProseBlok}
+                key={blok._uid}
+              />
+            );
+          case "kenken_steps":
+            return (
+              <KenkenStepsBlock
+                blok={blok as KenkenStepsBlok}
+                key={blok._uid}
+              />
+            );
+          case "kenken_operations":
+            return (
+              <KenkenOperationsBlock
+                blok={blok as KenkenOperationsBlok}
+                key={blok._uid}
+              />
+            );
+          case "kenken_levels":
+            return (
+              <KenkenLevelsBlock
+                blok={blok as KenkenLevelsBlok}
+                key={blok._uid}
+              />
+            );
+          case "kenken_cta":
+            return (
+              <KenkenCtaBlock blok={blok as KenkenCtaBlok} key={blok._uid} />
             );
           default:
             return null;
