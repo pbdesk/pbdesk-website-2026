@@ -2,7 +2,6 @@
 
 import { BRAIN_BOOST_ACCENT } from "@/components/brain-boost/accent";
 import { TIERS } from "@/lib/games/kenken/difficulty";
-import { FREEBIE_COUNT } from "@/lib/games/kenken/freebies";
 import type { Difficulty } from "@/lib/games/kenken/types";
 
 const LEVEL_LABELS: Record<Difficulty, string> = {
@@ -57,7 +56,7 @@ export default function SizePicker({
         <ul className="grid gap-4 sm:grid-cols-3">
           {sizes.map((size) => {
             const isLast = size === lastSize;
-            const freebies = FREEBIE_COUNT[size] ?? 0;
+            // const freebies = FREEBIE_COUNT[size] ?? 0;
             return (
               <li key={size}>
                 <button
@@ -89,7 +88,7 @@ export default function SizePicker({
                     className="mt-1 block text-sm"
                     style={{ color: "var(--fg-secondary)" }}
                   >
-                    {freebies} pre-filled cells
+                    {/* {freebies} pre-filled cells */}
                   </span>
                 </button>
               </li>

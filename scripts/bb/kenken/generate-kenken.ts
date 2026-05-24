@@ -1,9 +1,12 @@
 // scripts/bb/kenken/generate-kenken.ts
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { isDifficulty } from "../../../src/lib/games/kenken/difficulty";
-import { generatePuzzleForTier } from "../../../src/lib/games/kenken/generate";
-import { mulberry32 } from "../../../src/lib/games/kenken/rng";
+import { isDifficulty, TIERS } from "../../../src/lib/games/kenken/difficulty";
+import {
+  generatePuzzle,
+  generatePuzzleForTier,
+} from "../../../src/lib/games/kenken/generate";
+import { mulberry32, type Rng } from "../../../src/lib/games/kenken/rng";
 import {
   type Difficulty,
   type KenKenLibrary,
@@ -14,11 +17,14 @@ import { validateLibrary } from "../../../src/lib/games/kenken/validate";
 
 const PUZZLES_DIR = join(process.cwd(), "src/lib/games/kenken/puzzles");
 
-function parseArgs(argv: string[]): {
-  difficulty: Difficulty;
+interface CliArgs {
   count: number;
+  difficulty: Difficulty;
   seed: number;
-} {
+  size: number | null;
+}
+
+function parseArgs(argv: string[]): CliArgs {
   const args = new Map<string, string>();
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -30,12 +36,46 @@ function parseArgs(argv: string[]): {
   const difficulty = args.get("difficulty");
   if (!isDifficulty(difficulty)) {
     throw new Error(
-      "Usage: --difficulty <easy|intermediate|hard|genius> --count N [--seed S]"
+      "Usage: --difficulty <easy|intermediate|hard|genius> --count N [--seed S] [--size N]"
     );
   }
   const count = Number(args.get("count") ?? "10");
   const seed = Number(args.get("seed") ?? String(Date.now() % 2_147_483_647));
-  return { difficulty, count, seed };
+  const sizeRaw = args.get("size");
+  const size = sizeRaw === undefined ? null : Number(sizeRaw);
+  if (size !== null && !Number.isFinite(size)) {
+    throw new Error("--size must be a number");
+  }
+  if (size !== null) {
+    const validSizes = TIERS[difficulty].variants.map((v) => v.size);
+    if (!validSizes.includes(size)) {
+      throw new Error(
+        `--size ${size} is not a variant of ${difficulty}; valid sizes: ${validSizes.join(", ")}`
+      );
+    }
+  }
+  return { difficulty, count, seed, size };
+}
+
+function generateForSize(
+  difficulty: Difficulty,
+  size: number,
+  rng: Rng,
+  id: string
+): KenKenPuzzle | null {
+  const tier = TIERS[difficulty];
+  const variant = tier.variants.find((v) => v.size === size);
+  if (!variant) {
+    throw new Error(`no variant for size ${size} in ${difficulty}`);
+  }
+  return generatePuzzle(
+    variant.size,
+    difficulty,
+    variant.ops,
+    tier.maxCageSize,
+    rng,
+    id
+  );
 }
 
 function solutionSignature(puzzle: KenKenPuzzle): string {
@@ -54,7 +94,7 @@ function nextSeq(puzzles: KenKenPuzzle[]): number {
 }
 
 function main(): void {
-  const { difficulty, count, seed } = parseArgs(process.argv.slice(2));
+  const { difficulty, count, seed, size } = parseArgs(process.argv.slice(2));
   const filePath = join(PUZZLES_DIR, `${difficulty}.json`);
   const library = JSON.parse(readFileSync(filePath, "utf8")) as KenKenLibrary;
   library.schemaVersion = SCHEMA_VERSION;
@@ -69,7 +109,10 @@ function main(): void {
   while (added < count && guard < maxGuard) {
     guard++;
     const provisionalId = `pending-${seq}`;
-    const puzzle = generatePuzzleForTier(difficulty, rng, provisionalId);
+    const puzzle =
+      size === null
+        ? generatePuzzleForTier(difficulty, rng, provisionalId)
+        : generateForSize(difficulty, size, rng, provisionalId);
     if (!puzzle) {
       continue;
     }
@@ -90,8 +133,9 @@ function main(): void {
   }
 
   writeFileSync(filePath, `${JSON.stringify(library, null, 2)}\n`);
+  const sizeNote = size === null ? "" : ` (size ${size})`;
   process.stdout.write(
-    `Added ${added} ${difficulty} puzzles (total ${library.puzzles.length}). Seed ${seed}.\n`
+    `Added ${added} ${difficulty}${sizeNote} puzzles (total ${library.puzzles.length}). Seed ${seed}.\n`
   );
 }
 

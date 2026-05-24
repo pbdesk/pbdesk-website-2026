@@ -2,13 +2,13 @@ import { mulberry32, shuffle } from "./rng";
 import type { Cell, KenKenPuzzle } from "./types";
 
 export const FREEBIE_COUNT: Record<number, number> = {
-  3: 3,
-  4: 5,
-  5: 8,
-  6: 11,
-  7: 15,
-  8: 20,
-  9: 25,
+  3: 2,
+  4: 3,
+  5: 5,
+  6: 7,
+  7: 10,
+  8: 15,
+  9: 20,
 };
 
 // djb2-variant hash: deterministic string → unsigned 32-bit seed for mulberry32.
