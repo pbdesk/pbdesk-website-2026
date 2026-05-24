@@ -25,6 +25,7 @@ const DEFAULT_EXPLORE: NavItem[] = [
   { label: "Bits", href: "/bits" },
   { label: "Bites", href: "/bites" },
   { label: "Blog", href: "/blog" },
+  { label: "Brain Boost", href: "/brain-boost" },
   { label: "About Me", href: "/about" },
 ];
 
