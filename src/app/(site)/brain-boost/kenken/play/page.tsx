@@ -1,6 +1,7 @@
 // src/app/(site)/brain-boost/kenken/play/page.tsx
 import type { Metadata } from "next";
 import KenKenGame from "@/components/games/kenken/kenken-game";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { jsonLdString, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -32,6 +33,16 @@ export default async function KenKenPlayPage({
         dangerouslySetInnerHTML={{ __html: jsonLdString(gameJsonLd) }}
         type="application/ld+json"
       />
+      <div className="wrapper pt-6">
+        <Breadcrumb
+          align="start"
+          items={[
+            { href: "/brain-boost", label: "Brain Boost" },
+            { href: "/brain-boost/kenken", label: "KenKen" },
+            { label: "Play" },
+          ]}
+        />
+      </div>
       <KenKenGame initialPuzzleId={puzzle} mode="play" />
     </main>
   );

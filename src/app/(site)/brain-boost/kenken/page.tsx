@@ -3,6 +3,7 @@ import type { ISbStoryData } from "@storyblok/react";
 import type { Metadata } from "next";
 import KenkenFallback from "@/components/brain-boost/kenken/fallback";
 import LivePage from "@/components/storyblok/live-page";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { jsonLdString, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { loadKenkenStory } from "@/lib/storyblok/landing";
 
@@ -41,6 +42,15 @@ export default async function KenkenInfoPage() {
         dangerouslySetInnerHTML={{ __html: jsonLdString(gameJsonLd) }}
         type="application/ld+json"
       />
+      <div className="wrapper pt-6">
+        <Breadcrumb
+          align="start"
+          items={[
+            { href: "/brain-boost", label: "Brain Boost" },
+            { label: "KenKen" },
+          ]}
+        />
+      </div>
       {hasBody && story ? (
         <LivePage
           story={story as unknown as ISbStoryData<Record<string, unknown>>}
