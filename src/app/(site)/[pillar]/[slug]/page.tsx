@@ -260,7 +260,7 @@ export default async function PostPage({
     notFound();
   }
   const story = await loadPostStory(pillar, slug);
-  if (!story || story.content.component !== "post") {
+  if (story?.content?.component !== "post") {
     notFound();
   }
 
