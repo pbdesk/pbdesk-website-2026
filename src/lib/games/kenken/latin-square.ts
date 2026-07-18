@@ -2,9 +2,9 @@ import { type Rng, shuffle } from "./rng";
 
 export function generateLatinSquare(size: number, rng: Rng): number[][] {
   const base: number[][] = [];
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < size; i += 1) {
     const row: number[] = [];
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < size; j += 1) {
       row.push(((i + j) % size) + 1);
     }
     base.push(row);
@@ -19,9 +19,9 @@ export function generateLatinSquare(size: number, rng: Rng): number[][] {
   );
 
   const result: number[][] = [];
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < size; i += 1) {
     const row: number[] = [];
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < size; j += 1) {
       const baseValue = base[rowOrder[i]][colOrder[j]];
       row.push(symbols[baseValue - 1]);
     }

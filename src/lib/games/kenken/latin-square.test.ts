@@ -7,13 +7,13 @@ function isLatinSquare(grid: number[][], size: number): boolean {
   if (grid.length !== size) {
     return false;
   }
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < size; i += 1) {
     if (grid[i].length !== size) {
       return false;
     }
     const rowSeen = new Set<number>();
     const colSeen = new Set<number>();
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < size; j += 1) {
       const rv = grid[i][j];
       const cv = grid[j][i];
       if (rv < 1 || rv > size || cv < 1 || cv > size) {

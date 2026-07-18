@@ -82,9 +82,9 @@ function buildIntroBlocks(post: ParsedMdxPost): SbStoryContent[] {
   if (post.frontmatter.youtubeId) {
     blocks.push({
       _uid: uid(),
+      caption: "",
       component: "youtube_embed",
       youtube_id: post.frontmatter.youtubeId,
-      caption: "",
     });
   }
   return blocks;
@@ -99,36 +99,36 @@ function buildPostContent(
 ): SbStoryContent {
   const cover = coverAsset
     ? {
-        id: coverAsset.id,
-        filename: coverAsset.filename,
         alt: post.frontmatter.title,
+        filename: coverAsset.filename,
+        id: coverAsset.id,
       }
     : undefined;
 
   const externalUrl = post.frontmatter.url
-    ? { url: post.frontmatter.url, linktype: "url" }
+    ? { linktype: "url", url: post.frontmatter.url }
     : undefined;
 
   return {
-    component: "post",
-    title: post.frontmatter.title,
-    excerpt: post.frontmatter.description,
+    author: "Pinal Bhatt",
+    body,
     category: post.frontmatter.category,
+    component: "post",
+    cover_image: cover,
+    excerpt: post.frontmatter.description,
+    external_url: externalUrl,
+    featured: isFeatured,
+    gradient: gradientForSlug(post.slug),
+    intro_blocks: buildIntroBlocks(post),
     labels: realLabels,
     pillar: post.pillar,
-    gradient: gradientForSlug(post.slug),
-    read_time: readTimeFromWordCount(post.wordCount),
-    featured: isFeatured,
-    cover_image: cover,
-    external_url: externalUrl,
-    intro_blocks: buildIntroBlocks(post),
-    body,
     published_at: post.frontmatter.pubDate ?? null,
-    updated_at:
-      post.frontmatter.updatedDate ?? post.frontmatter.pubDate ?? null,
-    author: "Pinal Bhatt",
+    read_time: readTimeFromWordCount(post.wordCount),
     related: post.frontmatter.related ?? [],
     seo: [],
+    title: post.frontmatter.title,
+    updated_at:
+      post.frontmatter.updatedDate ?? post.frontmatter.pubDate ?? null,
   };
 }
 
@@ -159,6 +159,7 @@ async function ensureDatasourceEntries(
     if (existingValues.has(entry.value)) {
       continue;
     }
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     await sb.upsertDatasourceEntry(target.id, entry);
     added += 1;
   }
@@ -190,13 +191,14 @@ async function uploadImagesForPost(
 
   if (post.coverImagePath) {
     const uploaded = await uploader.upload(post.coverImagePath);
-    cover = { id: uploaded.id, filename: uploaded.filename };
+    cover = { filename: uploaded.filename, id: uploaded.id };
     if (post.frontmatter.image) {
       imageMap.set(post.frontmatter.image, uploaded.filename);
     }
   }
 
   for (const absolutePath of post.embeddedImagePaths) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const uploaded = await uploader.upload(absolutePath);
     // The mdast image src is the original markdown reference, e.g.
     // "../my-wellness-gurus/saurabh1.jpg". Map by both the original src
@@ -282,7 +284,7 @@ async function importOnePost(
 
   const internalLinks = collectInternalLinks(richtextBody);
   for (const href of internalLinks) {
-    summary.brokenLinks.push({ slug: post.slug, href });
+    summary.brokenLinks.push({ href, slug: post.slug });
   }
 
   const content = buildPostContent(post, richtextBody, cover, real, isFeatured);
@@ -292,11 +294,11 @@ async function importOnePost(
   }
   const fullSlug = `${post.pillar}/${post.slug}`;
   const { record, created } = await sb.upsertStory({
-    name: post.frontmatter.title,
-    slug: post.slug,
-    full_slug: fullSlug,
-    parent_id: parentId,
     content,
+    full_slug: fullSlug,
+    name: post.frontmatter.title,
+    parent_id: parentId,
+    slug: post.slug,
   });
   await sb.publishStory(record.id);
 
@@ -334,7 +336,7 @@ function validateInternalLinks(
       broken.push(link);
     }
   }
-  return { ok, broken };
+  return { broken, ok };
 }
 
 async function main(): Promise<void> {
@@ -378,13 +380,13 @@ async function main(): Promise<void> {
   logRow("All posts have at least one real label.");
 
   const summary: ImportSummary = {
-    total: posts.length,
-    imported: 0,
-    skipped: 0,
-    byPillar: {},
-    unknownCategories: new Set(),
-    newLabels: new Set(),
     brokenLinks: [],
+    byPillar: {},
+    imported: 0,
+    newLabels: new Set(),
+    skipped: 0,
+    total: posts.length,
+    unknownCategories: new Set(),
     warnings: [],
   };
 
@@ -410,9 +412,9 @@ async function main(): Promise<void> {
 
   // 3. Open Storyblok client ------------------------------------------------
   const sb = new StoryblokManagement({
-    token: requireEnv("STORYBLOK_MANAGEMENT_TOKEN"),
-    spaceId: requireEnv("STORYBLOK_SPACE_ID"),
     region,
+    spaceId: requireEnv("STORYBLOK_SPACE_ID"),
+    token: requireEnv("STORYBLOK_MANAGEMENT_TOKEN"),
   });
   const uploader = new AssetUploader(sb);
 
@@ -420,6 +422,7 @@ async function main(): Promise<void> {
   logSection("[3/5] Resolving pillar folder IDs...");
   const pillarFolderIds = new Map<string, number>();
   for (const pillar of ["bits", "bites", "blog"] as const) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const id = await findPillarFolderId(sb, pillar);
     pillarFolderIds.set(pillar, id);
     logRow(`${pillar}/ → #${id}`);
@@ -451,6 +454,7 @@ async function main(): Promise<void> {
   // 5. Import each post -----------------------------------------------------
   logSection("[5/5] Importing posts...");
   for (const post of posts) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     await importOnePost(sb, uploader, pillarFolderIds, post, flags, summary);
   }
 

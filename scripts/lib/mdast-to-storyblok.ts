@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noUnnecessaryConditions: Biome cannot resolve the mdast node types from node_modules and wrongly marks every switch case as unreachable. */
 // Convert a markdown AST (mdast) into Storyblok's ProseMirror-flavoured
 // richtext JSON. Covers everything we expect to see in docs/resources/:
 // paragraphs, headings (h1-h6), bold/italic, links, inline code, lists,
@@ -52,7 +53,7 @@ export interface ConversionContext {
 }
 
 function asText(text: string, marks?: SbRichtextMark[]): SbRichtextNode {
-  const node: SbRichtextNode = { type: "text", text };
+  const node: SbRichtextNode = { text, type: "text" };
   if (marks?.length) {
     node.marks = marks;
   }
@@ -97,15 +98,15 @@ function convertInline(
     case "link": {
       const link = node as Link;
       const linkMark: SbRichtextMark = {
-        type: "link",
         attrs: {
-          href: link.url,
-          target: link.url.startsWith("http") ? "_blank" : "_self",
-          uuid: null,
           anchor: null,
           custom: {},
+          href: link.url,
           linktype: link.url.startsWith("http") ? "url" : "story",
+          target: link.url.startsWith("http") ? "_blank" : "_self",
+          uuid: null,
         },
+        type: "link",
       };
       return inlineNodes(link.children as RootContent[], ctx, [
         ...marks,
@@ -117,12 +118,12 @@ function convertInline(
       const resolved = ctx.imageMap.get(img.url) ?? img.url;
       return [
         {
-          type: "image",
           attrs: {
-            src: resolved,
             alt: img.alt ?? "",
+            src: resolved,
             title: img.title ?? null,
           },
+          type: "image",
         },
       ];
     }
@@ -130,8 +131,8 @@ function convertInline(
       return [{ type: "hard_break" }];
     default:
       ctx.warnings.push({
-        kind: "unknown_inline",
         detail: node.type,
+        kind: "unknown_inline",
       });
       return [];
   }
@@ -142,27 +143,27 @@ function convertParagraph(
   ctx: ConversionContext
 ): SbRichtextNode {
   return {
-    type: "paragraph",
     content: inlineNodes(node.children as RootContent[], ctx),
+    type: "paragraph",
   };
 }
 
 function convertHeading(node: Heading, ctx: ConversionContext): SbRichtextNode {
   return {
-    type: "heading",
     attrs: { level: node.depth },
     content: inlineNodes(node.children as RootContent[], ctx),
+    type: "heading",
   };
 }
 
 function convertList(node: List, ctx: ConversionContext): SbRichtextNode {
   const isOrdered = node.ordered === true;
   return {
-    type: isOrdered ? "ordered_list" : "bullet_list",
     attrs: isOrdered ? { order: node.start ?? 1 } : undefined,
     content: node.children.map((child) =>
       convertListItem(child as ListItem, ctx)
     ),
+    type: isOrdered ? "ordered_list" : "bullet_list",
   };
 }
 
@@ -171,10 +172,10 @@ function convertListItem(
   ctx: ConversionContext
 ): SbRichtextNode {
   return {
-    type: "list_item",
     content: node.children.map((child) =>
       convertBlock(child as RootContent, ctx)
     ),
+    type: "list_item",
   };
 }
 
@@ -183,18 +184,18 @@ function convertBlockquote(
   ctx: ConversionContext
 ): SbRichtextNode {
   return {
-    type: "blockquote",
     content: node.children.map((child) =>
       convertBlock(child as RootContent, ctx)
     ),
+    type: "blockquote",
   };
 }
 
 function convertCode(node: Code): SbRichtextNode {
   return {
-    type: "code_block",
     attrs: { class: node.lang ? `language-${node.lang}` : undefined },
-    content: [{ type: "text", text: node.value }],
+    content: [{ text: node.value, type: "text" }],
+    type: "code_block",
   };
 }
 
@@ -204,17 +205,17 @@ function convertImageBlock(
 ): SbRichtextNode {
   const resolved = ctx.imageMap.get(node.url) ?? node.url;
   return {
-    type: "paragraph",
     content: [
       {
-        type: "image",
         attrs: {
-          src: resolved,
           alt: node.alt ?? "",
+          src: resolved,
           title: node.title ?? null,
         },
+        type: "image",
       },
     ],
+    type: "paragraph",
   };
 }
 
@@ -243,17 +244,17 @@ function convertBlock(
       return convertHorizontalRule(node as ThematicBreak);
     case "html":
       ctx.warnings.push({
-        kind: "raw_html",
         detail: (node as { value: string }).value.slice(0, 80),
+        kind: "raw_html",
       });
       // Surface it as a paragraph so content isn't silently dropped
       return {
+        content: [{ text: (node as { value: string }).value, type: "text" }],
         type: "paragraph",
-        content: [{ type: "text", text: (node as { value: string }).value }],
       };
     default:
-      ctx.warnings.push({ kind: "unknown_block", detail: node.type });
-      return { type: "paragraph", content: [] };
+      ctx.warnings.push({ detail: node.type, kind: "unknown_block" });
+      return { content: [], type: "paragraph" };
   }
 }
 
@@ -262,10 +263,10 @@ export function mdastToStoryblokRichtext(
   ctx: ConversionContext
 ): SbRichtextDoc {
   return {
-    type: "doc",
     content: root.children.map((child) =>
       convertBlock(child as RootContent, ctx)
     ),
+    type: "doc",
   };
 }
 

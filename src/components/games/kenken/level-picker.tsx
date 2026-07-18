@@ -7,9 +7,9 @@ import type { Difficulty } from "@/lib/games/kenken/types";
 
 const LABELS: Record<Difficulty, string> = {
   easy: "Easy",
-  intermediate: "Intermediate",
-  hard: "Hard",
   genius: "Genius",
+  hard: "Hard",
+  intermediate: "Intermediate",
 };
 
 function sizesLabel(level: Difficulty): string {
@@ -46,16 +46,17 @@ export default function LevelPicker({
         <ul className="grid gap-4 sm:grid-cols-2">
           {DIFFICULTIES.map((level) => {
             const isLast = level === initialLevel;
+            const handleSelect = () => onSelect(level);
             return (
               <li key={level}>
                 <button
                   className="w-full rounded-2xl border p-5 text-left transition-all hover:-translate-y-0.5"
-                  onClick={() => onSelect(level)}
+                  onClick={handleSelect}
                   style={{
+                    background: "var(--bg-subtle)",
                     borderColor: isLast
                       ? BRAIN_BOOST_ACCENT.primary
                       : "var(--border-strong)",
-                    background: "var(--bg-subtle)",
                   }}
                   type="button"
                 >

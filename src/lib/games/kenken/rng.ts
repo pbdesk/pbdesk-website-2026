@@ -22,7 +22,7 @@ export function randInt(rng: Rng, maxExclusive: number): number {
 
 export function shuffle<T>(rng: Rng, arr: readonly T[]): T[] {
   const out = [...arr];
-  for (let i = out.length - 1; i > 0; i--) {
+  for (let i = out.length - 1; i > 0; i -= 1) {
     const j = randInt(rng, i + 1);
     const tmp = out[i];
     out[i] = out[j];

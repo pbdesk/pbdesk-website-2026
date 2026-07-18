@@ -56,10 +56,10 @@ export interface ProgressRecord {
 
 export function saveProgress(record: ProgressRecord, store?: Storage): void {
   writeJson(getStore(store), PROGRESS_KEY, {
-    puzzleId: record.puzzleId,
-    grid: record.grid,
     elapsedSeconds: record.elapsedSeconds,
+    grid: record.grid,
     hintsUsed: record.hintsUsed,
+    puzzleId: record.puzzleId,
   });
 }
 
@@ -72,10 +72,10 @@ export function loadProgress(
     return null;
   }
   return {
-    puzzleId: data.puzzleId,
-    grid: cloneGrid(data.grid as GameGrid),
     elapsedSeconds: Number(data.elapsedSeconds) || 0,
+    grid: cloneGrid(data.grid as GameGrid),
     hintsUsed: Number(data.hintsUsed) || 0,
+    puzzleId: data.puzzleId,
   };
 }
 

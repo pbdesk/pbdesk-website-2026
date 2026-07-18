@@ -15,11 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const story = await loadHomeStory();
   const c = story?.content;
   return pageMetadata({
-    title: c?.title ?? "PBDesk — Bits, Bites & Blog by Pinal Bhatt",
     description:
       c?.description ??
       "From the desk of Pinal Bhatt — a space where code meets wellness. Explore Bits (dev & AI), Bites (fitness & mindfulness), and the Blog (long-form reflections).",
-    path: "/",
     keywords: [
       "Pinal Bhatt blog",
       "PBDesk Bits",
@@ -28,6 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
       "code and mindfulness",
       "AI and wellness",
     ],
+    path: "/",
+    title: c?.title ?? "PBDesk — Bits, Bites & Blog by Pinal Bhatt",
   });
 }
 

@@ -44,9 +44,9 @@ export const DEFAULT_OG_IMAGE_HEIGHT = 630;
 export const DEFAULT_OG_IMAGE_WIDTH = 1200;
 
 export const SOCIAL = {
-  twitterHandle: "@pbdesk",
   github: "https://github.com/pinalbhatt",
   linkedin: "https://www.linkedin.com/in/pinalbhatt",
+  twitterHandle: "@pbdesk",
   x: "https://x.com/pbdesk",
 } as const;
 
@@ -88,35 +88,35 @@ export function pageMetadata({
     : SITE_KEYWORDS;
 
   return {
-    title,
-    description,
-    keywords: mergedKeywords,
     alternates: {
       canonical: path,
     },
+    description,
+    keywords: mergedKeywords,
     openGraph: {
-      title,
       description,
-      url,
-      siteName: SITE_NAME,
-      type: ogType,
-      locale: "en_US",
       images: [
         {
-          url: ogImage,
           alt: `${title} — ${SITE_NAME}`,
           height: DEFAULT_OG_IMAGE_HEIGHT,
+          url: ogImage,
           width: DEFAULT_OG_IMAGE_WIDTH,
         },
       ],
+      locale: "en_US",
+      siteName: SITE_NAME,
+      title,
+      type: ogType,
+      url,
     },
+    title,
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
       creator: SOCIAL.twitterHandle,
-      site: SOCIAL.twitterHandle,
+      description,
       images: [ogImage],
+      site: SOCIAL.twitterHandle,
+      title,
     },
   };
 }

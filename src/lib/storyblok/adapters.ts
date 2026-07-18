@@ -18,30 +18,28 @@ function firstDateValue(
       return value;
     }
   }
-
-  return;
 }
 
 export function postStoryToPost(story: PostStory): PostWithSlug {
   const c = story.content;
   return {
-    title: c.title,
-    description: c.excerpt,
     category: c.category,
     coverImage: c.cover_image?.filename
       ? c.cover_image.filename.replace(PROTOCOL_RELATIVE, "https://")
       : undefined,
-    labels: c.labels ?? [],
-    readTime: c.read_time,
-    gradient: c.gradient,
+    description: c.excerpt,
     featured: c.featured ?? false,
-    slug: story.slug,
+    gradient: c.gradient,
+    labels: c.labels ?? [],
     pillar: c.pillar,
     publishedAt: firstDateValue(
       story.published_at,
       story.first_published_at,
       c.published_at
     ),
+    readTime: c.read_time,
+    slug: story.slug,
+    title: c.title,
     updatedAt: firstDateValue(story.updated_at, c.updated_at),
   };
 }
@@ -63,7 +61,7 @@ export function deriveFilterChips(
     counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
   }
   return Array.from(counts.entries())
-    .map(([label, count]) => ({ label, count }))
+    .map(([label, count]) => ({ count, label }))
     .sort((a, b) => b.count - a.count);
 }
 
@@ -83,7 +81,7 @@ function buildPillarMeta(postList: PostWithSlug[]): {
   for (const post of postList) {
     counts[post.pillar] = (counts[post.pillar] ?? 0) + 1;
   }
-  return { pillars: Object.keys(counts) as PillarKey[], pillarCounts: counts };
+  return { pillarCounts: counts, pillars: Object.keys(counts) as PillarKey[] };
 }
 
 /**
@@ -98,8 +96,8 @@ export function groupByCategory(posts: PostWithSlug[]): TaxonomyGroup[] {
   }
   return Array.from(map.entries())
     .map(([name, postList]) => ({
-      name,
       count: postList.length,
+      name,
       ...buildPillarMeta(postList),
       posts: postList,
     }))
@@ -121,8 +119,8 @@ export function groupByLabel(posts: PostWithSlug[]): TaxonomyGroup[] {
   }
   return Array.from(map.entries())
     .map(([name, postList]) => ({
-      name,
       count: postList.length,
+      name,
       ...buildPillarMeta(postList),
       posts: postList,
     }))
@@ -166,30 +164,30 @@ export interface BrainBoostHubData {
 }
 
 function adaptMetaItem(blok: HubMetaItemBlok): BrainBoostMetaItem {
-  return { value: blok.value, label: blok.label, icon: blok.icon };
+  return { icon: blok.icon, label: blok.label, value: blok.value };
 }
 
 function adaptGame(blok: HubGameBlok): BrainBoostGame {
   return {
-    slug: blok.slug,
-    name: blok.name,
-    status: blok.status,
     category: blok.category,
-    description: blok.description ?? "",
-    href: blok.href,
     coverImage: blok.cover_image,
-    glyph: blok.glyph,
-    tiers: blok.tiers,
+    description: blok.description ?? "",
     estTime: blok.est_time,
+    glyph: blok.glyph,
+    href: blok.href,
+    name: blok.name,
     operations: blok.operations,
+    slug: blok.slug,
+    status: blok.status,
+    tiers: blok.tiers,
   };
 }
 
 function adaptBenefit(blok: HubBenefitBlok): Benefit {
   return {
+    body: blok.body,
     icon: blok.icon as BenefitIconKey,
     title: blok.title,
-    body: blok.body,
   };
 }
 
@@ -198,37 +196,37 @@ export function adaptHubStory(
 ): BrainBoostHubData {
   const c = story.content;
   return {
-    title: c.intro_title ?? BRAIN_BOOST_TITLE,
-    tagline: c.intro_tagline ?? BRAIN_BOOST_TAGLINE,
-    lede: c.intro_lede ?? BRAIN_BOOST_LEDE,
-    metaItems: (c.meta_items ?? []).map(adaptMetaItem),
-    games: (c.games ?? []).map(adaptGame),
-    dailyHeading: c.daily_heading ?? "Today's daily — Intermediate",
+    benefits: (c.benefits ?? []).map(adaptBenefit),
+    benefitsHeading: c.benefits_heading ?? "Why Brain Boost?",
     dailyBody:
       c.daily_body ??
       "A fresh hand-checked KenKen, the same all day. Refresh keeps your progress; come back tomorrow for a new one.",
     dailyCtaPlay: c.daily_cta_play ?? "Play today's",
-    benefitsHeading: c.benefits_heading ?? "Why Brain Boost?",
-    benefits: (c.benefits ?? []).map(adaptBenefit),
-    seoTitle: c.seo_title ?? "",
+    dailyHeading: c.daily_heading ?? "Today's daily — Intermediate",
+    games: (c.games ?? []).map(adaptGame),
+    lede: c.intro_lede ?? BRAIN_BOOST_LEDE,
+    metaItems: (c.meta_items ?? []).map(adaptMetaItem),
     seoDescription: c.seo_description ?? "",
+    seoTitle: c.seo_title ?? "",
+    tagline: c.intro_tagline ?? BRAIN_BOOST_TAGLINE,
+    title: c.intro_title ?? BRAIN_BOOST_TITLE,
   };
 }
 
 export function getHubFallback(): BrainBoostHubData {
   return {
-    title: BRAIN_BOOST_TITLE,
-    tagline: BRAIN_BOOST_TAGLINE,
-    lede: BRAIN_BOOST_LEDE,
-    metaItems: [...BRAIN_BOOST_META],
-    games: [...BRAIN_BOOST_GAMES],
-    dailyHeading: "Today's daily — Intermediate",
+    benefits: [...BENEFITS],
+    benefitsHeading: "Why Brain Boost?",
     dailyBody:
       "A fresh hand-checked KenKen, the same all day. Refresh keeps your progress; come back tomorrow for a new one.",
     dailyCtaPlay: "Play today's",
-    benefitsHeading: "Why Brain Boost?",
-    benefits: [...BENEFITS],
-    seoTitle: "",
+    dailyHeading: "Today's daily — Intermediate",
+    games: [...BRAIN_BOOST_GAMES],
+    lede: BRAIN_BOOST_LEDE,
+    metaItems: [...BRAIN_BOOST_META],
     seoDescription: "",
+    seoTitle: "",
+    tagline: BRAIN_BOOST_TAGLINE,
+    title: BRAIN_BOOST_TITLE,
   };
 }

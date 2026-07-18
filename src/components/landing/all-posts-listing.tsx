@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/performance/noJsxPropsBind: React Compiler (enabled in next.config.ts) auto-memoizes these handlers. */
 "use client";
 
 // Full archive of posts under a single pillar with chip-based filters
@@ -33,7 +34,7 @@ function countOccurrences(values: string[]): ChipCount[] {
     counts.set(value, (counts.get(value) ?? 0) + 1);
   }
   return Array.from(counts.entries())
-    .map(([name, count]) => ({ name, count }))
+    .map(([name, count]) => ({ count, name }))
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
@@ -96,15 +97,15 @@ export default function AllPostsListing({
       <section className="py-12">
         <div className="wrapper">
           <Breadcrumb
-            items={[{ label: title, href: `/${pillar}` }, { label: "All" }]}
+            items={[{ href: `/${pillar}`, label: title }, { label: "All" }]}
           />
 
           <h1
             className="mb-6 text-center font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(40px, 5vw, 72px)",
-              lineHeight: 1.05,
               letterSpacing: "-0.03em",
+              lineHeight: 1.05,
             }}
           >
             All <span style={{ color: accentColor }}>{title}</span>
@@ -214,6 +215,7 @@ function ChipRow({
   if (chips.length === 0) {
     return null;
   }
+  const handleSelectAll = () => onSelect(null);
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-5">
       <span className="shrink-0 pt-1.5 font-semibold text-[var(--fg-muted)] text-xs uppercase tracking-wider sm:w-24">
@@ -225,18 +227,21 @@ function ChipRow({
           active={selected === null}
           count={totalCount}
           label="All"
-          onClick={() => onSelect(null)}
+          onClick={handleSelectAll}
         />
-        {chips.map((chip) => (
-          <FilterChip
-            accentColor={accentColor}
-            active={selected === chip.name}
-            count={chip.count}
-            key={chip.name}
-            label={hashed ? `#${chip.name}` : chip.name}
-            onClick={() => onSelect(chip.name)}
-          />
-        ))}
+        {chips.map((chip) => {
+          const handleSelect = () => onSelect(chip.name);
+          return (
+            <FilterChip
+              accentColor={accentColor}
+              active={selected === chip.name}
+              count={chip.count}
+              key={chip.name}
+              label={hashed ? `#${chip.name}` : chip.name}
+              onClick={handleSelect}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -263,8 +268,8 @@ function FilterChip({
       onClick={onClick}
       style={{
         background: active ? accentColor : "var(--bg-elevated)",
-        color: active ? "#fff" : "var(--fg-secondary)",
         borderColor: active ? accentColor : "var(--border-subtle)",
+        color: active ? "#fff" : "var(--fg-secondary)",
       }}
       type="button"
     >
@@ -290,6 +295,8 @@ function Pagination({
   const pageNumbers = buildPageNumbers(page, totalPages);
   const canGoPrev = page > 1;
   const canGoNext = page < totalPages;
+  const handlePrev = () => onPageChange(page - 1);
+  const handleNext = () => onPageChange(page + 1);
 
   return (
     <section className="pb-16">
@@ -302,38 +309,42 @@ function Pagination({
             accentColor={accentColor}
             ariaLabel="Previous page"
             disabled={!canGoPrev}
-            onClick={() => onPageChange(page - 1)}
+            onClick={handlePrev}
           >
             <IconChevronLeft size={16} stroke={2} />
           </PageButton>
 
-          {pageNumbers.map((entry, index) =>
-            entry === "ellipsis" ? (
-              <span
-                className="px-2 text-[var(--fg-muted)] text-sm"
-                // biome-ignore lint/suspicious/noArrayIndexKey: ellipses are positional and stable.
-                key={`ellipsis-${index}`}
-              >
-                …
-              </span>
-            ) : (
+          {pageNumbers.map((entry, index) => {
+            if (entry === "ellipsis") {
+              return (
+                <span
+                  className="px-2 text-[var(--fg-muted)] text-sm"
+                  // biome-ignore lint/suspicious/noArrayIndexKey: ellipses are positional and stable.
+                  key={`ellipsis-${index}`}
+                >
+                  …
+                </span>
+              );
+            }
+            const handlePageClick = () => onPageChange(entry);
+            return (
               <PageButton
                 accentColor={accentColor}
                 active={entry === page}
                 ariaLabel={`Page ${entry}`}
                 key={entry}
-                onClick={() => onPageChange(entry)}
+                onClick={handlePageClick}
               >
                 {entry}
               </PageButton>
-            )
-          )}
+            );
+          })}
 
           <PageButton
             accentColor={accentColor}
             ariaLabel="Next page"
             disabled={!canGoNext}
-            onClick={() => onPageChange(page + 1)}
+            onClick={handleNext}
           >
             <IconChevronRight size={16} stroke={2} />
           </PageButton>
@@ -369,8 +380,8 @@ function PageButton({
       onClick={onClick}
       style={{
         background: active ? accentColor : "var(--bg-elevated)",
-        color: active ? "#fff" : "var(--fg-secondary)",
         borderColor: active ? accentColor : "var(--border-subtle)",
+        color: active ? "#fff" : "var(--fg-secondary)",
       }}
       type="button"
     >

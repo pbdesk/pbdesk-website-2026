@@ -6,9 +6,9 @@ const accessToken =
 
 storyblokInit({
   accessToken,
-  use: [apiPlugin],
   apiOptions: {
     region,
   },
   components: {},
+  use: [apiPlugin],
 });

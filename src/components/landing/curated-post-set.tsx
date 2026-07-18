@@ -26,8 +26,8 @@ interface CuratedPostSetProps {
 }
 
 const PILLAR_LABELS: Record<PillarKey, string> = {
-  bits: "Bits",
   bites: "Bites",
+  bits: "Bits",
   blog: "Blog",
 };
 

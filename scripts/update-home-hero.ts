@@ -53,13 +53,13 @@ function uid(): string {
 
 function paragraph(text: string): RichtextNode {
   return {
+    content: [{ text, type: "text" }],
     type: "paragraph",
-    content: [{ type: "text", text }],
   };
 }
 
 function richtext(...paragraphs: string[]): RichtextDoc {
-  return { type: "doc", content: paragraphs.map(paragraph) };
+  return { content: paragraphs.map(paragraph), type: "doc" };
 }
 
 function findLocalComponent(name: string): SbComponent {
@@ -78,19 +78,19 @@ export function buildHomeHeroBlok(existingUid?: string): SbStoryContent {
   return {
     _uid: existingUid ?? uid(),
     component: HERO_COMPONENT,
+    cta_href: { linktype: "url", url: DEFAULT_HERO_CONTENT.ctaHref },
+    cta_label: DEFAULT_HERO_CONTENT.ctaLabel,
     eyebrow: DEFAULT_HERO_CONTENT.eyebrow,
     headline: richtext(DEFAULT_HERO_CONTENT.headline),
     kicker: DEFAULT_HERO_CONTENT.kicker,
-    subheadline: richtext(DEFAULT_HERO_CONTENT.subheadline),
-    cta_label: DEFAULT_HERO_CONTENT.ctaLabel,
-    cta_href: { url: DEFAULT_HERO_CONTENT.ctaHref, linktype: "url" },
-    secondary_cta_label: DEFAULT_HERO_CONTENT.secondaryCtaLabel,
     secondary_cta_href: {
-      url: DEFAULT_HERO_CONTENT.secondaryCtaHref,
       linktype: "url",
+      url: DEFAULT_HERO_CONTENT.secondaryCtaHref,
     },
+    secondary_cta_label: DEFAULT_HERO_CONTENT.secondaryCtaLabel,
     show_pillar_links: DEFAULT_HERO_PILLAR_LINKS.length > 0,
     show_social: true,
+    subheadline: richtext(DEFAULT_HERO_CONTENT.subheadline),
   };
 }
 
@@ -150,7 +150,7 @@ async function main(): Promise<void> {
   const token = requireEnv("STORYBLOK_MANAGEMENT_TOKEN");
   const spaceId = requireEnv("STORYBLOK_SPACE_ID");
   const region = process.env.STORYBLOK_REGION ?? "eu";
-  const sb = new StoryblokManagement({ token, spaceId, region });
+  const sb = new StoryblokManagement({ region, spaceId, token });
 
   logStep("\n[1/3] Pushing updated hero component schema...");
   const { record, created } = await sb.upsertComponent(homeHeroComponentSchema);
@@ -185,16 +185,16 @@ async function main(): Promise<void> {
 
   const nextContent: SbStoryContent = {
     ...existingContent,
-    component: existingContent.component ?? HOME_PAGE_COMPONENT,
     body,
+    component: existingContent.component || HOME_PAGE_COMPONENT,
   };
 
   const { record: updatedStory } = await sb.upsertStory({
-    name: story.name,
-    slug: story.slug,
-    full_slug: story.full_slug,
-    path: story.path,
     content: nextContent,
+    full_slug: story.full_slug,
+    name: story.name,
+    path: story.path,
+    slug: story.slug,
   });
   logRow(`saved draft (#${updatedStory.id})`);
 

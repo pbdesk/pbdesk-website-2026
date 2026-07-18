@@ -16,11 +16,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const story = await loadDisclaimerStory();
   const c = story?.content;
   return pageMetadata({
-    title: c?.seo_title ?? `Disclaimer — ${SITE_NAME}`,
     description:
       c?.seo_description ??
       "Editorial, technical, and wellness disclaimer for content published on PBDesk.",
     path: "/disclaimer",
+    title: c?.seo_title ?? `Disclaimer — ${SITE_NAME}`,
   });
 }
 
@@ -60,8 +60,8 @@ export default async function DisclaimerPage() {
               className="mb-6 font-bold text-[var(--fg-primary)]"
               style={{
                 fontSize: "clamp(40px, 5vw, 64px)",
-                lineHeight: 1.05,
                 letterSpacing: "-0.03em",
+                lineHeight: 1.05,
                 textWrap: "balance",
               }}
             >
@@ -82,9 +82,9 @@ export default async function DisclaimerPage() {
                 Last updated{" "}
                 <time dateTime={lastUpdated}>
                   {new Date(lastUpdated).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
                     day: "numeric",
+                    month: "long",
+                    year: "numeric",
                   })}
                 </time>
               </p>

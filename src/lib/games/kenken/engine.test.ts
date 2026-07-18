@@ -56,7 +56,7 @@ describe("clearCell", () => {
 });
 
 function gridFromValues(values: (number | null)[][]): GameGrid {
-  return values.map((row) => row.map((value) => ({ value, given: false })));
+  return values.map((row) => row.map((value) => ({ given: false, value })));
 }
 
 describe("rowColConflicts", () => {

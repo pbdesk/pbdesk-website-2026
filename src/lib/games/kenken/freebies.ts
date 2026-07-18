@@ -14,7 +14,7 @@ export const FREEBIE_COUNT: Record<number, number> = {
 // djb2-variant hash: deterministic string → unsigned 32-bit seed for mulberry32.
 export function idToSeed(id: string): number {
   let h = 5381;
-  for (let i = 0; i < id.length; i++) {
+  for (let i = 0; i < id.length; i += 1) {
     // biome-ignore lint/suspicious/noBitwiseOperators: djb2 hash requires bitwise ops
     h = (Math.imul(h, 33) ^ id.charCodeAt(i)) >>> 0;
   }
@@ -43,8 +43,8 @@ export function selectFreebies(puzzle: KenKenPuzzle): Cell[] {
   const rng = mulberry32(idToSeed(puzzle.id));
 
   const allCells: Cell[] = [];
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
+  for (let r = 0; r < size; r += 1) {
+    for (let c = 0; c < size; c += 1) {
       allCells.push([r, c]);
     }
   }

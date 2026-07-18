@@ -22,7 +22,7 @@ export function GET(request: NextRequest) {
       : null;
 
   const result = resolvePuzzleRequest(
-    { id, level, exclude, size },
+    { exclude, id, level, size },
     {
       byId: (puzzleId) => findById(puzzleId),
       byLevel: (lvl) => getLibrary(lvl).puzzles,

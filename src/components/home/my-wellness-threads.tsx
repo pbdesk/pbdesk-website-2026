@@ -18,16 +18,16 @@ type IconKey = "apple" | "run" | "moon" | "heart";
 
 const ICONS: Record<IconKey, ComponentType<IconProps>> = {
   apple: IconApple,
-  run: IconRun,
-  moon: IconMoon,
   heart: IconHeart,
+  moon: IconMoon,
+  run: IconRun,
 };
 
 const ICON_BY_PILLAR: Record<PillarKey, IconKey> = {
-  nutrition: "apple",
-  exercise: "run",
-  sleep: "moon",
   emotion: "heart",
+  exercise: "run",
+  nutrition: "apple",
+  sleep: "moon",
 };
 
 interface Thread {
@@ -60,17 +60,17 @@ interface MyWellnessThreadsProps {
 }
 
 const DEFAULT_COLORS: Record<PillarKey, string> = {
-  nutrition: "#10B981",
-  exercise: "#F59E0B",
-  sleep: "#0EA5E9",
   emotion: "#E11D48",
+  exercise: "#F59E0B",
+  nutrition: "#10B981",
+  sleep: "#0EA5E9",
 };
 
 const DEFAULT_ANGLES: Record<PillarKey, number> = {
-  nutrition: -135,
-  exercise: -45,
-  sleep: 135,
   emotion: 45,
+  exercise: -45,
+  nutrition: -135,
+  sleep: 135,
 };
 
 function normalizeThreads(input?: ThreadInput[]): Thread[] {
@@ -78,57 +78,57 @@ function normalizeThreads(input?: ThreadInput[]): Thread[] {
     return DEFAULT_THREADS;
   }
   return input.map((t, idx) => ({
-    n: t.n ?? String(idx + 1).padStart(2, "0"),
-    key: t.key,
-    title: t.title,
-    short: t.short,
-    body: t.body,
-    icon: ICONS[t.icon ?? ICON_BY_PILLAR[t.key]] ?? IconApple,
-    color: t.color ?? DEFAULT_COLORS[t.key],
     angle: t.angle ?? DEFAULT_ANGLES[t.key],
+    body: t.body,
+    color: t.color ?? DEFAULT_COLORS[t.key],
+    icon: ICONS[t.icon ?? ICON_BY_PILLAR[t.key]] ?? IconApple,
+    key: t.key,
+    n: t.n ?? String(idx + 1).padStart(2, "0"),
+    short: t.short,
+    title: t.title,
   }));
 }
 
 const DEFAULT_THREADS: Thread[] = [
   {
-    n: "01",
-    key: "nutrition",
-    title: "Cellular Nutrition",
-    short: "Nutrition",
-    body: "Whole, natural, unprocessed foods rich in vitamins and minerals — fuel for immunity and repair.",
-    icon: IconApple,
-    color: "#10B981",
     angle: -135,
+    body: "Whole, natural, unprocessed foods rich in vitamins and minerals — fuel for immunity and repair.",
+    color: "#10B981",
+    icon: IconApple,
+    key: "nutrition",
+    n: "01",
+    short: "Nutrition",
+    title: "Cellular Nutrition",
   },
   {
-    n: "02",
-    key: "exercise",
-    title: "Adequate Exercise",
-    short: "Exercise",
-    body: "Regular movement — walking, yoga, strength — to boost endorphins and keep body and mind sharp.",
-    icon: IconRun,
-    color: "#F59E0B",
     angle: -45,
+    body: "Regular movement — walking, yoga, strength — to boost endorphins and keep body and mind sharp.",
+    color: "#F59E0B",
+    icon: IconRun,
+    key: "exercise",
+    n: "02",
+    short: "Exercise",
+    title: "Adequate Exercise",
   },
   {
-    n: "03",
-    key: "sleep",
-    title: "Quality Sleep",
-    short: "Sleep",
-    body: "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
-    icon: IconMoon,
-    color: "#0EA5E9",
     angle: 135,
+    body: "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
+    color: "#0EA5E9",
+    icon: IconMoon,
+    key: "sleep",
+    n: "03",
+    short: "Sleep",
+    title: "Quality Sleep",
   },
   {
-    n: "04",
-    key: "emotion",
-    title: "Emotional Wellness",
-    short: "Emotion",
-    body: "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, emotional detox.",
-    icon: IconHeart,
-    color: "#E11D48",
     angle: 45,
+    body: "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, emotional detox.",
+    color: "#E11D48",
+    icon: IconHeart,
+    key: "emotion",
+    n: "04",
+    short: "Emotion",
+    title: "Emotional Wellness",
   },
 ];
 
@@ -235,7 +235,7 @@ function WellnessArt({
             key={`c-${p.key}`}
             style={
               isActive
-                ? { stroke: p.color, opacity: 0.7, strokeWidth: 1.75 }
+                ? { opacity: 0.7, stroke: p.color, strokeWidth: 1.75 }
                 : undefined
             }
             x1={CENTER}
@@ -305,12 +305,16 @@ function WellnessArt({
         const np = pos(p.angle);
         const isActive = active === p.key;
         const Icon = p.icon;
+        const handleEnter = () => onHover(p.key);
+        const handleLeave = () => onHover(null);
         return (
           <g
             className="breath cursor-pointer"
             key={p.key}
-            onMouseEnter={() => onHover(p.key)}
-            onMouseLeave={() => onHover(null)}
+            // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+            onMouseEnter={handleEnter}
+            // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+            onMouseLeave={handleLeave}
             style={{
               animationDelay: `${(Number(p.n) - 1) * 1.2}s`,
             }}
@@ -349,11 +353,11 @@ function WellnessArt({
             <foreignObject height="28" width="28" x={np.x - 14} y={np.y - 22}>
               <div
                 style={{
-                  display: "flex",
                   alignItems: "center",
+                  display: "flex",
+                  height: "100%",
                   justifyContent: "center",
                   width: "100%",
-                  height: "100%",
                 }}
               >
                 <Icon color={p.color} size={26} stroke={1.75} />
@@ -404,12 +408,16 @@ function ThreadsList({
       {threads.map((p, index) => {
         const Icon = p.icon;
         const isActive = active === p.key;
+        const handleEnter = () => setActive(p.key);
+        const handleLeave = () => setActive(null);
         return (
           <Reveal delay={getRevealStaggerDelay(index)} key={p.key}>
             <div
               className={`pillar-row ${isActive ? "pillar-row-active" : ""}`}
-              onMouseEnter={() => setActive(p.key)}
-              onMouseLeave={() => setActive(null)}
+              // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+              onMouseEnter={handleEnter}
+              // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+              onMouseLeave={handleLeave}
               style={{ ["--pillar-color" as string]: p.color }}
             >
               <span className="pillar-icon">
@@ -459,8 +467,8 @@ export default function MyWellnessThreads({
             className="mb-4 font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(32px, 4vw, 52px)",
-              lineHeight: 1.1,
               letterSpacing: "-0.025em",
+              lineHeight: 1.1,
               textWrap: "balance",
             }}
           >

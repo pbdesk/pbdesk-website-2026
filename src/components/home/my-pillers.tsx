@@ -48,65 +48,65 @@ interface MyPillersProps {
 }
 
 const ICON_BY_PILLAR: Record<PillarKey, ComponentType<IconProps>> = {
-  bits: IconCode,
   bites: IconLeaf,
+  bits: IconCode,
   blog: IconNotebook,
 };
 
 const DEFAULT_COLORS: Record<PillarKey, string> = {
-  bits: "#4F46E5",
   bites: "#10B981",
+  bits: "#4F46E5",
   blog: "#7C3AED",
 };
 
 const DEFAULT_ANGLES: Record<PillarKey, number> = {
-  bits: -90,
   bites: 30,
+  bits: -90,
   blog: 150,
 };
 
 const DEFAULT_HREFS: Record<PillarKey, string> = {
-  bits: "/bits",
   bites: "/bites",
+  bits: "/bits",
   blog: "/blog",
 };
 
 const DEFAULT_PILLARS: Pillar[] = [
   {
-    n: "01",
-    key: "bits",
-    title: "Bits — the tech side",
-    short: "Bits",
+    angle: -90,
     body: "Insights on AI, programming, and software development — frameworks, dev tools, productivity hacks, and the occasional deep dive.",
-    icon: IconCode,
     color: "#4F46E5",
     cta: "Visit My Bits",
     href: "/bits",
-    angle: -90,
+    icon: IconCode,
+    key: "bits",
+    n: "01",
+    short: "Bits",
+    title: "Bits — the tech side",
   },
   {
-    n: "02",
-    key: "bites",
-    title: "Bites — the wellness side",
-    short: "Bites",
+    angle: 30,
     body: "A healthy, active life is the greatest gift we can give ourselves. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
-    icon: IconLeaf,
     color: "#10B981",
     cta: "Visit My Bites",
     href: "/bites",
-    angle: 30,
+    icon: IconLeaf,
+    key: "bites",
+    n: "02",
+    short: "Bites",
+    title: "Bites — the wellness side",
   },
   {
-    n: "03",
-    key: "blog",
-    title: "Blog — where they meet",
-    short: "Blog",
+    angle: 150,
     body: "Longer-form reflections on balancing tech life with physical wellness, plus friendships, family, and meaningful connections.",
-    icon: IconNotebook,
     color: "#7C3AED",
     cta: "Visit My Blog",
     href: "/blog",
-    angle: 150,
+    icon: IconNotebook,
+    key: "blog",
+    n: "03",
+    short: "Blog",
+    title: "Blog — where they meet",
   },
 ];
 
@@ -115,16 +115,16 @@ function normalizePillars(input?: PillarInput[]): Pillar[] {
     return DEFAULT_PILLARS;
   }
   return input.map((p, idx) => ({
-    n: p.n ?? String(idx + 1).padStart(2, "0"),
-    key: p.key,
-    title: p.title,
-    short: p.short ?? p.key.charAt(0).toUpperCase() + p.key.slice(1),
+    angle: p.angle ?? DEFAULT_ANGLES[p.key],
     body: p.body,
-    icon: ICON_BY_PILLAR[p.key],
     color: p.color ?? DEFAULT_COLORS[p.key],
     cta: p.cta ?? `Visit My ${p.key.charAt(0).toUpperCase() + p.key.slice(1)}`,
     href: p.href ?? DEFAULT_HREFS[p.key],
-    angle: p.angle ?? DEFAULT_ANGLES[p.key],
+    icon: ICON_BY_PILLAR[p.key],
+    key: p.key,
+    n: p.n ?? String(idx + 1).padStart(2, "0"),
+    short: p.short ?? p.key.charAt(0).toUpperCase() + p.key.slice(1),
+    title: p.title,
   }));
 }
 
@@ -231,7 +231,7 @@ function PillarsArt({
             key={`c-${p.key}`}
             style={
               isActive
-                ? { stroke: p.color, opacity: 0.7, strokeWidth: 1.75 }
+                ? { opacity: 0.7, stroke: p.color, strokeWidth: 1.75 }
                 : undefined
             }
             x1={CENTER}
@@ -301,12 +301,16 @@ function PillarsArt({
         const np = pos(p.angle);
         const isActive = active === p.key;
         const Icon = p.icon;
+        const handleEnter = () => onHover(p.key);
+        const handleLeave = () => onHover(null);
         return (
           <g
             className="breath cursor-pointer"
             key={p.key}
-            onMouseEnter={() => onHover(p.key)}
-            onMouseLeave={() => onHover(null)}
+            // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+            onMouseEnter={handleEnter}
+            // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+            onMouseLeave={handleLeave}
             style={{
               animationDelay: `${(Number(p.n) - 1) * 1.2}s`,
             }}
@@ -345,11 +349,11 @@ function PillarsArt({
             <foreignObject height="28" width="28" x={np.x - 14} y={np.y - 22}>
               <div
                 style={{
-                  display: "flex",
                   alignItems: "center",
+                  display: "flex",
+                  height: "100%",
                   justifyContent: "center",
                   width: "100%",
-                  height: "100%",
                 }}
               >
                 <Icon color={p.color} size={26} stroke={1.75} />
@@ -400,13 +404,17 @@ function PillarsList({
       {pillars.map((p, index) => {
         const Icon = p.icon;
         const isActive = active === p.key;
+        const handleEnter = () => setActive(p.key);
+        const handleLeave = () => setActive(null);
         return (
           <Reveal delay={getRevealStaggerDelay(index)} key={p.key}>
             <Link
               className={`pillar-row ${isActive ? "pillar-row-active" : ""}`}
               href={p.href}
-              onMouseEnter={() => setActive(p.key)}
-              onMouseLeave={() => setActive(null)}
+              // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+              onMouseEnter={handleEnter}
+              // biome-ignore lint/performance/noJsxPropsBind: per-item hover handlers; React Compiler memoizes them.
+              onMouseLeave={handleLeave}
               style={{ ["--pillar-color" as string]: p.color }}
             >
               <span className="pillar-icon">
@@ -462,8 +470,8 @@ export default function MyPillers({
             className="mb-4 font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(32px, 4vw, 52px)",
-              lineHeight: 1.1,
               letterSpacing: "-0.025em",
+              lineHeight: 1.1,
               textWrap: "balance",
             }}
           >

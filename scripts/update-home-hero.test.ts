@@ -5,15 +5,10 @@ import { buildHomeHeroBlok, homeHeroComponentSchema } from "./update-home-hero";
 
 describe("home hero Storyblok updater", () => {
   test("adds the new editable hero fields to the component schema", () => {
-    expect(homeHeroComponentSchema.schema?.secondary_cta_label?.type).toBe(
-      "text"
-    );
-    expect(homeHeroComponentSchema.schema?.secondary_cta_href?.type).toBe(
-      "multilink"
-    );
-    expect(homeHeroComponentSchema.schema?.show_pillar_links?.type).toBe(
-      "boolean"
-    );
+    const schema = homeHeroComponentSchema.schema ?? {};
+    expect(schema.secondary_cta_label.type).toBe("text");
+    expect(schema.secondary_cta_href.type).toBe("multilink");
+    expect(schema.show_pillar_links.type).toBe("boolean");
   });
 
   test("builds the approved home hero content", () => {

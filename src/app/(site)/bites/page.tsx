@@ -12,10 +12,8 @@ import {
 import { loadPillarData } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Bites — Wellness, fitness & mindfulness for a fuller life",
   description:
     "Bites of holistic wellness — nutrition, movement, sleep, mindfulness, and the small daily habits that compound into real vitality. From Pinal Bhatt at PBDesk.",
-  path: "/bites",
   keywords: [
     "wellness",
     "fitness",
@@ -28,6 +26,8 @@ export const metadata: Metadata = pageMetadata({
     "developer wellness",
     "PBDesk Bites",
   ],
+  path: "/bites",
+  title: "Bites — Wellness, fitness & mindfulness for a fuller life",
 });
 
 const FALLBACK_DESCRIPTION =
@@ -35,95 +35,95 @@ const FALLBACK_DESCRIPTION =
 
 const fallbackPosts: Post[] = [
   {
-    title: "Luke Coutinho",
     category: "Wellness",
-    labels: ["Health"],
     description:
       "A holistic lifestyle coach whose integrative approach to nutrition, sleep, and movement reframes wellness as a daily practice.",
-    readTime: "6 min read",
-    gradient: "post-grad-emerald",
     featured: true,
+    gradient: "post-grad-emerald",
+    labels: ["Health"],
+    readTime: "6 min read",
+    title: "Luke Coutinho",
   },
   {
-    title: "My Wellness Guru — Saurabh Bothra",
     category: "Health",
-    labels: ["Yoga"],
     description:
       "Saurabh Bothra, founder of Habuild.in, is a habit-building yoga trainer and wellness guru.",
-    readTime: "5 min read",
     gradient: "post-grad-orange",
+    labels: ["Yoga"],
+    readTime: "5 min read",
+    title: "My Wellness Guru — Saurabh Bothra",
   },
   {
-    title: "Whole Foods, Whole Life",
     category: "Wellness",
-    labels: ["Nutrition"],
     description:
       "Whole, natural, unprocessed foods rich in essential nutrients fuel immunity, repair, and lasting energy.",
-    readTime: "4 min read",
     gradient: "post-grad-emerald",
+    labels: ["Nutrition"],
+    readTime: "4 min read",
+    title: "Whole Foods, Whole Life",
   },
   {
-    title: "Move Daily, Move Well",
     category: "Fitness",
-    labels: ["Movement"],
     description:
       "Regular movement — walking, yoga, strength — improves circulation and keeps body and mind sharp.",
-    readTime: "4 min read",
     gradient: "post-grad-teal",
+    labels: ["Movement"],
+    readTime: "4 min read",
+    title: "Move Daily, Move Well",
   },
   {
-    title: "Sleep is the Best Medicine",
     category: "Health",
-    labels: ["Sleep", "Recovery"],
     description:
       "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
-    readTime: "5 min read",
     gradient: "post-grad-violet",
+    labels: ["Sleep", "Recovery"],
+    readTime: "5 min read",
+    title: "Sleep is the Best Medicine",
   },
   {
-    title: "Mindfulness for Devs",
     category: "Wellness",
-    labels: ["Mindfulness"],
     description:
       "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, and the occasional emotional detox.",
-    readTime: "3 min read",
     gradient: "post-grad-amber",
+    labels: ["Mindfulness"],
+    readTime: "3 min read",
+    title: "Mindfulness for Devs",
   },
   {
-    title: "Strength Training Basics",
     category: "Fitness",
-    labels: ["Strength"],
     description:
       "A simple, sustainable approach to lifting that protects long-term mobility and joint health.",
-    readTime: "5 min read",
     gradient: "post-grad-emerald",
+    labels: ["Strength"],
+    readTime: "5 min read",
+    title: "Strength Training Basics",
   },
 ];
 
 export default async function BitesPage() {
   const data = await loadPillarData("bites", {
-    description: FALLBACK_DESCRIPTION,
     cadence: "weekly",
+    description: FALLBACK_DESCRIPTION,
     fallbackPosts,
   });
-  const posts = data.posts;
+  const { posts } = data;
 
   const bitesJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${SITE_NAME} Bites`,
-    url: `${SITE_URL}/bites`,
+    author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
     description:
       "Bites of holistic wellness — nutrition, movement, mindfulness, and sleep — from PBDesk.",
-    inLanguage: "en",
-    author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
     hasPart: posts.map((post) => ({
       "@type": "CreativeWork",
-      name: post.title,
       description: post.description,
-      keywords: post.labels?.join(", "),
       genre: post.category,
+      keywords: post.labels?.join(", "),
+      name: post.title,
     })),
+    inLanguage: "en",
+    name: `${SITE_NAME} Bites`,
+    url: `${SITE_URL}/bites`,
   };
 
   return (

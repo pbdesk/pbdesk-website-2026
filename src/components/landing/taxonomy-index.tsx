@@ -63,6 +63,8 @@ export default function TaxonomyIndex({
 
   const emptyLabel = kind === "category" ? "categories" : "labels";
 
+  const handleShowAllPillars = () => setActivePillar("all");
+
   return (
     <main>
       <section className="py-16">
@@ -73,8 +75,8 @@ export default function TaxonomyIndex({
             className="mb-6 text-center font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(48px, 6vw, 80px)",
-              lineHeight: 1.05,
               letterSpacing: "-0.03em",
+              lineHeight: 1.05,
             }}
           >
             {title}
@@ -95,14 +97,14 @@ export default function TaxonomyIndex({
             <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
               <button
                 className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-semibold text-sm transition-colors"
-                onClick={() => setActivePillar("all")}
+                onClick={handleShowAllPillars}
                 style={{
                   background:
                     activePillar === "all" ? accent : "var(--bg-elevated)",
-                  color:
-                    activePillar === "all" ? "#fff" : "var(--fg-secondary)",
                   borderColor:
                     activePillar === "all" ? accent : "var(--border-subtle)",
+                  color:
+                    activePillar === "all" ? "#fff" : "var(--fg-secondary)",
                 }}
                 type="button"
               >
@@ -118,15 +120,16 @@ export default function TaxonomyIndex({
                   (sum, t) => sum + (t.pillarCounts?.[key] ?? 0),
                   0
                 );
+                const handleSelectPillar = () => setActivePillar(key);
                 return (
                   <button
                     className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-semibold text-sm transition-colors"
                     key={key}
-                    onClick={() => setActivePillar(key)}
+                    onClick={handleSelectPillar}
                     style={{
                       background: isActive ? color : "var(--bg-elevated)",
-                      color: isActive ? "#fff" : "var(--fg-secondary)",
                       borderColor: isActive ? color : "var(--border-subtle)",
+                      color: isActive ? "#fff" : "var(--fg-secondary)",
                     }}
                     type="button"
                   >

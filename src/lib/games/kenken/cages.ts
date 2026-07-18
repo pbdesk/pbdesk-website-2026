@@ -55,8 +55,8 @@ export function partitionCages(
   );
 
   const cages: Cell[][] = [];
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
+  for (let r = 0; r < size; r += 1) {
+    for (let c = 0; c < size; c += 1) {
       if (assigned[r][c]) {
         continue;
       }

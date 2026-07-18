@@ -52,28 +52,28 @@ const CLOSING_NOTE =
 // ============================================================================
 
 const PRIVACY_POLICY_COMPONENT: SbComponent = {
-  name: "privacy_policy_page",
   display_name: "Privacy Policy Page",
-  is_root: true,
-  is_nestable: false,
   icon: "block-doc",
+  is_nestable: false,
+  is_root: true,
+  name: "privacy_policy_page",
   preview_field: "title",
   schema: {
-    title: { type: "text", required: true, pos: 0 },
+    body: { pos: 3, type: "richtext" },
     eyebrow: {
-      type: "text",
-      pos: 1,
       description: 'Small uppercase label shown above the H1 (e.g. "Privacy").',
+      pos: 1,
+      type: "text",
     },
+    last_updated: { pos: 4, type: "datetime" },
     lede: {
-      type: "textarea",
-      pos: 2,
       description: "Intro paragraph rendered under the H1 in the hero.",
+      pos: 2,
+      type: "textarea",
     },
-    body: { type: "richtext", pos: 3 },
-    last_updated: { type: "datetime", pos: 4 },
-    seo_title: { type: "text", pos: 5 },
-    seo_description: { type: "textarea", pos: 6 },
+    seo_description: { pos: 6, type: "textarea" },
+    seo_title: { pos: 5, type: "text" },
+    title: { pos: 0, required: true, type: "text" },
   },
 };
 
@@ -100,75 +100,75 @@ interface RtDoc {
 type Inline = RtNode | string;
 
 function asText(value: string): RtNode {
-  return { type: "text", text: value };
+  return { text: value, type: "text" };
 }
 
 function bold(value: string): RtNode {
-  return { type: "text", text: value, marks: [{ type: "bold" }] };
+  return { marks: [{ type: "bold" }], text: value, type: "text" };
 }
 
 function italic(value: string): RtNode {
-  return { type: "text", text: value, marks: [{ type: "italic" }] };
+  return { marks: [{ type: "italic" }], text: value, type: "text" };
 }
 
 function code(value: string): RtNode {
-  return { type: "text", text: value, marks: [{ type: "code" }] };
+  return { marks: [{ type: "code" }], text: value, type: "text" };
 }
 
 function link(href: string, value: string): RtNode {
   const isExternal = href.startsWith("http");
   return {
-    type: "text",
-    text: value,
     marks: [
       {
-        type: "link",
         attrs: {
-          href,
-          target: isExternal ? "_blank" : "_self",
-          uuid: null,
           anchor: null,
           custom: {},
+          href,
           linktype: isExternal ? "url" : "story",
+          target: isExternal ? "_blank" : "_self",
+          uuid: null,
         },
+        type: "link",
       },
     ],
+    text: value,
+    type: "text",
   };
 }
 
 function inlines(parts: Inline[]): RtNode[] {
-  return parts.map((p) => (typeof p === "string" ? asText(p) : p));
+  return parts.map((part) => (typeof part === "string" ? asText(part) : part));
 }
 
 function p(...parts: Inline[]): RtNode {
-  return { type: "paragraph", content: inlines(parts) };
+  return { content: inlines(parts), type: "paragraph" };
 }
 
 function h2(value: string): RtNode {
   return {
-    type: "heading",
     attrs: { level: 2 },
     content: [asText(value)],
+    type: "heading",
   };
 }
 
 function h3(value: string): RtNode {
   return {
-    type: "heading",
     attrs: { level: 3 },
     content: [asText(value)],
+    type: "heading",
   };
 }
 
 function li(...parts: Inline[]): RtNode {
   return {
+    content: [{ content: inlines(parts), type: "paragraph" }],
     type: "list_item",
-    content: [{ type: "paragraph", content: inlines(parts) }],
   };
 }
 
 function ul(...items: RtNode[]): RtNode {
-  return { type: "bullet_list", content: items };
+  return { content: items, type: "bullet_list" };
 }
 
 // ============================================================================
@@ -662,7 +662,7 @@ function buildBody(): RtDoc {
   // ---- Closing italic note ----
   blocks.push(p(italic(CLOSING_NOTE)));
 
-  return { type: "doc", content: blocks };
+  return { content: blocks, type: "doc" };
 }
 
 // ============================================================================
@@ -671,14 +671,14 @@ function buildBody(): RtDoc {
 
 export function buildStoryContent(): SbStoryContent {
   return {
-    component: "privacy_policy_page",
-    title: TITLE,
-    eyebrow: EYEBROW,
-    lede: LEDE,
     body: buildBody(),
+    component: "privacy_policy_page",
+    eyebrow: EYEBROW,
     last_updated: LAST_UPDATED_ISO,
-    seo_title: SEO_TITLE,
+    lede: LEDE,
     seo_description: SEO_DESCRIPTION,
+    seo_title: SEO_TITLE,
+    title: TITLE,
   };
 }
 
@@ -711,7 +711,7 @@ async function main(): Promise<void> {
   const spaceId = requireEnv("STORYBLOK_SPACE_ID");
   const region = process.env.STORYBLOK_REGION ?? "eu";
 
-  const sb = new StoryblokManagement({ token, spaceId, region });
+  const sb = new StoryblokManagement({ region, spaceId, token });
 
   logStep("\n[1/3] Updating privacy_policy_page component schema...");
   const compResult = await sb.upsertComponent(PRIVACY_POLICY_COMPONENT);
@@ -721,9 +721,9 @@ async function main(): Promise<void> {
 
   logStep("\n[2/3] Upserting /privacy-policy story content...");
   const storyResult = await sb.upsertStory({
+    content: buildStoryContent(),
     name: STORY_NAME,
     slug: STORY_SLUG,
-    content: buildStoryContent(),
   });
   logRow(
     `${storyResult.created ? "+" : "·"} ${storyResult.record.full_slug} (#${storyResult.record.id}) — ${storyResult.created ? "created" : "updated"}`

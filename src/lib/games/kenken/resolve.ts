@@ -29,24 +29,26 @@ export function resolvePuzzleRequest(
   if (params.id) {
     const puzzle = lookup.byId(params.id);
     return puzzle
-      ? { status: 200, body: puzzle }
-      : { status: 404, body: { error: "puzzle not found" } };
+      ? { body: puzzle, status: 200 }
+      : { body: { error: "puzzle not found" }, status: 404 };
   }
 
   if (!isDifficulty(params.level)) {
-    return { status: 400, body: { error: "invalid level" } };
+    return { body: { error: "invalid level" }, status: 400 };
   }
 
   const all = lookup.byLevel(params.level);
-  const puzzles =
-    params.size == null ? all : all.filter((p) => p.size === params.size);
+  const noSizeFilter = params.size === null || params.size === undefined;
+  const puzzles = noSizeFilter
+    ? all
+    : all.filter((p) => p.size === params.size);
   if (puzzles.length === 0) {
-    return { status: 503, body: { error: "no puzzles available" } };
+    return { body: { error: "no puzzles available" }, status: 503 };
   }
 
   const puzzle = selectRandom(puzzles, params.exclude, rng);
   if (!puzzle) {
-    return { status: 503, body: { error: "no puzzles available" } };
+    return { body: { error: "no puzzles available" }, status: 503 };
   }
-  return { status: 200, body: puzzle };
+  return { body: puzzle, status: 200 };
 }

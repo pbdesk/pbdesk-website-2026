@@ -9,10 +9,10 @@ import { BRAIN_BOOST_ACCENT } from "@/components/brain-boost/accent";
 import { BENEFITS, type Benefit, type BenefitIconKey } from "./meta";
 
 const ICON_MAP: Record<BenefitIconKey, ReactNode> = {
-  Target: <IconTarget size={20} />,
   Brain: <IconBrain size={20} />,
   Clock: <IconClock size={20} />,
   Flame: <IconFlame size={20} />,
+  Target: <IconTarget size={20} />,
 };
 
 interface BrainBoostBenefitsProps {

@@ -46,45 +46,45 @@ interface MyRealmProps {
 
 const DEFAULT_REALMS: RealmCard[] = [
   {
-    title: "Nutrition",
     description:
       "Whole, natural, unprocessed foods rich in essential nutrients, vitamins, and minerals — fuel for immunity and repair.",
+    title: "Nutrition",
   },
   {
-    title: "Movement",
     description:
       "Regular movement — walking, yoga, strength — to improve circulation, boost endorphins, and keep body and mind sharp.",
+    title: "Movement",
   },
   {
-    title: "Sleep & Recovery",
     description:
       "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
+    title: "Sleep & Recovery",
   },
   {
-    title: "Mindfulness",
     description:
       "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, and the occasional emotional detox.",
+    title: "Mindfulness",
   },
 ];
 
 const DEFAULT_FEATURES: FeatureCard[] = [
   {
-    title: "Short-form Bits",
     description:
       "Quick takes you can read in the time it takes `npm install` to finish.",
     icon: "bolt",
+    title: "Short-form Bits",
   },
   {
-    title: "Wellness for devs",
     description:
       "Small habits that protect your energy — for the long code review marathon.",
     icon: "heart",
+    title: "Wellness for devs",
   },
   {
-    title: "Longer essays",
     description:
       "When a thought needs more than a tweet — full posts on the things I keep returning to.",
     icon: "pencil",
+    title: "Longer essays",
   },
 ];
 
@@ -130,8 +130,8 @@ export default function MyRealm({
             className="mb-5 font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(32px, 4vw, 52px)",
-              lineHeight: 1.1,
               letterSpacing: "-0.025em",
+              lineHeight: 1.1,
             }}
           >
             {headline ?? DEFAULT_HEADLINE}

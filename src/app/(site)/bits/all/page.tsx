@@ -6,10 +6,10 @@ import { pageMetadata } from "@/lib/seo";
 import { loadPillarData } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
-  title: "All Bits — Browse every Bits post",
   description:
     "The full archive of Bits — AI tools, dev tools, browsers, VS Code extensions, and the frameworks shaping modern web development. Filter by category and label.",
   path: "/bits/all",
+  title: "All Bits — Browse every Bits post",
 });
 
 const FALLBACK_DESCRIPTION =
@@ -19,8 +19,8 @@ const fallbackPosts: Post[] = [];
 
 export default async function BitsAllPage() {
   const data = await loadPillarData("bits", {
-    description: FALLBACK_DESCRIPTION,
     cadence: "weekly",
+    description: FALLBACK_DESCRIPTION,
     fallbackPosts,
   });
 

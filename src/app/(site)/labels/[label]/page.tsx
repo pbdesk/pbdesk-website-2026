@@ -23,9 +23,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { label } = await params;
   return pageMetadata({
-    title: `#${label} — Label on PBDesk`,
     description: `Every PBDesk post tagged with #${label} across Bits, Bites, and Blog.`,
     path: `/labels/${encodeURIComponent(label)}`,
+    title: `#${label} — Label on PBDesk`,
   });
 }
 

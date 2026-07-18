@@ -60,12 +60,12 @@ export async function generateMetadata({
   }
   const c = story.content;
   return pageMetadata({
-    title: `${c.title} — ${pillar.charAt(0).toUpperCase()}${pillar.slice(1)} on PBDesk`,
     description: c.excerpt,
-    path: `/${pillar}/${slug}`,
-    ogType: "article",
-    ogImage: normalizeAssetUrl(c.cover_image?.filename),
     keywords: c.labels,
+    ogImage: normalizeAssetUrl(c.cover_image?.filename),
+    ogType: "article",
+    path: `/${pillar}/${slug}`,
+    title: `${c.title} — ${pillar.charAt(0).toUpperCase()}${pillar.slice(1)} on PBDesk`,
   });
 }
 
@@ -111,8 +111,8 @@ function PostHeader({
             align="start"
             items={[
               {
-                label: `${pillar.charAt(0).toUpperCase()}${pillar.slice(1)}`,
                 href: `/${pillar}`,
+                label: `${pillar.charAt(0).toUpperCase()}${pillar.slice(1)}`,
               },
             ]}
           >
@@ -147,8 +147,8 @@ function PostHeader({
             className="mb-4 font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(28px, 4vw, 44px)",
-              lineHeight: 1.15,
               letterSpacing: "-0.02em",
+              lineHeight: 1.15,
               textWrap: "balance",
             }}
           >
@@ -170,9 +170,9 @@ function PostHeader({
                 <IconCalendarMonth stroke={1.5} />
                 <time dateTime={c.published_at}>
                   {new Date(c.published_at).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
                     day: "numeric",
+                    month: "long",
+                    year: "numeric",
                   })}
                 </time>
               </>
@@ -260,7 +260,7 @@ export default async function PostPage({
     notFound();
   }
   const story = await loadPostStory(pillar, slug);
-  if (!story || story.content.component !== "post") {
+  if (story?.content?.component !== "post") {
     notFound();
   }
 
@@ -278,24 +278,24 @@ export default async function PostPage({
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: c.title,
-    description: c.excerpt,
-    keywords: c.labels?.join(", "),
     articleSection: c.category,
-    datePublished: c.published_at,
-    dateModified: c.updated_at ?? c.published_at,
     author: { "@type": "Person", name: SITE_AUTHOR },
+    dateModified: c.updated_at ?? c.published_at,
+    datePublished: c.published_at,
+    description: c.excerpt,
+    headline: c.title,
     image: normalizeAssetUrl(c.cover_image?.filename),
+    keywords: c.labels?.join(", "),
     url: shareUrl,
   };
 
   return (
     <ShareProvider
       value={{
-        url: shareUrl,
-        title: c.title,
         description: c.excerpt,
         media: shareMedia,
+        title: c.title,
+        url: shareUrl,
       }}
     >
       <main>

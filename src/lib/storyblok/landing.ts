@@ -75,10 +75,10 @@ export async function loadPillarData(
 ): Promise<PillarPageData> {
   if (!isStoryblokConfigured()) {
     return {
-      description: fallback.description,
       cadence: fallback.cadence,
-      posts: fallback.fallbackPosts,
+      description: fallback.description,
       fromStoryblok: false,
+      posts: fallback.fallbackPosts,
       story: null,
     };
   }
@@ -90,29 +90,29 @@ export async function loadPillarData(
     ]);
     if (!story) {
       return {
-        description: fallback.description,
         cadence: fallback.cadence,
-        posts: fallback.fallbackPosts,
+        description: fallback.description,
         fromStoryblok: false,
+        posts: fallback.fallbackPosts,
         story: null,
       };
     }
     const posts = postStories.map(postStoryToPost);
     return {
-      description: story.content.description ?? fallback.description,
-      cadence: story.content.cadence ?? fallback.cadence,
-      bannerLightSrc: normalizeAssetUrl(story.content.banner_light?.filename),
       bannerDarkSrc: normalizeAssetUrl(story.content.banner_dark?.filename),
-      posts,
+      bannerLightSrc: normalizeAssetUrl(story.content.banner_light?.filename),
+      cadence: story.content.cadence ?? fallback.cadence,
+      description: story.content.description ?? fallback.description,
       fromStoryblok: true,
+      posts,
       story,
     };
   } catch {
     return {
-      description: fallback.description,
       cadence: fallback.cadence,
-      posts: fallback.fallbackPosts,
+      description: fallback.description,
       fromStoryblok: false,
+      posts: fallback.fallbackPosts,
       story: null,
     };
   }

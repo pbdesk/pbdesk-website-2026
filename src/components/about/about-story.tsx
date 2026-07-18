@@ -68,8 +68,8 @@ export default function AboutStory({
             className="font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(32px, 4vw, 52px)",
-              lineHeight: 1.1,
               letterSpacing: "-0.025em",
+              lineHeight: 1.1,
               textWrap: "balance",
             }}
           >
@@ -95,8 +95,8 @@ export default function AboutStory({
                 className="font-semibold text-[var(--fg-primary)]"
                 style={{
                   fontSize: "clamp(20px, 2.4vw, 28px)",
-                  lineHeight: 1.4,
                   letterSpacing: "-0.015em",
+                  lineHeight: 1.4,
                   textWrap: "balance",
                 }}
               >

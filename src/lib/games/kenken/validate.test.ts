@@ -10,8 +10,8 @@ function validSingletonPuzzle(): KenKenPuzzle {
     [3, 1, 2],
   ];
   const cages: Cage[] = [];
-  for (let r = 0; r < 3; r++) {
-    for (let c = 0; c < 3; c++) {
+  for (let r = 0; r < 3; r += 1) {
+    for (let c = 0; c < 3; c += 1) {
       cages.push({
         cells: [[r, c]] as [number, number][],
         op: "=" as const,
@@ -19,7 +19,7 @@ function validSingletonPuzzle(): KenKenPuzzle {
       });
     }
   }
-  return { id: "k3-easy-00001", size: 3, difficulty: "easy", cages, solution };
+  return { cages, difficulty: "easy", id: "k3-easy-00001", size: 3, solution };
 }
 
 describe("validatePuzzle", () => {
@@ -66,18 +66,18 @@ describe("validatePuzzle", () => {
 describe("validateLibrary", () => {
   test("valid library returns no errors", () => {
     const lib = {
-      schemaVersion: SCHEMA_VERSION,
       difficulty: "easy" as const,
       puzzles: [validSingletonPuzzle()],
+      schemaVersion: SCHEMA_VERSION,
     };
     expect(validateLibrary(lib)).toEqual([]);
   });
 
   test("flags wrong schemaVersion", () => {
     const lib = {
-      schemaVersion: 999,
       difficulty: "easy" as const,
       puzzles: [validSingletonPuzzle()],
+      schemaVersion: 999,
     };
     expect(validateLibrary(lib).length).toBeGreaterThan(0);
   });

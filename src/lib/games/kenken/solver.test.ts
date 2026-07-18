@@ -8,8 +8,8 @@ import type { Cage, Cell } from "./types";
 // All-singletons: every cell is its own "=" cage -> exactly one solution.
 function singletonCages(solution: number[][]): Cage[] {
   const cages: Cage[] = [];
-  for (let r = 0; r < solution.length; r++) {
-    for (let c = 0; c < solution[r].length; c++) {
+  for (let r = 0; r < solution.length; r += 1) {
+    for (let c = 0; c < solution[r].length; c += 1) {
       cages.push({ cells: [[r, c]], op: "=", target: solution[r][c] });
     }
   }
@@ -26,8 +26,8 @@ describe("countSolutions", () => {
     const size = 4;
     const allCells: Cell[] = [];
     let total = 0;
-    for (let r = 0; r < size; r++) {
-      for (let c = 0; c < size; c++) {
+    for (let r = 0; r < size; r += 1) {
+      for (let c = 0; c < size; c += 1) {
         allCells.push([r, c]);
         total += ((r + c) % size) + 1; // total is the same for any Latin square
       }

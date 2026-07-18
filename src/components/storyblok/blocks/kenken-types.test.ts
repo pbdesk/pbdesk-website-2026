@@ -14,11 +14,11 @@ describe("kenken blok types", () => {
     const hero: KenkenHeroBlok = {
       _uid: "1",
       component: "kenken_hero",
-      eyebrow: "Brain Boost",
-      title: "KenKen",
-      lede: "Arithmetic logic puzzles.",
-      cta_play_label: "Play",
       cta_daily_label: "Daily",
+      cta_play_label: "Play",
+      eyebrow: "Brain Boost",
+      lede: "Arithmetic logic puzzles.",
+      title: "KenKen",
     };
     expect(hero.component).toBe("kenken_hero");
   });
@@ -29,7 +29,7 @@ describe("kenken blok types", () => {
       component: "kenken_steps",
       heading: "How to play",
       steps: [
-        { _uid: "s1", component: "kenken_step", title: "Fill", text: "1..N" },
+        { _uid: "s1", component: "kenken_step", text: "1..N", title: "Fill" },
       ],
     };
     const ops: KenkenOperationsBlok = {
@@ -40,9 +40,9 @@ describe("kenken blok types", () => {
         {
           _uid: "o1",
           component: "kenken_operation",
-          symbol: "+",
-          name: "Add",
           description: "sum",
+          name: "Add",
+          symbol: "+",
         },
       ],
     };
@@ -54,10 +54,10 @@ describe("kenken blok types", () => {
         {
           _uid: "l1",
           component: "kenken_level",
-          name: "Easy",
-          sizes: "3×3",
-          operations: "+ − × ÷",
           description: "Gentle start",
+          name: "Easy",
+          operations: "+ − × ÷",
+          sizes: "3×3",
         },
       ],
     };
@@ -71,14 +71,14 @@ describe("kenken blok types", () => {
       _uid: "5",
       component: "kenken_prose",
       heading: "What is KenKen",
-      richtext: { type: "doc", content: [] },
+      richtext: { content: [], type: "doc" },
     };
     const cta: KenkenCtaBlok = {
       _uid: "6",
       component: "kenken_cta",
-      heading: "Ready?",
-      cta_play_label: "Play",
       cta_daily_label: "Daily",
+      cta_play_label: "Play",
+      heading: "Ready?",
     };
     expect(prose.component).toBe("kenken_prose");
     expect(cta.component).toBe("kenken_cta");

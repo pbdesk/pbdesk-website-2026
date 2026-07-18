@@ -75,8 +75,8 @@ export default function About({
               className="mb-6 font-bold text-[var(--fg-primary)]"
               style={{
                 fontSize: "clamp(36px, 4.5vw, 56px)",
-                lineHeight: 1.1,
                 letterSpacing: "-0.025em",
+                lineHeight: 1.1,
               }}
             >
               {headline ?? "Welcome to my desk!"}

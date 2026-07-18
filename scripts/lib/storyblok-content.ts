@@ -24,13 +24,13 @@ interface RichtextNode {
 
 function paragraph(text: string): RichtextNode {
   return {
+    content: [{ text, type: "text" }],
     type: "paragraph",
-    content: [{ type: "text", text }],
   };
 }
 
 function richtext(...paragraphs: string[]): RichtextDoc {
-  return { type: "doc", content: paragraphs.map(paragraph) };
+  return { content: paragraphs.map(paragraph), type: "doc" };
 }
 
 function blok<T extends Record<string, unknown>>(
@@ -49,28 +49,28 @@ function placeholderAsset(filename: string): {
   __placeholder: string;
 } {
   return {
-    filename: "",
-    alt: filename,
     __placeholder: filename,
+    alt: filename,
+    filename: "",
   };
 }
 
 // Socials are reused on home, about, and global config
 const socialLinks = [
   blok("social_link", {
-    label: "GitHub",
-    href: { url: "https://github.com/pinalbhatt", linktype: "url" },
+    href: { linktype: "url", url: "https://github.com/pinalbhatt" },
     icon: "github",
+    label: "GitHub",
   }),
   blok("social_link", {
-    label: "LinkedIn",
-    href: { url: "https://www.linkedin.com/in/pinalbhatt", linktype: "url" },
+    href: { linktype: "url", url: "https://www.linkedin.com/in/pinalbhatt" },
     icon: "linkedin",
+    label: "LinkedIn",
   }),
   blok("social_link", {
-    label: "X",
-    href: { url: "https://x.com/pbdesk", linktype: "url" },
+    href: { linktype: "url", url: "https://x.com/pbdesk" },
     icon: "x",
+    label: "X",
   }),
 ];
 
@@ -79,118 +79,118 @@ const socialLinks = [
 // ============================================================================
 
 const heroBlok = blok("hero", {
+  cta_href: { linktype: "url", url: "#pillars" },
+  cta_label: "Explore PBDesk",
   eyebrow: "Learning endeavor forever...",
   headline: richtext("PBDesk"),
   kicker: "From the desk of Pinal Bhatt",
+  secondary_cta_href: { linktype: "url", url: "/about" },
+  secondary_cta_label: "About Pinal",
+  show_pillar_links: true,
+  show_social: true,
   subheadline: richtext(
     "A personal space where code, AI, wellness, and mindful living meet."
   ),
-  cta_label: "Explore PBDesk",
-  cta_href: { url: "#pillars", linktype: "url" },
-  secondary_cta_label: "About Pinal",
-  secondary_cta_href: { url: "/about", linktype: "url" },
-  show_pillar_links: true,
-  show_social: true,
 });
 
 const pillarsBlok = blok("pillars", {
-  eyebrow: "What I write about",
-  heading: "Three lanes, one desk.",
   cards: [
     blok("pillar_card", {
-      name: "Bits",
-      title: "Bits — the tech side",
+      avatar: placeholderAsset("bits-avatar.svg"),
+      cta_label: "Visit My Bits",
       description:
         "Insights on AI, programming, and software development — frameworks, dev tools, productivity hacks, and the occasional deep dive.",
-      cta_label: "Visit My Bits",
-      href: { url: "/bits", linktype: "url" },
       gradient_class: "pillar-bits-gradient",
-      avatar: placeholderAsset("bits-avatar.svg"),
+      href: { linktype: "url", url: "/bits" },
+      name: "Bits",
+      title: "Bits — the tech side",
     }),
     blok("pillar_card", {
-      name: "Bites",
-      title: "Bites — the wellness side",
+      avatar: placeholderAsset("bites-avatar.svg"),
+      cta_label: "Visit My Bites",
       description:
         "A healthy, active life is the greatest gift we can give ourselves and our loved ones. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
-      cta_label: "Visit My Bites",
-      href: { url: "/bites", linktype: "url" },
       gradient_class: "pillar-bites-gradient",
-      avatar: placeholderAsset("bites-avatar.svg"),
+      href: { linktype: "url", url: "/bites" },
+      name: "Bites",
+      title: "Bites — the wellness side",
     }),
     blok("pillar_card", {
-      name: "Blog",
-      title: "Blog — where they meet",
+      avatar: placeholderAsset("blog-avatar.svg"),
+      cta_label: "Visit My Blog",
       description:
         "Reflections on balancing tech life with physical and mental wellness, plus friendships, family, meaningful connections and emotions.",
-      cta_label: "Visit My Blog",
-      href: { url: "/blog", linktype: "url" },
       gradient_class: "pillar-blog-gradient",
-      avatar: placeholderAsset("blog-avatar.svg"),
+      href: { linktype: "url", url: "/blog" },
+      name: "Blog",
+      title: "Blog — where they meet",
     }),
   ],
+  eyebrow: "What I write about",
+  heading: "Three lanes, one desk.",
 });
 
 const aboutSectionBlok = blok("about_section", {
-  eyebrow: "About me",
-  headline: "Welcome to my desk!",
   bio: richtext(
     "Hello! I'm Pinal Bhatt — I'm Human & I'm Software Engineer, and I love writing code! Though enjoying adrenaline rush from the new AI realm. Yes, I'm always on the learning ramp.",
     "When I'm not at the desk, I'm probably stretching, reading, or arguing with my family about who gets the couch and what to watch on TV.",
     "This site is a space where I share insights, tutorials, articles, and resources on topics such as AI, programming, microservices, cloud computing, serverless architectures, & other technologies and topics like JavaScript, Node.js, TypeScript, Vue, Angular, React, Astro, Postgres, Mongo, Kafka and many more.",
     "You'll also find a few personal reflections, tips on healthy living — because I believe good health fuels great work — and the occasional offbeat thought. After all, health is wealth!"
   ),
-  portrait: placeholderAsset("pb1.jpg"),
   chip_label: "Pinal",
+  eyebrow: "About me",
+  headline: "Welcome to my desk!",
+  portrait: placeholderAsset("pb1.jpg"),
   show_social: true,
 });
 
 const myRealmBlok = blok("my_realm", {
   eyebrow: "My realm",
-  headline: richtext("Health, family, wellness, and technology."),
-  subheading:
-    "The four threads I weave through everything I write. Never one without the others.",
-  realms: [
-    blok("realm_card", {
-      title: "Nutrition",
-      description:
-        "Whole, natural, unprocessed foods rich in essential nutrients, vitamins, and minerals — fuel for immunity and repair.",
-    }),
-    blok("realm_card", {
-      title: "Movement",
-      description:
-        "Regular movement — walking, yoga, strength — to improve circulation, boost endorphins, and keep body and mind sharp.",
-    }),
-    blok("realm_card", {
-      title: "Sleep & Recovery",
-      description:
-        "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
-    }),
-    blok("realm_card", {
-      title: "Mindfulness",
-      description:
-        "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, and the occasional emotional detox.",
-    }),
-  ],
   features: [
     blok("feature_card", {
-      title: "Short-form Bits",
       description:
         "Quick takes you can read in the time it takes `npm install` to finish.",
       icon: "bolt",
+      title: "Short-form Bits",
     }),
     blok("feature_card", {
-      title: "Wellness for devs",
       description:
         "Small habits that protect your energy — for the long code review marathon.",
       icon: "heart",
+      title: "Wellness for devs",
     }),
     blok("feature_card", {
-      title: "Longer essays",
       description:
         "When a thought needs more than a tweet — full posts on the things I keep returning to.",
       icon: "pencil",
+      title: "Longer essays",
     }),
   ],
+  headline: richtext("Health, family, wellness, and technology."),
+  realms: [
+    blok("realm_card", {
+      description:
+        "Whole, natural, unprocessed foods rich in essential nutrients, vitamins, and minerals — fuel for immunity and repair.",
+      title: "Nutrition",
+    }),
+    blok("realm_card", {
+      description:
+        "Regular movement — walking, yoga, strength — to improve circulation, boost endorphins, and keep body and mind sharp.",
+      title: "Movement",
+    }),
+    blok("realm_card", {
+      description:
+        "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
+      title: "Sleep & Recovery",
+    }),
+    blok("realm_card", {
+      description:
+        "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, and the occasional emotional detox.",
+      title: "Mindfulness",
+    }),
+  ],
+  subheading:
+    "The four threads I weave through everything I write. Never one without the others.",
   tags: [
     "JavaScript",
     "TypeScript",
@@ -211,44 +211,44 @@ const myWellnessThreadsBlok = blok("my_wellness_threads", {
   subheading: "Four threads I keep weaving through everyday life.",
   threads: [
     blok("wellness_thread_item", {
-      key: "nutrition",
-      index: "01",
-      title: "Cellular Nutrition",
-      short_label: "Nutrition",
-      body: "Whole, natural, unprocessed foods rich in vitamins and minerals — fuel for immunity and repair.",
-      icon: "apple",
-      color: "#10B981",
       angle: -135,
+      body: "Whole, natural, unprocessed foods rich in vitamins and minerals — fuel for immunity and repair.",
+      color: "#10B981",
+      icon: "apple",
+      index: "01",
+      key: "nutrition",
+      short_label: "Nutrition",
+      title: "Cellular Nutrition",
     }),
     blok("wellness_thread_item", {
-      key: "exercise",
-      index: "02",
-      title: "Adequate Exercise",
-      short_label: "Exercise",
-      body: "Regular movement — walking, yoga, strength — to boost endorphins and keep body and mind sharp.",
-      icon: "run",
-      color: "#F59E0B",
       angle: -45,
+      body: "Regular movement — walking, yoga, strength — to boost endorphins and keep body and mind sharp.",
+      color: "#F59E0B",
+      icon: "run",
+      index: "02",
+      key: "exercise",
+      short_label: "Exercise",
+      title: "Adequate Exercise",
     }),
     blok("wellness_thread_item", {
-      key: "sleep",
-      index: "03",
-      title: "Quality Sleep",
-      short_label: "Sleep",
-      body: "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
-      icon: "moon",
-      color: "#0EA5E9",
       angle: 135,
+      body: "Restorative sleep lets the body repair, balance hormones, and strengthen immunity. Quality over quantity.",
+      color: "#0EA5E9",
+      icon: "moon",
+      index: "03",
+      key: "sleep",
+      short_label: "Sleep",
+      title: "Quality Sleep",
     }),
     blok("wellness_thread_item", {
-      key: "emotion",
-      index: "04",
-      title: "Emotional Wellness",
-      short_label: "Emotion",
-      body: "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, emotional detox.",
-      icon: "heart",
-      color: "#E11D48",
       angle: 45,
+      body: "Manage stress, let go of negativity, cultivate balance. Mindfulness, gratitude, emotional detox.",
+      color: "#E11D48",
+      icon: "heart",
+      index: "04",
+      key: "emotion",
+      short_label: "Emotion",
+      title: "Emotional Wellness",
     }),
   ],
 });
@@ -258,55 +258,51 @@ const myPillersBlok = blok("my_pillers", {
   heading: "Three threads, one desk.",
   pillars: [
     blok("piller_orbit_item", {
-      key: "bits",
+      angle: -90,
+      body: "Insights on AI, programming, and software development — frameworks, dev tools, productivity hacks, and the occasional deep dive.",
+      color: "#4F46E5",
+      cta_label: "Visit My Bits",
+      href: { linktype: "url", url: "/bits" },
       index: "01",
+      key: "bits",
       label: "Bits",
       title: "Bits — the tech side",
-      body: "Insights on AI, programming, and software development — frameworks, dev tools, productivity hacks, and the occasional deep dive.",
-      cta_label: "Visit My Bits",
-      href: { url: "/bits", linktype: "url" },
-      color: "#4F46E5",
-      angle: -90,
     }),
     blok("piller_orbit_item", {
-      key: "bites",
+      angle: 30,
+      body: "A healthy, active life is the greatest gift we can give ourselves. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
+      color: "#10B981",
+      cta_label: "Visit My Bites",
+      href: { linktype: "url", url: "/bites" },
       index: "02",
+      key: "bites",
       label: "Bites",
       title: "Bites — the wellness side",
-      body: "A healthy, active life is the greatest gift we can give ourselves. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
-      cta_label: "Visit My Bites",
-      href: { url: "/bites", linktype: "url" },
-      color: "#10B981",
-      angle: 30,
     }),
     blok("piller_orbit_item", {
-      key: "blog",
+      angle: 150,
+      body: "Longer-form reflections on balancing tech life with physical wellness, plus friendships, family, and meaningful connections.",
+      color: "#7C3AED",
+      cta_label: "Visit My Blog",
+      href: { linktype: "url", url: "/blog" },
       index: "03",
+      key: "blog",
       label: "Blog",
       title: "Blog — where they meet",
-      body: "Longer-form reflections on balancing tech life with physical wellness, plus friendships, family, and meaningful connections.",
-      cta_label: "Visit My Blog",
-      href: { url: "/blog", linktype: "url" },
-      color: "#7C3AED",
-      angle: 150,
     }),
   ],
 });
 
 const ctaBannerBlok = blok("cta_banner", {
-  heading: "Stay in touch.",
   description:
     "One email when something new lands on Bits, Bites, or Blog. No noise, no spam — just signal from my desk to yours.",
+  heading: "Stay in touch.",
   placeholder: "your@email.com",
+  submit_action: { linktype: "url", url: "" },
   submit_label: "Subscribe",
-  submit_action: { url: "", linktype: "url" },
 });
 
 export const homeContent: SbStoryContent = {
-  component: "home_page",
-  title: "PBDesk — Bits, Bites & Blog by Pinal Bhatt",
-  description:
-    "From the desk of Pinal Bhatt — a space where code meets wellness. Explore Bits (dev & AI), Bites (fitness & mindfulness), and the Blog (long-form reflections).",
   body: [
     heroBlok,
     pillarsBlok,
@@ -316,6 +312,10 @@ export const homeContent: SbStoryContent = {
     myPillersBlok,
     ctaBannerBlok,
   ],
+  component: "home_page",
+  description:
+    "From the desk of Pinal Bhatt — a space where code meets wellness. Explore Bits (dev & AI), Bites (fitness & mindfulness), and the Blog (long-form reflections).",
+  title: "PBDesk — Bits, Bites & Blog by Pinal Bhatt",
 };
 
 // ============================================================================
@@ -323,21 +323,21 @@ export const homeContent: SbStoryContent = {
 // ============================================================================
 
 export const aboutContent: SbStoryContent = {
-  component: "about_page",
-  title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
-  headline:
-    "Hi, I'm Pinal Bhatt. Engineer by craft, learner by habit, human by nature.",
-  intro_chip_label: "About — the human behind the desk",
   bio: richtext(
     "I love coding and enjoy creating great software solutions through the power of code. I genuinely enjoy the entire process of creating software, from brainstorming ideas to writing clean code and debugging until everything runs just right. Whether I'm diving into backend, frontend, middleware, or experimenting with any new tech, I find a lot of joy in figuring things out and making things better.",
     "One of the areas that really excites me is artificial intelligence. I love exploring how AI is changing the way we live and work, and I'm always curious to see how I can apply it in the projects I build. I'm also always on the lookout for new tools, trends, and tech that challenge me to grow and think differently. For me, learning is an ongoing journey — and that's one of the best parts of being in tech.",
     "But as much as I love coding, I don't believe life should be all about work. I'm a big believer in balance. Health and wellness are super important to me. I make time for physical and mental well-being, whether it's through regular exercise, mindfulness, or simply slowing down when needed. Staying healthy helps me stay sharp and present — both in my work and in life. Spending quality time with family and friends is something I truly value. At the end of the day, it's the people around us that bring the most meaning to our lives. I try to stay grounded, enjoy the little moments, and never take anything for granted. Work is important, but so is life — and I believe in showing up fully for both."
   ),
-  portrait: placeholderAsset("pb1.jpg"),
   body: [aboutSectionBlok, myPillersBlok, myWellnessThreadsBlok],
-  seo_title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
+  component: "about_page",
+  headline:
+    "Hi, I'm Pinal Bhatt. Engineer by craft, learner by habit, human by nature.",
+  intro_chip_label: "About — the human behind the desk",
+  portrait: placeholderAsset("pb1.jpg"),
   seo_description:
     "Get to know the human behind PBDesk. Pinal Bhatt is a software engineer exploring AI, web development, and the daily wellness habits that fuel sustainable craft.",
+  seo_title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
+  title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
 };
 
 // ============================================================================
@@ -364,51 +364,51 @@ export const privacyPolicyContent: SbStoryContent = buildPrivacyPolicyContent();
 // ============================================================================
 
 export const bitsLandingContent: SbStoryContent = {
-  component: "landing_page",
-  title: "Bits",
-  pillar: "bits",
-  description:
-    "Welcome to my digital corner, where I share insights on the ever-evolving world of AI, programming, and software development. From the latest advancements in generative AI to cutting-edge developer tools and web design trends, I explore how technology shapes our digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing productivity hacks for coders, I aim to bridge knowledge gaps and spark curiosity. Join me as I navigate the fast-paced tech landscape one thought, tutorial, and trend at a time. Let's build, learn, and innovate together.",
-  cadence: "weekly",
   accent_primary: "#4f46e5",
   accent_secondary: "#0ea5e9",
-  filters: [],
   body: [],
-  seo_title: "Bits — AI tools, dev tools & web tech worth knowing",
+  cadence: "weekly",
+  component: "landing_page",
+  description:
+    "Welcome to my digital corner, where I share insights on the ever-evolving world of AI, programming, and software development. From the latest advancements in generative AI to cutting-edge developer tools and web design trends, I explore how technology shapes our digital future. Whether it's dissecting new frameworks, discussing ethical AI, or sharing productivity hacks for coders, I aim to bridge knowledge gaps and spark curiosity. Join me as I navigate the fast-paced tech landscape one thought, tutorial, and trend at a time. Let's build, learn, and innovate together.",
+  filters: [],
+  pillar: "bits",
   seo_description:
     "Curated bits on AI agents, developer tools, browsers, VS Code extensions, and the frameworks shaping modern web development. Notes from Pinal Bhatt's desk.",
+  seo_title: "Bits — AI tools, dev tools & web tech worth knowing",
+  title: "Bits",
 };
 
 export const bitesLandingContent: SbStoryContent = {
-  component: "landing_page",
-  title: "Bites",
-  pillar: "bites",
-  description:
-    "Bites are the wellness pillar — small daily choices that compound into vitality. Movement, nutrition, sleep, and mindfulness — practical notes from a developer trying to stay sharp for the long run. No gurus, no fads, just things that have worked.",
-  cadence: "weekly",
   accent_primary: "#10b981",
   accent_secondary: "#3b82f6",
-  filters: [],
   body: [],
-  seo_title: "Bites — wellness, fitness & mindfulness for developers",
+  cadence: "weekly",
+  component: "landing_page",
+  description:
+    "Bites are the wellness pillar — small daily choices that compound into vitality. Movement, nutrition, sleep, and mindfulness — practical notes from a developer trying to stay sharp for the long run. No gurus, no fads, just things that have worked.",
+  filters: [],
+  pillar: "bites",
   seo_description:
     "A developer's wellness notebook: movement, nutrition, sleep, and mindfulness. Small habits that protect your energy for the long haul.",
+  seo_title: "Bites — wellness, fitness & mindfulness for developers",
+  title: "Bites",
 };
 
 export const blogLandingContent: SbStoryContent = {
-  component: "landing_page",
-  title: "Blog",
-  pillar: "blog",
-  description:
-    "Long-form reflections where Bits and Bites meet. Posts on building software while staying human — the friction of growth, the rituals that compound, and the stories worth re-reading. Writing here is slower and more personal.",
-  cadence: "monthly",
   accent_primary: "#7c3aed",
   accent_secondary: "#10b981",
-  filters: [],
   body: [],
-  seo_title: "Blog — long-form reflections from PBDesk",
+  cadence: "monthly",
+  component: "landing_page",
+  description:
+    "Long-form reflections where Bits and Bites meet. Posts on building software while staying human — the friction of growth, the rituals that compound, and the stories worth re-reading. Writing here is slower and more personal.",
+  filters: [],
+  pillar: "blog",
   seo_description:
     "Reflections on code, craft, and wellness from Pinal Bhatt. Where technology meets a thoughtful, healthy life.",
+  seo_title: "Blog — long-form reflections from PBDesk",
+  title: "Blog",
 };
 
 // ============================================================================
@@ -421,29 +421,27 @@ function navItem(
   targetBlank = false
 ): SbStoryContent {
   return blok("nav_item", {
+    href: { linktype: "url", url: href },
     label,
-    href: { url: href, linktype: "url" },
     target_blank: targetBlank,
   });
 }
 
 export const globalConfigContent: SbStoryContent = {
-  component: "global_config",
   brand_tagline: "from the desk of Pinal Bhatt",
+  component: "global_config",
+  cta_default: [ctaBannerBlok],
   footer_about:
     "PBDesk is the personal site of Pinal Bhatt — a space where code meets wellness. Notes on AI, dev tools, fitness, mindfulness, and the long-form reflections that connect them.",
-  nav_items: [
-    navItem("Home", "/"),
-    navItem("Bits", "/bits"),
-    navItem("Bites", "/bites"),
-    navItem("Blog", "/blog"),
-    navItem("About", "/about"),
-  ],
   footer_explore: [
     navItem("Bits", "/bits"),
     navItem("Bites", "/bites"),
     navItem("Blog", "/blog"),
     navItem("About Me", "/about"),
+  ],
+  footer_more: [
+    navItem("Disclaimer", "/disclaimer"),
+    navItem("Privacy Policy", "/privacy-policy"),
   ],
   footer_topics: [
     navItem("All Bits", "/bits/all"),
@@ -452,12 +450,14 @@ export const globalConfigContent: SbStoryContent = {
     navItem("Categories", "/categories"),
     navItem("Labels", "/labels"),
   ],
-  footer_more: [
-    navItem("Disclaimer", "/disclaimer"),
-    navItem("Privacy Policy", "/privacy-policy"),
+  nav_items: [
+    navItem("Home", "/"),
+    navItem("Bits", "/bits"),
+    navItem("Bites", "/bites"),
+    navItem("Blog", "/blog"),
+    navItem("About", "/about"),
   ],
   social_links: socialLinks,
-  cta_default: [ctaBannerBlok],
 };
 
 // ============================================================================
@@ -511,12 +511,12 @@ export function swapAssetPlaceholders(
       const real = assets.get(node.__placeholder);
       if (real) {
         return {
-          filename: real.filename,
           alt: node.alt,
+          filename: real.filename,
           id: real.id,
         };
       }
-      return { filename: "", alt: node.alt };
+      return { alt: node.alt, filename: "" };
     }
     if (typeof node === "object" && node !== null) {
       const out: Record<string, unknown> = {};

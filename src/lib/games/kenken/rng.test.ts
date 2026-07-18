@@ -13,7 +13,7 @@ describe("rng", () => {
 
   test("mulberry32 produces values in [0, 1)", () => {
     const r = mulberry32(7);
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 100; i += 1) {
       const v = r();
       expect(v).toBeGreaterThanOrEqual(0);
       expect(v).toBeLessThan(1);
@@ -22,7 +22,7 @@ describe("rng", () => {
 
   test("randInt returns values in [0, maxExclusive)", () => {
     const r = mulberry32(1);
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 100; i += 1) {
       const v = randInt(r, 5);
       expect(v).toBeGreaterThanOrEqual(0);
       expect(v).toBeLessThan(5);

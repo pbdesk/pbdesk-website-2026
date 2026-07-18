@@ -22,34 +22,34 @@ interface PillarsProps {
 
 const DEFAULT_CARDS: PillarCard[] = [
   {
-    name: "Bits",
-    title: "Bits — the tech side",
-    href: "/bits",
-    cta: "Visit My Bits",
-    gradient: "pillar-bits-gradient",
     avatar: "/pillers/bits-avatar.svg",
+    cta: "Visit My Bits",
     description:
       "Insights on AI, programming, and software development — frameworks, dev tools, productivity hacks, and the occasional deep dive.",
+    gradient: "pillar-bits-gradient",
+    href: "/bits",
+    name: "Bits",
+    title: "Bits — the tech side",
   },
   {
-    name: "Bites",
-    title: "Bites — the wellness side",
-    href: "/bites",
-    cta: "Visit My Bites",
-    gradient: "pillar-bites-gradient",
     avatar: "/pillers/bites-avatar.svg",
+    cta: "Visit My Bites",
     description:
       "A healthy, active life is the greatest gift we can give ourselves and our loved ones. Fitness, nutrition, mindfulness — small choices, lasting vitality.",
+    gradient: "pillar-bites-gradient",
+    href: "/bites",
+    name: "Bites",
+    title: "Bites — the wellness side",
   },
   {
-    name: "Blog",
-    title: "Blog — where they meet",
-    href: "/blog",
-    cta: "Visit My Blog",
-    gradient: "pillar-blog-gradient",
     avatar: "/pillers/blog-avatar.svg",
+    cta: "Visit My Blog",
     description:
       "Reflections on balancing tech life with physical and mental wellness, plus friendships, family, meaningful connections and emotions.",
+    gradient: "pillar-blog-gradient",
+    href: "/blog",
+    name: "Blog",
+    title: "Blog — where they meet",
   },
 ];
 
@@ -71,8 +71,8 @@ export default function Pillars({
             className="font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(32px, 4vw, 52px)",
-              lineHeight: 1.1,
               letterSpacing: "-0.025em",
+              lineHeight: 1.1,
             }}
           >
             {heading ?? "Three lanes, one desk."}

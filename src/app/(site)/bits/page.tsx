@@ -12,10 +12,8 @@ import {
 import { loadPillarData } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Bits — AI tools, dev tools & web tech worth knowing",
   description:
     "Curated bits on AI agents, developer tools, browsers, VS Code extensions, and the frameworks shaping modern web development. Notes from Pinal Bhatt's desk.",
-  path: "/bits",
   keywords: [
     "AI tools",
     "developer tools",
@@ -26,6 +24,8 @@ export const metadata: Metadata = pageMetadata({
     "modern web development",
     "PBDesk Bits",
   ],
+  path: "/bits",
+  title: "Bits — AI tools, dev tools & web tech worth knowing",
 });
 
 const FALLBACK_DESCRIPTION =
@@ -33,112 +33,112 @@ const FALLBACK_DESCRIPTION =
 
 const fallbackPosts: Post[] = [
   {
-    title: "Arc Browser",
     category: "Tool",
-    labels: ["Browser"],
     description:
       "Arc is a stunningly modern browser — fast, creative, and built to supercharge your productivity.",
-    readTime: "4 min read",
-    gradient: "post-grad-indigo",
     featured: true,
+    gradient: "post-grad-indigo",
+    labels: ["Browser"],
+    readTime: "4 min read",
+    title: "Arc Browser",
   },
   {
-    title: "Microsoft Edge",
     category: "Tool",
-    labels: ["Browser"],
     description:
       "Blazing fast, ultra-secure, and powered by AI — Microsoft Edge redefines the modern web.",
-    readTime: "5 min read",
     gradient: "post-grad-blue",
+    labels: ["Browser"],
+    readTime: "5 min read",
+    title: "Microsoft Edge",
   },
   {
-    title: "OpenAI ChatGPT: Key Milestones",
     category: "AI",
-    labels: ["AIAgent"],
     description:
       "Chronological overview of the significant releases and breakthroughs that shaped ChatGPT.",
-    readTime: "6 min read",
     gradient: "post-grad-emerald",
+    labels: ["AIAgent"],
+    readTime: "6 min read",
+    title: "OpenAI ChatGPT: Key Milestones",
   },
   {
-    title: "VS Code Extension: Swissknife",
     category: "Tool",
-    labels: ["VSCode", "Extension"],
     description:
       "The developer's swissknife. Do conversions and generations right out of VS Code.",
-    readTime: "3 min read",
     gradient: "post-grad-red",
+    labels: ["VSCode", "Extension"],
+    readTime: "3 min read",
+    title: "VS Code Extension: Swissknife",
   },
   {
-    title: "Build with bolt.new AI Agent",
     category: "AI",
-    labels: ["AIAgent", "VibeCoding"],
     description:
       "Unleash next-gen coding power with Bolt.new — your AI-infused, vibe-rich coding companion!",
-    readTime: "5 min read",
     gradient: "post-grad-blue",
+    labels: ["AIAgent", "VibeCoding"],
+    readTime: "5 min read",
+    title: "Build with bolt.new AI Agent",
   },
   {
-    title: "Great for AI vibe coding — lovable.dev",
     category: "AI",
-    labels: ["WebApp", "VibeCoding"],
     description: "Lovable is your superhuman full stack engineer.",
-    readTime: "4 min read",
     gradient: "post-grad-rose",
+    labels: ["WebApp", "VibeCoding"],
+    readTime: "4 min read",
+    title: "Great for AI vibe coding — lovable.dev",
   },
   {
-    title: "Flexbox Froggy",
     category: "Tutorial",
-    labels: ["CSS", "Frontend"],
     description:
       "A game for learning CSS flexbox. Fun and engaging way to master Flexbox.",
-    readTime: "6 min read",
     gradient: "post-grad-emerald",
+    labels: ["CSS", "Frontend"],
+    readTime: "6 min read",
+    title: "Flexbox Froggy",
   },
   {
-    title: "Peacock VS Code Extension",
     category: "Util",
-    labels: ["Extension", "VSCode"],
     description:
       "Peacock colors VS Code workspaces to help identify and distinguish them quickly and beautifully.",
-    readTime: "3 min read",
     gradient: "post-grad-blue",
+    labels: ["Extension", "VSCode"],
+    readTime: "3 min read",
+    title: "Peacock VS Code Extension",
   },
   {
-    title: "Tailwind CSS",
     category: "Framework",
-    labels: ["CSS", "Tailwind"],
     description:
       "Effortless styling, responsive, utility-first — Tailwind CSS turns your HTML into design.",
-    readTime: "5 min read",
     gradient: "post-grad-rose",
+    labels: ["CSS", "Tailwind"],
+    readTime: "5 min read",
+    title: "Tailwind CSS",
   },
 ];
 
 export default async function BitsPage() {
   const data = await loadPillarData("bits", {
-    description: FALLBACK_DESCRIPTION,
     cadence: "weekly",
+    description: FALLBACK_DESCRIPTION,
     fallbackPosts,
   });
-  const posts = data.posts;
+  const { posts } = data;
 
   const bitsJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${SITE_NAME} Bits`,
-    url: `${SITE_URL}/bits`,
+    author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
     description:
       "Curated notes on AI tools, developer tools, and modern web tech — from PBDesk.",
-    inLanguage: "en",
-    author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
     hasPart: posts.map((post) => ({
       "@type": "CreativeWork",
-      name: post.title,
       description: post.description,
-      keywords: post.labels?.join(", "),
       genre: post.category,
+      keywords: post.labels?.join(", "),
+      name: post.title,
     })),
+    inLanguage: "en",
+    name: `${SITE_NAME} Bits`,
+    url: `${SITE_URL}/bits`,
   };
 
   return (

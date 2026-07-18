@@ -66,14 +66,14 @@ export async function GET(request: NextRequest) {
   // server (--experimental-https) and production deploys satisfy.
   const response = NextResponse.redirect(redirectUrl);
   response.cookies.set({
-    name: PREVIEW_COOKIE,
-    value: "1",
     httpOnly: true,
-    sameSite: "none",
-    secure: true,
-    path: "/",
     // 8 hours — preview sessions don't need to last forever.
     maxAge: 60 * 60 * 8,
+    name: PREVIEW_COOKIE,
+    path: "/",
+    sameSite: "none",
+    secure: true,
+    value: "1",
   });
   return response;
 }

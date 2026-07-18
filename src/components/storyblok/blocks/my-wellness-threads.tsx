@@ -25,17 +25,18 @@ export default function MyWellnessThreads({
 }: {
   blok: MyWellnessThreadsBlok;
 }) {
+  // biome-ignore lint/suspicious/noUnnecessaryConditions: threads is an optional CMS field; Biome misreads the type and calls ?. unnecessary.
   const threads = blok.threads
     ?.filter((t): t is typeof t & { key: WellnessKey } => isWellnessKey(t.key))
     .map((t) => ({
-      key: t.key,
-      title: t.title ?? "",
-      short: t.short_label ?? t.title ?? "",
-      body: t.body ?? "",
-      icon: isIconKey(t.icon) ? t.icon : undefined,
-      color: t.color,
       angle: t.angle,
+      body: t.body ?? "",
+      color: t.color,
+      icon: isIconKey(t.icon) ? t.icon : undefined,
+      key: t.key,
       n: t.index,
+      short: t.short_label ?? t.title ?? "",
+      title: t.title ?? "",
     }));
 
   return (

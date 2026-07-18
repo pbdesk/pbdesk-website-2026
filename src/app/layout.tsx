@@ -30,108 +30,108 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: SITE_DEFAULT_TITLE,
-    template: `%s | ${SITE_NAME}`,
-  },
-  description: SITE_DEFAULT_DESCRIPTION,
-  applicationName: SITE_NAME,
-  authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
-  creator: SITE_AUTHOR,
-  publisher: SITE_AUTHOR,
-  generator: "Next.js",
-  category: "technology",
-  keywords: SITE_KEYWORDS,
   alternates: {
     canonical: "/",
   },
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_AUTHOR, url: SITE_URL }],
+  category: "technology",
+  creator: SITE_AUTHOR,
+  description: SITE_DEFAULT_DESCRIPTION,
   formatDetection: {
-    email: false,
     address: false,
+    email: false,
     telephone: false,
   },
+  generator: "Next.js",
   icons: {
+    apple: [{ sizes: "180x180", url: "/favicons/apple-touch-icon.png" }],
     icon: [
-      { url: "/favicons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { sizes: "32x32", type: "image/png", url: "/favicons/favicon-32x32.png" },
+      { sizes: "16x16", type: "image/png", url: "/favicons/favicon-16x16.png" },
     ],
     shortcut: "/favicons/favicon.ico",
-    apple: [{ url: "/favicons/apple-touch-icon.png", sizes: "180x180" }],
   },
+  keywords: SITE_KEYWORDS,
   manifest: "/favicons/site.webmanifest",
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: SITE_URL,
-    siteName: SITE_NAME,
-    title: SITE_DEFAULT_TITLE,
     description: SITE_DEFAULT_DESCRIPTION,
     images: [
       {
-        url: DEFAULT_OG_IMAGE,
         alt: `${SITE_NAME} — ${SITE_AUTHOR}`,
         height: DEFAULT_OG_IMAGE_HEIGHT,
+        url: DEFAULT_OG_IMAGE,
         width: DEFAULT_OG_IMAGE_WIDTH,
       },
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
+    locale: "en_US",
+    siteName: SITE_NAME,
     title: SITE_DEFAULT_TITLE,
-    description: SITE_DEFAULT_DESCRIPTION,
-    creator: SOCIAL.twitterHandle,
-    site: SOCIAL.twitterHandle,
-    images: [DEFAULT_OG_IMAGE],
+    type: "website",
+    url: SITE_URL,
   },
+  publisher: SITE_AUTHOR,
   robots: {
-    index: true,
     follow: true,
     googleBot: {
-      index: true,
       follow: true,
+      index: true,
       "max-image-preview": "large",
       "max-snippet": -1,
       "max-video-preview": -1,
     },
+    index: true,
+  },
+  title: {
+    default: SITE_DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: SOCIAL.twitterHandle,
+    description: SITE_DEFAULT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+    site: SOCIAL.twitterHandle,
+    title: SITE_DEFAULT_TITLE,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
-  ],
   colorScheme: "light dark",
-  width: "device-width",
   initialScale: 1,
+  themeColor: [
+    { color: "#ffffff", media: "(prefers-color-scheme: light)" },
+    { color: "#0a0a0a", media: "(prefers-color-scheme: dark)" },
+  ],
+  width: "device-width",
 };
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: SITE_NAME,
   alternateName: `${SITE_NAME} — ${SITE_AUTHOR}`,
-  url: SITE_URL,
   description: SITE_DEFAULT_DESCRIPTION,
   inLanguage: "en",
+  name: SITE_NAME,
   publisher: {
     "@type": "Person",
     name: SITE_AUTHOR,
-    url: SITE_URL,
     sameAs: [SOCIAL.github, SOCIAL.linkedin, SOCIAL.x],
+    url: SITE_URL,
   },
+  url: SITE_URL,
 };
 
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: SITE_AUTHOR,
-  url: SITE_URL,
-  jobTitle: "Software Engineer",
   description:
     "Software engineer, AI tinkerer, and wellness enthusiast writing at PBDesk.",
+  jobTitle: "Software Engineer",
+  name: SITE_AUTHOR,
   sameAs: [SOCIAL.github, SOCIAL.linkedin, SOCIAL.x],
+  url: SITE_URL,
 };
 
 export default function RootLayout({

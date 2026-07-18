@@ -17,14 +17,14 @@ export function generatePuzzle(
   id: string,
   maxAttempts: number = DEFAULT_MAX_ATTEMPTS
 ): KenKenPuzzle | null {
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     const solution = generateLatinSquare(size, rng);
     const groups = partitionCages(size, maxCageSize, rng);
     const cages: Cage[] = groups.map((cells) =>
       assignCage(cells, solution, allowedOps, rng)
     );
     if (countSolutions(size, cages, 2) === 1) {
-      return { id, size, difficulty, cages, solution };
+      return { cages, difficulty, id, size, solution };
     }
   }
   return null;

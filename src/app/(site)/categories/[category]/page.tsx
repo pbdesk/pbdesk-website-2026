@@ -23,9 +23,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { category } = await params;
   return pageMetadata({
-    title: `${category} — Category on PBDesk`,
     description: `Every PBDesk post in the ${category} category — across Bits, Bites, and Blog.`,
     path: `/categories/${encodeURIComponent(category)}`,
+    title: `${category} — Category on PBDesk`,
   });
 }
 

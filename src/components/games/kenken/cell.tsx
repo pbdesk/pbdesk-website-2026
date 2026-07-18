@@ -110,10 +110,10 @@ export default function Cell({
       onClick={onSelect}
       style={{
         background,
-        borderTop: borderValue(borders.top),
-        borderRight: borderValue(borders.right),
         borderBottom: borderValue(borders.bottom),
         borderLeft: borderValue(borders.left),
+        borderRight: borderValue(borders.right),
+        borderTop: borderValue(borders.top),
         cursor: given ? "default" : undefined,
         outline: hasConflict ? "2px solid #dc2626" : "none",
         outlineOffset: "-2px",
@@ -124,8 +124,8 @@ export default function Cell({
         <span
           className="absolute top-0.5 left-1 font-semibold leading-none"
           style={{
-            fontSize: "min(2.6vw, 0.7rem)",
             color: "var(--fg-secondary)",
+            fontSize: "min(2.6vw, 0.7rem)",
           }}
         >
           {label}
@@ -135,7 +135,7 @@ export default function Cell({
       {state.value === null ? null : (
         <span
           className="font-semibold"
-          style={{ fontSize: "min(6vw, 1.5rem)", color: valueColor }}
+          style={{ color: valueColor, fontSize: "min(6vw, 1.5rem)" }}
         >
           {state.value}
         </span>

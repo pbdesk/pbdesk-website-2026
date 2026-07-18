@@ -12,10 +12,8 @@ import {
 import { loadPillarData } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Blog — Long-form reflections on code, AI & wellness",
   description:
     "Long-form essays on software craft, AI, programming habits, and the wellness practices that keep developers building for the long run. Written by Pinal Bhatt.",
-  path: "/blog",
   keywords: [
     "developer blog",
     "tech blog",
@@ -25,6 +23,8 @@ export const metadata: Metadata = pageMetadata({
     "wellness for developers",
     "Pinal Bhatt blog",
   ],
+  path: "/blog",
+  title: "Blog — Long-form reflections on code, AI & wellness",
 });
 
 const FALLBACK_DESCRIPTION =
@@ -32,78 +32,73 @@ const FALLBACK_DESCRIPTION =
 
 const fallbackPosts: Post[] = [
   {
-    title: "When Code Meets Calm",
     category: "Reflections",
-    labels: ["Tech", "Wellness"],
     description:
       "A long-form essay on the surprising overlap between deep work, deep breathing, and shipping software that lasts.",
-    readTime: "8 min read",
-    gradient: "post-grad-violet",
     featured: true,
+    gradient: "post-grad-violet",
+    labels: ["Tech", "Wellness"],
+    readTime: "8 min read",
+    title: "When Code Meets Calm",
   },
   {
-    title: "Three Pillars of a Sustainable Dev Life",
     category: "Article",
-    labels: ["Career"],
     description:
       "How to build a software career that compounds — without burning out the body that powers it.",
-    readTime: "6 min read",
     gradient: "post-grad-indigo",
+    labels: ["Career"],
+    readTime: "6 min read",
+    title: "Three Pillars of a Sustainable Dev Life",
   },
   {
-    title: "Why I Write",
     category: "Reflections",
-    labels: ["Writing"],
     description:
       "On the practice of putting thoughts into the world — and why it makes me a better engineer.",
-    readTime: "4 min read",
     gradient: "post-grad-rose",
+    labels: ["Writing"],
+    readTime: "4 min read",
+    title: "Why I Write",
   },
   {
-    title: "AI Tools I Actually Use Daily",
     category: "Tool",
-    labels: ["AI", "Productivity"],
     description:
       "A curated rotation of AI tools that earn their place in my workflow, plus the ones I dropped.",
-    readTime: "7 min read",
     gradient: "post-grad-blue",
+    labels: ["AI", "Productivity"],
+    readTime: "7 min read",
+    title: "AI Tools I Actually Use Daily",
   },
   {
-    title: "The Yoga of Debugging",
     category: "Wellness",
-    labels: ["Mindfulness"],
     description:
       "Patience, breath, and beginner's mind — debugging hard problems with a wellness lens.",
-    readTime: "5 min read",
     gradient: "post-grad-emerald",
+    labels: ["Mindfulness"],
+    readTime: "5 min read",
+    title: "The Yoga of Debugging",
   },
   {
-    title: "Programming Habits Worth Building",
     category: "Programming",
-    labels: ["Habits"],
     description:
       "Tiny daily rituals — naming, testing, journaling — that compound into compound interest for your career.",
-    readTime: "6 min read",
     gradient: "post-grad-amber",
+    labels: ["Habits"],
+    readTime: "6 min read",
+    title: "Programming Habits Worth Building",
   },
 ];
 
 export default async function BlogPage() {
   const data = await loadPillarData("blog", {
-    description: FALLBACK_DESCRIPTION,
     cadence: "weekly",
+    description: FALLBACK_DESCRIPTION,
     fallbackPosts,
   });
-  const posts = data.posts;
+  const { posts } = data;
 
   const blogJsonLd = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    name: `${SITE_NAME} Blog`,
-    url: `${SITE_URL}/blog`,
-    description:
-      "Long-form essays on software craft, AI, programming habits, and developer wellness.",
-    inLanguage: "en",
     author: {
       "@type": "Person",
       name: SITE_AUTHOR,
@@ -111,12 +106,17 @@ export default async function BlogPage() {
     },
     blogPost: posts.map((post) => ({
       "@type": "BlogPosting",
-      headline: post.title,
-      description: post.description,
-      keywords: post.labels?.join(", "),
       articleSection: post.category,
       author: { "@type": "Person", name: SITE_AUTHOR },
+      description: post.description,
+      headline: post.title,
+      keywords: post.labels?.join(", "),
     })),
+    description:
+      "Long-form essays on software craft, AI, programming habits, and developer wellness.",
+    inLanguage: "en",
+    name: `${SITE_NAME} Blog`,
+    url: `${SITE_URL}/blog`,
   };
 
   return (

@@ -29,8 +29,8 @@ function isSocialIconKey(value: string | undefined): value is SocialIconKey {
 
 function navItemFromBlok(blok: NavItemBlok): NavItem {
   return {
-    label: blok.label,
     href: resolveLinkHref(blok.href),
+    label: blok.label,
     targetBlank: blok.target_blank ?? false,
   };
 }
@@ -40,9 +40,9 @@ function socialLinkFromBlok(blok: SocialLinkBlok): SocialLink | null {
     return null;
   }
   return {
-    label: blok.label,
     href: resolveLinkHref(blok.href),
     icon: blok.icon,
+    label: blok.label,
   };
 }
 
@@ -74,13 +74,13 @@ export function globalConfigToLayoutData(
       .filter((s): s is SocialLink => s !== null) ?? [];
 
   return {
-    navItems,
-    socials,
-    footerExplore,
-    footerTopics,
-    footerMore,
-    footerSocials: socials,
     brandTagline: c.brand_tagline,
     footerAbout: c.footer_about,
+    footerExplore,
+    footerMore,
+    footerSocials: socials,
+    footerTopics,
+    navItems,
+    socials,
   };
 }

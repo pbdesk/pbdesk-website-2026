@@ -61,45 +61,45 @@ const NETWORK_META: Record<
     label: string;
   }
 > = {
+  email: {
+    accentClass: "social-icon-email",
+    Icon: IconMail,
+    label: "Share via email",
+  },
   facebook: {
-    Icon: IconBrandFacebook,
     accentClass: "social-icon-facebook",
+    Icon: IconBrandFacebook,
     label: "Share on Facebook",
   },
   linkedin: {
-    Icon: IconBrandLinkedin,
     accentClass: "social-icon-linkedin",
+    Icon: IconBrandLinkedin,
     label: "Share on LinkedIn",
   },
   pinterest: {
-    Icon: IconBrandPinterest,
     accentClass: "social-icon-pinterest",
+    Icon: IconBrandPinterest,
     label: "Pin to Pinterest",
   },
   pocket: {
-    Icon: IconBrandPocket,
     accentClass: "social-icon-pocket",
+    Icon: IconBrandPocket,
     label: "Save to Pocket",
   },
   telegram: {
-    Icon: IconBrandTelegram,
     accentClass: "social-icon-telegram",
+    Icon: IconBrandTelegram,
     label: "Share on Telegram",
   },
   twitter: {
-    Icon: IconBrandX,
     accentClass: "social-icon-x",
+    Icon: IconBrandX,
     label: "Share on X (Twitter)",
   },
   whatsapp: {
-    Icon: IconBrandWhatsapp,
     accentClass: "social-icon-whatsapp",
+    Icon: IconBrandWhatsapp,
     label: "Share on WhatsApp",
-  },
-  email: {
-    Icon: IconMail,
-    accentClass: "social-icon-email",
-    label: "Share via email",
   },
 };
 
@@ -139,7 +139,7 @@ export function ShareBar({
 }: ShareBarProps) {
   const isSidebar = variant === "sidebar";
   const buttons: ReactNode[] = networks.map((network) =>
-    renderNetworkButton({ network, url, title, description, media, hashtag })
+    renderNetworkButton({ description, hashtag, media, network, title, url })
   );
 
   if (showCopyLink) {

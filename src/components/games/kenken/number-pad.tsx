@@ -16,21 +16,24 @@ export default function NumberPad({ size, onDigit }: NumberPadProps) {
         gridTemplateColumns: `repeat(${Math.min(size, 5)}, minmax(0, 1fr))`,
       }}
     >
-      {digits.map((d) => (
-        <button
-          className="flex h-12 items-center justify-center rounded-lg border font-semibold text-lg transition-colors"
-          key={d}
-          onClick={() => onDigit(d)}
-          style={{
-            borderColor: "var(--border-strong)",
-            background: "var(--bg-page)",
-            color: "var(--fg-primary)",
-          }}
-          type="button"
-        >
-          {d}
-        </button>
-      ))}
+      {digits.map((d) => {
+        const handleClick = () => onDigit(d);
+        return (
+          <button
+            className="flex h-12 items-center justify-center rounded-lg border font-semibold text-lg transition-colors"
+            key={d}
+            onClick={handleClick}
+            style={{
+              background: "var(--bg-page)",
+              borderColor: "var(--border-strong)",
+              color: "var(--fg-primary)",
+            }}
+            type="button"
+          >
+            {d}
+          </button>
+        );
+      })}
     </div>
   );
 }

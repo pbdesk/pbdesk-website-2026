@@ -88,7 +88,7 @@ export function KenkenProse({
   fallbackText,
 }: {
   heading?: string;
-  richtext?: Parameters<typeof StoryblokRichText>[0]["doc"];
+  richtext?: Parameters<typeof StoryblokRichText>[0]["document"];
   fallbackText?: string;
 }) {
   return (
@@ -105,7 +105,7 @@ export function KenkenProse({
           ) : null}
           <div className="post-prose">
             {richtext ? (
-              <StoryblokRichText doc={richtext} />
+              <StoryblokRichText document={richtext} />
             ) : (
               <p style={{ color: "var(--fg-secondary)", lineHeight: 1.7 }}>
                 {fallbackText}
@@ -194,8 +194,8 @@ export function KenkenOperations({
               className="rounded-2xl border p-5"
               key={op.name}
               style={{
-                borderColor: "var(--border-strong)",
                 background: "var(--bg-subtle)",
+                borderColor: "var(--border-strong)",
               }}
             >
               <div className="flex items-center gap-3">
@@ -250,8 +250,8 @@ export function KenkenLevels({
               className="rounded-2xl border p-5"
               key={level.name}
               style={{
-                borderColor: "var(--border-strong)",
                 background: "var(--bg-page)",
+                borderColor: "var(--border-strong)",
               }}
             >
               <h3

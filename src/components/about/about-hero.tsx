@@ -66,8 +66,8 @@ export default function AboutHero({
             className="m-8 font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(36px, 5vw, 64px)",
-              lineHeight: 1.15,
               letterSpacing: "-0.03em",
+              lineHeight: 1.15,
             }}
           >
             {titleLead}

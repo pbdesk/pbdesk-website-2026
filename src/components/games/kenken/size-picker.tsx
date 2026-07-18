@@ -56,17 +56,18 @@ export default function SizePicker({
         <ul className="grid gap-4 sm:grid-cols-3">
           {sizes.map((size) => {
             const isLast = size === lastSize;
+            const handleSelect = () => onSelect(size);
             // const freebies = FREEBIE_COUNT[size] ?? 0;
             return (
               <li key={size}>
                 <button
                   className="w-full rounded-2xl border p-5 text-left transition-all hover:-translate-y-0.5"
-                  onClick={() => onSelect(size)}
+                  onClick={handleSelect}
                   style={{
+                    background: "var(--bg-subtle)",
                     borderColor: isLast
                       ? BRAIN_BOOST_ACCENT.primary
                       : "var(--border-strong)",
-                    background: "var(--bg-subtle)",
                   }}
                   type="button"
                 >

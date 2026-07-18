@@ -7,10 +7,12 @@ const ThemeToggle = () => {
 
   const isDark = resolvedTheme === "dark";
 
+  const handleToggle = () => setTheme(isDark ? "light" : "dark");
+
   return (
     <button
       className="inline-flex size-11 items-center justify-center rounded-full bg-[#F2F4F7] text-[#667085] hover:bg-gray-100 hover:text-gray-800 dark:bg-white/5 dark:text-white/60 dark:hover:bg-white/10 dark:hover:text-white/90"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={handleToggle}
     >
       <svg
         className="hidden size-5 dark:inline"

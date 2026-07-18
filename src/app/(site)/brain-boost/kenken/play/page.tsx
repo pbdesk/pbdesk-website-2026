@@ -5,19 +5,19 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { jsonLdString, pageMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: `Play KenKen — ${SITE_NAME}`,
   description:
     "Play KenKen online — pick a difficulty and solve uniquely-generated arithmetic logic puzzles. Free, no sign-up.",
   path: "/brain-boost/kenken/play",
+  title: `Play KenKen — ${SITE_NAME}`,
 });
 
 const gameJsonLd = {
   "@context": "https://schema.org",
   "@type": "Game",
+  applicationCategory: "Game",
+  genre: "Logic puzzle",
   name: "KenKen",
   url: `${SITE_URL}/brain-boost/kenken/play`,
-  genre: "Logic puzzle",
-  applicationCategory: "Game",
 };
 
 export default async function KenKenPlayPage({
