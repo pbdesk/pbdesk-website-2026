@@ -57,11 +57,11 @@ interface RtDoc {
 }
 
 function paragraph(text: string): RtParagraphNode {
-  return { type: "paragraph", content: [{ type: "text", text }] };
+  return { content: [{ text, type: "text" }], type: "paragraph" };
 }
 
 function richtext(...paragraphs: string[]): RtDoc {
-  return { type: "doc", content: paragraphs.map(paragraph) };
+  return { content: paragraphs.map(paragraph), type: "doc" };
 }
 
 // ---------------------------------------------------------------------------
@@ -72,29 +72,29 @@ const KENKEN_COMPONENTS: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "kenken_hero",
       display_name: "KenKen Hero",
-      is_root: false,
-      is_nestable: true,
       icon: "block-image",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_hero",
       preview_field: "title",
       schema: f({
-        eyebrow: field({ type: "text" }),
-        title: field({ type: "text", required: true }),
-        lede: field({ type: "textarea" }),
-        cta_play_label: field({ type: "text" }),
         cta_daily_label: field({ type: "text" }),
+        cta_play_label: field({ type: "text" }),
+        eyebrow: field({ type: "text" }),
+        lede: field({ type: "textarea" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
   (() => {
     reset();
     return {
-      name: "kenken_prose",
       display_name: "KenKen Prose",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_prose",
       preview_field: "heading",
       schema: f({
         heading: field({ type: "text" }),
@@ -105,34 +105,34 @@ const KENKEN_COMPONENTS: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "kenken_step",
       display_name: "KenKen Step",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_step",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
-        text: field({ type: "textarea", required: true }),
+        text: field({ required: true, type: "textarea" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
   (() => {
     reset();
     return {
-      name: "kenken_steps",
       display_name: "KenKen Steps",
-      is_root: false,
-      is_nestable: true,
       icon: "block-buildingblocks",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_steps",
       preview_field: "heading",
       schema: f({
         heading: field({ type: "text" }),
         steps: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: ["kenken_step"],
           minimum: 1,
+          restrict_components: true,
+          type: "bloks",
         }),
       }),
     };
@@ -140,35 +140,35 @@ const KENKEN_COMPONENTS: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "kenken_operation",
       display_name: "KenKen Operation",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_operation",
       preview_field: "name",
       schema: f({
-        symbol: field({ type: "text", required: true }),
-        name: field({ type: "text", required: true }),
         description: field({ type: "textarea" }),
+        name: field({ required: true, type: "text" }),
+        symbol: field({ required: true, type: "text" }),
       }),
     };
   })(),
   (() => {
     reset();
     return {
-      name: "kenken_operations",
       display_name: "KenKen Operations",
-      is_root: false,
-      is_nestable: true,
       icon: "block-buildingblocks",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_operations",
       preview_field: "heading",
       schema: f({
         heading: field({ type: "text" }),
         operations: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: ["kenken_operation"],
           minimum: 1,
+          restrict_components: true,
+          type: "bloks",
         }),
       }),
     };
@@ -176,36 +176,36 @@ const KENKEN_COMPONENTS: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "kenken_level",
       display_name: "KenKen Level",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_level",
       preview_field: "name",
       schema: f({
-        name: field({ type: "text", required: true }),
-        sizes: field({ type: "text" }),
-        operations: field({ type: "text" }),
         description: field({ type: "textarea" }),
+        name: field({ required: true, type: "text" }),
+        operations: field({ type: "text" }),
+        sizes: field({ type: "text" }),
       }),
     };
   })(),
   (() => {
     reset();
     return {
-      name: "kenken_levels",
       display_name: "KenKen Levels",
-      is_root: false,
-      is_nestable: true,
       icon: "block-buildingblocks",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_levels",
       preview_field: "heading",
       schema: f({
         heading: field({ type: "text" }),
         levels: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: ["kenken_level"],
           minimum: 1,
+          restrict_components: true,
+          type: "bloks",
         }),
       }),
     };
@@ -213,16 +213,16 @@ const KENKEN_COMPONENTS: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "kenken_cta",
       display_name: "KenKen CTA",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "kenken_cta",
       preview_field: "heading",
       schema: f({
-        heading: field({ type: "text" }),
-        cta_play_label: field({ type: "text" }),
         cta_daily_label: field({ type: "text" }),
+        cta_play_label: field({ type: "text" }),
+        heading: field({ type: "text" }),
       }),
     };
   })(),
@@ -230,16 +230,14 @@ const KENKEN_COMPONENTS: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "kenken_page",
       display_name: "KenKen Page",
-      is_root: true,
-      is_nestable: false,
       icon: "block-doc",
+      is_nestable: false,
+      is_root: true,
+      name: "kenken_page",
       preview_field: "seo_title",
       schema: f({
         body: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: [
             "kenken_hero",
             "kenken_prose",
@@ -248,9 +246,11 @@ const KENKEN_COMPONENTS: SbComponent[] = [
             "kenken_levels",
             "kenken_cta",
           ],
+          restrict_components: true,
+          type: "bloks",
         }),
-        seo_title: field({ type: "text" }),
         seo_description: field({ type: "textarea" }),
+        seo_title: field({ type: "text" }),
       }),
     };
   })(),
@@ -261,9 +261,9 @@ const KENKEN_COMPONENTS: SbComponent[] = [
 // ---------------------------------------------------------------------------
 
 const BRAIN_BOOST_FOLDER = {
-  slug: "brain-boost",
-  name: "Brain Boost",
   default_root: "kenken_page",
+  name: "Brain Boost",
+  slug: "brain-boost",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -271,18 +271,14 @@ const BRAIN_BOOST_FOLDER = {
 // ---------------------------------------------------------------------------
 
 const KENKEN_STORY_CONTENT: SbStoryContent = {
-  component: "kenken_page",
-  seo_title: "KenKen — how to play & rules — PBDesk",
-  seo_description:
-    "How to play KenKen: rules, operations, and difficulty tiers. Then jump into the puzzle.",
   body: [
     {
       component: "kenken_hero",
-      eyebrow: "Brain Boost",
-      title: "KenKen",
-      lede: "A bite-sized arithmetic logic puzzle. Fill the grid so every row and column holds each digit once, and each cage hits its target.",
-      cta_play_label: "Play now",
       cta_daily_label: "Today's daily",
+      cta_play_label: "Play now",
+      eyebrow: "Brain Boost",
+      lede: "A bite-sized arithmetic logic puzzle. Fill the grid so every row and column holds each digit once, and each cage hits its target.",
+      title: "KenKen",
     },
     {
       component: "kenken_prose",
@@ -297,18 +293,18 @@ const KENKEN_STORY_CONTENT: SbStoryContent = {
       steps: [
         {
           component: "kenken_step",
-          title: "Fill rows and columns",
           text: "Place the digits 1 to N so each appears exactly once in every row and every column.",
+          title: "Fill rows and columns",
         },
         {
           component: "kenken_step",
-          title: "Satisfy each cage",
           text: "An outlined cage shows a target and an operation. The digits inside must combine, using that operation, to make the target.",
+          title: "Satisfy each cage",
         },
         {
           component: "kenken_step",
-          title: "Use notes and checks",
           text: "Jot candidate digits as notes, toggle rule-checking to spot duplicates, and reveal mistakes if you get stuck.",
+          title: "Use notes and checks",
         },
       ],
     },
@@ -318,28 +314,28 @@ const KENKEN_STORY_CONTENT: SbStoryContent = {
       operations: [
         {
           component: "kenken_operation",
-          symbol: "+",
-          name: "Addition",
           description: "Cage digits add up to the target (any cage size).",
+          name: "Addition",
+          symbol: "+",
         },
         {
           component: "kenken_operation",
-          symbol: "−",
-          name: "Subtraction",
           description: "Two cells; the target is their absolute difference.",
+          name: "Subtraction",
+          symbol: "−",
         },
         {
           component: "kenken_operation",
-          symbol: "×",
-          name: "Multiplication",
           description: "Cage digits multiply to the target (any cage size).",
+          name: "Multiplication",
+          symbol: "×",
         },
         {
           component: "kenken_operation",
-          symbol: "÷",
-          name: "Division",
           description:
             "Two cells; the larger divided by the smaller equals the target (whole numbers only).",
+          name: "Division",
+          symbol: "÷",
         },
       ],
     },
@@ -349,41 +345,45 @@ const KENKEN_STORY_CONTENT: SbStoryContent = {
       levels: [
         {
           component: "kenken_level",
-          name: "Easy",
-          sizes: "3×3, 4×4, 5×5",
-          operations: "+ − ×  (÷ on 3×3)",
           description: "Gentle grids to learn the ropes.",
+          name: "Easy",
+          operations: "+ − ×  (÷ on 3×3)",
+          sizes: "3×3, 4×4, 5×5",
         },
         {
           component: "kenken_level",
-          name: "Intermediate",
-          sizes: "4×4, 5×5",
-          operations: "+ − × ÷",
           description: "All four operations in play — the daily puzzle's tier.",
+          name: "Intermediate",
+          operations: "+ − × ÷",
+          sizes: "4×4, 5×5",
         },
         {
           component: "kenken_level",
-          name: "Hard",
-          sizes: "6×6, 7×7",
-          operations: "+ − × ÷",
           description: "Bigger boards and tighter cages.",
+          name: "Hard",
+          operations: "+ − × ÷",
+          sizes: "6×6, 7×7",
         },
         {
           component: "kenken_level",
-          name: "Genius",
-          sizes: "8×8, 9×9",
-          operations: "+ − × ÷",
           description: "A serious workout for puzzle veterans.",
+          name: "Genius",
+          operations: "+ − × ÷",
+          sizes: "8×8, 9×9",
         },
       ],
     },
     {
       component: "kenken_cta",
-      heading: "Ready to play?",
-      cta_play_label: "Play KenKen",
       cta_daily_label: "Today's daily",
+      cta_play_label: "Play KenKen",
+      heading: "Ready to play?",
     },
   ],
+  component: "kenken_page",
+  seo_description:
+    "How to play KenKen: rules, operations, and difficulty tiers. Then jump into the puzzle.",
+  seo_title: "KenKen — how to play & rules — PBDesk",
 };
 
 const KENKEN_STORY_SLUG = "kenken";
@@ -413,10 +413,11 @@ async function main(): Promise<void> {
   const spaceId = requireEnv("STORYBLOK_SPACE_ID");
   const region = process.env.STORYBLOK_REGION ?? "eu";
 
-  const sb = new StoryblokManagement({ token, spaceId, region });
+  const sb = new StoryblokManagement({ region, spaceId, token });
 
   logStep("\n[1/3] Pushing kenken_* component schemas...");
   for (const component of KENKEN_COMPONENTS) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const { record, created } = await sb.upsertComponent(component);
     logRow(`${created ? "+" : "·"} ${component.name} (#${record.id})`);
   }
@@ -430,11 +431,11 @@ async function main(): Promise<void> {
 
   logStep("\n[3/3] Upserting brain-boost/kenken story...");
   const { record: storyRecord, created: storyCreated } = await sb.upsertStory({
-    name: "KenKen",
-    slug: KENKEN_STORY_SLUG,
-    full_slug: `${BRAIN_BOOST_FOLDER.slug}/${KENKEN_STORY_SLUG}`,
-    parent_id: folderRecord.id,
     content: KENKEN_STORY_CONTENT,
+    full_slug: `${BRAIN_BOOST_FOLDER.slug}/${KENKEN_STORY_SLUG}`,
+    name: "KenKen",
+    parent_id: folderRecord.id,
+    slug: KENKEN_STORY_SLUG,
   });
   await sb.publishStory(storyRecord.id);
   logRow(

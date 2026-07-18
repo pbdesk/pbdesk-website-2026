@@ -40,13 +40,13 @@ export function Chip({
         className
       )}
     >
-      {dot && (
+      {dot ? (
         <span
           aria-hidden="true"
           className="h-1.5 w-1.5 rounded-full"
           style={{ backgroundColor: dot }}
         />
-      )}
+      ) : null}
       {children}
     </span>
   );

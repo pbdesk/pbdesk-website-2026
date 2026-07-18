@@ -7,9 +7,9 @@ import type { Difficulty, KenKenLibrary, KenKenPuzzle } from "./types";
 
 const LIBRARIES: Record<Difficulty, KenKenLibrary> = {
   easy: easy as KenKenLibrary,
-  intermediate: intermediate as KenKenLibrary,
-  hard: hard as KenKenLibrary,
   genius: genius as KenKenLibrary,
+  hard: hard as KenKenLibrary,
+  intermediate: intermediate as KenKenLibrary,
 };
 
 export function selectById(

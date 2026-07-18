@@ -53,12 +53,12 @@ function ControlButton({
       disabled={disabled}
       onClick={onClick}
       style={{
-        borderColor: active
-          ? BRAIN_BOOST_ACCENT.primary
-          : "var(--border-strong)",
         background: active
           ? `color-mix(in srgb, ${BRAIN_BOOST_ACCENT.primary} 14%, transparent)`
           : "var(--bg-page)",
+        borderColor: active
+          ? BRAIN_BOOST_ACCENT.primary
+          : "var(--border-strong)",
         color: "var(--fg-primary)",
       }}
       type="button"

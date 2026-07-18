@@ -46,10 +46,10 @@ export default function SectionLanding({
   const hasBody = (story?.content?.body?.length ?? 0) > 0;
 
   const shareCtx = {
-    url: `${SITE_URL}/${pillar}`,
-    title,
     description: typeof description === "string" ? description : undefined,
     media: normalizeAssetUrl(story?.content?.banner_light?.filename),
+    title,
+    url: `${SITE_URL}/${pillar}`,
   };
 
   return (
@@ -113,8 +113,8 @@ function SectionLandingMain({
             className="mb-8 text-center font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(48px, 6vw, 80px)",
-              lineHeight: 1.05,
               letterSpacing: "-0.03em",
+              lineHeight: 1.05,
             }}
           >
             My <span style={{ color: accentColor }}>{title}</span>
@@ -147,8 +147,8 @@ function SectionLandingMain({
               className="mb-8 text-center font-bold text-[var(--fg-primary)]"
               style={{
                 fontSize: "clamp(40px, 4vw, 60px)",
-                lineHeight: 1.05,
                 letterSpacing: "-0.03em",
+                lineHeight: 1.05,
               }}
             >
               Featured <span style={{ color: accentColor }}>{title}</span>

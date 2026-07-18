@@ -20,12 +20,12 @@ import {
 function memoryStorage(): Storage {
   const map = new Map<string, string>();
   return {
-    get length() {
-      return map.size;
-    },
     clear: () => map.clear(),
     getItem: (k) => map.get(k) ?? null,
     key: (i) => [...map.keys()][i] ?? null,
+    get length() {
+      return map.size;
+    },
     removeItem: (k) => map.delete(k),
     setItem: (k, v) => {
       map.set(k, v);
@@ -43,7 +43,7 @@ describe("progress", () => {
     let grid = createEmptyGrid(3);
     grid = setCellValue(grid, [0, 0], 2, []);
     saveProgress(
-      { puzzleId: "k3-easy-1", grid, elapsedSeconds: 30, hintsUsed: 1 },
+      { elapsedSeconds: 30, grid, hintsUsed: 1, puzzleId: "k3-easy-1" },
       store
     );
     const loaded = loadProgress("k3-easy-1", store);
@@ -55,10 +55,10 @@ describe("progress", () => {
   test("loadProgress returns null for a different id or corrupt data", () => {
     saveProgress(
       {
-        puzzleId: "a",
-        grid: createEmptyGrid(2),
         elapsedSeconds: 0,
+        grid: createEmptyGrid(2),
         hintsUsed: 0,
+        puzzleId: "a",
       },
       store
     );
@@ -68,19 +68,19 @@ describe("progress", () => {
   test("saving a new puzzle's progress replaces the previous slot", () => {
     saveProgress(
       {
-        puzzleId: "a",
-        grid: createEmptyGrid(2),
         elapsedSeconds: 1,
+        grid: createEmptyGrid(2),
         hintsUsed: 0,
+        puzzleId: "a",
       },
       store
     );
     saveProgress(
       {
-        puzzleId: "b",
-        grid: createEmptyGrid(2),
         elapsedSeconds: 2,
+        grid: createEmptyGrid(2),
         hintsUsed: 0,
+        puzzleId: "b",
       },
       store
     );
@@ -91,10 +91,10 @@ describe("progress", () => {
   test("clearProgress removes the slot", () => {
     saveProgress(
       {
-        puzzleId: "a",
-        grid: createEmptyGrid(2),
         elapsedSeconds: 1,
+        grid: createEmptyGrid(2),
         hintsUsed: 0,
+        puzzleId: "a",
       },
       store
     );
@@ -123,7 +123,9 @@ describe("served ids", () => {
     addServedId("easy", "a", store);
     addServedId("easy", "b", store);
     addServedId("hard", "z", store);
-    expect(getServedIds("easy", store).sort()).toEqual(["a", "b"]);
+    expect(
+      getServedIds("easy", store).sort((a, b) => a.localeCompare(b))
+    ).toEqual(["a", "b"]);
     expect(getServedIds("hard", store)).toEqual(["z"]);
   });
 

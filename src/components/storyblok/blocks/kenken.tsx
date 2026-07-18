@@ -49,9 +49,10 @@ export function KenkenStepsBlock({ blok }: { blok: KenkenStepsBlok }) {
     <div {...editable(blok)}>
       <KenkenSteps
         heading={blok.heading}
+        // biome-ignore lint/suspicious/noUnnecessaryConditions: steps is an optional CMS field; Biome misreads the type and calls ?? unnecessary.
         steps={(blok.steps ?? []).map((s) => ({
-          title: s.title ?? "",
           text: s.text ?? "",
+          title: s.title ?? "",
         }))}
       />
     </div>
@@ -68,9 +69,9 @@ export function KenkenOperationsBlock({
       <KenkenOperations
         heading={blok.heading}
         operations={(blok.operations ?? []).map((o) => ({
-          symbol: o.symbol ?? "",
-          name: o.name ?? "",
           description: o.description ?? "",
+          name: o.name ?? "",
+          symbol: o.symbol ?? "",
         }))}
       />
     </div>
@@ -83,10 +84,10 @@ export function KenkenLevelsBlock({ blok }: { blok: KenkenLevelsBlok }) {
       <KenkenLevels
         heading={blok.heading}
         levels={(blok.levels ?? []).map((l) => ({
-          name: l.name ?? "",
-          sizes: l.sizes ?? "",
-          operations: l.operations ?? "",
           description: l.description ?? "",
+          name: l.name ?? "",
+          operations: l.operations ?? "",
+          sizes: l.sizes ?? "",
         }))}
       />
     </div>

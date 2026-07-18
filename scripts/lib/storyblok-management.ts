@@ -182,12 +182,12 @@ export class StoryblokManagement {
     await this.throttle();
     const url = this.buildUrl(opts.path, opts.query);
     const res = await fetch(url, {
-      method: opts.method ?? "GET",
+      body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
       headers: {
         Authorization: this.token,
         "Content-Type": "application/json",
       },
-      body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
+      method: opts.method ?? "GET",
     });
     if (res.status === 429) {
       // Backoff and retry once
@@ -221,18 +221,18 @@ export class StoryblokManagement {
     const existing = all.find((c) => c.name === component.name);
     if (existing) {
       const updated = await this.request<{ component: SbComponentRecord }>({
+        body: { component: { ...component, id: existing.id } },
         method: "PUT",
         path: `/components/${existing.id}`,
-        body: { component: { ...component, id: existing.id } },
       });
-      return { record: updated.component, created: false };
+      return { created: false, record: updated.component };
     }
     const created = await this.request<{ component: SbComponentRecord }>({
+      body: { component },
       method: "POST",
       path: "/components",
-      body: { component },
     });
-    return { record: created.component, created: true };
+    return { created: true, record: created.component };
   }
 
   async listDatasources(): Promise<SbDatasourceRecord[]> {
@@ -250,18 +250,18 @@ export class StoryblokManagement {
     const existing = all.find((d) => d.slug === datasource.slug);
     if (existing) {
       const updated = await this.request<{ datasource: SbDatasourceRecord }>({
+        body: { datasource: { ...datasource, id: existing.id } },
         method: "PUT",
         path: `/datasources/${existing.id}`,
-        body: { datasource: { ...datasource, id: existing.id } },
       });
-      return { record: updated.datasource, created: false };
+      return { created: false, record: updated.datasource };
     }
     const created = await this.request<{ datasource: SbDatasourceRecord }>({
+      body: { datasource },
       method: "POST",
       path: "/datasources",
-      body: { datasource },
     });
-    return { record: created.datasource, created: true };
+    return { created: true, record: created.datasource };
   }
 
   async listDatasourceEntries(
@@ -269,12 +269,13 @@ export class StoryblokManagement {
   ): Promise<SbDatasourceEntryRecord[]> {
     const all: SbDatasourceEntryRecord[] = [];
     let page = 1;
-    while (true) {
+    for (;;) {
+      // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
       const res = await this.request<{
         datasource_entries: SbDatasourceEntryRecord[];
       }>({
         path: "/datasource_entries",
-        query: { datasource_id: datasourceId, per_page: 100, page },
+        query: { datasource_id: datasourceId, page, per_page: 100 },
       });
       all.push(...res.datasource_entries);
       if (res.datasource_entries.length < 100) {
@@ -297,30 +298,30 @@ export class StoryblokManagement {
         const updated = await this.request<{
           datasource_entry: SbDatasourceEntryRecord;
         }>({
-          method: "PUT",
-          path: `/datasource_entries/${existing.id}`,
           body: {
             datasource_entry: { ...entry, datasource_id: datasourceId },
           },
+          method: "PUT",
+          path: `/datasource_entries/${existing.id}`,
         });
-        return { record: updated.datasource_entry, created: false };
+        return { created: false, record: updated.datasource_entry };
       }
-      return { record: existing, created: false };
+      return { created: false, record: existing };
     }
     const created = await this.request<{
       datasource_entry: SbDatasourceEntryRecord;
     }>({
+      body: { datasource_entry: { ...entry, datasource_id: datasourceId } },
       method: "POST",
       path: "/datasource_entries",
-      body: { datasource_entry: { ...entry, datasource_id: datasourceId } },
     });
-    return { record: created.datasource_entry, created: true };
+    return { created: true, record: created.datasource_entry };
   }
 
   async findStoryBySlug(fullSlug: string): Promise<SbStoryRecord | null> {
     const res = await this.request<{ stories: SbStoryRecord[] }>({
       path: "/stories",
-      query: { with_slug: fullSlug, per_page: 1 },
+      query: { per_page: 1, with_slug: fullSlug },
     });
     return res.stories[0] ?? null;
   }
@@ -339,18 +340,18 @@ export class StoryblokManagement {
     const existing = await this.findStoryBySlug(fullSlug);
     if (existing) {
       const updated = await this.request<{ story: SbStoryRecord }>({
+        body: { story: { ...existing, ...story, id: existing.id } },
         method: "PUT",
         path: `/stories/${existing.id}`,
-        body: { story: { ...existing, ...story, id: existing.id } },
       });
-      return { record: updated.story, created: false };
+      return { created: false, record: updated.story };
     }
     const created = await this.request<{ story: SbStoryRecord }>({
+      body: { publish: 0, story },
       method: "POST",
       path: "/stories",
-      body: { story, publish: 0 },
     });
-    return { record: created.story, created: true };
+    return { created: true, record: created.story };
   }
 
   async publishStory(id: number): Promise<void> {
@@ -377,22 +378,22 @@ export class StoryblokManagement {
     const fullSlug = folder.slug; // top-level folders only in this script
     const existing = await this.findFolderByFullSlug(fullSlug);
     if (existing) {
-      return { record: existing, created: false };
+      return { created: false, record: existing };
     }
     const created = await this.request<{ story: SbStoryRecord }>({
-      method: "POST",
-      path: "/stories",
       body: {
         story: {
-          name: folder.name,
-          slug: folder.slug,
-          is_folder: true,
-          parent_id: folder.parent_id,
           default_root: folder.default_root,
+          is_folder: true,
+          name: folder.name,
+          parent_id: folder.parent_id,
+          slug: folder.slug,
         },
       },
+      method: "POST",
+      path: "/stories",
     });
-    return { record: created.story, created: true };
+    return { created: true, record: created.story };
   }
 
   async listAssetFolders(): Promise<SbAssetFolderRecord[]> {
@@ -416,9 +417,9 @@ export class StoryblokManagement {
       return existing;
     }
     const created = await this.request<{ asset_folder: SbAssetFolderRecord }>({
+      body: { asset_folder: { name, parent_id: parentId } },
       method: "POST",
       path: "/asset_folders",
-      body: { asset_folder: { name, parent_id: parentId } },
     });
     return created.asset_folder;
   }
@@ -426,7 +427,7 @@ export class StoryblokManagement {
   async findAssetByFilename(filename: string): Promise<SbAssetRecord | null> {
     const res = await this.request<{ assets: SbAssetRecord[] }>({
       path: "/assets",
-      query: { search: filename, per_page: 25 },
+      query: { per_page: 25, search: filename },
     });
     return res.assets.find((a) => a.filename.endsWith(`/${filename}`)) ?? null;
   }
@@ -441,14 +442,14 @@ export class StoryblokManagement {
 
     // Step 1: ask Storyblok for a signed URL
     const signed = await this.request<AssetUploadSignedResponse>({
-      method: "POST",
-      path: "/assets",
       body: {
+        asset_folder_id: assetFolderId,
+        content_length: stat.size,
         filename,
         size: `${stat.size}`,
-        content_length: stat.size,
-        asset_folder_id: assetFolderId,
       },
+      method: "POST",
+      path: "/assets",
     });
 
     // Step 2: upload to S3 via the signed POST URL (multipart/form-data)
@@ -459,8 +460,8 @@ export class StoryblokManagement {
     const blob = new Blob([fileBuffer]);
     form.append("file", blob, filename);
     const uploadRes = await fetch(signed.post_url, {
-      method: "POST",
       body: form,
+      method: "POST",
     });
     if (!uploadRes.ok) {
       throw new Error(
@@ -475,9 +476,9 @@ export class StoryblokManagement {
     });
 
     return {
-      id: signed.id,
-      filename: signed.pretty_url,
       content_length: stat.size,
+      filename: signed.pretty_url,
+      id: signed.id,
       pretty_url: signed.pretty_url,
     };
   }

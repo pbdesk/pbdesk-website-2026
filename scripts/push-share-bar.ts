@@ -94,9 +94,9 @@ async function ensureWhitelist(
 
 async function main(): Promise<void> {
   const sb = new StoryblokManagement({
-    token: requireEnv("STORYBLOK_MANAGEMENT_TOKEN"),
-    spaceId: requireEnv("STORYBLOK_SPACE_ID"),
     region: process.env.STORYBLOK_REGION ?? "eu",
+    spaceId: requireEnv("STORYBLOK_SPACE_ID"),
+    token: requireEnv("STORYBLOK_MANAGEMENT_TOKEN"),
   });
 
   process.stdout.write("\n→ Pushing share_bar component schema\n");
@@ -109,12 +109,13 @@ async function main(): Promise<void> {
 
   process.stdout.write("\n→ Extending whitelists\n");
   const targets: { parent: string; field: string }[] = [
-    { parent: "post", field: "related_sets" },
-    { parent: "landing_page", field: "body" },
-    { parent: "home_page", field: "body" },
-    { parent: "about_page", field: "body" },
+    { field: "related_sets", parent: "post" },
+    { field: "body", parent: "landing_page" },
+    { field: "body", parent: "home_page" },
+    { field: "body", parent: "about_page" },
   ];
   for (const { parent, field } of targets) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     await ensureWhitelist(sb, parent, field, "share_bar");
   }
 

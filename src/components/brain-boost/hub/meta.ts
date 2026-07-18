@@ -12,10 +12,10 @@ export interface BrainBoostMetaItem {
 }
 
 export const BRAIN_BOOST_META: readonly BrainBoostMetaItem[] = [
-  { value: "1", label: "game live", icon: "Layers" },
-  { value: "4", label: "difficulty tiers", icon: "Target" },
-  { value: "~200", label: "hand-checked puzzles", icon: "Sparkles" },
-  { value: "1", label: "new puzzle every day", icon: "Calendar" },
+  { icon: "Layers", label: "game live", value: "1" },
+  { icon: "Target", label: "difficulty tiers", value: "4" },
+  { icon: "Sparkles", label: "hand-checked puzzles", value: "~200" },
+  { icon: "Calendar", label: "new puzzle every day", value: "1" },
 ] as const;
 
 export type BenefitIconKey = "Target" | "Brain" | "Clock" | "Flame";
@@ -28,23 +28,23 @@ export interface Benefit {
 
 export const BENEFITS: readonly Benefit[] = [
   {
+    body: "Puzzles are one-pointed by design. Twenty minutes of nothing-but-this is a small luxury during a working week.",
     icon: "Target",
     title: "Single-task focus",
-    body: "Puzzles are one-pointed by design. Twenty minutes of nothing-but-this is a small luxury during a working week.",
   },
   {
+    body: 'Mental arithmetic + spatial reasoning, in low-stakes reps. The "I can almost see it" feeling is the point.',
     icon: "Brain",
     title: "Working-memory workout",
-    body: 'Mental arithmetic + spatial reasoning, in low-stakes reps. The "I can almost see it" feeling is the point.',
   },
   {
+    body: "Every puzzle has a finish line within 30 minutes. No sprawling boards, no endless modes.",
     icon: "Clock",
     title: "Designed to be short",
-    body: "Every puzzle has a finish line within 30 minutes. No sprawling boards, no endless modes.",
   },
   {
+    body: "A new puzzle every day, but we won't shake a finger at you if you miss one. Show up when you can.",
     icon: "Flame",
     title: "Daily ritual, no streak shame",
-    body: "A new puzzle every day, but we won't shake a finger at you if you miss one. Show up when you can.",
   },
 ];

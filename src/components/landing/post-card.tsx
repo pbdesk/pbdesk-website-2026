@@ -75,7 +75,7 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
           </a>
           <h3
             className="text-center font-bold text-white text-xl sm:text-2xl"
-            style={{ lineHeight: 1.2, letterSpacing: "-0.01em" }}
+            style={{ letterSpacing: "-0.01em", lineHeight: 1.2 }}
           >
             {post.title}
           </h3>
@@ -102,7 +102,7 @@ export default function PostCard({ post, accentColor }: PostCardProps) {
         </div>
         <h4
           className="mb-3 font-bold text-[var(--fg-primary)] text-lg"
-          style={{ lineHeight: 1.25, letterSpacing: "-0.01em" }}
+          style={{ letterSpacing: "-0.01em", lineHeight: 1.25 }}
         >
           {post.title}
         </h4>

@@ -6,26 +6,24 @@ import type { SbComponent, SbComponentField } from "./storyblok-management";
 
 export const datasources = [
   {
-    slug: "pillars",
-    name: "Pillars",
     entries: [
       { name: "Bits", value: "bits" },
       { name: "Bites", value: "bites" },
       { name: "Blog", value: "blog" },
     ],
+    name: "Pillars",
+    slug: "pillars",
   },
   {
-    slug: "pillar-gradients",
-    name: "Pillar Gradients",
     entries: [
       { name: "Bits gradient", value: "pillar-bits-gradient" },
       { name: "Bites gradient", value: "pillar-bites-gradient" },
       { name: "Blog gradient", value: "pillar-blog-gradient" },
     ],
+    name: "Pillar Gradients",
+    slug: "pillar-gradients",
   },
   {
-    slug: "gradients",
-    name: "Post Gradients",
     entries: [
       { name: "Indigo", value: "post-grad-indigo" },
       { name: "Blue", value: "post-grad-blue" },
@@ -37,10 +35,10 @@ export const datasources = [
       { name: "Violet", value: "post-grad-violet" },
       { name: "Amber", value: "post-grad-amber" },
     ],
+    name: "Post Gradients",
+    slug: "gradients",
   },
   {
-    slug: "post-categories",
-    name: "Post Categories",
     entries: [
       { name: "Tool", value: "Tool" },
       { name: "AI", value: "AI" },
@@ -54,16 +52,16 @@ export const datasources = [
       { name: "Article", value: "Article" },
       { name: "Programming", value: "Programming" },
     ],
+    name: "Post Categories",
+    slug: "post-categories",
   },
   {
-    slug: "post-labels",
-    name: "Post Labels",
     // Empty initially; PR 3 importer extends this from docs/resources/.
     entries: [],
+    name: "Post Labels",
+    slug: "post-labels",
   },
   {
-    slug: "tech-tags",
-    name: "Tech Tags",
     entries: [
       { name: "JavaScript", value: "JavaScript" },
       { name: "TypeScript", value: "TypeScript" },
@@ -76,35 +74,37 @@ export const datasources = [
       { name: "Postgres", value: "Postgres" },
       { name: "MongoDB", value: "MongoDB" },
     ],
+    name: "Tech Tags",
+    slug: "tech-tags",
   },
   {
-    slug: "social-icons",
-    name: "Social Icons",
     entries: [
       { name: "GitHub", value: "github" },
       { name: "LinkedIn", value: "linkedin" },
       { name: "X", value: "x" },
     ],
+    name: "Social Icons",
+    slug: "social-icons",
   },
   {
-    slug: "wellness-thread-keys",
-    name: "Wellness Thread Keys",
     entries: [
       { name: "Nutrition", value: "nutrition" },
       { name: "Exercise", value: "exercise" },
       { name: "Sleep", value: "sleep" },
       { name: "Emotion", value: "emotion" },
     ],
+    name: "Wellness Thread Keys",
+    slug: "wellness-thread-keys",
   },
   {
-    slug: "wellness-thread-icons",
-    name: "Wellness Thread Icons",
     entries: [
       { name: "Apple (nutrition)", value: "apple" },
       { name: "Run (exercise)", value: "run" },
       { name: "Moon (sleep)", value: "moon" },
       { name: "Heart (emotion)", value: "heart" },
     ],
+    name: "Wellness Thread Icons",
+    slug: "wellness-thread-icons",
   },
 ] as const;
 
@@ -137,23 +137,23 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "hero",
       display_name: "Hero",
-      is_root: false,
-      is_nestable: true,
       icon: "block-image",
+      is_nestable: true,
+      is_root: false,
+      name: "hero",
       preview_field: "headline",
       schema: f({
+        cta_href: field({ type: "multilink" }),
+        cta_label: field({ type: "text" }),
         eyebrow: field({ type: "text" }),
         headline: field({ type: "richtext" }),
         kicker: field({ type: "text" }),
-        subheadline: field({ type: "richtext" }),
-        cta_label: field({ type: "text" }),
-        cta_href: field({ type: "multilink" }),
-        secondary_cta_label: field({ type: "text" }),
         secondary_cta_href: field({ type: "multilink" }),
-        show_pillar_links: field({ type: "boolean", default_value: true }),
-        show_social: field({ type: "boolean", default_value: true }),
+        secondary_cta_label: field({ type: "text" }),
+        show_pillar_links: field({ default_value: true, type: "boolean" }),
+        show_social: field({ default_value: true, type: "boolean" }),
+        subheadline: field({ type: "richtext" }),
       }),
     };
   })(),
@@ -162,22 +162,22 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "pillars",
       display_name: "Pillars",
-      is_root: false,
-      is_nestable: true,
       icon: "block-buildingblocks",
+      is_nestable: true,
+      is_root: false,
+      name: "pillars",
       preview_field: "heading",
       schema: f({
+        cards: field({
+          component_whitelist: ["pillar_card"],
+          maximum: 6,
+          minimum: 1,
+          restrict_components: true,
+          type: "bloks",
+        }),
         eyebrow: field({ type: "text" }),
         heading: field({ type: "text" }),
-        cards: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["pillar_card"],
-          minimum: 1,
-          maximum: 6,
-        }),
       }),
     };
   })(),
@@ -186,24 +186,24 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "pillar_card",
       display_name: "Pillar Card",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "pillar_card",
       preview_field: "name",
       schema: f({
-        name: field({ type: "text", required: true }),
-        title: field({ type: "text", required: true }),
-        description: field({ type: "textarea" }),
+        avatar: field({ filetypes: ["images"], type: "asset" }),
         cta_label: field({ type: "text" }),
-        href: field({ type: "multilink" }),
+        description: field({ type: "textarea" }),
         gradient_class: field({
-          type: "option",
-          source: "internal",
           datasource_slug: "pillar-gradients",
+          source: "internal",
+          type: "option",
         }),
-        avatar: field({ type: "asset", filetypes: ["images"] }),
+        href: field({ type: "multilink" }),
+        name: field({ required: true, type: "text" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -212,19 +212,19 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "about_section",
       display_name: "About Section",
-      is_root: false,
-      is_nestable: true,
       icon: "user",
+      is_nestable: true,
+      is_root: false,
+      name: "about_section",
       preview_field: "headline",
       schema: f({
+        bio: field({ type: "richtext" }),
+        chip_label: field({ type: "text" }),
         eyebrow: field({ type: "text" }),
         headline: field({ type: "text" }),
-        bio: field({ type: "richtext" }),
-        portrait: field({ type: "asset", filetypes: ["images"] }),
-        chip_label: field({ type: "text" }),
-        show_social: field({ type: "boolean", default_value: true }),
+        portrait: field({ filetypes: ["images"], type: "asset" }),
+        show_social: field({ default_value: true, type: "boolean" }),
       }),
     };
   })(),
@@ -233,37 +233,37 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "about_hero",
       display_name: "About Hero",
-      is_root: false,
-      is_nestable: true,
       icon: "user",
+      is_nestable: true,
+      is_root: false,
+      name: "about_hero",
       preview_field: "title_name",
       schema: f({
         chip_label: field({ type: "text" }),
-        title_lead: field({
-          type: "text",
-          description: 'Text before the highlighted name (e.g. "Hi, I\'m ").',
-        }),
-        title_name: field({
-          type: "text",
-          description: "Highlighted name shown in brand color, italic.",
-        }),
-        title_subheadline: field({
-          type: "textarea",
-          description:
-            "Smaller secondary line rendered inside the H1. Newlines become line breaks.",
-        }),
         description: field({ type: "textarea" }),
-        primary_cta_label: field({ type: "text" }),
         primary_cta_href: field({ type: "multilink" }),
-        secondary_cta_label: field({ type: "text" }),
+        primary_cta_label: field({ type: "text" }),
         secondary_cta_href: field({
-          type: "multilink",
           description:
             'Supports anchors like "#social-links" via a URL link type.',
+          type: "multilink",
         }),
-        show_social: field({ type: "boolean", default_value: true }),
+        secondary_cta_label: field({ type: "text" }),
+        show_social: field({ default_value: true, type: "boolean" }),
+        title_lead: field({
+          description: 'Text before the highlighted name (e.g. "Hi, I\'m ").',
+          type: "text",
+        }),
+        title_name: field({
+          description: "Highlighted name shown in brand color, italic.",
+          type: "text",
+        }),
+        title_subheadline: field({
+          description:
+            "Smaller secondary line rendered inside the H1. Newlines become line breaks.",
+          type: "textarea",
+        }),
       }),
     };
   })(),
@@ -272,32 +272,32 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "about_story",
       display_name: "About Story",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "about_story",
       preview_field: "heading",
       schema: f({
-        eyebrow: field({ type: "text" }),
-        heading: field({ type: "text" }),
         column_left: field({
-          type: "richtext",
           description: "Left column paragraphs.",
+          type: "richtext",
         }),
         column_right: field({
-          type: "richtext",
           description: "Right column paragraphs.",
+          type: "richtext",
+        }),
+        eyebrow: field({ type: "text" }),
+        heading: field({ type: "text" }),
+        quote_attribution: field({
+          description: 'Caption under the quote (e.g. "— That\'s why I say").',
+          type: "text",
+        }),
+        quote_link: field({
+          description: "Optional link wrapping the quote text.",
+          type: "multilink",
         }),
         quote_text: field({ type: "text" }),
-        quote_link: field({
-          type: "multilink",
-          description: "Optional link wrapping the quote text.",
-        }),
-        quote_attribution: field({
-          type: "text",
-          description: 'Caption under the quote (e.g. "— That\'s why I say").',
-        }),
       }),
     };
   })(),
@@ -306,30 +306,30 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "my_realm",
       display_name: "My Realm",
-      is_root: false,
-      is_nestable: true,
       icon: "block-grid",
+      is_nestable: true,
+      is_root: false,
+      name: "my_realm",
       preview_field: "headline",
       schema: f({
         eyebrow: field({ type: "text" }),
-        headline: field({ type: "richtext" }),
-        subheading: field({ type: "textarea" }),
-        realms: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["realm_card"],
-        }),
         features: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: ["feature_card"],
+          restrict_components: true,
+          type: "bloks",
         }),
+        headline: field({ type: "richtext" }),
+        realms: field({
+          component_whitelist: ["realm_card"],
+          restrict_components: true,
+          type: "bloks",
+        }),
+        subheading: field({ type: "textarea" }),
         tags: field({
-          type: "options",
-          source: "internal",
           datasource_slug: "tech-tags",
+          source: "internal",
+          type: "options",
         }),
       }),
     };
@@ -339,15 +339,15 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "realm_card",
       display_name: "Realm Card",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "realm_card",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
         description: field({ type: "textarea" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -356,17 +356,15 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "feature_card",
       display_name: "Feature Card",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "feature_card",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
         description: field({ type: "textarea" }),
         icon: field({
-          type: "option",
           options: [
             { name: "Bolt", value: "bolt" },
             { name: "Heart", value: "heart" },
@@ -375,7 +373,9 @@ const nestableBlocks: SbComponent[] = [
             { name: "Leaf", value: "leaf" },
             { name: "Notebook", value: "notebook" },
           ],
+          type: "option",
         }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -384,22 +384,22 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "my_wellness_threads",
       display_name: "My Wellness Threads",
-      is_root: false,
-      is_nestable: true,
       icon: "heart",
+      is_nestable: true,
+      is_root: false,
+      name: "my_wellness_threads",
       preview_field: "headline",
       schema: f({
         eyebrow: field({ type: "text" }),
         headline: field({ type: "richtext" }),
         subheading: field({ type: "textarea" }),
         threads: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: ["wellness_thread_item"],
-          minimum: 4,
           maximum: 4,
+          minimum: 4,
+          restrict_components: true,
+          type: "bloks",
         }),
       }),
     };
@@ -409,29 +409,29 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "wellness_thread_item",
       display_name: "Wellness Thread Item",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "wellness_thread_item",
       preview_field: "title",
       schema: f({
-        key: field({
-          type: "option",
+        angle: field({ type: "number" }),
+        body: field({ type: "textarea" }),
+        color: field({ type: "text" }),
+        icon: field({
+          datasource_slug: "wellness-thread-icons",
           source: "internal",
-          datasource_slug: "wellness-thread-keys",
+          type: "option",
         }),
         index: field({ type: "text" }),
-        title: field({ type: "text", required: true }),
-        short_label: field({ type: "text" }),
-        body: field({ type: "textarea" }),
-        icon: field({
-          type: "option",
+        key: field({
+          datasource_slug: "wellness-thread-keys",
           source: "internal",
-          datasource_slug: "wellness-thread-icons",
+          type: "option",
         }),
-        color: field({ type: "text" }),
-        angle: field({ type: "number" }),
+        short_label: field({ type: "text" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -440,21 +440,21 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "my_pillers",
       display_name: "My Pillers (orbital)",
-      is_root: false,
-      is_nestable: true,
       icon: "block-grid",
+      is_nestable: true,
+      is_root: false,
+      name: "my_pillers",
       preview_field: "heading",
       schema: f({
         eyebrow: field({ type: "text" }),
         heading: field({ type: "text" }),
         pillars: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: ["piller_orbit_item"],
-          minimum: 3,
           maximum: 3,
+          minimum: 3,
+          restrict_components: true,
+          type: "bloks",
         }),
       }),
     };
@@ -464,26 +464,26 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "piller_orbit_item",
       display_name: "Piller Orbit Item",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "piller_orbit_item",
       preview_field: "label",
       schema: f({
-        key: field({
-          type: "option",
-          source: "internal",
-          datasource_slug: "pillars",
-        }),
-        index: field({ type: "text" }),
-        label: field({ type: "text", required: true }),
-        title: field({ type: "text" }),
+        angle: field({ type: "number" }),
         body: field({ type: "textarea" }),
+        color: field({ type: "text" }),
         cta_label: field({ type: "text" }),
         href: field({ type: "multilink" }),
-        color: field({ type: "text" }),
-        angle: field({ type: "number" }),
+        index: field({ type: "text" }),
+        key: field({
+          datasource_slug: "pillars",
+          source: "internal",
+          type: "option",
+        }),
+        label: field({ required: true, type: "text" }),
+        title: field({ type: "text" }),
       }),
     };
   })(),
@@ -492,18 +492,18 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "cta_banner",
       display_name: "CTA Banner",
-      is_root: false,
-      is_nestable: true,
       icon: "block-banner",
+      is_nestable: true,
+      is_root: false,
+      name: "cta_banner",
       preview_field: "heading",
       schema: f({
-        heading: field({ type: "text", required: true }),
         description: field({ type: "textarea" }),
+        heading: field({ required: true, type: "text" }),
         placeholder: field({ type: "text" }),
-        submit_label: field({ type: "text" }),
         submit_action: field({ type: "multilink" }),
+        submit_label: field({ type: "text" }),
       }),
     };
   })(),
@@ -512,11 +512,11 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "richtext_section",
       display_name: "Richtext Section",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "richtext_section",
       schema: f({
         content: field({ type: "richtext" }),
       }),
@@ -529,26 +529,26 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "share_bar",
       display_name: "Share Bar",
-      is_root: false,
-      is_nestable: true,
       icon: "block-share",
+      is_nestable: true,
+      is_root: false,
+      name: "share_bar",
       preview_field: "heading",
       schema: f({
-        heading: field({ type: "text", default_value: "Share this post" }),
         desktop_layout: field({
-          type: "option",
+          default_value: "inline",
+          exclude_empty_option: true,
           options: [
             { name: "Inline horizontal", value: "inline" },
             { name: "Floating left sidebar", value: "sidebar" },
             { name: "Both", value: "both" },
           ],
-          default_value: "inline",
-          exclude_empty_option: true,
+          type: "option",
         }),
+        heading: field({ default_value: "Share this post", type: "text" }),
         networks: field({
-          type: "options",
+          description: "Leave empty to show all networks in the default order.",
           options: [
             { name: "Facebook", value: "facebook" },
             { name: "LinkedIn", value: "linkedin" },
@@ -559,18 +559,18 @@ const nestableBlocks: SbComponent[] = [
             { name: "WhatsApp", value: "whatsapp" },
             { name: "Email", value: "email" },
           ],
-          description: "Leave empty to show all networks in the default order.",
+          type: "options",
         }),
-        show_copy_link: field({ type: "boolean", default_value: true }),
-        url_override: field({
-          type: "text",
-          description:
-            "Optional. Defaults to the current page URL when used inside a post or landing page.",
-        }),
+        show_copy_link: field({ default_value: true, type: "boolean" }),
         title_override: field({
-          type: "text",
           description:
             "Optional. Defaults to the current page title when used inside a post or landing page.",
+          type: "text",
+        }),
+        url_override: field({
+          description:
+            "Optional. Defaults to the current page URL when used inside a post or landing page.",
+          type: "text",
         }),
       }),
     };
@@ -583,29 +583,29 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "curated_post_set",
       display_name: "Curated Post Set",
-      is_root: false,
-      is_nestable: true,
       icon: "block-grid",
+      is_nestable: true,
+      is_root: false,
+      name: "curated_post_set",
       preview_field: "title",
       schema: f({
         eyebrow: field({ type: "text" }),
-        title: field({ type: "text", required: true }),
         pillar: field({
-          type: "option",
-          source: "internal_stories",
           filter_content_type: ["landing_page"],
           required: true,
+          source: "internal_stories",
+          type: "option",
         }),
         posts: field({
-          type: "options",
-          source: "internal_stories",
           filter_content_type: ["post"],
-          minimum: 3,
           maximum: 3,
+          minimum: 3,
           required: true,
+          source: "internal_stories",
+          type: "options",
         }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -614,27 +614,27 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "featured_post_block",
       display_name: "Featured Post Block",
-      is_root: false,
-      is_nestable: true,
       icon: "block-doc",
+      is_nestable: true,
+      is_root: false,
+      name: "featured_post_block",
       preview_field: "mode",
       schema: f({
+        limit: field({ default_value: 1, type: "number" }),
         mode: field({
-          type: "option",
+          default_value: "auto_by_pillar",
           options: [
             { name: "Auto by pillar", value: "auto_by_pillar" },
             { name: "Manual selection", value: "manual" },
           ],
-          default_value: "auto_by_pillar",
+          type: "option",
         }),
         posts: field({
-          type: "options",
-          source: "internal_stories",
           filter_content_type: ["post"],
+          source: "internal_stories",
+          type: "options",
         }),
-        limit: field({ type: "number", default_value: 1 }),
       }),
     };
   })(),
@@ -643,27 +643,27 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "post_grid_block",
       display_name: "Post Grid Block",
-      is_root: false,
-      is_nestable: true,
       icon: "block-grid",
+      is_nestable: true,
+      is_root: false,
+      name: "post_grid_block",
       preview_field: "mode",
       schema: f({
+        limit: field({ default_value: 12, type: "number" }),
         mode: field({
-          type: "option",
+          default_value: "auto_by_pillar",
           options: [
             { name: "Auto by pillar", value: "auto_by_pillar" },
             { name: "Manual selection", value: "manual" },
           ],
-          default_value: "auto_by_pillar",
+          type: "option",
         }),
         posts: field({
-          type: "options",
-          source: "internal_stories",
           filter_content_type: ["post"],
+          source: "internal_stories",
+          type: "options",
         }),
-        limit: field({ type: "number", default_value: 12 }),
       }),
     };
   })(),
@@ -672,15 +672,15 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "youtube_embed",
       display_name: "YouTube Embed",
-      is_root: false,
-      is_nestable: true,
       icon: "block-video",
+      is_nestable: true,
+      is_root: false,
+      name: "youtube_embed",
       preview_field: "youtube_id",
       schema: f({
-        youtube_id: field({ type: "text", required: true }),
         caption: field({ type: "text" }),
+        youtube_id: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -689,16 +689,16 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "nav_item",
       display_name: "Nav Item",
-      is_root: false,
-      is_nestable: true,
       icon: "block-link",
+      is_nestable: true,
+      is_root: false,
+      name: "nav_item",
       preview_field: "label",
       schema: f({
-        label: field({ type: "text", required: true }),
-        href: field({ type: "multilink", required: true }),
-        target_blank: field({ type: "boolean", default_value: false }),
+        href: field({ required: true, type: "multilink" }),
+        label: field({ required: true, type: "text" }),
+        target_blank: field({ default_value: false, type: "boolean" }),
       }),
     };
   })(),
@@ -706,20 +706,20 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "social_link",
       display_name: "Social Link",
-      is_root: false,
-      is_nestable: true,
       icon: "block-link",
+      is_nestable: true,
+      is_root: false,
+      name: "social_link",
       preview_field: "label",
       schema: f({
-        label: field({ type: "text", required: true }),
-        href: field({ type: "multilink", required: true }),
+        href: field({ required: true, type: "multilink" }),
         icon: field({
-          type: "option",
-          source: "internal",
           datasource_slug: "social-icons",
+          source: "internal",
+          type: "option",
         }),
+        label: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -727,15 +727,15 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "filter_chip",
       display_name: "Filter Chip",
-      is_root: false,
-      is_nestable: true,
       icon: "block-paragraph",
+      is_nestable: true,
+      is_root: false,
+      name: "filter_chip",
       preview_field: "label",
       schema: f({
-        label: field({ type: "text", required: true }),
         count: field({ type: "number" }),
+        label: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -743,17 +743,17 @@ const nestableBlocks: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "seo",
       display_name: "SEO Overrides",
-      is_root: false,
-      is_nestable: true,
       icon: "block-search",
+      is_nestable: true,
+      is_root: false,
+      name: "seo",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text" }),
         description: field({ type: "textarea" }),
-        og_image: field({ type: "asset", filetypes: ["images"] }),
         keywords: field({ type: "textarea" }),
+        og_image: field({ filetypes: ["images"], type: "asset" }),
+        title: field({ type: "text" }),
       }),
     };
   })(),
@@ -768,18 +768,14 @@ const contentTypes: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "home_page",
       display_name: "Home Page",
-      is_root: true,
-      is_nestable: false,
       icon: "block-doc",
+      is_nestable: false,
+      is_root: true,
+      name: "home_page",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
-        description: field({ type: "textarea" }),
         body: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: [
             "hero",
             "pillars",
@@ -792,7 +788,11 @@ const contentTypes: SbComponent[] = [
             "richtext_section",
             "share_bar",
           ],
+          restrict_components: true,
+          type: "bloks",
         }),
+        description: field({ type: "textarea" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -801,32 +801,16 @@ const contentTypes: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "landing_page",
       display_name: "Landing Page",
-      is_root: true,
-      is_nestable: false,
       icon: "block-pages",
+      is_nestable: false,
+      is_root: true,
+      name: "landing_page",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
-        pillar: field({
-          type: "option",
-          source: "internal",
-          datasource_slug: "pillars",
-          required: true,
-        }),
-        description: field({ type: "textarea" }),
-        cadence: field({ type: "text", default_value: "weekly" }),
         accent_primary: field({ type: "text" }),
         accent_secondary: field({ type: "text" }),
-        filters: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["filter_chip"],
-        }),
         body: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: [
             "richtext_section",
             "featured_post_block",
@@ -835,9 +819,25 @@ const contentTypes: SbComponent[] = [
             "cta_banner",
             "share_bar",
           ],
+          restrict_components: true,
+          type: "bloks",
         }),
-        seo_title: field({ type: "text" }),
+        cadence: field({ default_value: "weekly", type: "text" }),
+        description: field({ type: "textarea" }),
+        filters: field({
+          component_whitelist: ["filter_chip"],
+          restrict_components: true,
+          type: "bloks",
+        }),
+        pillar: field({
+          datasource_slug: "pillars",
+          required: true,
+          source: "internal",
+          type: "option",
+        }),
         seo_description: field({ type: "textarea" }),
+        seo_title: field({ type: "text" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -846,86 +846,86 @@ const contentTypes: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "post",
       display_name: "Post",
-      is_root: true,
-      is_nestable: false,
       icon: "block-doc",
+      is_nestable: false,
+      is_root: true,
+      name: "post",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
-        excerpt: field({ type: "textarea", required: true }),
+        author: field({ default_value: "Pinal Bhatt", type: "text" }),
+        body: field({ type: "richtext" }),
         category: field({
-          type: "option",
-          source: "internal",
           datasource_slug: "post-categories",
           required: true,
-        }),
-        labels: field({
-          type: "options",
           source: "internal",
-          datasource_slug: "post-labels",
-          required: true,
-        }),
-        pillar: field({
           type: "option",
-          source: "internal",
-          datasource_slug: "pillars",
-          required: true,
         }),
-        gradient: field({
-          type: "option",
-          source: "internal",
-          datasource_slug: "gradients",
-        }),
-        read_time: field({ type: "text" }),
-        featured: field({ type: "boolean", default_value: false }),
-        cover_image: field({ type: "asset", filetypes: ["images"] }),
+        cover_image: field({ filetypes: ["images"], type: "asset" }),
+        excerpt: field({ required: true, type: "textarea" }),
         external_url: field({ type: "multilink" }),
-        intro_blocks: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["youtube_embed"],
-          maximum: 1,
-        }),
-        body: field({ type: "richtext" }),
-        published_at: field({ type: "datetime" }),
-        updated_at: field({ type: "datetime" }),
-        author: field({ type: "text", default_value: "Pinal Bhatt" }),
-        related: field({
-          type: "options",
-          source: "internal_stories",
-          filter_content_type: ["post"],
-        }),
-        related_sets: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["curated_post_set", "share_bar"],
-          maximum: 4,
-        }),
-        seo: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["seo"],
-          maximum: 1,
+        featured: field({ default_value: false, type: "boolean" }),
+        gradient: field({
+          datasource_slug: "gradients",
+          source: "internal",
+          type: "option",
         }),
         hide_share_bar: field({
-          type: "boolean",
           default_value: false,
           description: "Hide the default social share bar on this post.",
+          type: "boolean",
+        }),
+        intro_blocks: field({
+          component_whitelist: ["youtube_embed"],
+          maximum: 1,
+          restrict_components: true,
+          type: "bloks",
+        }),
+        labels: field({
+          datasource_slug: "post-labels",
+          required: true,
+          source: "internal",
+          type: "options",
+        }),
+        pillar: field({
+          datasource_slug: "pillars",
+          required: true,
+          source: "internal",
+          type: "option",
+        }),
+        published_at: field({ type: "datetime" }),
+        read_time: field({ type: "text" }),
+        related: field({
+          filter_content_type: ["post"],
+          source: "internal_stories",
+          type: "options",
+        }),
+        related_sets: field({
+          component_whitelist: ["curated_post_set", "share_bar"],
+          maximum: 4,
+          restrict_components: true,
+          type: "bloks",
+        }),
+        seo: field({
+          component_whitelist: ["seo"],
+          maximum: 1,
+          restrict_components: true,
+          type: "bloks",
         }),
         share_desktop_layout: field({
-          type: "option",
+          default_value: "both",
+          description:
+            "Mobile is always horizontal; this only affects desktop layout.",
+          exclude_empty_option: true,
           options: [
             { name: "Inline horizontal", value: "inline" },
             { name: "Floating left sidebar", value: "sidebar" },
             { name: "Both (sidebar on desktop + inline)", value: "both" },
           ],
-          default_value: "both",
-          exclude_empty_option: true,
-          description:
-            "Mobile is always horizontal; this only affects desktop layout.",
+          type: "option",
         }),
+        title: field({ required: true, type: "text" }),
+        updated_at: field({ type: "datetime" }),
       }),
     };
   })(),
@@ -934,21 +934,15 @@ const contentTypes: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "about_page",
       display_name: "About Page",
-      is_root: true,
-      is_nestable: false,
       icon: "user",
+      is_nestable: false,
+      is_root: true,
+      name: "about_page",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
-        headline: field({ type: "text" }),
-        intro_chip_label: field({ type: "text" }),
         bio: field({ type: "richtext" }),
-        portrait: field({ type: "asset", filetypes: ["images"] }),
         body: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: [
             "about_hero",
             "about_section",
@@ -958,9 +952,15 @@ const contentTypes: SbComponent[] = [
             "richtext_section",
             "share_bar",
           ],
+          restrict_components: true,
+          type: "bloks",
         }),
-        seo_title: field({ type: "text" }),
+        headline: field({ type: "text" }),
+        intro_chip_label: field({ type: "text" }),
+        portrait: field({ filetypes: ["images"], type: "asset" }),
         seo_description: field({ type: "textarea" }),
+        seo_title: field({ type: "text" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -969,27 +969,27 @@ const contentTypes: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "disclaimer_page",
       display_name: "Disclaimer Page",
-      is_root: true,
-      is_nestable: false,
       icon: "block-doc",
+      is_nestable: false,
+      is_root: true,
+      name: "disclaimer_page",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
+        body: field({ type: "richtext" }),
         eyebrow: field({
-          type: "text",
           description:
             'Small uppercase label shown above the H1 (e.g. "Legal").',
+          type: "text",
         }),
-        lede: field({
-          type: "textarea",
-          description: "Intro paragraph rendered under the H1 in the hero.",
-        }),
-        body: field({ type: "richtext" }),
         last_updated: field({ type: "datetime" }),
-        seo_title: field({ type: "text" }),
+        lede: field({
+          description: "Intro paragraph rendered under the H1 in the hero.",
+          type: "textarea",
+        }),
         seo_description: field({ type: "textarea" }),
+        seo_title: field({ type: "text" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -998,27 +998,27 @@ const contentTypes: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "privacy_policy_page",
       display_name: "Privacy Policy Page",
-      is_root: true,
-      is_nestable: false,
       icon: "block-doc",
+      is_nestable: false,
+      is_root: true,
+      name: "privacy_policy_page",
       preview_field: "title",
       schema: f({
-        title: field({ type: "text", required: true }),
+        body: field({ type: "richtext" }),
         eyebrow: field({
-          type: "text",
           description:
             'Small uppercase label shown above the H1 (e.g. "Privacy").',
+          type: "text",
         }),
-        lede: field({
-          type: "textarea",
-          description: "Intro paragraph rendered under the H1 in the hero.",
-        }),
-        body: field({ type: "richtext" }),
         last_updated: field({ type: "datetime" }),
-        seo_title: field({ type: "text" }),
+        lede: field({
+          description: "Intro paragraph rendered under the H1 in the hero.",
+          type: "textarea",
+        }),
         seo_description: field({ type: "textarea" }),
+        seo_title: field({ type: "text" }),
+        title: field({ required: true, type: "text" }),
       }),
     };
   })(),
@@ -1027,45 +1027,45 @@ const contentTypes: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "global_config",
       display_name: "Global Config",
-      is_root: true,
-      is_nestable: false,
       icon: "settings",
+      is_nestable: false,
+      is_root: true,
+      name: "global_config",
       preview_field: "brand_tagline",
       schema: f({
-        nav_items: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["nav_item"],
-        }),
-        footer_explore: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["nav_item"],
-        }),
-        footer_topics: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["nav_item"],
-        }),
-        footer_more: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["nav_item"],
-        }),
-        social_links: field({
-          type: "bloks",
-          restrict_components: true,
-          component_whitelist: ["social_link"],
-        }),
         brand_tagline: field({ type: "text" }),
-        footer_about: field({ type: "textarea" }),
         cta_default: field({
-          type: "bloks",
-          restrict_components: true,
           component_whitelist: ["cta_banner"],
           maximum: 1,
+          restrict_components: true,
+          type: "bloks",
+        }),
+        footer_about: field({ type: "textarea" }),
+        footer_explore: field({
+          component_whitelist: ["nav_item"],
+          restrict_components: true,
+          type: "bloks",
+        }),
+        footer_more: field({
+          component_whitelist: ["nav_item"],
+          restrict_components: true,
+          type: "bloks",
+        }),
+        footer_topics: field({
+          component_whitelist: ["nav_item"],
+          restrict_components: true,
+          type: "bloks",
+        }),
+        nav_items: field({
+          component_whitelist: ["nav_item"],
+          restrict_components: true,
+          type: "bloks",
+        }),
+        social_links: field({
+          component_whitelist: ["social_link"],
+          restrict_components: true,
+          type: "bloks",
         }),
       }),
     };
@@ -1075,8 +1075,8 @@ const contentTypes: SbComponent[] = [
 export const components: SbComponent[] = [...nestableBlocks, ...contentTypes];
 
 export const folders = [
-  { slug: "bits", name: "Bits", default_root: "post" },
-  { slug: "bites", name: "Bites", default_root: "post" },
-  { slug: "blog", name: "Blog", default_root: "post" },
-  { slug: "_global", name: "Global", default_root: "global_config" },
+  { default_root: "post", name: "Bits", slug: "bits" },
+  { default_root: "post", name: "Bites", slug: "bites" },
+  { default_root: "post", name: "Blog", slug: "blog" },
+  { default_root: "global_config", name: "Global", slug: "_global" },
 ];

@@ -37,11 +37,11 @@ const PREVIEW_COOKIE = "sb-preview";
 const PREVIEW_HEADER = "x-sb-preview";
 
 const API_HOSTS: Record<string, string> = {
+  ap: "api-ap.storyblok.com",
+  ca: "api-ca.storyblok.com",
+  cn: "app.storyblokchina.cn",
   eu: "api.storyblok.com",
   us: "api-us.storyblok.com",
-  ca: "api-ca.storyblok.com",
-  ap: "api-ap.storyblok.com",
-  cn: "app.storyblokchina.cn",
 };
 
 function getApiHost(): string {
@@ -109,7 +109,7 @@ async function storyblokFetch<TResult>(
 
   const response = await fetch(url, {
     headers: { Accept: "application/json" },
-    ...(draft ? { cache: "no-store" } : { next: { tags, revalidate: 3600 } }),
+    ...(draft ? { cache: "no-store" } : { next: { revalidate: 3600, tags } }),
   });
   if (!response.ok) {
     return null;
@@ -220,11 +220,11 @@ async function fetchStoryRaw<TStory>(
       story?: TStory;
     }>(`cdn/stories/${slug}`, {
       draft,
-      tags: [STORYBLOK_CACHE_TAG, storyTag(slug)],
       query: {
         resolve_links: options.resolveLinks ?? "url",
         resolve_relations: options.resolveRelations?.join(","),
       },
+      tags: [STORYBLOK_CACHE_TAG, storyTag(slug)],
     });
     if (!data?.story) {
       return null;
@@ -260,16 +260,17 @@ async function fetchStoriesRaw<TStory>(params: {
   for (let page = 1; page <= 50; page += 1) {
     let chunk: TStory[];
     try {
+      // biome-ignore lint/performance/noAwaitInLoops: sequential pagination; each page's result decides whether to fetch the next.
       const data = await storyblokFetch<{ stories?: TStory[] }>("cdn/stories", {
         draft,
-        tags: [STORYBLOK_CACHE_TAG],
         query: {
-          starts_with: params.startsWith,
           content_type: params.contentType,
-          per_page: String(perPage),
           page: String(page),
+          per_page: String(perPage),
           sort_by: params.sortBy,
+          starts_with: params.startsWith,
         },
+        tags: [STORYBLOK_CACHE_TAG],
       });
       chunk = data?.stories ?? [];
     } catch {
@@ -336,10 +337,10 @@ export async function fetchStoriesByPillar(
   pillar: PillarKey
 ): Promise<PostStory[]> {
   const stories = await fetchStoriesRaw<PostStory>({
-    startsWith: `${pillar}/`,
     contentType: "post",
     perPage: 100,
     sortBy: "content.published_at:desc",
+    startsWith: `${pillar}/`,
   });
   return stories.filter((s) => !s.full_slug.endsWith("/index"));
 }

@@ -16,10 +16,10 @@ import {
 } from "./meta";
 
 const ICON_MAP: Record<BrainBoostMetaIcon, ReactNode> = {
-  Layers: <IconStack size={18} />,
-  Target: <IconTarget size={18} />,
-  Sparkles: <IconSparkles size={18} />,
   Calendar: <IconCalendar size={18} />,
+  Layers: <IconStack size={18} />,
+  Sparkles: <IconSparkles size={18} />,
+  Target: <IconTarget size={18} />,
 };
 
 interface BrainBoostIntroProps {

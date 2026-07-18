@@ -23,28 +23,28 @@ const SOCIAL_META: Record<
   { Icon: ComponentType<IconProps>; brandClass: string; defaultLabel: string }
 > = {
   github: {
-    Icon: IconBrandGithubFilled,
     brandClass: "social-icon-github",
     defaultLabel: "GitHub",
+    Icon: IconBrandGithubFilled,
   },
   linkedin: {
-    Icon: IconBrandLinkedinFilled,
     brandClass: "social-icon-linkedin",
     defaultLabel: "LinkedIn",
+    Icon: IconBrandLinkedinFilled,
   },
   x: {
-    Icon: IconBrandX,
     brandClass: "social-icon-x",
     defaultLabel: "X (Twitter)",
+    Icon: IconBrandX,
   },
 };
 
 const DEFAULT_KEYS: SocialKey[] = ["github", "linkedin", "x"];
 
 const SIZE_CONFIG: Record<SocialSize, { box: string; icon: number }> = {
-  sm: { box: "h-9 w-9", icon: 16 },
-  md: { box: "h-10 w-10", icon: 18 },
   lg: { box: "h-12 w-12", icon: 22 },
+  md: { box: "h-10 w-10", icon: 18 },
+  sm: { box: "h-9 w-9", icon: 16 },
 };
 
 interface SocialIconsProps {
@@ -64,7 +64,7 @@ export function SocialIcons({
 }: SocialIconsProps) {
   const list: SocialItem[] = items?.length
     ? items
-    : (keys ?? DEFAULT_KEYS).map((icon) => ({ icon, href: SOCIAL[icon] }));
+    : (keys ?? DEFAULT_KEYS).map((icon) => ({ href: SOCIAL[icon], icon }));
 
   const sizing = SIZE_CONFIG[size];
 
@@ -72,7 +72,7 @@ export function SocialIcons({
     <div className={cn("flex items-center gap-2", className)} id={id}>
       {list.map(({ icon, href, label }) => {
         const meta = SOCIAL_META[icon];
-        const Icon = meta.Icon;
+        const { Icon } = meta;
         const accessibleLabel = label ?? meta.defaultLabel;
 
         return (

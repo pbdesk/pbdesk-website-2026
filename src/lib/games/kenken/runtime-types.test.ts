@@ -11,24 +11,24 @@ describe("runtime types", () => {
 
   test("a game state object compiles with all fields", () => {
     const state = {
-      puzzle: {
-        id: "k3-easy-00001",
-        size: 3,
-        difficulty: "easy",
-        cages: [],
-        solution: [],
-      },
+      elapsedSeconds: 42,
       freebies: [],
       grid: [] as GameGrid,
-      selected: null,
-      undoStack: [],
-      redoStack: [],
       hintsUsed: 2,
+      paused: false,
+      puzzle: {
+        cages: [],
+        difficulty: "easy",
+        id: "k3-easy-00001",
+        size: 3,
+        solution: [],
+      },
+      redoStack: [],
       revealedMistakes: [],
       ruleCheckOn: true,
-      elapsedSeconds: 42,
-      paused: false,
+      selected: null,
       status: "playing",
+      undoStack: [],
     } satisfies GameState;
     expect(state.hintsUsed).toBe(2);
     expect(state.status).toBe("playing");

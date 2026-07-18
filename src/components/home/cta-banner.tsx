@@ -1,5 +1,11 @@
 "use client";
 
+import type { FormEvent } from "react";
+
+function preventDefaultSubmit(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+}
+
 interface CtaBannerProps {
   description?: string;
   heading?: string;
@@ -21,8 +27,8 @@ export default function CtaBanner({
             className="mb-5 font-bold text-white"
             style={{
               fontSize: "clamp(32px, 4vw, 48px)",
-              lineHeight: 1.1,
               letterSpacing: "-0.025em",
+              lineHeight: 1.1,
             }}
           >
             {heading}
@@ -37,7 +43,7 @@ export default function CtaBanner({
 
           <form
             className="mx-auto flex max-w-lg items-center gap-2 rounded-full bg-white p-1.5 shadow-2xl"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={preventDefaultSubmit}
           >
             <input
               className="flex-1 bg-transparent px-5 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none"

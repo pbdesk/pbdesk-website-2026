@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 import { smoothScrollToHash } from "@/lib/smooth-scroll";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +16,14 @@ export function SmoothAnchorButton({
   className,
   href,
 }: SmoothAnchorButtonProps) {
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!href.startsWith("#")) {
+      return;
+    }
+    if (smoothScrollToHash(href)) {
+      event.preventDefault();
+    }
+  };
   return (
     <Link
       className={cn(
@@ -23,14 +31,8 @@ export function SmoothAnchorButton({
         className
       )}
       href={href}
-      onClick={(event) => {
-        if (!href.startsWith("#")) {
-          return;
-        }
-        if (smoothScrollToHash(href)) {
-          event.preventDefault();
-        }
-      }}
+      // biome-ignore lint/performance/noJsxPropsBind: React Compiler (enabled in next.config.ts) auto-memoizes this handler.
+      onClick={handleClick}
     >
       {children}
     </Link>

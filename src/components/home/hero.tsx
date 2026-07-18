@@ -28,9 +28,9 @@ interface HeroProps {
 }
 
 const pillarToneClasses: Record<HeroPillarTone, string> = {
-  bits: "border-[var(--color-pillar-bits)]/25 text-[var(--color-pillar-bits)]",
   bites:
     "border-[var(--color-pillar-bites)]/25 text-[var(--color-pillar-bites)]",
+  bits: "border-[var(--color-pillar-bits)]/25 text-[var(--color-pillar-bits)]",
   blog: "border-[var(--color-pillar-blog)]/25 text-[var(--color-pillar-blog)]",
 };
 

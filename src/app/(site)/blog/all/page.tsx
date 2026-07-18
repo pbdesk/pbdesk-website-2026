@@ -6,10 +6,10 @@ import { pageMetadata } from "@/lib/seo";
 import { loadPillarData } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
-  title: "All Blog posts — Browse every long-form essay",
   description:
     "The full archive of Blog posts — long-form reflections on software craft, AI, programming habits, and developer wellness. Filter by category and label.",
   path: "/blog/all",
+  title: "All Blog posts — Browse every long-form essay",
 });
 
 const FALLBACK_DESCRIPTION =
@@ -19,8 +19,8 @@ const fallbackPosts: Post[] = [];
 
 export default async function BlogAllPage() {
   const data = await loadPillarData("blog", {
-    description: FALLBACK_DESCRIPTION,
     cadence: "weekly",
+    description: FALLBACK_DESCRIPTION,
     fallbackPosts,
   });
 

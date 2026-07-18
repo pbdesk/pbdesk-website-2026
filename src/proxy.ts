@@ -54,13 +54,13 @@ export function proxy(request: NextRequest) {
 
   // Set a cookie so subsequent in-iframe navigations also see preview mode.
   response.cookies.set({
-    name: PREVIEW_COOKIE,
-    value: "1",
     httpOnly: true,
+    maxAge: 60 * 60 * 8,
+    name: PREVIEW_COOKIE,
+    path: "/",
     sameSite: "none",
     secure: true,
-    path: "/",
-    maxAge: 60 * 60 * 8,
+    value: "1",
   });
 
   return response;

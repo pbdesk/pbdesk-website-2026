@@ -12,13 +12,13 @@ function isLatinSquare(solution: number[][], size: number): boolean {
   if (solution.length !== size) {
     return false;
   }
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < size; i += 1) {
     if (solution[i].length !== size) {
       return false;
     }
     const rowSeen = new Set<number>();
     const colSeen = new Set<number>();
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < size; j += 1) {
       const rv = solution[i][j];
       const cv = solution[j][i];
       if (!Number.isInteger(rv) || rv < 1 || rv > size) {
@@ -123,8 +123,8 @@ function validateCoverage(
   coverage: Map<string, number>
 ): string[] {
   const errors: string[] = [];
-  for (let r = 0; r < size; r++) {
-    for (let c = 0; c < size; c++) {
+  for (let r = 0; r < size; r += 1) {
+    for (let c = 0; c < size; c += 1) {
       if (coverage.get(`${r},${c}`) !== 1) {
         errors.push(
           `${id}: cell (${r},${c}) is not covered by exactly one cage`

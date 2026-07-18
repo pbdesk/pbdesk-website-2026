@@ -11,10 +11,10 @@ import type { KenKenPuzzle } from "./types";
 
 function fixture(id: string): KenKenPuzzle {
   return {
+    cages: [{ cells: [[0, 0]], op: "=", target: 1 }],
+    difficulty: "easy",
     id,
     size: 3,
-    difficulty: "easy",
-    cages: [{ cells: [[0, 0]], op: "=", target: 1 }],
     solution: [
       [1, 2, 3],
       [2, 3, 1],
@@ -57,7 +57,7 @@ describe("library access", () => {
   });
 
   test("findById resolves a real puzzle from the seeded library", () => {
-    const sample = getLibrary("easy").puzzles[0];
+    const [sample] = getLibrary("easy").puzzles;
     expect(findById(sample.id)?.id).toBe(sample.id);
     expect(findById("does-not-exist")).toBeNull();
   });

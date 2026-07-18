@@ -19,18 +19,18 @@ export function createInitialState(
     grid[r][c] = { given: true, value: puzzle.solution[r][c] };
   }
   return {
-    puzzle,
+    elapsedSeconds: 0,
     freebies,
     grid,
-    selected: null,
-    undoStack: [],
-    redoStack: [],
     hintsUsed: 0,
+    paused: false,
+    puzzle,
+    redoStack: [],
     revealedMistakes: [],
     ruleCheckOn: true,
-    elapsedSeconds: 0,
-    paused: false,
+    selected: null,
     status: "playing",
+    undoStack: [],
   };
 }
 
@@ -42,10 +42,10 @@ function commitGrid(state: GameState, nextGrid: GameGrid): GameState {
   return {
     ...state,
     grid: nextGrid,
-    undoStack: [...state.undoStack, state.grid],
     redoStack: [],
     revealedMistakes: [],
     status,
+    undoStack: [...state.undoStack, state.grid],
   };
 }
 
@@ -77,8 +77,8 @@ function applyClear(state: GameState): GameState {
 }
 
 function firstEmptyCell(state: GameState): Cell | null {
-  for (let r = 0; r < state.puzzle.size; r++) {
-    for (let c = 0; c < state.puzzle.size; c++) {
+  for (let r = 0; r < state.puzzle.size; r += 1) {
+    for (let c = 0; c < state.puzzle.size; c += 1) {
       const cell = state.grid[r][c];
       if (cell.value === null && !cell.given) {
         return [r, c];
@@ -105,8 +105,8 @@ function applyHint(state: GameState): GameState {
   next[r][c] = { ...next[r][c], hinted: true };
   return {
     ...commitGrid(state, next),
-    selected: target,
     hintsUsed: state.hintsUsed + 1,
+    selected: target,
   };
 }
 
@@ -121,15 +121,15 @@ function applyRestore(
   }
   return {
     ...state,
-    grid,
     elapsedSeconds: action.elapsedSeconds,
+    grid,
     hintsUsed: action.hintsUsed,
-    undoStack: [],
     redoStack: [],
     revealedMistakes: [],
     status: isSolved(grid, state.puzzle.size, state.puzzle.cages)
       ? "won"
       : "playing",
+    undoStack: [],
   };
 }
 
@@ -139,7 +139,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, selected: action.cell };
     case "move": {
       const [r, c] = state.selected ?? [0, 0];
-      const size = state.puzzle.size;
+      const { size } = state.puzzle;
       return {
         ...state,
         selected: [
@@ -160,12 +160,12 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return {
         ...state,
         grid: prev,
-        undoStack: state.undoStack.slice(0, -1),
         redoStack: [...state.redoStack, state.grid],
         revealedMistakes: [],
         status: isSolved(prev, state.puzzle.size, state.puzzle.cages)
           ? "won"
           : "playing",
+        undoStack: state.undoStack.slice(0, -1),
       };
     }
     case "redo": {
@@ -177,11 +177,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         grid: next,
         redoStack: state.redoStack.slice(0, -1),
-        undoStack: [...state.undoStack, state.grid],
         revealedMistakes: [],
         status: isSolved(next, state.puzzle.size, state.puzzle.cages)
           ? "won"
           : "playing",
+        undoStack: [...state.undoStack, state.grid],
       };
     }
     case "hint":

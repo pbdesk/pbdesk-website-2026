@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noUnnecessaryConditions: Biome cannot resolve SbBlokBase across the path alias and wrongly marks every switch case as unreachable. */
 "use client";
 
 // Generic body[] renderer. Iterates a Storyblok blocks field and dispatches

@@ -40,7 +40,7 @@ export default function PostBody({ body, introBlocks }: PostBodyProps) {
       })}
       {body ? (
         <StoryblokRichText
-          doc={body as Parameters<typeof StoryblokRichText>[0]["doc"]}
+          document={body as Parameters<typeof StoryblokRichText>[0]["document"]}
         />
       ) : null}
     </article>

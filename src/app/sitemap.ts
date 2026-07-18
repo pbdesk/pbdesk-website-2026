@@ -9,40 +9,40 @@ import { groupByCategory, groupByLabel } from "@/lib/storyblok/adapters";
 import { loadAllPosts } from "@/lib/storyblok/landing";
 
 const STATIC_ROUTES: RouteEntry[] = [
-  { path: "/", changeFrequency: "weekly", priority: 1 },
-  { path: "/about", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/disclaimer", changeFrequency: "yearly", priority: 0.3 },
-  { path: "/blog", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/bits", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/bites", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/categories", changeFrequency: "weekly", priority: 0.7 },
-  { path: "/labels", changeFrequency: "weekly", priority: 0.7 },
-  { path: "/brain-boost", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/brain-boost/kenken", changeFrequency: "monthly", priority: 0.7 },
+  { changeFrequency: "weekly", path: "/", priority: 1 },
+  { changeFrequency: "monthly", path: "/about", priority: 0.8 },
+  { changeFrequency: "yearly", path: "/disclaimer", priority: 0.3 },
+  { changeFrequency: "weekly", path: "/blog", priority: 0.9 },
+  { changeFrequency: "weekly", path: "/bits", priority: 0.9 },
+  { changeFrequency: "weekly", path: "/bites", priority: 0.9 },
+  { changeFrequency: "weekly", path: "/categories", priority: 0.7 },
+  { changeFrequency: "weekly", path: "/labels", priority: 0.7 },
+  { changeFrequency: "weekly", path: "/brain-boost", priority: 0.9 },
+  { changeFrequency: "monthly", path: "/brain-boost/kenken", priority: 0.7 },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await loadAllPosts();
 
   const postRoutes: RouteEntry[] = posts.map((post) => ({
-    path: `/${post.pillar}/${post.slug}`,
     changeFrequency: "monthly",
-    priority: 0.7,
     lastModified: getPostLastModified(post),
+    path: `/${post.pillar}/${post.slug}`,
+    priority: 0.7,
   }));
 
   const categoryRoutes: RouteEntry[] = groupByCategory(posts).map((group) => ({
-    path: `/categories/${encodeURIComponent(group.name)}`,
     changeFrequency: "weekly",
-    priority: 0.6,
     lastModified: getLatestPostLastModified(group.posts),
+    path: `/categories/${encodeURIComponent(group.name)}`,
+    priority: 0.6,
   }));
 
   const labelRoutes: RouteEntry[] = groupByLabel(posts).map((group) => ({
-    path: `/labels/${encodeURIComponent(group.name)}`,
     changeFrequency: "weekly",
-    priority: 0.5,
     lastModified: getLatestPostLastModified(group.posts),
+    path: `/labels/${encodeURIComponent(group.name)}`,
+    priority: 0.5,
   }));
 
   const allRoutes: RouteEntry[] = [

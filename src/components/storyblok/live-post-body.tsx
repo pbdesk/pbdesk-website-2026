@@ -21,6 +21,6 @@ export default function LivePostBody({ story }: LivePostBodyProps) {
   const source = liveStory ?? story;
   const content = source.content ?? {};
   const introBlocks = (content.intro_blocks ?? []) as SbBlokBase[];
-  const body = content.body;
+  const { body } = content;
   return <PostBody body={body} introBlocks={introBlocks} />;
 }

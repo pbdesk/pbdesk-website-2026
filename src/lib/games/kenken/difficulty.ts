@@ -29,11 +29,13 @@ export const TIERS: Record<Difficulty, TierConfig> = {
       { ops: NO_DIVISION, size: 5 },
     ],
   },
-  intermediate: {
-    maxCageSize: 4,
+  genius: {
+    maxCageSize: 5,
     variants: [
-      { ops: ALL_OPS, size: 4 },
-      { ops: ALL_OPS, size: 5 },
+      { ops: ALL_OPS, size: 6 },
+      { ops: ALL_OPS, size: 7 },
+      { ops: NO_DIVISION, size: 8 },
+      { ops: NO_DIVISION, size: 9 },
     ],
   },
   hard: {
@@ -43,13 +45,11 @@ export const TIERS: Record<Difficulty, TierConfig> = {
       { ops: NO_DIVISION, size: 7 },
     ],
   },
-  genius: {
-    maxCageSize: 5,
+  intermediate: {
+    maxCageSize: 4,
     variants: [
-      { ops: ALL_OPS, size: 6 },
-      { ops: ALL_OPS, size: 7 },
-      { ops: NO_DIVISION, size: 8 },
-      { ops: NO_DIVISION, size: 9 },
+      { ops: ALL_OPS, size: 4 },
+      { ops: ALL_OPS, size: 5 },
     ],
   },
 };

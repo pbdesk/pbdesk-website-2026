@@ -6,18 +6,18 @@ type Variant = "primary" | "secondary" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const variants: Record<Variant, string> = {
+  ghost:
+    "border border-[var(--border-strong)] text-[var(--fg-primary)] hover:bg-[var(--bg-subtle)]",
   primary:
     "bg-[var(--fg-brand)] text-white shadow-[0_8px_20px_rgb(79_70_229_/_0.3)] hover:-translate-y-0.5 hover:shadow-lg",
   secondary:
     "border border-[var(--fg-brand)] text-[var(--fg-brand)] hover:bg-[var(--fg-brand)] hover:text-white",
-  ghost:
-    "border border-[var(--border-strong)] text-[var(--fg-primary)] hover:bg-[var(--bg-subtle)]",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-sm",
-  md: "h-12 px-7 text-sm",
   lg: "h-14 px-8 text-base",
+  md: "h-12 px-7 text-sm",
+  sm: "h-9 px-4 text-sm",
 };
 
 interface BaseProps {

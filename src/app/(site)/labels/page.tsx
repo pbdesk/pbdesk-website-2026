@@ -5,20 +5,20 @@ import { groupByLabel } from "@/lib/storyblok/adapters";
 import { loadAllPosts } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Labels — Browse PBDesk by tag",
   description:
     "Every PBDesk post grouped by label — Browser, AIAgent, VSCode, Yoga, Mindfulness, and more. Pick a tag to see related posts.",
   path: "/labels",
+  title: "Labels — Browse PBDesk by tag",
 });
 
 export default async function LabelsIndexPage() {
   const posts = await loadAllPosts();
   const groups = groupByLabel(posts).map(
     ({ name, count, pillars, pillarCounts }) => ({
-      name,
       count,
-      pillars,
+      name,
       pillarCounts,
+      pillars,
     })
   );
 

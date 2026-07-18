@@ -17,7 +17,7 @@ interface GridProps {
 
 export default function Grid({ state, onSelect, onKeyAction }: GridProps) {
   const { puzzle, grid, selected, revealedMistakes, ruleCheckOn } = state;
-  const size = puzzle.size;
+  const { size } = puzzle;
 
   const borders = useMemo(
     () => computeCageBorders(size, puzzle.cages),
@@ -61,7 +61,7 @@ export default function Grid({ state, onSelect, onKeyAction }: GridProps) {
     }
     const [sr, sc] = selected;
     const set = new Set<string>();
-    for (let i = 0; i < size; i++) {
+    for (let i = 0; i < size; i += 1) {
       set.add(`${sr},${i}`);
       set.add(`${i},${sc}`);
     }
@@ -92,6 +92,7 @@ export default function Grid({ state, onSelect, onKeyAction }: GridProps) {
       {grid.map((row, r) =>
         row.map((cellState, c) => {
           const k = `${r},${c}`;
+          const handleSelect = () => onSelect([r, c]);
           return (
             <Cell
               borders={borders[r][c]}
@@ -100,7 +101,7 @@ export default function Grid({ state, onSelect, onKeyAction }: GridProps) {
               key={k}
               label={labelByKey.get(k) ?? null}
               mistake={mistakeKeys.has(k)}
-              onSelect={() => onSelect([r, c])}
+              onSelect={handleSelect}
               peerHighlight={peerKeys.has(k)}
               sameValueHighlight={
                 selectedValue !== null &&

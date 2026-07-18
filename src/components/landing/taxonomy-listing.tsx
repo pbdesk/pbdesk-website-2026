@@ -29,8 +29,8 @@ const ACCENT_BY_KIND: Record<TaxonomyKind, string> = {
 };
 
 const PARENT_BY_KIND: Record<TaxonomyKind, { label: string; href: string }> = {
-  category: { label: "Categories", href: "/categories" },
-  label: { label: "Labels", href: "/labels" },
+  category: { href: "/categories", label: "Categories" },
+  label: { href: "/labels", label: "Labels" },
 };
 
 const PILLARS: { key: PillarKey; label: string }[] = [
@@ -61,13 +61,15 @@ export default function TaxonomyListing({
 
   // const pillarCount = new Set(filteredPosts.map((p) => p.pillar ?? "")).size;
 
+  const handleShowAllPillars = () => setActivePillar("all");
+
   return (
     <main>
       <section className="py-16">
         <div className="wrapper">
           <Breadcrumb
             items={[
-              { label: parent.label, href: parent.href },
+              { href: parent.href, label: parent.label },
               { label: term },
             ]}
           />
@@ -76,8 +78,8 @@ export default function TaxonomyListing({
             className="mb-6 text-center font-bold text-[var(--fg-primary)]"
             style={{
               fontSize: "clamp(40px, 5vw, 64px)",
-              lineHeight: 1.05,
               letterSpacing: "-0.03em",
+              lineHeight: 1.05,
             }}
           >
             {kind === "category" ? "Category" : "Label"}{" "}
@@ -131,13 +133,13 @@ export default function TaxonomyListing({
           <div className="wrapper flex flex-wrap items-center justify-center gap-2">
             <button
               className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-semibold text-sm transition-colors"
-              onClick={() => setActivePillar("all")}
+              onClick={handleShowAllPillars}
               style={{
                 background:
                   activePillar === "all" ? accent : "var(--bg-elevated)",
-                color: activePillar === "all" ? "#fff" : "var(--fg-secondary)",
                 borderColor:
                   activePillar === "all" ? accent : "var(--border-subtle)",
+                color: activePillar === "all" ? "#fff" : "var(--fg-secondary)",
               }}
               type="button"
             >
@@ -148,15 +150,16 @@ export default function TaxonomyListing({
               const color = pillarAccents[key].primary;
               const isActive = activePillar === key;
               const count = posts.filter((p) => p.pillar === key).length;
+              const handleSelectPillar = () => setActivePillar(key);
               return (
                 <button
                   className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-semibold text-sm transition-colors"
                   key={key}
-                  onClick={() => setActivePillar(key)}
+                  onClick={handleSelectPillar}
                   style={{
                     background: isActive ? color : "var(--bg-elevated)",
-                    color: isActive ? "#fff" : "var(--fg-secondary)",
                     borderColor: isActive ? color : "var(--border-subtle)",
+                    color: isActive ? "#fff" : "var(--fg-secondary)",
                   }}
                   type="button"
                 >

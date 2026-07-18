@@ -5,7 +5,8 @@ import type { Difficulty, KenKenPuzzle } from "./types";
 const ENDPOINT = "/api/kenken/puzzle";
 
 function resolveFetch(provided?: typeof fetch): typeof fetch {
-  const f = provided ?? globalThis.fetch;
+  // Older runtimes (or non-browser embedders) may not expose a global fetch.
+  const f: typeof fetch | undefined = provided ?? globalThis.fetch;
   if (!f) {
     throw new Error("fetch is not available in this environment");
   }

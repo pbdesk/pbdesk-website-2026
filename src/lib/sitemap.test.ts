@@ -22,9 +22,9 @@ describe("sitemap helpers", () => {
         priority: 0.8,
       })
     ).toEqual({
-      url: "https://www.pbdesk.com/about",
       changeFrequency: "weekly",
       priority: 0.8,
+      url: "https://www.pbdesk.com/about",
     });
   });
 });

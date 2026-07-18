@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 export const getCurrentYear = (): number => new Date().getFullYear();
 
 export function errorHandler(error: unknown) {
-  if (error == null) {
+  if (error === null || error === undefined) {
     return "unknown error";
   }
 

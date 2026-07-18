@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { type MouseEvent, useEffect, useState } from "react";
 import { SocialIcons, type SocialItem } from "@/components/ui/social-icons";
 import { CloseIcon, MenuIcon } from "@/icons/icons";
 import ThemeToggle from "./theme-toggle";
@@ -23,12 +23,12 @@ interface HeaderProps {
 }
 
 const DEFAULT_NAV_ITEMS: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Bits", href: "/bits" },
-  { label: "Bites", href: "/bites" },
-  { label: "Blog", href: "/blog" },
-  { label: "Brain Boost", href: "/brain-boost" },
-  { label: "About", href: "/about" },
+  { href: "/", label: "Home" },
+  { href: "/bits", label: "Bits" },
+  { href: "/bites", label: "Bites" },
+  { href: "/blog", label: "Blog" },
+  { href: "/brain-boost", label: "Brain Boost" },
+  { href: "/about", label: "About" },
 ];
 
 export default function Header({
@@ -46,6 +46,11 @@ export default function Header({
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [pathname]);
+
+  const handleMenuToggle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   return (
     <header
@@ -115,10 +120,7 @@ export default function Header({
             <button
               aria-label="Toggle menu"
               className="ml-1 inline-flex h-9 w-9 items-center justify-center rounded-full lg:hidden"
-              onClick={(e) => {
-                e.stopPropagation();
-                setMobileMenuOpen(!mobileMenuOpen);
-              }}
+              onClick={handleMenuToggle}
               style={{ color: "var(--fg-secondary)" }}
               type="button"
             >

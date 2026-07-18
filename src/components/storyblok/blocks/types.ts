@@ -252,7 +252,7 @@ export interface KenkenOperationBlok extends SbBlokBase {
 export interface KenkenOperationsBlok extends SbBlokBase {
   component: "kenken_operations";
   heading?: string;
-  operations: KenkenOperationBlok[];
+  operations?: KenkenOperationBlok[];
 }
 
 export interface KenkenLevelBlok extends SbBlokBase {
@@ -266,7 +266,7 @@ export interface KenkenLevelBlok extends SbBlokBase {
 export interface KenkenLevelsBlok extends SbBlokBase {
   component: "kenken_levels";
   heading?: string;
-  levels: KenkenLevelBlok[];
+  levels?: KenkenLevelBlok[];
 }
 
 export interface KenkenCtaBlok extends SbBlokBase {

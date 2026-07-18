@@ -56,8 +56,8 @@ export interface PostValidationError {
 }
 
 const PILLAR_ALIAS: Record<string, Pillar> = {
-  bits: "bits",
   bites: "bites",
+  bits: "bits",
   blog: "blog",
 };
 
@@ -113,23 +113,23 @@ function parseMdx(filePath: string): ParsedMdxPost | PostValidationError {
   const slug = folder.split("/").pop() ?? "";
 
   if (!frontmatter.type) {
-    return { slug, reason: "missing frontmatter `type`" };
+    return { reason: "missing frontmatter `type`", slug };
   }
   const pillar = normalizePillar(frontmatter.type);
   if (!pillar) {
     return {
-      slug,
       reason: `unknown pillar type: ${frontmatter.type}`,
+      slug,
     };
   }
   if (!frontmatter.title) {
-    return { slug, reason: "missing frontmatter `title`" };
+    return { reason: "missing frontmatter `title`", slug };
   }
   if (!frontmatter.description) {
-    return { slug, reason: "missing frontmatter `description`" };
+    return { reason: "missing frontmatter `description`", slug };
   }
   if (!frontmatter.category) {
-    return { slug, reason: "missing frontmatter `category`" };
+    return { reason: "missing frontmatter `category`", slug };
   }
 
   const ast = remark().use(remarkParse).use(remarkGfm).parse(parsed.content);
@@ -142,28 +142,28 @@ function parseMdx(filePath: string): ParsedMdxPost | PostValidationError {
   const wordCount = countWords(parsed.content);
 
   return {
-    slug,
-    pillar,
+    ast,
+    body: parsed.content,
+    coverImagePath,
+    embeddedImagePaths,
     filePath,
     folder,
     frontmatter: {
-      type: frontmatter.type,
-      title: frontmatter.title,
+      category: frontmatter.category,
       description: frontmatter.description,
+      draft: frontmatter.draft ?? false,
       image: frontmatter.image,
+      labels: frontmatter.labels ?? [],
+      pubDate: frontmatter.pubDate,
+      related: frontmatter.related ?? [],
+      title: frontmatter.title,
+      type: frontmatter.type,
+      updatedDate: frontmatter.updatedDate,
       url: frontmatter.url,
       youtubeId: frontmatter.youtubeId,
-      category: frontmatter.category,
-      labels: frontmatter.labels ?? [],
-      draft: frontmatter.draft ?? false,
-      pubDate: frontmatter.pubDate,
-      updatedDate: frontmatter.updatedDate,
-      related: frontmatter.related ?? [],
     },
-    body: parsed.content,
-    ast,
-    embeddedImagePaths,
-    coverImagePath,
+    pillar,
+    slug,
     wordCount,
   };
 }
@@ -186,7 +186,7 @@ export function discoverPosts(resourcesDir: string): DiscoverResult {
     }
     const indexPath = join(folderPath, "index.mdx");
     if (!existsSync(indexPath)) {
-      errors.push({ slug: name, reason: "no index.mdx in folder" });
+      errors.push({ reason: "no index.mdx in folder", slug: name });
       continue;
     }
     const result = parseMdx(indexPath);
@@ -199,7 +199,7 @@ export function discoverPosts(resourcesDir: string): DiscoverResult {
     }
   }
 
-  return { posts, errors };
+  return { errors, posts };
 }
 
 export function readTimeFromWordCount(words: number, wpm = 200): string {

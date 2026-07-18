@@ -6,7 +6,7 @@ export function buildCellCageMap(size: number, cages: Cage[]): number[][] {
   const map: number[][] = Array.from({ length: size }, () =>
     new Array<number>(size).fill(-1)
   );
-  for (let i = 0; i < cages.length; i++) {
+  for (let i = 0; i < cages.length; i += 1) {
     for (const [r, c] of cages[i].cells) {
       map[r][c] = i;
     }
@@ -37,14 +37,14 @@ export function computeCageBorders(
   };
 
   const result: CellBorders[][] = [];
-  for (let r = 0; r < size; r++) {
+  for (let r = 0; r < size; r += 1) {
     const row: CellBorders[] = [];
-    for (let c = 0; c < size; c++) {
+    for (let c = 0; c < size; c += 1) {
       row.push({
-        top: sameCage(r, c, r - 1, c) ? "thin" : "thick",
-        right: sameCage(r, c, r, c + 1) ? "thin" : "thick",
         bottom: sameCage(r, c, r + 1, c) ? "thin" : "thick",
         left: sameCage(r, c, r, c - 1) ? "thin" : "thick",
+        right: sameCage(r, c, r, c + 1) ? "thin" : "thick",
+        top: sameCage(r, c, r - 1, c) ? "thin" : "thick",
       });
     }
     result.push(row);

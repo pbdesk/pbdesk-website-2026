@@ -16,7 +16,6 @@ export default function ShareBarBlock({ blok }: { blok: ShareBarBlok }) {
 
   const layout = blok.desktop_layout ?? "inline";
   const showSidebar = layout === "sidebar" || layout === "both";
-  const showInline = true; // mobile always gets inline; on desktop only when layout !== "sidebar"
 
   const networks =
     blok.networks && blok.networks.length > 0 ? blok.networks : undefined;
@@ -37,19 +36,18 @@ export default function ShareBarBlock({ blok }: { blok: ShareBarBlok }) {
           variant="sidebar"
         />
       ) : null}
-      {showInline ? (
-        <ShareBar
-          className={layout === "sidebar" ? "lg:hidden" : undefined}
-          description={ctx?.description}
-          heading={heading}
-          media={ctx?.media}
-          networks={networks}
-          showCopyLink={showCopyLink}
-          title={title}
-          url={url}
-          variant="inline"
-        />
-      ) : null}
+      {/* Mobile always gets inline; on desktop it hides when layout is sidebar-only. */}
+      <ShareBar
+        className={layout === "sidebar" ? "lg:hidden" : undefined}
+        description={ctx?.description}
+        heading={heading}
+        media={ctx?.media}
+        networks={networks}
+        showCopyLink={showCopyLink}
+        title={title}
+        url={url}
+        variant="inline"
+      />
     </section>
   );
 }

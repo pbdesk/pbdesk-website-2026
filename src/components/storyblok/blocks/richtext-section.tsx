@@ -13,8 +13,10 @@ export default function RichtextSection({
         <article className="post-prose mx-auto max-w-3xl">
           {blok.content ? (
             <StoryblokRichText
-              doc={
-                blok.content as Parameters<typeof StoryblokRichText>[0]["doc"]
+              document={
+                blok.content as Parameters<
+                  typeof StoryblokRichText
+                >[0]["document"]
               }
             />
           ) : null}

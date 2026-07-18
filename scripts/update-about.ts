@@ -64,13 +64,13 @@ interface RtDoc {
 
 function paragraph(text: string): RtNode {
   return {
+    content: [{ text, type: "text" }],
     type: "paragraph",
-    content: [{ type: "text", text }],
   };
 }
 
 function richtext(...paragraphs: string[]): RtDoc {
-  return { type: "doc", content: paragraphs.map(paragraph) };
+  return { content: paragraphs.map(paragraph), type: "doc" };
 }
 
 function uid(): string {
@@ -80,28 +80,25 @@ function uid(): string {
 function buildAboutHeroBlok(): SbStoryContent {
   return {
     _uid: uid(),
-    component: ABOUT_HERO_COMPONENT,
     chip_label: "About — the human behind the desk",
+    component: ABOUT_HERO_COMPONENT,
+    description:
+      "I love writing code, exploring the AI realm, and chasing the small habits that keep mind and body sharp. This page is the long-form version — who I am, what I write about, and the threads I weave through everyday life.",
+    primary_cta_href: { linktype: "url", url: "/blog" },
+    primary_cta_label: "Read the blog",
+    secondary_cta_href: { linktype: "url", url: "#social-links" },
+    secondary_cta_label: "Say hello",
+    show_social: true,
     title_lead: "Hi, I'm ",
     title_name: "Pinal Bhatt",
     title_subheadline:
       "Engineer by craft,\nlearner by habit,\nhuman by nature.",
-    description:
-      "I love writing code, exploring the AI realm, and chasing the small habits that keep mind and body sharp. This page is the long-form version — who I am, what I write about, and the threads I weave through everyday life.",
-    primary_cta_label: "Read the blog",
-    primary_cta_href: { url: "/blog", linktype: "url" },
-    secondary_cta_label: "Say hello",
-    secondary_cta_href: { url: "#social-links", linktype: "url" },
-    show_social: true,
   };
 }
 
 function buildAboutStoryBlok(): SbStoryContent {
   return {
     _uid: uid(),
-    component: ABOUT_STORY_COMPONENT,
-    eyebrow: "My story",
-    heading: "Code, curiosity, and a healthy dose of balance.",
     column_left: richtext(
       "I love coding and enjoy creating great software solutions through the power of code. I genuinely enjoy the entire process of creating software, from brainstorming ideas to writing clean code and debugging until everything runs just right. Whether I'm diving into backend, frontend, middleware, or experimenting with any new tech, I find a lot of joy in figuring things out and making things better.",
       "One of the areas that really excites me is artificial intelligence. I love exploring how AI is changing the way we live and work, and I'm always curious to see how I can apply it in the projects I build. I'm also always on the lookout for new tools, trends, and tech that challenge me to grow and think differently. For me, learning is an ongoing journey — and that's one of the best parts of being in tech."
@@ -109,13 +106,16 @@ function buildAboutStoryBlok(): SbStoryContent {
     column_right: richtext(
       "But as much as I love coding, I don't believe life should be all about work. I'm a big believer in balance. Health and wellness are super important to me. I make time for physical and mental well-being, whether it's through regular exercise, mindfulness, or simply slowing down when needed. Staying healthy helps me stay sharp and present — both in my work and in life. Spending quality time with family and friends is something I truly value. At the end of the day, it's the people around us that bring the most meaning to our lives. I try to stay grounded, enjoy the little moments, and never take anything for granted. Work is important, but so is life — and I believe in showing up fully for both."
     ),
+    component: ABOUT_STORY_COMPONENT,
+    eyebrow: "My story",
+    heading: "Code, curiosity, and a healthy dose of balance.",
+    quote_attribution: "— That's why I say",
+    quote_link: {
+      linktype: "url",
+      url: "https://www.linkedin.com/pulse/best-gift-you-can-give-your-loved-ones-existing-good-health-bhatt-nkvde",
+    },
     quote_text:
       "The best gift you can give your loved ones is by existing in good health!",
-    quote_link: {
-      url: "https://www.linkedin.com/pulse/best-gift-you-can-give-your-loved-ones-existing-good-health-bhatt-nkvde",
-      linktype: "url",
-    },
-    quote_attribution: "— That's why I say",
   };
 }
 
@@ -258,7 +258,7 @@ async function main(): Promise<void> {
   const spaceId = requireEnv("STORYBLOK_SPACE_ID");
   const region = process.env.STORYBLOK_REGION ?? "eu";
 
-  const sb = new StoryblokManagement({ token, spaceId, region });
+  const sb = new StoryblokManagement({ region, spaceId, token });
 
   logStep("\n[1/4] Pushing about_hero + about_story component schemas...");
   await pushSchema(sb, ABOUT_HERO_COMPONENT);
@@ -313,15 +313,15 @@ async function main(): Promise<void> {
   // Build new content preserving every existing top-level field.
   const newContent: SbStoryContent = {
     ...existingContent,
-    component: existingContent.component ?? ABOUT_PAGE_COMPONENT,
     body: newBody,
+    component: existingContent.component || ABOUT_PAGE_COMPONENT,
   };
 
   const { record } = await sb.upsertStory({
+    content: newContent,
+    full_slug: story.full_slug,
     name: story.name,
     slug: story.slug,
-    full_slug: story.full_slug,
-    content: newContent,
   });
   logRow(`saved draft (#${record.id})`);
 

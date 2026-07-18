@@ -46,7 +46,7 @@ function cagePartialOk(cage: CompiledCage, grid: Int32Array): boolean {
   for (const ci of cage.cells) {
     const v = grid[ci];
     if (v !== 0) {
-      filledCount++;
+      filledCount += 1;
       sum += v;
       product *= v;
     }
@@ -100,14 +100,14 @@ export function countSolutions(size: number, cages: Cage[], cap = 2): number {
       return;
     }
     if (pos === size * size) {
-      count++;
+      count += 1;
       return;
     }
     const r = Math.floor(pos / size);
     const c = pos % size;
     const cage = compiled[cellCage[pos]];
 
-    for (let v = 1; v <= size; v++) {
+    for (let v = 1; v <= size; v += 1) {
       if (rowUsed[r][v] === 1 || colUsed[c][v] === 1) {
         continue;
       }

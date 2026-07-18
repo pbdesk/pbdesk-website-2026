@@ -21,13 +21,13 @@ function isIconKey(value: string | undefined): value is IconKey {
 
 export default function MyRealm({ blok }: { blok: MyRealmBlok }) {
   const realms = blok.realms?.map((r) => ({
-    title: r.title,
     description: r.description ?? "",
+    title: r.title,
   }));
   const features = blok.features?.map((f) => ({
-    title: f.title,
     description: f.description ?? "",
     icon: (isIconKey(f.icon) ? f.icon : "bolt") as IconKey,
+    title: f.title,
   }));
 
   return (

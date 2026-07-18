@@ -16,11 +16,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const story = await loadPrivacyPolicyStory();
   const c = story?.content;
   return pageMetadata({
-    title: c?.seo_title ?? `Privacy Policy & Cookie Notice — ${SITE_NAME}`,
     description:
       c?.seo_description ??
       "How PBDesk collects, uses, and protects information; what cookies and similar technologies are used; and the privacy choices available to readers.",
     path: "/privacy-policy",
+    title: c?.seo_title ?? `Privacy Policy & Cookie Notice — ${SITE_NAME}`,
   });
 }
 
@@ -60,8 +60,8 @@ export default async function PrivacyPolicyPage() {
               className="mb-6 font-bold text-[var(--fg-primary)]"
               style={{
                 fontSize: "clamp(40px, 5vw, 64px)",
-                lineHeight: 1.05,
                 letterSpacing: "-0.03em",
+                lineHeight: 1.05,
                 textWrap: "balance",
               }}
             >
@@ -82,9 +82,9 @@ export default async function PrivacyPolicyPage() {
                 Last updated{" "}
                 <time dateTime={lastUpdated}>
                   {new Date(lastUpdated).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
                     day: "numeric",
+                    month: "long",
+                    year: "numeric",
                   })}
                 </time>
               </p>

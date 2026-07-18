@@ -19,12 +19,9 @@ import { loadBrainBoostHubStory } from "@/lib/storyblok/landing";
 export async function generateMetadata(): Promise<Metadata> {
   const story = await loadBrainBoostHubStory();
   return pageMetadata({
-    title:
-      story?.content.seo_title || "Brain Boost — Short games for long focus",
     description:
       story?.content.seo_description ||
       "Brain Boost is PBDesk's small puzzle corner — KenKen today, more queued. A fresh daily puzzle, four difficulty tiers, hand-checked games designed to fit a coffee break.",
-    path: "/brain-boost",
     keywords: [
       "puzzles",
       "kenken",
@@ -33,6 +30,9 @@ export async function generateMetadata(): Promise<Metadata> {
       "logic puzzles",
       "PBDesk",
     ],
+    path: "/brain-boost",
+    title:
+      story?.content.seo_title || "Brain Boost — Short games for long focus",
   });
 }
 
@@ -45,11 +45,11 @@ export default async function BrainBoostHubPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: `${SITE_NAME} Brain Boost`,
-    url: `${SITE_URL}/brain-boost`,
+    author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
     description: BRAIN_BOOST_LEDE,
     inLanguage: "en",
-    author: { "@type": "Person", name: SITE_AUTHOR, url: SITE_URL },
+    name: `${SITE_NAME} Brain Boost`,
+    url: `${SITE_URL}/brain-boost`,
   };
   return (
     <>

@@ -36,134 +36,134 @@ const HUB_COMPONENTS: SbComponent[] = [
   (() => {
     reset();
     return {
-      name: "hub_meta_item",
       display_name: "Hub Meta Item",
-      is_root: false,
-      is_nestable: true,
       icon: "block-text-img-left",
+      is_nestable: true,
+      is_root: false,
+      name: "hub_meta_item",
       preview_field: "label",
       schema: f({
-        value: field({ type: "text", display_name: "Value", required: true }),
-        label: field({ type: "text", display_name: "Label", required: true }),
         icon: field({
-          type: "option",
           display_name: "Icon",
-          required: true,
           options: [
-            { value: "Layers", name: "Layers" },
-            { value: "Target", name: "Target" },
-            { value: "Sparkles", name: "Sparkles" },
-            { value: "Calendar", name: "Calendar" },
+            { name: "Layers", value: "Layers" },
+            { name: "Target", value: "Target" },
+            { name: "Sparkles", value: "Sparkles" },
+            { name: "Calendar", value: "Calendar" },
           ],
+          required: true,
+          type: "option",
         }),
+        label: field({ display_name: "Label", required: true, type: "text" }),
+        value: field({ display_name: "Value", required: true, type: "text" }),
       }),
     };
   })(),
   (() => {
     reset();
     return {
-      name: "hub_game",
       display_name: "Hub Game",
-      is_root: false,
-      is_nestable: true,
       icon: "block-table",
+      is_nestable: true,
+      is_root: false,
+      name: "hub_game",
       preview_field: "name",
       schema: f({
-        slug: field({ type: "text", display_name: "Slug", required: true }),
-        name: field({ type: "text", display_name: "Name", required: true }),
+        category: field({ display_name: "Category", type: "text" }),
+        cover_image: field({ display_name: "Cover Image Path", type: "text" }),
+        description: field({ display_name: "Description", type: "textarea" }),
+        est_time: field({ display_name: "Est. Time", type: "text" }),
+        glyph: field({ display_name: "Glyph (coming-soon)", type: "text" }),
+        href: field({ display_name: "Href (live games only)", type: "text" }),
+        name: field({ display_name: "Name", required: true, type: "text" }),
+        operations: field({ display_name: "Operations", type: "text" }),
+        slug: field({ display_name: "Slug", required: true, type: "text" }),
         status: field({
-          type: "option",
           display_name: "Status",
-          required: true,
           options: [
-            { value: "live", name: "Live" },
-            { value: "coming-q3", name: "Coming Q3" },
-            { value: "coming-q4", name: "Coming Q4" },
-            { value: "exploring", name: "Exploring" },
+            { name: "Live", value: "live" },
+            { name: "Coming Q3", value: "coming-q3" },
+            { name: "Coming Q4", value: "coming-q4" },
+            { name: "Exploring", value: "exploring" },
           ],
+          required: true,
+          type: "option",
         }),
-        category: field({ type: "text", display_name: "Category" }),
-        description: field({ type: "textarea", display_name: "Description" }),
-        href: field({ type: "text", display_name: "Href (live games only)" }),
-        cover_image: field({ type: "text", display_name: "Cover Image Path" }),
-        glyph: field({ type: "text", display_name: "Glyph (coming-soon)" }),
-        tiers: field({ type: "number", display_name: "Tiers" }),
-        est_time: field({ type: "text", display_name: "Est. Time" }),
-        operations: field({ type: "text", display_name: "Operations" }),
+        tiers: field({ display_name: "Tiers", type: "number" }),
       }),
     };
   })(),
   (() => {
     reset();
     return {
-      name: "hub_benefit",
       display_name: "Hub Benefit",
-      is_root: false,
-      is_nestable: true,
       icon: "block-stars",
+      is_nestable: true,
+      is_root: false,
+      name: "hub_benefit",
       preview_field: "title",
       schema: f({
+        body: field({ display_name: "Body", required: true, type: "textarea" }),
         icon: field({
-          type: "option",
           display_name: "Icon",
-          required: true,
           options: [
-            { value: "Target", name: "Target" },
-            { value: "Brain", name: "Brain" },
-            { value: "Clock", name: "Clock" },
-            { value: "Flame", name: "Flame" },
+            { name: "Target", value: "Target" },
+            { name: "Brain", value: "Brain" },
+            { name: "Clock", value: "Clock" },
+            { name: "Flame", value: "Flame" },
           ],
+          required: true,
+          type: "option",
         }),
-        title: field({ type: "text", display_name: "Title", required: true }),
-        body: field({ type: "textarea", display_name: "Body", required: true }),
+        title: field({ display_name: "Title", required: true, type: "text" }),
       }),
     };
   })(),
   (() => {
     reset();
     return {
-      name: "brain_boost_hub_page",
       display_name: "Brain Boost Hub Page",
-      is_root: true,
-      is_nestable: false,
       icon: "block-buildin",
+      is_nestable: false,
+      is_root: true,
+      name: "brain_boost_hub_page",
       schema: f({
-        intro_title: field({ type: "text", display_name: "Intro Title" }),
-        intro_tagline: field({ type: "text", display_name: "Intro Tagline" }),
-        intro_lede: field({ type: "textarea", display_name: "Intro Lede" }),
-        meta_items: field({
-          type: "bloks",
-          display_name: "Meta Items",
-          restrict_components: true,
-          component_whitelist: ["hub_meta_item"],
-        }),
-        games: field({
-          type: "bloks",
-          display_name: "Games",
-          restrict_components: true,
-          component_whitelist: ["hub_game"],
-        }),
-        daily_heading: field({ type: "text", display_name: "Daily Heading" }),
-        daily_body: field({ type: "textarea", display_name: "Daily Body" }),
-        daily_cta_play: field({
-          type: "text",
-          display_name: "Daily CTA: Play",
-        }),
-        benefits_heading: field({
-          type: "text",
-          display_name: "Benefits Heading",
-        }),
         benefits: field({
-          type: "bloks",
+          component_whitelist: ["hub_benefit"],
           display_name: "Benefits",
           restrict_components: true,
-          component_whitelist: ["hub_benefit"],
+          type: "bloks",
         }),
-        seo_title: field({ type: "text", display_name: "SEO Title" }),
+        benefits_heading: field({
+          display_name: "Benefits Heading",
+          type: "text",
+        }),
+        daily_body: field({ display_name: "Daily Body", type: "textarea" }),
+        daily_cta_play: field({
+          display_name: "Daily CTA: Play",
+          type: "text",
+        }),
+        daily_heading: field({ display_name: "Daily Heading", type: "text" }),
+        games: field({
+          component_whitelist: ["hub_game"],
+          display_name: "Games",
+          restrict_components: true,
+          type: "bloks",
+        }),
+        intro_lede: field({ display_name: "Intro Lede", type: "textarea" }),
+        intro_tagline: field({ display_name: "Intro Tagline", type: "text" }),
+        intro_title: field({ display_name: "Intro Title", type: "text" }),
+        meta_items: field({
+          component_whitelist: ["hub_meta_item"],
+          display_name: "Meta Items",
+          restrict_components: true,
+          type: "bloks",
+        }),
         seo_description: field({
-          type: "textarea",
           display_name: "SEO Description",
+          type: "textarea",
         }),
+        seo_title: field({ display_name: "SEO Title", type: "text" }),
       }),
     };
   })(),
@@ -172,117 +172,117 @@ const HUB_COMPONENTS: SbComponent[] = [
 const BRAIN_BOOST_FOLDER = { name: "Brain Boost", slug: "brain-boost" };
 
 const HUB_STORY_CONTENT: SbStoryContent = {
-  component: "brain_boost_hub_page",
-  intro_title: "My Brain Boost",
-  intro_tagline: "Short games for long focus.",
-  intro_lede:
-    "A new corner of PBDesk for short, focused puzzles that sharpen the mind between Bits and Bites. Twenty minutes of arithmetic logic, one solved grid at a time — the kind of quiet focus that resets a working day. KenKen is here today; more games are queued.",
-  meta_items: [
-    {
-      component: "hub_meta_item",
-      value: "1",
-      label: "game live",
-      icon: "Layers",
-    },
-    {
-      component: "hub_meta_item",
-      value: "4",
-      label: "difficulty tiers",
-      icon: "Target",
-    },
-    {
-      component: "hub_meta_item",
-      value: "~200",
-      label: "hand-checked puzzles",
-      icon: "Sparkles",
-    },
-    {
-      component: "hub_meta_item",
-      value: "1",
-      label: "new puzzle every day",
-      icon: "Calendar",
-    },
-  ],
-  games: [
-    {
-      component: "hub_game",
-      slug: "kenken",
-      name: "KenKen",
-      status: "live",
-      category: "Arithmetic · Logic",
-      description:
-        "Fill an N×N grid so digits don't repeat in any row or column — the catch: outlined cages must hit their target with +, −, ×, or ÷. Pure logic, no guessing required.",
-      href: "/brain-boost/kenken",
-      cover_image: "/pillers/kenken-banner.png",
-      tiers: 4,
-      est_time: "10–25 min",
-      operations: "+ − × ÷",
-    },
-    {
-      component: "hub_game",
-      slug: "sudoku",
-      name: "Sudoku",
-      status: "coming-q3",
-      glyph: "SUD",
-      category: "Logic",
-      description:
-        "Classic 9×9 with hand-picked difficulty curves and a no-mark-ups expert mode.",
-    },
-    {
-      component: "hub_game",
-      slug: "cryptic",
-      name: "Cryptic Mini",
-      status: "coming-q4",
-      glyph: "CRY",
-      category: "Words",
-      description:
-        "Five-clue cryptic crossword, finishable on a coffee break. Each solved clue links to its wordplay.",
-    },
-    {
-      component: "hub_game",
-      slug: "logic-grid",
-      name: "Logic Grid",
-      status: "exploring",
-      glyph: "LOG",
-      category: "Logic",
-      description:
-        "Five-by-five attribute deduction puzzles — the kind your physics teacher used to print and hand out.",
-    },
-  ],
-  daily_heading: "Today's daily — Intermediate",
-  daily_body:
-    "A fresh hand-checked KenKen, the same all day. Refresh keeps your progress; come back tomorrow for a new one.",
-  daily_cta_play: "Play today's",
-  benefits_heading: "Why Brain Boost?",
   benefits: [
     {
+      body: "Puzzles are one-pointed by design. Twenty minutes of nothing-but-this is a small luxury during a working week.",
       component: "hub_benefit",
       icon: "Target",
       title: "Single-task focus",
-      body: "Puzzles are one-pointed by design. Twenty minutes of nothing-but-this is a small luxury during a working week.",
     },
     {
+      body: 'Mental arithmetic + spatial reasoning, in low-stakes reps. The "I can almost see it" feeling is the point.',
       component: "hub_benefit",
       icon: "Brain",
       title: "Working-memory workout",
-      body: 'Mental arithmetic + spatial reasoning, in low-stakes reps. The "I can almost see it" feeling is the point.',
     },
     {
+      body: "Every puzzle has a finish line within 30 minutes. No sprawling boards, no endless modes.",
       component: "hub_benefit",
       icon: "Clock",
       title: "Designed to be short",
-      body: "Every puzzle has a finish line within 30 minutes. No sprawling boards, no endless modes.",
     },
     {
+      body: "A new puzzle every day, but we won't shake a finger at you if you miss one. Show up when you can.",
       component: "hub_benefit",
       icon: "Flame",
       title: "Daily ritual, no streak shame",
-      body: "A new puzzle every day, but we won't shake a finger at you if you miss one. Show up when you can.",
     },
   ],
-  seo_title: "Brain Boost — Short games for long focus | PBDesk",
+  benefits_heading: "Why Brain Boost?",
+  component: "brain_boost_hub_page",
+  daily_body:
+    "A fresh hand-checked KenKen, the same all day. Refresh keeps your progress; come back tomorrow for a new one.",
+  daily_cta_play: "Play today's",
+  daily_heading: "Today's daily — Intermediate",
+  games: [
+    {
+      category: "Arithmetic · Logic",
+      component: "hub_game",
+      cover_image: "/pillers/kenken-banner.png",
+      description:
+        "Fill an N×N grid so digits don't repeat in any row or column — the catch: outlined cages must hit their target with +, −, ×, or ÷. Pure logic, no guessing required.",
+      est_time: "10–25 min",
+      href: "/brain-boost/kenken",
+      name: "KenKen",
+      operations: "+ − × ÷",
+      slug: "kenken",
+      status: "live",
+      tiers: 4,
+    },
+    {
+      category: "Logic",
+      component: "hub_game",
+      description:
+        "Classic 9×9 with hand-picked difficulty curves and a no-mark-ups expert mode.",
+      glyph: "SUD",
+      name: "Sudoku",
+      slug: "sudoku",
+      status: "coming-q3",
+    },
+    {
+      category: "Words",
+      component: "hub_game",
+      description:
+        "Five-clue cryptic crossword, finishable on a coffee break. Each solved clue links to its wordplay.",
+      glyph: "CRY",
+      name: "Cryptic Mini",
+      slug: "cryptic",
+      status: "coming-q4",
+    },
+    {
+      category: "Logic",
+      component: "hub_game",
+      description:
+        "Five-by-five attribute deduction puzzles — the kind your physics teacher used to print and hand out.",
+      glyph: "LOG",
+      name: "Logic Grid",
+      slug: "logic-grid",
+      status: "exploring",
+    },
+  ],
+  intro_lede:
+    "A new corner of PBDesk for short, focused puzzles that sharpen the mind between Bits and Bites. Twenty minutes of arithmetic logic, one solved grid at a time — the kind of quiet focus that resets a working day. KenKen is here today; more games are queued.",
+  intro_tagline: "Short games for long focus.",
+  intro_title: "My Brain Boost",
+  meta_items: [
+    {
+      component: "hub_meta_item",
+      icon: "Layers",
+      label: "game live",
+      value: "1",
+    },
+    {
+      component: "hub_meta_item",
+      icon: "Target",
+      label: "difficulty tiers",
+      value: "4",
+    },
+    {
+      component: "hub_meta_item",
+      icon: "Sparkles",
+      label: "hand-checked puzzles",
+      value: "~200",
+    },
+    {
+      component: "hub_meta_item",
+      icon: "Calendar",
+      label: "new puzzle every day",
+      value: "1",
+    },
+  ],
   seo_description:
     "Brain Boost is PBDesk's small puzzle corner — KenKen today, more queued. A fresh daily puzzle, four difficulty tiers, hand-checked games designed to fit a coffee break.",
+  seo_title: "Brain Boost — Short games for long focus | PBDesk",
 };
 
 function requireEnv(name: string): string {
@@ -306,10 +306,11 @@ async function main(): Promise<void> {
   const spaceId = requireEnv("STORYBLOK_SPACE_ID");
   const region = process.env.STORYBLOK_REGION ?? "eu";
 
-  const sb = new StoryblokManagement({ token, spaceId, region });
+  const sb = new StoryblokManagement({ region, spaceId, token });
 
   logStep("\n[1/3] Pushing hub component schemas...");
   for (const component of HUB_COMPONENTS) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const { record, created } = await sb.upsertComponent(component);
     logRow(`${created ? "+" : "·"} ${component.name} (#${record.id})`);
   }
@@ -323,11 +324,11 @@ async function main(): Promise<void> {
 
   logStep("\n[3/3] Upserting brain-boost/hub story...");
   const { record: storyRecord, created: storyCreated } = await sb.upsertStory({
-    name: "Brain Boost Hub",
-    slug: "hub",
-    full_slug: "brain-boost/hub",
-    parent_id: folderRecord.id,
     content: HUB_STORY_CONTENT,
+    full_slug: "brain-boost/hub",
+    name: "Brain Boost Hub",
+    parent_id: folderRecord.id,
+    slug: "hub",
   });
   await sb.publishStory(storyRecord.id);
   logRow(

@@ -83,8 +83,9 @@ async function pushComponents(
 ): Promise<void> {
   logStep("\n[1/5] Pushing component schemas...");
   for (const component of components) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const { record, created } = await sb.upsertComponent(component);
-    report.components.push({ name: component.name, created, id: record.id });
+    report.components.push({ created, id: record.id, name: component.name });
     logRow(`${created ? "+" : "·"} ${component.name} (#${record.id})`);
   }
 }
@@ -95,12 +96,14 @@ async function pushDatasources(
 ): Promise<void> {
   logStep("\n[2/5] Pushing datasources + entries...");
   for (const ds of datasources) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const { record, created } = await sb.upsertDatasource({
-      slug: ds.slug,
       name: ds.name,
+      slug: ds.slug,
     });
     let entriesPushed = 0;
     for (const entry of ds.entries) {
+      // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
       await sb.upsertDatasourceEntry(record.id, {
         name: entry.name,
         value: entry.value,
@@ -108,10 +111,10 @@ async function pushDatasources(
       entriesPushed += 1;
     }
     report.datasources.push({
-      slug: ds.slug,
       created,
-      id: record.id,
       entries: entriesPushed,
+      id: record.id,
+      slug: ds.slug,
     });
     logRow(
       `${created ? "+" : "·"} ${ds.slug} (#${record.id}, ${entriesPushed} entries)`
@@ -126,9 +129,10 @@ async function pushFolders(
   logStep("\n[3/5] Creating folders...");
   const folderIds = new Map<string, number>();
   for (const folder of folders) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const { record, created } = await sb.upsertFolder(folder);
     folderIds.set(folder.slug, record.id);
-    report.folders.push({ slug: folder.slug, created, id: record.id });
+    report.folders.push({ created, id: record.id, slug: folder.slug });
     logRow(`${created ? "+" : "·"} ${folder.slug}/ (#${record.id})`);
   }
   return folderIds;
@@ -146,6 +150,7 @@ async function uploadBrandAssets(
       logRow(`! ${asset.localPath} (missing — skipped)`);
       continue;
     }
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const uploaded = await sb.uploadAsset(fullPath);
     const cdnFilename = uploaded.pretty_url ?? uploaded.filename;
     assetMap.set(asset.placeholderKey, {
@@ -172,55 +177,55 @@ function buildSeedStories(
   }
   return [
     {
-      name: "Home",
-      slug: "home",
       content: swapAssetPlaceholders(homeContent, assetMap),
+      name: "Home",
       // Visual editor should open `/`, not `/home`.
       path: "/",
+      slug: "home",
     },
     {
+      content: swapAssetPlaceholders(aboutContent, assetMap),
       name: "About",
       slug: "about",
-      content: swapAssetPlaceholders(aboutContent, assetMap),
     },
     {
+      content: swapAssetPlaceholders(disclaimerContent, assetMap),
       name: "Disclaimer",
       slug: "disclaimer",
-      content: swapAssetPlaceholders(disclaimerContent, assetMap),
     },
     {
+      content: swapAssetPlaceholders(privacyPolicyContent, assetMap),
       name: "Privacy Policy",
       slug: "privacy-policy",
-      content: swapAssetPlaceholders(privacyPolicyContent, assetMap),
     },
     {
-      name: "Config",
-      slug: "config",
       content: swapAssetPlaceholders(globalConfigContent, assetMap),
+      name: "Config",
       parent_id: globalFolderId,
+      slug: "config",
     },
     {
-      name: "Bits — index",
-      slug: "index",
       content: bitsLandingContent,
-      parent_id: folderIds.get("bits"),
       // Marks this as the folder's start page so the visual editor opens
       // `/bits` instead of `/bits/index`.
       is_startpage: true,
+      name: "Bits — index",
+      parent_id: folderIds.get("bits"),
+      slug: "index",
     },
     {
-      name: "Bites — index",
-      slug: "index",
       content: bitesLandingContent,
-      parent_id: folderIds.get("bites"),
       is_startpage: true,
+      name: "Bites — index",
+      parent_id: folderIds.get("bites"),
+      slug: "index",
     },
     {
-      name: "Blog — index",
-      slug: "index",
       content: blogLandingContent,
-      parent_id: folderIds.get("blog"),
       is_startpage: true,
+      name: "Blog — index",
+      parent_id: folderIds.get("blog"),
+      slug: "index",
     },
   ];
 }
@@ -245,17 +250,18 @@ async function publishSeedStories(
   logStep("\n[5/5] Creating + publishing singleton stories...");
   const seedStories = buildSeedStories(folderIds, assetMap);
   for (const story of seedStories) {
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     const { record, created } = await sb.upsertStory({
-      name: story.name,
-      slug: story.slug,
-      full_slug: fullSlugFor(story, folderIds),
-      parent_id: story.parent_id,
       content: story.content,
+      full_slug: fullSlugFor(story, folderIds),
       is_startpage: story.is_startpage,
+      name: story.name,
+      parent_id: story.parent_id,
       path: story.path,
+      slug: story.slug,
     });
     await sb.publishStory(record.id);
-    report.stories.push({ slug: record.full_slug, created, id: record.id });
+    report.stories.push({ created, id: record.id, slug: record.full_slug });
     logRow(
       `${created ? "+" : "·"} ${record.full_slug} (#${record.id}, published)`
     );
@@ -283,13 +289,13 @@ async function main(): Promise<void> {
   const spaceId = requireEnv("STORYBLOK_SPACE_ID");
   const region = process.env.STORYBLOK_REGION ?? "eu";
 
-  const sb = new StoryblokManagement({ token, spaceId, region });
+  const sb = new StoryblokManagement({ region, spaceId, token });
 
   const report: SeedReport = {
+    assets: [],
     components: [],
     datasources: [],
     folders: [],
-    assets: [],
     stories: [],
   };
 

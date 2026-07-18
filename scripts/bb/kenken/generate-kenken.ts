@@ -26,11 +26,11 @@ interface CliArgs {
 
 function parseArgs(argv: string[]): CliArgs {
   const args = new Map<string, string>();
-  for (let i = 0; i < argv.length; i++) {
+  for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
     if (a.startsWith("--")) {
       args.set(a.slice(2), argv[i + 1]);
-      i++;
+      i += 1;
     }
   }
   const difficulty = args.get("difficulty");
@@ -54,7 +54,7 @@ function parseArgs(argv: string[]): CliArgs {
       );
     }
   }
-  return { difficulty, count, seed, size };
+  return { count, difficulty, seed, size };
 }
 
 function generateForSize(
@@ -107,7 +107,7 @@ function main(): void {
   const maxGuard = count * 50;
 
   while (added < count && guard < maxGuard) {
-    guard++;
+    guard += 1;
     const provisionalId = `pending-${seq}`;
     const puzzle =
       size === null
@@ -123,8 +123,8 @@ function main(): void {
     puzzle.id = `k${puzzle.size}-${difficulty}-${String(seq).padStart(5, "0")}`;
     signatures.add(sig);
     library.puzzles.push(puzzle);
-    seq++;
-    added++;
+    seq += 1;
+    added += 1;
   }
 
   const errors = validateLibrary(library);

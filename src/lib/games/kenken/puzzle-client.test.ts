@@ -11,10 +11,10 @@ import type { KenKenPuzzle } from "./types";
 
 function puzzle(id: string): KenKenPuzzle {
   return {
+    cages: [{ cells: [[0, 0]], op: "=", target: 1 }],
+    difficulty: "easy",
     id,
     size: 3,
-    difficulty: "easy",
-    cages: [{ cells: [[0, 0]], op: "=", target: 1 }],
     solution: [
       [1, 2, 3],
       [2, 3, 1],
@@ -25,20 +25,20 @@ function puzzle(id: string): KenKenPuzzle {
 
 function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
-    status,
     headers: { "content-type": "application/json" },
+    status,
   });
 }
 
 function memoryStorage(): Storage {
   const map = new Map<string, string>();
   return {
-    get length() {
-      return map.size;
-    },
     clear: () => map.clear(),
     getItem: (k) => map.get(k) ?? null,
     key: (i) => [...map.keys()][i] ?? null,
+    get length() {
+      return map.size;
+    },
     removeItem: (k) => map.delete(k),
     setItem: (k, v) => {
       map.set(k, v);

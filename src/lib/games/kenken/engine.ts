@@ -17,8 +17,8 @@ export function cloneGrid(grid: GameGrid): GameGrid {
   return grid.map((row) =>
     row.map((cell) => ({
       given: cell.given ?? false,
-      value: cell.value,
       hinted: cell.hinted,
+      value: cell.value,
     }))
   );
 }
@@ -67,7 +67,7 @@ export function rowColConflicts(grid: GameGrid): Set<string> {
     }
   };
 
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < size; i += 1) {
     scan(Array.from({ length: size }, (_, j): Cell => [i, j])); // row i
     scan(Array.from({ length: size }, (_, j): Cell => [j, i])); // col i
   }
@@ -120,10 +120,10 @@ export function cageConflicts(grid: GameGrid, cages: Cage[]): Set<string> {
 }
 
 function isLatinValid(grid: GameGrid, size: number): boolean {
-  for (let i = 0; i < size; i++) {
+  for (let i = 0; i < size; i += 1) {
     const rowSeen = new Set<number>();
     const colSeen = new Set<number>();
-    for (let j = 0; j < size; j++) {
+    for (let j = 0; j < size; j += 1) {
       const rv = grid[i][j].value;
       const cv = grid[j][i].value;
       if (rv === null || cv === null) {
@@ -148,8 +148,8 @@ export function isSolved(grid: GameGrid, size: number, cages: Cage[]): boolean {
 
 export function mistakeCells(grid: GameGrid, solution: number[][]): Cell[] {
   const mistakes: Cell[] = [];
-  for (let r = 0; r < grid.length; r++) {
-    for (let c = 0; c < grid[r].length; c++) {
+  for (let r = 0; r < grid.length; r += 1) {
+    for (let c = 0; c < grid[r].length; c += 1) {
       const v = grid[r][c].value;
       if (v !== null && v !== solution[r][c]) {
         mistakes.push([r, c]);

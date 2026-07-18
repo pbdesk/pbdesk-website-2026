@@ -10,10 +10,10 @@ describe("kenken types", () => {
   test("a puzzle object has the expected shape", () => {
     const cage: Cage = { cells: [[0, 0]], op: "=", target: 1 };
     const puzzle: KenKenPuzzle = {
+      cages: [cage],
+      difficulty: "easy",
       id: "k3-easy-00001",
       size: 3,
-      difficulty: "easy",
-      cages: [cage],
       solution: [
         [1, 2, 3],
         [2, 3, 1],

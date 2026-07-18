@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 
   if (!verifySignature(rawBody, signature)) {
     return Response.json(
-      { revalidated: false, error: "invalid signature" },
+      { error: "invalid signature", revalidated: false },
       {
         status: 401,
       }
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     payload = JSON.parse(rawBody) as StoryblokWebhookPayload;
   } catch {
     return Response.json(
-      { revalidated: false, error: "invalid json" },
+      { error: "invalid json", revalidated: false },
       {
         status: 400,
       }
@@ -58,9 +58,9 @@ export async function POST(request: NextRequest) {
   }
 
   return Response.json({
-    revalidated: true,
     action: payload.action,
     full_slug: payload.full_slug,
     now: Date.now(),
+    revalidated: true,
   });
 }

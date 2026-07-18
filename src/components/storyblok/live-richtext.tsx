@@ -44,7 +44,7 @@ export default function LiveRichText({
     <article className={className ?? "post-prose mx-auto max-w-3xl"}>
       {doc ? (
         <StoryblokRichText
-          doc={doc as Parameters<typeof StoryblokRichText>[0]["doc"]}
+          document={doc as Parameters<typeof StoryblokRichText>[0]["document"]}
         />
       ) : (
         fallback

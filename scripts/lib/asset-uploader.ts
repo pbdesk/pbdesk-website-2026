@@ -23,13 +23,13 @@ const CACHE_PATH = resolve(process.cwd(), ".storyblok-assets/cache.json");
 
 function loadCache(): CacheFile {
   if (!existsSync(CACHE_PATH)) {
-    return { version: 1, entries: {} };
+    return { entries: {}, version: 1 };
   }
   try {
     const raw = readFileSync(CACHE_PATH, "utf8");
     return JSON.parse(raw) as CacheFile;
   } catch {
-    return { version: 1, entries: {} };
+    return { entries: {}, version: 1 };
   }
 }
 
@@ -74,24 +74,24 @@ export class AssetUploader {
     const cached = this.cache.entries[cacheKey];
     if (cached && cached.hash === hash) {
       return {
-        id: cached.asset_id,
         filename: cached.filename,
         fromCache: true,
+        id: cached.asset_id,
       };
     }
 
     const record = await this.sb.uploadAsset(absolutePath, assetFolderId);
     const filename = record.pretty_url ?? record.filename;
     this.cache.entries[cacheKey] = {
-      hash,
       asset_id: record.id,
       filename,
+      hash,
     };
     saveCache(this.cache);
     return {
-      id: record.id,
       filename,
       fromCache: false,
+      id: record.id,
     };
   }
 

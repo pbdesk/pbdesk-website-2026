@@ -6,10 +6,10 @@ import type { KenKenPuzzle } from "./types";
 
 function fixture(id: string): KenKenPuzzle {
   return {
+    cages: [{ cells: [[0, 0]], op: "=", target: 1 }],
+    difficulty: "easy",
     id,
     size: 3,
-    difficulty: "easy",
-    cages: [{ cells: [[0, 0]], op: "=", target: 1 }],
     solution: [
       [1, 2, 3],
       [2, 3, 1],
@@ -27,7 +27,7 @@ const lookup = {
 describe("resolvePuzzleRequest", () => {
   test("returns 200 with the puzzle for a known id", () => {
     const res = resolvePuzzleRequest(
-      { id: "known", level: null, exclude: [] },
+      { exclude: [], id: "known", level: null },
       lookup,
       mulberry32(1)
     );
@@ -37,7 +37,7 @@ describe("resolvePuzzleRequest", () => {
 
   test("returns 404 for an unknown id", () => {
     const res = resolvePuzzleRequest(
-      { id: "nope", level: null, exclude: [] },
+      { exclude: [], id: "nope", level: null },
       lookup,
       mulberry32(1)
     );
@@ -47,14 +47,14 @@ describe("resolvePuzzleRequest", () => {
   test("returns 400 for a missing/invalid level when no id", () => {
     expect(
       resolvePuzzleRequest(
-        { id: null, level: null, exclude: [] },
+        { exclude: [], id: null, level: null },
         lookup,
         mulberry32(1)
       ).status
     ).toBe(400);
     expect(
       resolvePuzzleRequest(
-        { id: null, level: "medium", exclude: [] },
+        { exclude: [], id: null, level: "medium" },
         lookup,
         mulberry32(1)
       ).status
@@ -63,7 +63,7 @@ describe("resolvePuzzleRequest", () => {
 
   test("returns 503 when the tier library is empty", () => {
     const res = resolvePuzzleRequest(
-      { id: null, level: "genius", exclude: [] },
+      { exclude: [], id: null, level: "genius" },
       lookup,
       mulberry32(1)
     );
@@ -72,7 +72,7 @@ describe("resolvePuzzleRequest", () => {
 
   test("returns 200 and avoids excluded ids when possible", () => {
     const res = resolvePuzzleRequest(
-      { id: null, level: "easy", exclude: ["a", "b"] },
+      { exclude: ["a", "b"], id: null, level: "easy" },
       lookup,
       mulberry32(1)
     );

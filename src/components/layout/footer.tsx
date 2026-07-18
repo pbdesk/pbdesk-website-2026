@@ -22,19 +22,19 @@ interface FooterProps {
 }
 
 const DEFAULT_EXPLORE: NavItem[] = [
-  { label: "Bits", href: "/bits" },
-  { label: "Bites", href: "/bites" },
-  { label: "Blog", href: "/blog" },
-  { label: "Brain Boost", href: "/brain-boost" },
-  { label: "About Me", href: "/about" },
+  { href: "/bits", label: "Bits" },
+  { href: "/bites", label: "Bites" },
+  { href: "/blog", label: "Blog" },
+  { href: "/brain-boost", label: "Brain Boost" },
+  { href: "/about", label: "About Me" },
 ];
 
 const DEFAULT_TOPICS: NavItem[] = [
-  { label: "Categories", href: "/categories" },
-  { label: "Labels", href: "/labels" },
+  { href: "/categories", label: "Categories" },
+  { href: "/labels", label: "Labels" },
 ];
 
-const DEFAULT_MORE: NavItem[] = [{ label: "Disclaimer", href: "/disclaimer" }];
+const DEFAULT_MORE: NavItem[] = [{ href: "/disclaimer", label: "Disclaimer" }];
 
 const DEFAULT_FOOTER_ABOUT =
   "Bits & Bites — Developer's Life. Learning Endeavor Forever, from the desk of Pinal Bhatt.";

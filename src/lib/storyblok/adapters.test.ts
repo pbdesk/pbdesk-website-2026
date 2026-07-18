@@ -46,47 +46,47 @@ function makeHubStory(
   const metaItem: HubMetaItemBlok = {
     _uid: "m1",
     component: "hub_meta_item",
-    value: "5",
-    label: "games live",
     icon: "Layers",
+    label: "games live",
+    value: "5",
   };
   const game: HubGameBlok = {
     _uid: "g1",
-    component: "hub_game",
-    slug: "sudoku",
-    name: "Sudoku",
-    status: "live",
     category: "Logic",
+    component: "hub_game",
     description: "Classic 9×9.",
     href: "/brain-boost/sudoku",
+    name: "Sudoku",
+    slug: "sudoku",
+    status: "live",
   };
   const benefit: HubBenefitBlok = {
     _uid: "b1",
+    body: "Stay focused.",
     component: "hub_benefit",
     icon: "Brain",
     title: "Focus",
-    body: "Stay focused.",
   };
   return {
     content: {
       _uid: "content",
+      benefits: [benefit],
+      benefits_heading: "Why play?",
       component: "brain_boost_hub_page",
-      intro_title: "My Brain Boost",
-      intro_tagline: "Custom tagline",
-      intro_lede: "Custom lede text.",
-      meta_items: [metaItem],
-      games: [game],
-      daily_heading: "Today's KenKen",
       daily_body: "A fresh puzzle every day.",
       daily_cta_play: "Play now",
-      benefits_heading: "Why play?",
-      benefits: [benefit],
-      seo_title: "Custom SEO title",
+      daily_heading: "Today's KenKen",
+      games: [game],
+      intro_lede: "Custom lede text.",
+      intro_tagline: "Custom tagline",
+      intro_title: "My Brain Boost",
+      meta_items: [metaItem],
       seo_description: "Custom SEO desc.",
+      seo_title: "Custom SEO title",
       ...overrides,
     },
-    slug: "hub",
     full_slug: "brain-boost/hub",
+    slug: "hub",
   } as unknown as BrainBoostHubPageStory;
 }
 
@@ -138,9 +138,9 @@ describe("adaptHubStory", () => {
   test("returns empty arrays when blok arrays are absent", () => {
     const data = adaptHubStory(
       makeHubStory({
-        meta_items: undefined,
-        games: undefined,
         benefits: undefined,
+        games: undefined,
+        meta_items: undefined,
       })
     );
     expect(data.metaItems).toEqual([]);

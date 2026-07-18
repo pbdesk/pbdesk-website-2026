@@ -15,11 +15,8 @@ import {
 import { loadAboutStory } from "@/lib/storyblok/landing";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
   description:
     "Get to know the human behind PBDesk. Pinal Bhatt is a software engineer exploring AI, web development, and the daily wellness habits that fuel sustainable craft.",
-  path: "/about",
-  ogType: "profile",
   keywords: [
     "Pinal Bhatt",
     "about Pinal Bhatt",
@@ -28,21 +25,24 @@ export const metadata: Metadata = pageMetadata({
     "full stack developer",
     "wellness enthusiast",
   ],
+  ogType: "profile",
+  path: "/about",
+  title: "About Pinal Bhatt — Engineer, AI tinkerer, wellness enthusiast",
 });
 
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: SITE_AUTHOR,
-  url: `${SITE_URL}/about`,
+  description:
+    "Software engineer, AI tinkerer, and wellness enthusiast writing at PBDesk.",
   jobTitle: "Software Engineer",
+  name: SITE_AUTHOR,
+  sameAs: [SOCIAL.github, SOCIAL.linkedin, SOCIAL.x],
+  url: `${SITE_URL}/about`,
   worksFor: {
     "@type": "Organization",
     name: SITE_NAME,
   },
-  description:
-    "Software engineer, AI tinkerer, and wellness enthusiast writing at PBDesk.",
-  sameAs: [SOCIAL.github, SOCIAL.linkedin, SOCIAL.x],
 };
 
 export default async function AboutPage() {

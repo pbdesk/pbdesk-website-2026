@@ -51,9 +51,9 @@ export function buildSitemapEntry({
   lastModified,
 }: RouteEntry): MetadataRoute.Sitemap[number] {
   const entry: MetadataRoute.Sitemap[number] = {
-    url: `${SITE_URL}${path}`,
     changeFrequency,
     priority,
+    url: `${SITE_URL}${path}`,
   };
 
   if (lastModified) {

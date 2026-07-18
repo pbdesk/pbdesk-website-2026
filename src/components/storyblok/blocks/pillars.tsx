@@ -5,13 +5,13 @@ import type { PillarsBlok } from "./types";
 
 export default function Pillars({ blok }: { blok: PillarsBlok }) {
   const cards = blok.cards?.map((card) => ({
+    avatar: normalizeAssetUrl(card.avatar?.filename) ?? "",
+    cta: card.cta_label ?? "",
+    description: card.description ?? "",
+    gradient: card.gradient_class ?? "pillar-bits-gradient",
+    href: resolveLinkHref(card.href),
     name: card.name,
     title: card.title,
-    description: card.description ?? "",
-    cta: card.cta_label ?? "",
-    href: resolveLinkHref(card.href),
-    gradient: card.gradient_class ?? "pillar-bits-gradient",
-    avatar: normalizeAssetUrl(card.avatar?.filename) ?? "",
   }));
 
   return (

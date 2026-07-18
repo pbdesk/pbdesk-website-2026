@@ -108,14 +108,15 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   const sb = new StoryblokManagement({
-    token: requireEnv("STORYBLOK_MANAGEMENT_TOKEN"),
-    spaceId: requireEnv("STORYBLOK_SPACE_ID"),
     region: process.env.STORYBLOK_REGION ?? "eu",
+    spaceId: requireEnv("STORYBLOK_SPACE_ID"),
+    token: requireEnv("STORYBLOK_MANAGEMENT_TOKEN"),
   });
 
   await pushOne(sb, name);
   for (const target of whitelistTargets) {
     const { component, field } = parseTarget(target);
+    // biome-ignore lint/performance/noAwaitInLoops: sequential Storyblok Management API calls; rate-limited and order matters.
     await extendWhitelist(sb, component, field, name);
   }
 }
