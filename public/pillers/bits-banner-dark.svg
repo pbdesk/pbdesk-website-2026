@@ -10,6 +10,20 @@
       <stop offset="70%" stop-color="#3B82F6" stop-opacity="0.05" />
       <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
     </radialGradient>
+    <radialGradient cx="50%" cy="50%" id="avglow-bits-dark" r="50%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35" />
+      <stop offset="60%" stop-color="#3B82F6" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient cx="50%" cy="50%" id="avhalo-bits-dark" r="50%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="avtile-bits-dark" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <clipPath id="avclip-bits-dark"><circle r="256" /></clipPath>
   </defs>
   <rect fill="#0B0F17" height="640" width="1920" />
   <ellipse
@@ -1898,8 +1912,8 @@
     opacity="0.3"
     rx="5"
     width="16"
-    x="1480"
-    y="250"
+    x="1392"
+    y="200"
   />
   <rect
     fill="#0EA5E9"
@@ -1907,8 +1921,8 @@
     opacity="0.5"
     rx="5"
     width="12"
-    x="1680"
-    y="350"
+    x="1812"
+    y="432"
   />
   <rect
     fill="#3B82F6"
@@ -1916,8 +1930,8 @@
     opacity="0.5"
     rx="5"
     width="20"
-    x="1780"
-    y="180"
+    x="1800"
+    y="130"
   />
   <rect
     fill="#60A5FA"
@@ -1928,6 +1942,56 @@
     x="170"
     y="470"
   />
+  <circle cx="1620" cy="300" fill="url(#avhalo-bits-dark)" r="230" />
+  <g transform="translate(1620,300) scale(0.449)">
+    <g clip-path="url(#avclip-bits-dark)">
+      <circle fill="url(#avglow-bits-dark)" r="280" />
+      <g transform="scale(2)">
+        <rect
+          fill="url(#avtile-bits-dark)"
+          height="180"
+          rx="36"
+          width="180"
+          x="-90"
+          y="-90"
+        />
+        <rect
+          fill="none"
+          height="180"
+          rx="36"
+          stroke="#fff"
+          stroke-opacity="0.16"
+          width="180"
+          x="-90"
+          y="-90"
+        />
+        <g opacity="0.18" stroke="#fff" stroke-width="1">
+          <line x1="-90" x2="90" y1="-30" y2="-30" />
+          <line x1="-90" x2="90" y1="30" y2="30" />
+          <line x1="-30" x2="-30" y1="-90" y2="90" />
+          <line x1="30" x2="30" y1="-90" y2="90" />
+        </g>
+        <g
+          fill="none"
+          stroke="#fff"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="10"
+        >
+          <polyline points="-36,-26 -58,0 -36,26" />
+          <polyline points="36,-26 58,0 36,26" />
+          <line x1="14" x2="-14" y1="-30" y2="30" />
+        </g>
+        <g fill="#FDE68A" transform="translate(52,-52)">
+          <path d="M0 -16 L4 -4 L16 0 L4 4 L0 16 L-4 4 L-16 0 L-4 -4 Z" />
+        </g>
+        <g fill="#7DD3FC" transform="translate(-58,58)">
+          <path d="M0 -8 L2 -2 L8 0 L2 2 L0 8 L-2 2 L-8 0 L-2 -2 Z" />
+        </g>
+      </g>
+    </g>
+    <circle fill="none" r="254" stroke="#2563EB" stroke-width="4" />
+  </g>
   <g transform="translate(825.7,148)">
     <rect fill="#2563EB" height="5" rx="2.5" width="46" x="-82" y="-13" />
     <rect fill="#0EA5E9" height="5" rx="2.5" width="46" x="304.6" y="-13" />

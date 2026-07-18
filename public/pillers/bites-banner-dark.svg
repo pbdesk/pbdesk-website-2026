@@ -10,6 +10,20 @@
       <stop offset="70%" stop-color="#10B981" stop-opacity="0.05" />
       <stop offset="100%" stop-color="#10B981" stop-opacity="0" />
     </radialGradient>
+    <radialGradient cx="50%" cy="50%" id="avglow-bites-dark" r="50%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.35" />
+      <stop offset="60%" stop-color="#10B981" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient cx="50%" cy="50%" id="avhalo-bites-dark" r="50%">
+      <stop offset="0%" stop-color="#10B981" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#10B981" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="avtile-bites-dark" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <clipPath id="avclip-bites-dark"><circle r="256" /></clipPath>
   </defs>
   <rect fill="#0B0F17" height="640" width="1920" />
   <ellipse
@@ -111,29 +125,29 @@
     stroke-width="2.5"
   />
   <circle
-    cx="1180"
-    cy="40"
+    cx="1640"
+    cy="262"
     fill="none"
     opacity="0.3"
-    r="90"
+    r="152"
     stroke="#10B981"
     stroke-width="2.5"
   />
   <circle
-    cx="1180"
-    cy="40"
+    cx="1640"
+    cy="262"
     fill="none"
     opacity="0.3"
-    r="180"
+    r="216"
     stroke="#10B981"
     stroke-width="2.5"
   />
   <circle
-    cx="1180"
-    cy="40"
+    cx="1640"
+    cy="262"
     fill="none"
     opacity="0.2"
-    r="270"
+    r="280"
     stroke="#10B981"
     stroke-width="2.5"
   />
@@ -163,7 +177,7 @@
       stroke-width="2.5"
     />
   </g>
-  <g opacity="0.6" transform="translate(1420,150) rotate(18)">
+  <g opacity="0.6" transform="translate(1400,140) rotate(18)">
     <path
       d="M0 0 C -29.4 -20.5, -29.4 -47.4, 0 -64 C 29.4 -47.4, 29.4 -20.5, 0 0 Z"
       fill="#34D399"
@@ -176,7 +190,7 @@
       stroke-width="2.9"
     />
   </g>
-  <g opacity="0.6" transform="translate(1740,300) rotate(-38)">
+  <g opacity="0.6" transform="translate(1826,452) rotate(-38)">
     <path
       d="M0 0 C -42.3 -29.4, -42.3 -68.1, 0 -92 C 42.3 -68.1, 42.3 -29.4, 0 0 Z"
       fill="#34D399"
@@ -259,8 +273,70 @@
   <circle cx="221.3" cy="206.6" fill="#10B981" opacity="0.5" r="3.5" />
   <circle cx="1857.4" cy="479.9" fill="#10B981" opacity="0.2" r="3.8" />
   <circle cx="1194.1" cy="69.3" fill="#10B981" opacity="0.3" r="4.9" />
-  <circle cx="1495" cy="325.5" fill="#2563EB" opacity="0.5" r="3.5" />
-  <circle cx="1622" cy="386.8" fill="#10B981" opacity="0.5" r="3.6" />
+  <circle cx="552.2" cy="548.8" fill="#2563EB" opacity="0.4" r="5.8" />
+  <circle cx="592.8" cy="263.3" fill="#10B981" opacity="0.2" r="5.6" />
+  <circle cx="1640" cy="262" fill="url(#avhalo-bites-dark)" r="230" />
+  <g transform="translate(1640,262) scale(0.449)">
+    <g clip-path="url(#avclip-bites-dark)">
+      <circle fill="url(#avglow-bites-dark)" r="280" />
+      <g transform="scale(2)">
+        <rect
+          fill="url(#avtile-bites-dark)"
+          height="180"
+          rx="36"
+          width="180"
+          x="-90"
+          y="-90"
+        />
+        <rect
+          fill="none"
+          height="180"
+          rx="36"
+          stroke="#fff"
+          stroke-opacity="0.16"
+          width="180"
+          x="-90"
+          y="-90"
+        />
+        <g transform="translate(-6,-10)">
+          <path
+            d="M-40 30 C -40 -20, 0 -50, 44 -44 C 48 0, 18 40, -34 38 Z"
+            fill="#ECFDF5"
+            opacity="0.95"
+          />
+          <path
+            d="M-34 30 C -10 -6, 18 -30, 42 -42"
+            fill="none"
+            stroke="#059669"
+            stroke-linecap="round"
+            stroke-width="4"
+          />
+          <path
+            d="M-18 18 L -6 6 M -2 22 L 10 10 M 14 26 L 24 16"
+            fill="none"
+            opacity="0.7"
+            stroke="#059669"
+            stroke-linecap="round"
+            stroke-width="3"
+          />
+        </g>
+        <g transform="translate(42,44)">
+          <circle fill="#F43F5E" r="14" />
+          <path
+            d="M-6 -1 L-2 -1 L0 -5 L3 4 L5 -1 L8 -1"
+            fill="none"
+            stroke="#fff"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </g>
+        <circle cx="-58" cy="-52" fill="#FDE68A" r="5" />
+        <circle cx="56" cy="-54" fill="#7DD3FC" r="4" />
+      </g>
+    </g>
+    <circle fill="none" r="254" stroke="#10B981" stroke-width="4" />
+  </g>
   <g transform="translate(782.7,148)">
     <rect fill="#10B981" height="5" rx="2.5" width="46" x="-82" y="-13" />
     <rect fill="#2563EB" height="5" rx="2.5" width="46" x="390.6" y="-13" />
