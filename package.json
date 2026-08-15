@@ -54,7 +54,7 @@
     "storyblok-js-client": "7.7.1",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
-    "ultracite": "7.9.4",
+    "ultracite": "7.10.3",
     "unist-util-visit": "5.1.0"
   },
   "ignoreScripts": [
